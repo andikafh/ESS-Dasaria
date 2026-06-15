@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ESS — Login Staff Kontrak</title>
+  <link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar" style="background:transparent;position:absolute;top:0;left:0;right:0;z-index:60">
+    <span class="s-time" style="color:white">09:41</span>
+    <div class="s-icons"><svg viewBox="0 0 17 12" style="fill:white;width:16px;height:12px"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="1.5" width="3" height="10.5" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/></svg><span style="color:white;font-size:13px">🔋</span></div>
+  </div>
+
+  <div class="app">
+    <div class="page" style="padding-bottom:0;background:white">
+
+      <!-- Hero Header -->
+      <div style="background:linear-gradient(150deg,#0A1E5E 0%,#1546BF 50%,#2A7AFF 100%);padding:56px 24px 44px;position:relative;overflow:hidden">
+        <!-- Back button -->
+        <a href="index.html" style="position:absolute;top:58px;left:20px;width:36px;height:36px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;z-index:10">
+          <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:white;fill:none;stroke-width:2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        </a>
+        <!-- Decorative circles -->
+        <div style="position:absolute;top:-70px;right:-70px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.06)"></div>
+        <div style="position:absolute;bottom:-50px;left:-50px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.04)"></div>
+        <div style="position:absolute;top:60px;right:30px;width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,.05)"></div>
+
+        <div style="text-align:center;position:relative;z-index:1">
+          <div style="width:68px;height:68px;border-radius:22px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 16px;box-shadow:0 8px 24px rgba(0,0,0,.2)">👤</div>
+          <div style="font-size:24px;font-weight:800;color:white;letter-spacing:-.5px;margin-bottom:4px">Staff Kontrak</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.65)">Layanan Administrasi Karyawan Internal</div>
+          <div style="margin-top:12px;display:flex;justify-content:center;gap:8px">
+            <span style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;color:rgba(255,255,255,.85)">📍 Kehadiran</span>
+            <span style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;color:rgba(255,255,255,.85)">📅 Cuti</span>
+            <span style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;color:rgba(255,255,255,.85)">💰 Loan</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rounded bottom edge of hero -->
+      <div style="height:24px;background:linear-gradient(180deg,#2A7AFF 0%,white 100%);border-radius:0 0 32px 32px;margin-bottom:-1px"></div>
+
+      <!-- Login Form -->
+      <div style="padding:24px 24px 0;background:white">
+        <div style="font-size:22px;font-weight:800;color:var(--gray-900);letter-spacing:-.5px;margin-bottom:4px">Selamat Datang</div>
+        <div style="font-size:14px;color:var(--gray-400);margin-bottom:24px">Masuk dengan ID karyawan &amp; password Anda</div>
+
+        <div class="form-group">
+          <label class="form-label">ID Karyawan</label>
+          <div style="position:relative">
+            <div style="position:absolute;top:50%;left:13px;transform:translateY(-50%);font-size:16px">👤</div>
+            <input type="text" class="form-control" placeholder="Contoh: EMP2024001" value="EMP2024001" style="padding-left:40px">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div style="position:relative">
+            <div style="position:absolute;top:50%;left:13px;transform:translateY(-50%);font-size:16px">🔒</div>
+            <input type="password" class="form-control" placeholder="Masukkan password" value="password" style="padding-left:40px;padding-right:56px">
+            <div style="position:absolute;top:50%;right:13px;transform:translateY(-50%);font-size:12px;font-weight:700;color:var(--primary);cursor:pointer">Lihat</div>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:flex-end;margin-bottom:20px;margin-top:-6px">
+          <a href="#" style="font-size:13px;font-weight:600;color:var(--primary)">Lupa Password?</a>
+        </div>
+
+        <a href="home.html" class="btn btn-primary btn-full" style="font-size:15px;padding:15px 20px">
+          <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:white;fill:none;stroke-width:2"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
+          Masuk ke Staff Kontrak
+        </a>
+
+        <!-- Demo hint -->
+        <div style="margin-top:16px;padding:14px 16px;background:var(--primary-light);border-radius:12px;display:flex;align-items:flex-start;gap:10px;border:1px solid rgba(29,111,243,.15)">
+          <span style="font-size:18px;flex-shrink:0">💡</span>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--primary-dark);margin-bottom:3px">Demo Mode</div>
+            <div style="font-size:11px;color:var(--primary);line-height:1.5">ID: <strong>EMP2024001</strong> · Password: <strong>password</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Help & Divider -->
+      <div style="padding:20px 24px 0">
+        <div style="height:1px;background:var(--gray-100);margin-bottom:16px"></div>
+        <div style="display:flex;align-items:center;gap:10px;justify-content:center">
+          <div style="font-size:13px;color:var(--gray-400)">Butuh bantuan?</div>
+          <a href="#" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--primary);text-decoration:none;padding:8px 14px;background:var(--primary-light);border-radius:8px">
+            <span>📞</span> IT Support
+          </a>
+        </div>
+      </div>
+
+      <div style="padding:16px 24px 28px;text-align:center">
+        <div style="font-size:11px;color:var(--gray-200)">ESS v2.0.1 · Data Anda dilindungi &amp; terenkripsi</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<script src="js/app.js"></script>
+</body>
+</html>

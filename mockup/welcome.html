@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ESS — Welcome</title>
+  <link rel="stylesheet" href="css/design-system.css">
+  <style>
+    @keyframes floatUp {
+      0%,100% { transform: translateY(0) rotate(0deg); }
+      50%      { transform: translateY(-12px) rotate(1deg); }
+    }
+    @keyframes glowPulse {
+      0%,100% { box-shadow: 0 24px 60px rgba(0,0,0,.35), 0 0 40px rgba(29,111,243,.15), inset 0 1px 0 rgba(255,255,255,.12); }
+      50%      { box-shadow: 0 32px 80px rgba(0,0,0,.4), 0 0 70px rgba(99,102,241,.35), inset 0 1px 0 rgba(255,255,255,.2); }
+    }
+    @keyframes orbDrift {
+      0%,100% { transform: scale(1) translate(0,0); opacity: .14; }
+      33%      { transform: scale(1.12) translate(10px,-12px); opacity: .22; }
+      66%      { transform: scale(.92) translate(-6px,8px); opacity: .1; }
+    }
+    .wc-orb { position: absolute; border-radius: 50%; animation: orbDrift ease-in-out infinite; }
+    .wc-logo { animation: floatUp 4s ease-in-out infinite, glowPulse 4s ease-in-out infinite; }
+  </style>
+</head>
+<body>
+<div class="phone">
+  <!-- Transparent status bar (dynamic island clearance) -->
+  <div class="status-bar" style="background:transparent;position:absolute;top:0;left:0;right:0;z-index:60">
+    <span class="s-time" style="color:rgba(255,255,255,.45)">09:41</span>
+    <div class="s-icons"><svg viewBox="0 0 17 12" style="fill:rgba(255,255,255,.45);width:16px;height:12px"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="1.5" width="3" height="10.5" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/></svg></div>
+  </div>
+
+  <div class="app">
+    <div class="page" style="padding-bottom:0;background:transparent;min-height:100%">
+
+      <!-- Full-bleed dark gradient background -->
+      <div style="position:absolute;inset:0;background:linear-gradient(155deg,#050E24 0%,#0C2060 38%,#1546BF 65%,#2A7AFF 100%);overflow:hidden;z-index:0">
+        <!-- Animated orbs -->
+        <div class="wc-orb" style="width:360px;height:360px;background:rgba(99,102,241,1);top:-130px;right:-110px;animation-duration:7s;animation-delay:0s"></div>
+        <div class="wc-orb" style="width:280px;height:280px;background:rgba(29,111,243,1);bottom:160px;left:-90px;animation-duration:9s;animation-delay:2.5s"></div>
+        <div class="wc-orb" style="width:200px;height:200px;background:rgba(59,130,246,1);top:260px;right:-50px;animation-duration:11s;animation-delay:5s"></div>
+        <!-- Dot grid -->
+        <div style="position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.045) 1px,transparent 1px);background-size:26px 26px"></div>
+        <!-- Subtle horizontal light lines -->
+        <div style="position:absolute;top:35%;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.07) 50%,transparent 100%)"></div>
+        <div style="position:absolute;top:62%;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.04) 50%,transparent 100%)"></div>
+      </div>
+
+      <!-- Content layer -->
+      <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;min-height:100%;padding-top:72px">
+
+        <!-- Main center content -->
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 28px 24px;text-align:center">
+
+          <!-- Animated logo icon -->
+          <div class="wc-logo" style="width:112px;height:112px;border-radius:36px;background:linear-gradient(135deg,rgba(255,255,255,.2),rgba(255,255,255,.07));border:1.5px solid rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:54px;margin-bottom:26px">🏢</div>
+
+          <!-- Brand -->
+          <div style="font-size:58px;font-weight:900;color:white;letter-spacing:-3px;line-height:1;margin-bottom:4px">ESS</div>
+          <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,.55);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">Employee Self Service</div>
+          <div style="font-size:14px;color:rgba(255,255,255,.45);line-height:1.65;max-width:260px;margin-bottom:36px">Platform digital workforce terpadu untuk karyawan Indonesia modern</div>
+
+          <!-- Feature tiles 3-col grid -->
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%">
+            <div style="background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.11);border-radius:16px;padding:14px 6px">
+              <div style="font-size:26px;margin-bottom:8px">📊</div>
+              <div style="font-size:11px;font-weight:700;color:white;margin-bottom:3px">HRIS</div>
+              <div style="font-size:10px;color:rgba(255,255,255,.42);line-height:1.4">Absensi · Izin<br>Cuti · Payroll</div>
+            </div>
+            <div style="background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.11);border-radius:16px;padding:14px 6px">
+              <div style="font-size:26px;margin-bottom:8px">⚡</div>
+              <div style="font-size:11px;font-weight:700;color:white;margin-bottom:3px">Sales Force</div>
+              <div style="font-size:10px;color:rgba(255,255,255,.42);line-height:1.4">Canvasing<br>Prospect · Closing</div>
+            </div>
+            <div style="background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.11);border-radius:16px;padding:14px 6px">
+              <div style="font-size:26px;margin-bottom:8px">💰</div>
+              <div style="font-size:11px;font-weight:700;color:white;margin-bottom:3px">Loan & Kasbon</div>
+              <div style="font-size:10px;color:rgba(255,255,255,.42);line-height:1.4">Pengajuan<br>Monitoring</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom CTA (frosted glass card) -->
+        <div style="width:100%;padding:0 20px 40px;position:relative">
+          <!-- Blur overlay -->
+          <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(5,14,36,.7) 60%,transparent);pointer-events:none"></div>
+
+          <div style="position:relative;z-index:1;background:rgba(15,30,80,.55);border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:22px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)">
+            <a href="index.html" style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:15px;background:white;border-radius:14px;font-family:Inter,sans-serif;font-size:16px;font-weight:800;color:#1D6FF3;text-decoration:none;margin-bottom:14px;box-shadow:0 4px 24px rgba(0,0,0,.3),0 1px 4px rgba(0,0,0,.15)">
+              Mulai Sekarang
+              <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:#1D6FF3;fill:none;stroke-width:2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <div style="text-align:center;font-size:11px;color:rgba(255,255,255,.32);line-height:1.65">
+              Dengan melanjutkan, Anda menyetujui <span style="color:rgba(255,255,255,.6);font-weight:600">Syarat &amp; Ketentuan</span> penggunaan ESS
+            </div>
+          </div>
+          <div style="text-align:center;margin-top:12px;font-size:10px;color:rgba(255,255,255,.2)">ESS v2.0.1 · © 2026 PT Company Name</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

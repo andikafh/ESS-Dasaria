@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ESS — Dashboard AE</title>
+  <link rel="stylesheet" href="../css/design-system.css">
+  <style>
+    .ae-info-row { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
+    .ae-chip { background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.2); border-radius:20px; padding:4px 10px; font-size:11px; font-weight:600; color:rgba(255,255,255,.9); }
+
+    .att-bar { display:grid; grid-template-columns:repeat(4,1fr); background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.18); border-radius:14px; overflow:hidden; margin-top:14px; }
+    .att-bar-cell { padding:12px 6px; text-align:center; }
+    .att-bar-cell + .att-bar-cell { border-left:1px solid rgba(255,255,255,.12); }
+    .att-bar-lbl { font-size:9px; color:rgba(255,255,255,.6); font-weight:600; letter-spacing:.3px; margin-bottom:4px; text-transform:uppercase; }
+    .att-bar-val { font-size:15px; font-weight:800; color:white; letter-spacing:-.5px; line-height:1; }
+    .att-bar-sub { font-size:9px; color:rgba(255,255,255,.5); margin-top:3px; }
+
+    .pq-pill { flex:1; border-radius:10px; padding:10px 6px; text-align:center; }
+    .pq-pill-val { font-size:20px; font-weight:800; line-height:1; margin-bottom:3px; }
+    .pq-pill-lbl { font-size:10px; font-weight:600; }
+
+    .pending-row { display:flex; align-items:center; gap:12px; padding:12px 16px; border-bottom:1px solid var(--gray-50); text-decoration:none; }
+    .pending-row:last-child { border-bottom:none; }
+    .p-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+
+    .comm-card { background:linear-gradient(135deg,#064E3B,#065F46,#059669); border-radius:var(--r); padding:18px; color:white; }
+  </style>
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar" style="background:transparent;position:absolute;top:0;left:0;right:0;z-index:60">
+    <span class="s-time" style="color:white">09:41</span>
+    <div class="s-icons"><svg viewBox="0 0 17 12" style="fill:white;width:16px;height:12px"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="1.5" width="3" height="10.5" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/></svg><span style="color:white;font-size:13px">🔋</span></div>
+  </div>
+
+  <div class="app">
+    <div class="page" style="padding-bottom:0">
+
+      <!-- Hero -->
+      <div class="hero-ae" style="padding:58px 20px 22px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+          <div style="width:48px;height:48px;border-radius:15px;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:white;flex-shrink:0">AP</div>
+          <div style="flex:1">
+            <div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:1px">Selamat Pagi 👋</div>
+            <div style="font-size:17px;font-weight:800;color:white;letter-spacing:-.4px">Andika Pratama</div>
+            <div style="margin-top:4px"><span class="role-tag">Staff Mitra AE</span></div>
+          </div>
+          <a href="notifikasi.html" style="width:38px;height:38px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0;text-decoration:none">
+            <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:white;fill:none;stroke-width:2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+            <div style="position:absolute;top:6px;right:7px;width:7px;height:7px;background:#F79009;border-radius:4px;border:1.5px solid #2D2A7A"></div>
+          </a>
+        </div>
+        <div class="ae-info-row">
+          <span class="ae-chip">🏢 Cabang Jakarta Pusat</span>
+          <span class="ae-chip">📍 Area Sudirman</span>
+          <span class="ae-chip">👔 SPV: Rudi Hermawan</span>
+        </div>
+        <div class="att-bar">
+          <div class="att-bar-cell">
+            <div class="att-bar-lbl">Check In</div>
+            <div class="att-bar-val">08:23</div>
+            <div class="att-bar-sub">✓ Tepat</div>
+          </div>
+          <div class="att-bar-cell">
+            <div class="att-bar-lbl">Check Out</div>
+            <div class="att-bar-val">—</div>
+            <div class="att-bar-sub">Aktif</div>
+          </div>
+          <div class="att-bar-cell">
+            <div class="att-bar-lbl">Durasi</div>
+            <div class="att-bar-val">4j22m</div>
+            <div class="att-bar-sub">Lapangan</div>
+          </div>
+          <div class="att-bar-cell">
+            <div class="att-bar-lbl">Jarak</div>
+            <div class="att-bar-val">12.4</div>
+            <div class="att-bar-sub">km</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity Performance -->
+      <div class="section" style="padding-top:18px">
+        <div class="section-row">
+          <div class="section-title">Performa Hari Ini</div>
+          <span style="font-size:12px;color:var(--gray-400)">12 Jun 2026</span>
+        </div>
+        <div class="act-grid">
+          <a href="canvasing.html" class="act-card" style="text-decoration:none">
+            <span class="act-emoji">🗺️</span>
+            <div class="act-num act-done">5</div>
+            <div class="act-lbl">Canvasing</div>
+            <div class="act-tgt">Target 8</div>
+          </a>
+          <a href="customer-prospect.html" class="act-card" style="text-decoration:none">
+            <span class="act-emoji">🎯</span>
+            <div class="act-num act-info">3</div>
+            <div class="act-lbl">CP Baru</div>
+            <div class="act-tgt">Target 5</div>
+          </a>
+          <a href="follow-up.html" class="act-card" style="text-decoration:none">
+            <span class="act-emoji">📞</span>
+            <div class="act-num act-warn">7</div>
+            <div class="act-lbl">Follow-up</div>
+            <div class="act-tgt">Target 10</div>
+          </a>
+          <a href="survey.html" class="act-card" style="text-decoration:none">
+            <span class="act-emoji">📋</span>
+            <div class="act-num act-purple">2</div>
+            <div class="act-lbl">Survey</div>
+            <div class="act-tgt">Target 3</div>
+          </a>
+          <a href="closing.html" class="act-card" style="text-decoration:none">
+            <span class="act-emoji">🤝</span>
+            <div class="act-num act-done">1</div>
+            <div class="act-lbl">Closing</div>
+            <div class="act-tgt">Target 2</div>
+          </a>
+          <a href="customer-active.html" class="act-card" style="text-decoration:none">
+            <span class="act-emoji">⭐</span>
+            <div class="act-num act-done">24</div>
+            <div class="act-lbl">Aktif</div>
+            <div class="act-tgt">Total</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Prospect Quality -->
+      <div class="section" style="padding-top:16px">
+        <div class="section-title" style="margin-bottom:12px">Kualitas Prospect</div>
+        <div class="card" style="padding:16px">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+            <div style="width:56px;height:56px;border-radius:50%;background:conic-gradient(var(--primary) 0% 72%,var(--gray-100) 72%);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative">
+              <div style="position:absolute;width:40px;height:40px;border-radius:50%;background:white"></div>
+              <span style="position:relative;z-index:1;font-size:13px;font-weight:800;color:var(--primary)">72</span>
+            </div>
+            <div>
+              <div style="font-size:14px;font-weight:800;color:var(--gray-900)">Quality Score: 72/100</div>
+              <div style="font-size:12px;color:var(--gray-400);margin-top:2px">Baik · 12 prospect aktif</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <div class="pq-pill" style="background:#F0F9FF">
+              <div class="pq-pill-val" style="color:#0369A1">4</div>
+              <div class="pq-pill-lbl" style="color:#0369A1">❄️ Cold</div>
+            </div>
+            <div class="pq-pill" style="background:#FFFBEB">
+              <div class="pq-pill-val" style="color:#92400E">6</div>
+              <div class="pq-pill-lbl" style="color:#92400E">🌤️ Warm</div>
+            </div>
+            <div class="pq-pill" style="background:#FFF7ED">
+              <div class="pq-pill-val" style="color:#C2410C">2</div>
+              <div class="pq-pill-lbl" style="color:#C2410C">🔥 Hot</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pending Tasks -->
+      <div class="section" style="padding-top:16px">
+        <div class="section-row">
+          <div class="section-title">Tugas Menunggu</div>
+          <span class="badge b-warning">3 item</span>
+        </div>
+        <div style="background:var(--white);border-radius:var(--r);box-shadow:var(--shadow-sm);overflow:hidden">
+          <a href="follow-up.html" class="pending-row" style="color:inherit">
+            <div class="p-dot" style="background:var(--danger)"></div>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:600;color:var(--gray-900)">Follow Up Diperlukan</div>
+              <div style="font-size:11px;color:var(--gray-400)">3 prospect overdue &gt; 3 hari</div>
+            </div>
+            <span style="font-size:20px;color:var(--gray-200)">›</span>
+          </a>
+          <a href="customer-prospect.html" class="pending-row" style="color:inherit">
+            <div class="p-dot" style="background:var(--warning)"></div>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:600;color:var(--gray-900)">Prospect Overdue</div>
+              <div style="font-size:11px;color:var(--gray-400)">1 prospect tidak diupdate 7+ hari</div>
+            </div>
+            <span style="font-size:20px;color:var(--gray-200)">›</span>
+          </a>
+          <a href="survey.html" class="pending-row" style="color:inherit">
+            <div class="p-dot" style="background:var(--info)"></div>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:600;color:var(--gray-900)">Survey Menunggu Jadwal</div>
+              <div style="font-size:11px;color:var(--gray-400)">2 prospect hot belum dijadwalkan</div>
+            </div>
+            <span style="font-size:20px;color:var(--gray-200)">›</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Estimated Commission -->
+      <div class="section" style="padding-top:16px">
+        <div class="section-title" style="margin-bottom:12px">Estimasi Komisi — Juni 2026</div>
+        <div class="comm-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px">
+            <div>
+              <div style="font-size:10px;color:rgba(255,255,255,.65);font-weight:600;letter-spacing:.5px;margin-bottom:4px">PENCAPAIAN SAAT INI</div>
+              <div style="font-size:28px;font-weight:800;color:white;letter-spacing:-1px;line-height:1">Rp 2.400.000</div>
+              <div style="font-size:12px;color:rgba(255,255,255,.65);margin-top:4px">Target: Rp 4.000.000</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:10px;color:rgba(255,255,255,.65);margin-bottom:4px">Progress</div>
+              <div style="font-size:30px;font-weight:800;color:white;letter-spacing:-1px;line-height:1">60%</div>
+            </div>
+          </div>
+          <div style="background:rgba(255,255,255,.2);border-radius:6px;height:8px;overflow:hidden">
+            <div style="width:60%;background:white;border-radius:6px;height:100%"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:6px">
+            <span style="font-size:10px;color:rgba(255,255,255,.5)">1 Jun</span>
+            <span style="font-size:10px;color:rgba(255,255,255,.5)">30 Jun</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pipeline -->
+      <div class="section" style="padding-top:16px;padding-bottom:20px">
+        <div class="section-row">
+          <div class="section-title">Pipeline Penjualan</div>
+          <a href="customer-prospect.html" class="section-link">Semua</a>
+        </div>
+        <div class="card overflow-hidden">
+          <div class="pipeline">
+            <div class="pl-step pl-new"><div class="pl-count">12</div><div class="pl-label">Canvas</div></div>
+            <div class="pl-step pl-followup"><div class="pl-count">7</div><div class="pl-label">FU</div></div>
+            <div class="pl-step pl-survey"><div class="pl-count">4</div><div class="pl-label">Survey</div></div>
+            <div class="pl-step pl-closing"><div class="pl-count">2</div><div class="pl-label">Closing</div></div>
+            <div class="pl-step pl-active"><div class="pl-count">24</div><div class="pl-label">Aktif</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:calc(var(--nav-h) + 20px)"></div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="dashboard.html" class="nav-item active">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/><path d="M3 12v9h18V12"/></svg></div>
+      <span class="nav-label">Beranda</span>
+    </a>
+    <a href="aktivitas.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+      <span class="nav-label">Aktivitas</span>
+    </a>
+    <a href="notifikasi.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg><span class="nav-badge">3</span></div>
+      <span class="nav-label">Notifikasi</span>
+    </a>
+    <a href="profil.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <span class="nav-label">Profil</span>
+    </a>
+  </nav>
+</div>
+<script src="../js/app.js"></script>
+</body>
+</html>

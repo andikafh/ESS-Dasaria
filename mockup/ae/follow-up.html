@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ESS — Follow-up</title>
+  <link rel="stylesheet" href="../css/design-system.css">
+  <style>
+    .fu-item { display:flex; align-items:flex-start; gap:10px; padding:13px 16px; border-bottom:1px solid var(--gray-50); background:var(--white); text-decoration:none; }
+    .fu-item:last-child { border-bottom:none; }
+    .fu-risk { width:24px; height:24px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; margin-top:1px; }
+    .fu-body { flex:1; min-width:0; }
+    .fu-name { font-size:13px; font-weight:700; color:var(--gray-900); margin-bottom:2px; }
+    .fu-sub  { font-size:11px; color:var(--gray-400); line-height:1.4; margin-bottom:4px; }
+    .fu-tags { display:flex; gap:5px; flex-wrap:wrap; }
+    .fu-right { text-align:right; flex-shrink:0; }
+
+    .queue-tab { padding:6px 14px; border-radius:20px; font-size:12px; font-weight:700; cursor:pointer; white-space:nowrap; flex-shrink:0; }
+    .qt-active { background:var(--primary); color:white; }
+    .qt-inactive { background:var(--gray-100); color:var(--gray-600); }
+
+    .risk-bar { display:flex; align-items:center; gap:8px; padding:10px 16px; background:var(--gray-50); border-radius:10px; margin:0 20px 12px; }
+    .risk-label { font-size:11px; font-weight:600; color:var(--gray-600); flex:1; }
+    .risk-val { font-size:13px; font-weight:800; }
+  </style>
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar"><span class="s-time">09:41</span><div class="s-icons"><span style="font-size:13px">🔋</span></div></div>
+  <div class="app">
+    <div class="page" style="padding-bottom:0">
+
+      <div class="screen-header">
+        <a href="aktivitas.html" class="btn-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></a>
+        <h1>Aktivitas</h1>
+        <span class="header-action">+ Tambah</span>
+      </div>
+
+      <div class="tab-bar">
+        <a href="canvasing.html" class="tab-item">🗺️ Canvasing</a>
+        <a href="follow-up.html" class="tab-item active">📞 Follow-up</a>
+        <a href="survey.html" class="tab-item">📋 Survey</a>
+        <a href="closing.html" class="tab-item">🤝 Closing</a>
+      </div>
+
+      <!-- Queue tabs -->
+      <div style="padding:12px 20px;display:flex;gap:8px;overflow-x:auto;border-bottom:1px solid var(--gray-100)">
+        <div class="queue-tab qt-active">Semua (10)</div>
+        <div class="queue-tab qt-inactive">Due Hari Ini (3)</div>
+        <div class="queue-tab qt-inactive">Overdue (4)</div>
+        <div class="queue-tab qt-inactive">Belum Kontak (3)</div>
+      </div>
+
+      <!-- Risk Legend -->
+      <div style="padding:12px 20px 6px">
+        <div style="font-size:11px;font-weight:600;color:var(--gray-400);margin-bottom:8px">INDIKATOR RISIKO PROSPECT</div>
+        <div style="display:flex;gap:8px">
+          <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gray-600)"><span>🟢</span> Aman</div>
+          <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gray-600)"><span>🟡</span> Perlu Perhatian</div>
+          <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gray-600)"><span>🔴</span> Berisiko Hilang</div>
+        </div>
+      </div>
+
+      <!-- Lost Prospect Risk Summary -->
+      <div style="margin:8px 20px 0;background:#FFF1F2;border:1px solid #FECDD3;border-radius:12px;padding:12px 14px">
+        <div style="font-size:11px;font-weight:700;color:#9F1239;margin-bottom:8px">⚠️ RISIKO PROSPECT HILANG</div>
+        <div style="display:flex;gap:10px">
+          <div style="flex:1;text-align:center">
+            <div style="font-size:22px;font-weight:800;color:var(--danger)">2</div>
+            <div style="font-size:10px;color:var(--gray-500)">Prospect Kritis</div>
+          </div>
+          <div style="width:1px;background:#FECDD3"></div>
+          <div style="flex:1;text-align:center">
+            <div style="font-size:22px;font-weight:800;color:#C2410C">4</div>
+            <div style="font-size:10px;color:var(--gray-500)">Overdue FU</div>
+          </div>
+          <div style="width:1px;background:#FECDD3"></div>
+          <div style="flex:1;text-align:center">
+            <div style="font-size:22px;font-weight:800;color:var(--warning-dark)">38%</div>
+            <div style="font-size:10px;color:var(--gray-500)">Avg Lost Risk</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Overdue section -->
+      <div style="padding:14px 20px 6px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:13px;font-weight:700;color:var(--gray-900)">Perlu Segera Ditindak</div>
+          <span class="badge b-danger">4 Overdue</span>
+        </div>
+      </div>
+
+      <div style="background:var(--white)">
+        <div class="fu-item">
+          <div class="fu-risk">🔴</div>
+          <div class="fu-body">
+            <div class="fu-name">PT Berkah Indo</div>
+            <div class="fu-sub">Follow-up ke-2 · Belum kontak 5 hari<br>Risiko hilang: <strong style="color:var(--danger)">78%</strong></div>
+            <div class="fu-tags">
+              <span class="badge b-danger">Kritis</span>
+              <span style="font-size:10px;background:#FFF1F2;color:var(--danger);padding:2px 7px;border-radius:20px;font-weight:600">5 hari overdue</span>
+            </div>
+          </div>
+          <div class="fu-right">
+            <span class="badge b-danger">Overdue</span>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:4px">7 Jun</div>
+          </div>
+        </div>
+
+        <div class="fu-item">
+          <div class="fu-risk">🔴</div>
+          <div class="fu-body">
+            <div class="fu-name">PT Sinergi Karya</div>
+            <div class="fu-sub">Follow-up ke-2 · Demo produk<br>Risiko hilang: <strong style="color:var(--danger)">62%</strong></div>
+            <div class="fu-tags">
+              <span style="font-size:10px;background:#FFF1F2;color:var(--danger);padding:2px 7px;border-radius:20px;font-weight:600">2 hari overdue</span>
+            </div>
+          </div>
+          <div class="fu-right">
+            <span class="badge b-danger">Overdue</span>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:4px">10 Jun</div>
+          </div>
+        </div>
+
+        <div class="fu-item">
+          <div class="fu-risk">🟡</div>
+          <div class="fu-body">
+            <div class="fu-name">CV Tunas Jaya</div>
+            <div class="fu-sub">Follow-up ke-1 · Callback pasca Canvasing<br>Risiko hilang: <strong style="color:var(--warning-dark)">41%</strong></div>
+            <div class="fu-tags">
+              <span style="font-size:10px;background:#FEF3C7;color:var(--warning-dark);padding:2px 7px;border-radius:20px;font-weight:600">1 hari overdue</span>
+            </div>
+          </div>
+          <div class="fu-right">
+            <span class="badge b-warning">Overdue</span>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:4px">11 Jun</div>
+          </div>
+        </div>
+
+        <div class="fu-item">
+          <div class="fu-risk">🟡</div>
+          <div class="fu-body">
+            <div class="fu-name">CV Sinar Kreasi</div>
+            <div class="fu-sub">Follow-up ke-3 · Belum ada keputusan<br>Risiko hilang: <strong style="color:var(--warning-dark)">35%</strong></div>
+            <div class="fu-tags">
+              <span style="font-size:10px;background:#FEF3C7;color:var(--warning-dark);padding:2px 7px;border-radius:20px;font-weight:600">1 hari overdue</span>
+            </div>
+          </div>
+          <div class="fu-right">
+            <span class="badge b-warning">Overdue</span>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:4px">11 Jun</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Due Today -->
+      <div style="padding:14px 20px 6px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:13px;font-weight:700;color:var(--gray-900)">Due Hari Ini</div>
+          <span style="font-size:12px;color:var(--gray-400)">12 Jun 2026</span>
+        </div>
+      </div>
+
+      <div style="background:var(--white)">
+        <div class="fu-item">
+          <div class="fu-risk">🟡</div>
+          <div class="fu-body">
+            <div class="fu-name">PT Indo Kreatif</div>
+            <div class="fu-sub">Follow-up ke-3 · Diskusi proposal survey<br>Risiko hilang: <strong style="color:var(--warning-dark)">25%</strong></div>
+            <div class="fu-tags">
+              <span class="badge b-warning">10:00</span>
+              <span style="font-size:10px;color:var(--gray-400)">30m lagi</span>
+            </div>
+          </div>
+          <div class="fu-right">
+            <span style="font-size:10px;color:var(--warning-dark);font-weight:600">Warm 🌤️</span>
+          </div>
+        </div>
+
+        <div class="fu-item">
+          <div class="fu-risk">🟢</div>
+          <div class="fu-body">
+            <div class="fu-name">PT Makmur Sejati</div>
+            <div class="fu-sub">Follow-up ke-1 · Perkenalan & penawaran<br>Risiko hilang: <strong style="color:var(--success-dark)">8%</strong></div>
+            <div class="fu-tags">
+              <span class="badge b-info">14:00</span>
+              <span style="font-size:10px;color:var(--gray-400)">4j lagi</span>
+            </div>
+          </div>
+          <div class="fu-right">
+            <span style="font-size:10px;color:var(--primary);font-weight:600">Cold ❄️</span>
+          </div>
+        </div>
+
+        <div class="fu-item">
+          <div class="fu-risk">🟢</div>
+          <div class="fu-body">
+            <div class="fu-name">CV Cahaya Mandiri</div>
+            <div class="fu-sub">Follow-up ke-2 · Jawaban keputusan direksi<br>Risiko hilang: <strong style="color:var(--success-dark)">12%</strong></div>
+            <div class="fu-tags">
+              <span class="badge b-primary">16:00</span>
+              <span style="font-size:10px;color:var(--gray-400)">6j lagi</span>
+            </div>
+          </div>
+          <div class="fu-right">
+            <span style="font-size:10px;color:#C2410C;font-weight:600">Hot 🔥</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Completed Today -->
+      <div style="padding:14px 20px 6px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:13px;font-weight:700;color:var(--gray-900)">Selesai Hari Ini</div>
+          <span class="badge b-success badge-dot">3 Selesai</span>
+        </div>
+      </div>
+
+      <div style="background:var(--white);margin-bottom:20px">
+        <div class="fu-item">
+          <div class="fu-risk">🟢</div>
+          <div class="fu-body">
+            <div class="fu-name">PT Nusantara Karya</div>
+            <div class="fu-sub">FU ke-1 · 08:30 · Berhasil → FU-2</div>
+          </div>
+          <span class="badge b-success">Lanjut</span>
+        </div>
+        <div class="fu-item">
+          <div class="fu-risk">🟢</div>
+          <div class="fu-body">
+            <div class="fu-name">PT Berkah Abadi</div>
+            <div class="fu-sub">FU ke-2 · 09:00 · Berhasil → Survey</div>
+          </div>
+          <span class="badge b-success">Survey</span>
+        </div>
+        <div class="fu-item">
+          <div class="fu-risk">🟡</div>
+          <div class="fu-body">
+            <div class="fu-name">CV Karya Prima</div>
+            <div class="fu-sub">FU ke-1 · 09:30 · Dijadwalkan ulang</div>
+          </div>
+          <span class="badge b-warning">Reschedule</span>
+        </div>
+      </div>
+
+      <div style="height:calc(var(--nav-h) + 20px)"></div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="dashboard.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/><path d="M3 12v9h18V12"/></svg></div>
+      <span class="nav-label">Beranda</span>
+    </a>
+    <a href="aktivitas.html" class="nav-item active">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+      <span class="nav-label">Aktivitas</span>
+    </a>
+    <a href="notifikasi.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg><span class="nav-badge">3</span></div>
+      <span class="nav-label">Notifikasi</span>
+    </a>
+    <a href="profil.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <span class="nav-label">Profil</span>
+    </a>
+  </nav>
+</div>
+<script src="../js/app.js"></script>
+</body>
+</html>

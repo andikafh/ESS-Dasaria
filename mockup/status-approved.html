@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ESS — Pengajuan Disetujui</title>
+  <link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar"><span class="s-time">09:41</span><div class="s-icons"><span style="font-size:13px">🔋</span></div></div>
+  <div class="app">
+    <div class="page" style="padding-bottom:0">
+      <div class="screen-header" style="position:sticky;top:0;z-index:40">
+        <a href="izin-cuti.html" class="btn-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></a>
+        <h1>Status Pengajuan</h1>
+      </div>
+
+      <div class="status-screen">
+        <div class="ss-icon">✅</div>
+        <div class="ss-title" style="color:var(--success-dark)">Pengajuan Disetujui</div>
+        <div class="ss-desc">Pengajuan izin Anda telah disetujui oleh Atasan Langsung dan HC Comben. Izin Anda sudah aktif.</div>
+
+        <!-- Timeline -->
+        <div style="width:100%;background:var(--success-light);border-radius:var(--r);padding:16px;border:1px solid rgba(18,183,106,.2)">
+          <div style="font-size:12px;font-weight:700;color:var(--success-dark);margin-bottom:12px">ALUR PERSETUJUAN</div>
+          <div class="workflow">
+            <div class="wf-step">
+              <div class="wf-dot wf-done">✓</div>
+              <div class="wf-content"><div class="wf-title">Diajukan</div><div class="wf-sub">08 Jun 2026 · 19:45</div></div>
+            </div>
+            <div class="wf-step">
+              <div class="wf-dot wf-done">✓</div>
+              <div class="wf-content"><div class="wf-title">Disetujui Atasan</div><div class="wf-sub">09 Jun 2026 · 07:15 · Budi Santoso</div></div>
+            </div>
+            <div class="wf-step">
+              <div class="wf-dot wf-done">✓</div>
+              <div class="wf-content"><div class="wf-title">Disetujui HC Comben</div><div class="wf-sub">09 Jun 2026 · 07:30 · Proses selesai</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ss-detail-card">
+          <div class="sdc-row"><span class="sdc-key">Jenis</span><span class="sdc-val">Izin Sakit</span></div>
+          <div class="sdc-row"><span class="sdc-key">Tanggal</span><span class="sdc-val">09 Juni 2026 · 1 hari</span></div>
+          <div class="sdc-row"><span class="sdc-key">Alasan</span><span class="sdc-val">Demam dan perlu istirahat</span></div>
+          <div class="sdc-row"><span class="sdc-key">Diajukan</span><span class="sdc-val">08 Jun 2026 · 19:45</span></div>
+          <div class="sdc-row"><span class="sdc-key">Status</span><span class="sdc-val"><span class="badge b-success badge-dot">Disetujui</span></span></div>
+        </div>
+
+        <div style="width:100%;display:flex;flex-direction:column;gap:10px">
+          <a href="izin-cuti.html" class="btn btn-success btn-full">Kembali ke Izin &amp; Cuti</a>
+          <a href="home.html" class="btn btn-ghost btn-full">Ke Beranda</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ESS — Customer Prospect</title>
+  <link rel="stylesheet" href="../css/design-system.css">
+  <style>
+    .hs-bar { height:4px; border-radius:3px; background:var(--gray-100); margin-top:5px; overflow:hidden; }
+    .hs-fill { height:100%; border-radius:3px; }
+  </style>
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar"><span class="s-time">09:41</span><div class="s-icons"><span style="font-size:13px">🔋</span></div></div>
+  <div class="app">
+    <div class="page" style="padding-bottom:0">
+
+      <div class="screen-header">
+        <a href="aktivitas.html" class="btn-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></a>
+        <h1>Customer Prospect</h1>
+        <span class="header-action">+ Baru</span>
+      </div>
+
+      <!-- Pipeline Summary -->
+      <div class="card overflow-hidden" style="margin:12px 20px 0;border-radius:var(--r)">
+        <div class="pipeline">
+          <div class="pl-step pl-new"><div class="pl-count">12</div><div class="pl-label">Canvas</div></div>
+          <div class="pl-step pl-followup"><div class="pl-count">7</div><div class="pl-label">Follow-up</div></div>
+          <div class="pl-step pl-survey"><div class="pl-count">4</div><div class="pl-label">Survey</div></div>
+          <div class="pl-step pl-closing"><div class="pl-count">2</div><div class="pl-label">Closing</div></div>
+        </div>
+      </div>
+
+      <!-- Search + Filter -->
+      <div style="padding:12px 20px 0;display:flex;gap:10px;align-items:center">
+        <div style="flex:1;background:var(--white);border:1.5px solid var(--gray-200);border-radius:var(--r-sm);display:flex;align-items:center;gap:8px;padding:10px 13px">
+          <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--gray-300);fill:none;stroke-width:2;flex-shrink:0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <span style="font-size:13px;color:var(--gray-300)">Cari nama atau perusahaan...</span>
+        </div>
+        <div style="background:var(--white);border:1.5px solid var(--gray-200);border-radius:var(--r-sm);padding:10px 13px;font-size:13px;font-weight:600;color:var(--gray-700)">Filter</div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tab-bar" style="margin-top:12px">
+        <div class="tab-item active">Semua (25)</div>
+        <div class="tab-item">❄️ Cold (4)</div>
+        <div class="tab-item">🌤️ Warm (6)</div>
+        <div class="tab-item">🔥 Hot (2)</div>
+      </div>
+
+      <!-- Prospect List with Health Score -->
+      <div style="background:var(--white)">
+
+        <!-- Hot prospect -->
+        <div class="prospect-item" style="align-items:flex-start">
+          <div class="pi-avatar" style="background:#DCFCE7;color:#166534;flex-shrink:0">SP</div>
+          <div class="pi-body" style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+              <div class="pi-name" style="margin:0">PT Sentosa Prima</div>
+              <span style="font-size:10px">🔥</span>
+            </div>
+            <div class="pi-meta">Closing · Kontrak siap TTD · Rp 24 Jt</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:5px">
+              <div style="flex:1;max-width:80px">
+                <div class="hs-bar"><div class="hs-fill" style="width:92%;background:#10B981"></div></div>
+              </div>
+              <span style="font-size:10px;font-weight:700;color:#10B981">HS 92</span>
+              <span style="font-size:10px;color:var(--gray-400)">· 18 hari</span>
+            </div>
+          </div>
+          <div class="pi-right" style="flex-shrink:0">
+            <span class="badge b-danger badge-dot">Closing</span>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:4px">Hari ini</div>
+          </div>
+        </div>
+
+        <!-- Hot prospect 2 -->
+        <div class="prospect-item" style="align-items:flex-start">
+          <div class="pi-avatar" style="background:#FEF2F2;color:#991B1B;flex-shrink:0">IK</div>
+          <div class="pi-body" style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+              <div class="pi-name" style="margin:0">PT Indo Kreatif</div>
+              <span style="font-size:10px">🔥</span>
+            </div>
+            <div class="pi-meta">Follow-up ke-3 · Survey dijadwalkan 14 Jun</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:5px">
+              <div style="flex:1;max-width:80px">
+                <div class="hs-bar"><div class="hs-fill" style="width:85%;background:#10B981"></div></div>
+              </div>
+              <span style="font-size:10px;font-weight:700;color:#10B981">HS 85</span>
+              <span style="font-size:10px;color:var(--gray-400)">· 24 hari</span>
+            </div>
+          </div>
+          <div class="pi-right" style="flex-shrink:0">
+            <span class="badge b-warning badge-dot">Survey</span>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:4px">13 Jun</div>
+          </div>
+        </div>
+
+        <!-- Warm prospect -->
+        <div class="prospect-item" style="align-items:flex-start">
+          <div class="pi-avatar" style="background:#FEF3C7;color:#92400E;flex-shrink:0">SK</div>
+          <div class="pi-body" style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+              <div class="pi-name" style="margin:0">PT Sinergi Karya</div>
+              <span style="font-size:10px">🌤️</span>
+            </div>
+            <div class="pi-meta">Follow-up ke-2 · Demo produk · FU-2024-089</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:5px">
+              <div style="flex:1;max-width:80px">
+                <div class="hs-bar"><div class="hs-fill" style="width:62%;background:#F59E0B"></div></div>
+              </div>
+              <span style="font-size:10px;font-weight:700;color:#B45309">HS 62</span>
+              <span style="font-size:10px;color:var(--danger)">· 12 hari ⚠</span>
+            </div>
+          </div>
+          <div class="pi-right" style="flex-shrink:0">
+            <span class="badge b-info badge-dot">Follow-up</span>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:4px">Overdue</div>
+          </div>
+        </div>
+
+        <!-- Warm prospect 2 -->
+        <div class="prospect-item" style="align-items:flex-start">
+          <div class="pi-avatar" style="background:#F3E8FF;color:#6D28D9;flex-shrink:0">BI</div>
+          <div class="pi-body" style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+              <div class="pi-name" style="margin:0">CV Berkah Indo Prima</div>
+              <span style="font-size:10px">🌤️</span>
+            </div>
+            <div class="pi-meta">Survey terjadwal · 14 Jun · Tim teknis</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:5px">
+              <div style="flex:1;max-width:80px">
+                <div class="hs-bar"><div class="hs-fill" style="width:71%;background:#F59E0B"></div></div>
+              </div>
+              <span style="font-size:10px;font-weight:700;color:#B45309">HS 71</span>
+              <span style="font-size:10px;color:var(--gray-400)">· 30 hari</span>
+            </div>
+          </div>
+          <div class="pi-right" style="flex-shrink:0">
+            <span class="badge b-warning badge-dot">Survey</span>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:4px">2h lagi</div>
+          </div>
+        </div>
+
+        <!-- Cold prospect -->
+        <div class="prospect-item" style="align-items:flex-start">
+          <div class="pi-avatar" style="background:#DBEAFE;color:#1D4ED8;flex-shrink:0">MP</div>
+          <div class="pi-body" style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+              <div class="pi-name" style="margin:0">PT Maju Bersama</div>
+              <span style="font-size:10px">❄️</span>
+            </div>
+            <div class="pi-meta">Canvasing 12 Jun · Bertemu HRD · Est. Rp 24 Jt</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:5px">
+              <div style="flex:1;max-width:80px">
+                <div class="hs-bar"><div class="hs-fill" style="width:35%;background:#60A5FA"></div></div>
+              </div>
+              <span style="font-size:10px;font-weight:700;color:#2563EB">HS 35</span>
+              <span style="font-size:10px;color:var(--gray-400)">· 1 hari</span>
+            </div>
+          </div>
+          <div class="pi-right" style="flex-shrink:0">
+            <span class="badge b-primary badge-dot">CP Baru</span>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:4px">2j lalu</div>
+          </div>
+        </div>
+
+        <!-- Cold prospect 2 -->
+        <div class="prospect-item" style="align-items:flex-start">
+          <div class="pi-avatar" style="background:#EFF6FF;color:#1D4ED8;flex-shrink:0">NK</div>
+          <div class="pi-body" style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+              <div class="pi-name" style="margin:0">PT Nusantara Karya</div>
+              <span style="font-size:10px">❄️</span>
+            </div>
+            <div class="pi-meta">Canvasing 12 Jun · Bertemu Owner</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:5px">
+              <div style="flex:1;max-width:80px">
+                <div class="hs-bar"><div class="hs-fill" style="width:40%;background:#60A5FA"></div></div>
+              </div>
+              <span style="font-size:10px;font-weight:700;color:#2563EB">HS 40</span>
+              <span style="font-size:10px;color:var(--gray-400)">· 1 hari</span>
+            </div>
+          </div>
+          <div class="pi-right" style="flex-shrink:0">
+            <span class="badge b-primary badge-dot">CP Baru</span>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:4px">3j lalu</div>
+          </div>
+        </div>
+
+        <!-- Overdue cold -->
+        <div class="prospect-item" style="align-items:flex-start">
+          <div class="pi-avatar" style="background:#F0FDFA;color:#0F766E;flex-shrink:0">TJ</div>
+          <div class="pi-body" style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+              <div class="pi-name" style="margin:0">CV Tunas Jaya</div>
+              <span style="font-size:10px">❄️</span>
+            </div>
+            <div class="pi-meta">Canvasing 11 Jun · Callback besok</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:5px">
+              <div style="flex:1;max-width:80px">
+                <div class="hs-bar"><div class="hs-fill" style="width:28%;background:#60A5FA"></div></div>
+              </div>
+              <span style="font-size:10px;font-weight:700;color:#2563EB">HS 28</span>
+              <span style="font-size:10px;color:var(--gray-400)">· 2 hari</span>
+            </div>
+          </div>
+          <div class="pi-right" style="flex-shrink:0">
+            <span class="badge b-neutral badge-dot">Pending</span>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:4px">13 Jun</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="padding:14px 20px;text-align:center">
+        <span style="font-size:13px;color:var(--primary);font-weight:600">Lihat 18 prospect lainnya ›</span>
+      </div>
+
+      <div style="height:calc(var(--nav-h) + 20px)"></div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="dashboard.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/><path d="M3 12v9h18V12"/></svg></div>
+      <span class="nav-label">Beranda</span>
+    </a>
+    <a href="aktivitas.html" class="nav-item active">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+      <span class="nav-label">Aktivitas</span>
+    </a>
+    <a href="notifikasi.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg><span class="nav-badge">3</span></div>
+      <span class="nav-label">Notifikasi</span>
+    </a>
+    <a href="profil.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <span class="nav-label">Profil</span>
+    </a>
+  </nav>
+</div>
+<script src="../js/app.js"></script>
+</body>
+</html>

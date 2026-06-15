@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ESS — Login Staff Mitra AE</title>
+  <link rel="stylesheet" href="css/design-system.css">
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar" style="background:transparent;position:absolute;top:0;left:0;right:0;z-index:60">
+    <span class="s-time" style="color:white">09:41</span>
+    <div class="s-icons"><svg viewBox="0 0 17 12" style="fill:white;width:16px;height:12px"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="1.5" width="3" height="10.5" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/></svg><span style="color:white;font-size:13px">🔋</span></div>
+  </div>
+
+  <div class="app">
+    <div class="page" style="padding-bottom:0;background:white">
+
+      <!-- Hero Header — Indigo/dark (AE identity) -->
+      <div class="hero-ae" style="padding:56px 24px 44px;position:relative;overflow:hidden">
+        <!-- Back button -->
+        <a href="index.html" style="position:absolute;top:58px;left:20px;width:36px;height:36px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;z-index:10">
+          <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:white;fill:none;stroke-width:2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        </a>
+        <!-- Decorative circles -->
+        <div style="position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.05)"></div>
+        <div style="position:absolute;bottom:-40px;left:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.04)"></div>
+        <div style="position:absolute;top:55px;right:25px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.06)"></div>
+
+        <div style="text-align:center;position:relative;z-index:1">
+          <div style="width:68px;height:68px;border-radius:22px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 16px;box-shadow:0 8px 24px rgba(0,0,0,.25)">⚡</div>
+          <div style="font-size:24px;font-weight:800;color:white;letter-spacing:-.5px;margin-bottom:4px">Staff Mitra AE</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.65)">Manajemen Aktivitas Sales &amp; Lapangan</div>
+          <div style="margin-top:12px;display:flex;justify-content:center;gap:6px;flex-wrap:wrap">
+            <span style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;color:rgba(255,255,255,.85)">🗺️ Canvasing</span>
+            <span style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;color:rgba(255,255,255,.85)">🎯 Prospect</span>
+            <span style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;color:rgba(255,255,255,.85)">🤝 Closing</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rounded bottom edge of hero -->
+      <div style="height:24px;background:linear-gradient(180deg,#4F46E5 0%,white 100%);border-radius:0 0 32px 32px;margin-bottom:-1px"></div>
+
+      <!-- Login Form -->
+      <div style="padding:24px 24px 0;background:white">
+        <div style="font-size:22px;font-weight:800;color:var(--gray-900);letter-spacing:-.5px;margin-bottom:4px">Selamat Datang, AE!</div>
+        <div style="font-size:14px;color:var(--gray-400);margin-bottom:24px">Masuk untuk mulai aktivitas sales hari ini</div>
+
+        <div class="form-group">
+          <label class="form-label">ID Mitra / AE ID</label>
+          <div style="position:relative">
+            <div style="position:absolute;top:50%;left:13px;transform:translateY(-50%);font-size:16px">⚡</div>
+            <input type="text" class="form-control" placeholder="Contoh: AE2024001" value="AE2024001" style="padding-left:40px">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div style="position:relative">
+            <div style="position:absolute;top:50%;left:13px;transform:translateY(-50%);font-size:16px">🔒</div>
+            <input type="password" class="form-control" placeholder="Masukkan password" value="password" style="padding-left:40px;padding-right:56px">
+            <div style="position:absolute;top:50%;right:13px;transform:translateY(-50%);font-size:12px;font-weight:700;color:#5B21B6;cursor:pointer">Lihat</div>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:flex-end;margin-bottom:20px;margin-top:-6px">
+          <a href="#" style="font-size:13px;font-weight:600;color:#5B21B6">Lupa Password?</a>
+        </div>
+
+        <a href="ae/dashboard.html" class="btn btn-full" style="background:linear-gradient(135deg,#3730A3,#4F46E5);color:white;font-size:15px;padding:15px 20px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font-weight:600">
+          <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:white;fill:none;stroke-width:2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Mulai Aktivitas Sales
+        </a>
+
+        <!-- Demo hint -->
+        <div style="margin-top:16px;padding:14px 16px;background:#EDE9FE;border-radius:12px;display:flex;align-items:flex-start;gap:10px;border:1px solid rgba(91,33,182,.15)">
+          <span style="font-size:18px;flex-shrink:0">💡</span>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:#5B21B6;margin-bottom:3px">Demo Mode</div>
+            <div style="font-size:11px;color:#4C1D95;line-height:1.5">ID: <strong>AE2024001</strong> · Password: <strong>password</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Field check-in reminder -->
+      <div style="padding:14px 24px 0">
+        <div style="background:var(--gray-50);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;border:1px solid var(--gray-100)">
+          <span style="font-size:16px">📍</span>
+          <div style="font-size:12px;color:var(--gray-500)">Pastikan GPS aktif untuk <strong>kehadiran lapangan</strong> dan validitas kunjungan Anda.</div>
+        </div>
+      </div>
+
+      <!-- Help -->
+      <div style="padding:16px 24px 0">
+        <div style="height:1px;background:var(--gray-100);margin-bottom:16px"></div>
+        <div style="display:flex;align-items:center;gap:10px;justify-content:center">
+          <div style="font-size:13px;color:var(--gray-400)">Butuh bantuan?</div>
+          <a href="#" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#5B21B6;text-decoration:none;padding:8px 14px;background:#EDE9FE;border-radius:8px">
+            <span>📞</span> IT Support
+          </a>
+        </div>
+      </div>
+
+      <div style="padding:16px 24px 28px;text-align:center">
+        <div style="font-size:11px;color:var(--gray-200)">ESS v2.0.1 · Data Anda dilindungi &amp; terenkripsi</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<script src="js/app.js"></script>
+</body>
+</html>

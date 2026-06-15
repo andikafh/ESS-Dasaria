@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ESS — Canvasing</title>
+  <link rel="stylesheet" href="../css/design-system.css">
+  <style>
+    .ev-chip { display:inline-flex; align-items:center; gap:4px; background:var(--gray-50); border-radius:8px; padding:3px 7px; font-size:10px; font-weight:600; color:var(--gray-600); margin-right:4px; margin-top:4px; }
+  </style>
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar"><span class="s-time">09:41</span><div class="s-icons"><span style="font-size:13px">🔋</span></div></div>
+  <div class="app">
+    <div class="page" style="padding-bottom:0">
+
+      <div class="screen-header">
+        <a href="aktivitas.html" class="btn-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></a>
+        <h1>Aktivitas</h1>
+        <span class="header-action">+ Tambah</span>
+      </div>
+
+      <div class="tab-bar">
+        <a href="canvasing.html" class="tab-item active">🗺️ Canvasing</a>
+        <a href="follow-up.html" class="tab-item">📞 Follow-up</a>
+        <a href="survey.html" class="tab-item">📋 Survey</a>
+        <a href="closing.html" class="tab-item">🤝 Closing</a>
+      </div>
+
+      <div style="background:var(--white);border-bottom:1px solid var(--gray-100)">
+        <div class="stat-strip-3">
+          <div class="ss-cell ss-primary"><div class="ss-val">5</div><div class="ss-lbl">Hari Ini</div></div>
+          <div class="ss-cell"><div class="ss-val" style="color:var(--gray-900)">18</div><div class="ss-lbl">Bulan Ini</div></div>
+          <div class="ss-cell"><div class="ss-val" style="color:var(--warning-dark)">3</div><div class="ss-lbl">Sisa Target</div></div>
+        </div>
+      </div>
+
+      <!-- Map Area -->
+      <div class="section" style="padding-top:16px">
+        <div class="section-row">
+          <div class="section-title">Area Canvasing Hari Ini</div>
+          <span class="badge b-success badge-dot">GPS Aktif</span>
+        </div>
+        <div class="map-card" style="height:110px">
+          <div class="mc-icon">📍</div>
+          <div class="mc-text">Peta Kunjungan Hari Ini</div>
+          <div class="mc-sub">5 titik · Radius 5.2 km · Jakarta Pusat</div>
+        </div>
+      </div>
+
+      <!-- Canvasing List -->
+      <div class="section" style="padding-top:16px">
+        <div class="section-row">
+          <div class="section-title">Daftar Canvasing</div>
+          <span style="font-size:12px;color:var(--gray-400)">12 Jun 2026</span>
+        </div>
+      </div>
+
+      <div style="background:var(--white);border-top:1px solid var(--gray-100)">
+
+        <div class="prospect-item" style="align-items:flex-start">
+          <div class="pi-avatar" style="background:#DBEAFE;color:#1D4ED8;flex-shrink:0">MP</div>
+          <div class="pi-body" style="flex:1;min-width:0">
+            <div class="pi-name">PT Maju Bersama</div>
+            <div class="pi-meta">08:30 · Jl. Gatot Subroto No.12 · Bertemu HRD</div>
+            <div style="margin-top:4px">
+              <span class="ev-chip">📸 3 Foto</span>
+              <span class="ev-chip">📡 GPS</span>
+              <span class="ev-chip">⏱ 08:30:22</span>
+            </div>
+          </div>
+          <div class="pi-right" style="flex-shrink:0">
+            <span class="badge b-success badge-dot">Berhasil</span>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:4px">CP Dibuat</div>
+          </div>
+        </div>
+
+        <div class="prospect-item" style="align-items:flex-start">
+          <div class="pi-avatar" style="background:#F3E8FF;color:#6D28D9;flex-shrink:0">NK</div>
+          <div class="pi-body" style="flex:1;min-width:0">
+            <div class="pi-name">PT Nusantara Karya</div>
+            <div class="pi-meta">09:15 · Jl. MH Thamrin No.7 · Bertemu Owner</div>
+            <div style="margin-top:4px">
+              <span class="ev-chip">📸 2 Foto</span>
+              <span class="ev-chip">📡 GPS</span>
+              <span class="ev-chip">⏱ 09:15:08</span>
+            </div>
+          </div>
+          <div class="pi-right" style="flex-shrink:0">
+            <span class="badge b-success badge-dot">Berhasil</span>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:4px">CP Dibuat</div>
+          </div>
+        </div>
+
+        <div class="prospect-item" style="align-items:flex-start">
+          <div class="pi-avatar" style="background:#FEF3C7;color:#92400E;flex-shrink:0">SK</div>
+          <div class="pi-body" style="flex:1;min-width:0">
+            <div class="pi-name">CV Sinar Kreasi</div>
+            <div class="pi-meta">10:30 · Jl. Hayam Wuruk No.33 · Resepsionis</div>
+            <div style="margin-top:4px">
+              <span class="ev-chip">📸 1 Foto</span>
+              <span class="ev-chip">📡 GPS</span>
+              <span class="ev-chip">⏱ 10:30:41</span>
+            </div>
+          </div>
+          <div class="pi-right" style="flex-shrink:0">
+            <span class="badge b-warning badge-dot">Pending</span>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:4px">CB Besok</div>
+          </div>
+        </div>
+
+        <div class="prospect-item" style="align-items:flex-start">
+          <div class="pi-avatar" style="background:#DCFCE7;color:#166534;flex-shrink:0">BI</div>
+          <div class="pi-body" style="flex:1;min-width:0">
+            <div class="pi-name">PT Berkah Indo</div>
+            <div class="pi-meta">13:00 · Jl. Kuningan No.55 · Bertemu GM</div>
+            <div style="margin-top:4px">
+              <span class="ev-chip">📸 4 Foto</span>
+              <span class="ev-chip">📡 GPS</span>
+              <span class="ev-chip">⏱ 13:00:17</span>
+            </div>
+          </div>
+          <div class="pi-right" style="flex-shrink:0">
+            <span class="badge b-success badge-dot">Berhasil</span>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:4px">CP Dibuat</div>
+          </div>
+        </div>
+
+        <div class="prospect-item" style="align-items:flex-start">
+          <div class="pi-avatar" style="background:#FEF2F2;color:#991B1B;flex-shrink:0">SJ</div>
+          <div class="pi-body" style="flex:1;min-width:0">
+            <div class="pi-name">CV Sejahtera Jaya</div>
+            <div class="pi-meta">15:00 · Jl. Senayan No.12 · Tidak ada pihak terkait</div>
+            <div style="margin-top:4px">
+              <span class="ev-chip">📸 1 Foto</span>
+              <span class="ev-chip">📡 GPS</span>
+              <span class="ev-chip">⏱ 15:00:55</span>
+            </div>
+          </div>
+          <div class="pi-right" style="flex-shrink:0">
+            <span class="badge b-danger badge-dot">Gagal</span>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:4px">Reschedule</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Add Button -->
+      <div style="padding:16px 20px 24px">
+        <button class="btn btn-primary btn-full" onclick="alert('Form Canvasing Baru — GPS & Foto Evidence')">
+          <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:white;fill:none;stroke-width:2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Tambah Canvasing Baru
+        </button>
+      </div>
+
+      <div style="height:calc(var(--nav-h) + 20px)"></div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="dashboard.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/><path d="M3 12v9h18V12"/></svg></div>
+      <span class="nav-label">Beranda</span>
+    </a>
+    <a href="aktivitas.html" class="nav-item active">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+      <span class="nav-label">Aktivitas</span>
+    </a>
+    <a href="notifikasi.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg><span class="nav-badge">3</span></div>
+      <span class="nav-label">Notifikasi</span>
+    </a>
+    <a href="profil.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <span class="nav-label">Profil</span>
+    </a>
+  </nav>
+</div>
+<script src="../js/app.js"></script>
+</body>
+</html>

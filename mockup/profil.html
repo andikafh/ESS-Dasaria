@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ESS — Profil Saya</title>
+  <link rel="stylesheet" href="css/design-system.css">
+  <style>
+    .profil-hero {
+      background: linear-gradient(150deg, #0F2B6E 0%, #1A55D4 55%, #2A7CFF 100%);
+      padding: 28px 20px 36px; text-align: center; color: white;
+    }
+    .p-avatar {
+      width: 80px; height: 80px; border-radius: 24px;
+      background: rgba(255,255,255,.22); margin: 0 auto 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px; font-weight: 800; letter-spacing: -1px;
+      border: 2.5px solid rgba(255,255,255,.4);
+    }
+    .p-name    { font-size: 22px; font-weight: 800; letter-spacing: -.5px; margin-bottom: 6px; }
+    .p-meta    { font-size: 13px; opacity: .8; margin-bottom: 14px; }
+    .p-badges  { display: flex; justify-content: center; gap: 8px; }
+    .p-edit-btn {
+      position: absolute; top: 20px; right: 20px;
+      background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.25);
+      color: white; border-radius: 10px; padding: 8px 14px;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .profil-hero { position: relative; }
+  </style>
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar" style="background:transparent;position:absolute;top:0;left:0;right:0;z-index:60">
+    <span class="s-time" style="color:white">09:41</span>
+    <div class="s-icons"><svg viewBox="0 0 17 12" style="fill:white;width:16px;height:12px"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="1.5" width="3" height="10.5" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/></svg><span style="color:white;font-size:13px">🔋</span></div>
+  </div>
+
+  <div class="app">
+    <div class="page" style="padding-bottom:0">
+
+      <!-- Hero -->
+      <div class="profil-hero" style="padding-top:58px">
+        <a href="#" class="p-edit-btn">✏️ Edit</a>
+        <div class="p-avatar">AP</div>
+        <div class="p-name">Andi Pratama</div>
+        <div class="p-meta">NIK 2024001 · Staff HC Comben · Jakarta Pusat</div>
+        <div class="p-badges">
+          <span class="badge b-white badge-dot">Karyawan Aktif</span>
+          <span class="badge b-white">📅 2 Thn 4 Bln</span>
+        </div>
+      </div>
+
+      <!-- Stats strip -->
+      <div style="background:white;padding:16px 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--gray-100)">
+        <div style="background:white;text-align:center;padding:14px 8px">
+          <div style="font-size:22px;font-weight:800;color:var(--success-dark)">12</div>
+          <div style="font-size:11px;color:var(--gray-400);font-weight:500;margin-top:2px">Saldo Cuti</div>
+        </div>
+        <div style="background:white;text-align:center;padding:14px 8px">
+          <div style="font-size:22px;font-weight:800;color:var(--primary)">22</div>
+          <div style="font-size:11px;color:var(--gray-400);font-weight:500;margin-top:2px">Hadir Bln Ini</div>
+        </div>
+        <div style="background:white;text-align:center;padding:14px 8px">
+          <div style="font-size:22px;font-weight:800;color:var(--warning-dark)">0</div>
+          <div style="font-size:11px;color:var(--gray-400);font-weight:500;margin-top:2px">SP Aktif</div>
+        </div>
+      </div>
+
+      <div class="divider-8"></div>
+
+      <!-- Data Pribadi -->
+      <div style="padding:0 20px 14px;padding-top:16px">
+        <div class="section-title mb-12">Data Pribadi</div>
+      </div>
+      <div style="background:var(--white);margin:0 20px;border-radius:var(--r);box-shadow:var(--shadow-sm);padding:0 16px">
+        <div class="data-list">
+          <div class="data-row"><span class="dr-key">Nama Lengkap</span><span class="dr-val">Andi Pratama</span></div>
+          <div class="data-row"><span class="dr-key">NIK</span><span class="dr-val">2024001</span></div>
+          <div class="data-row"><span class="dr-key">Jabatan</span><span class="dr-val">Staff HC Comben</span></div>
+          <div class="data-row"><span class="dr-key">Cabang</span><span class="dr-val">Jakarta Pusat</span></div>
+          <div class="data-row"><span class="dr-key">Unit Kerja</span><span class="dr-val">Human Capital</span></div>
+          <div class="data-row"><span class="dr-key">Lama Kerja</span><span class="dr-val">2 Tahun 4 Bulan</span></div>
+          <div class="data-row"><span class="dr-key">Atasan Langsung</span><span class="dr-val">Budi Santoso</span></div>
+          <div class="data-row"><span class="dr-key">Bergabung</span><span class="dr-val">15 Februari 2024</span></div>
+        </div>
+      </div>
+
+      <div style="height:16px"></div>
+
+      <!-- Kontak -->
+      <div style="padding:0 20px 12px">
+        <div class="section-title mb-12">Kontak &amp; Darurat</div>
+      </div>
+      <div style="background:var(--white);margin:0 20px;border-radius:var(--r);box-shadow:var(--shadow-sm);padding:0 16px">
+        <div class="data-list">
+          <div class="data-row"><span class="dr-key">Email</span><span class="dr-val">andi.pratama@company.id</span></div>
+          <div class="data-row"><span class="dr-key">No. HP</span><span class="dr-val">+62 812-3456-7890</span></div>
+          <div class="data-row"><span class="dr-key">Kontak Darurat</span><span class="dr-val">Sari Pratama (Istri)</span></div>
+          <div class="data-row"><span class="dr-key">No. Darurat</span><span class="dr-val">+62 813-9876-5432</span></div>
+        </div>
+      </div>
+
+      <div style="height:16px"></div>
+
+      <!-- Kepegawaian -->
+      <div style="padding:0 20px 12px">
+        <div class="section-title mb-12">Status Kepegawaian</div>
+      </div>
+      <div style="background:var(--white);margin:0 20px;border-radius:var(--r);box-shadow:var(--shadow-sm);padding:0 16px">
+        <div class="data-list">
+          <div class="data-row"><span class="dr-key">Status</span><span class="dr-val"><span class="badge b-success badge-dot">Aktif</span></span></div>
+          <div class="data-row"><span class="dr-key">Saldo Cuti</span><span class="dr-val" style="color:var(--success-dark);font-size:16px;font-weight:800">12 Hari</span></div>
+          <div class="data-row"><span class="dr-key">SP Aktif</span><span class="dr-val">Tidak Ada</span></div>
+          <div class="data-row"><span class="dr-key">Outstanding Loan</span><span class="dr-val" style="color:var(--warning-dark)">Rp 4.500.000</span></div>
+        </div>
+      </div>
+
+      <div style="height:16px"></div>
+
+      <!-- Pengaturan & Logout -->
+      <div style="padding:0 20px 12px">
+        <div class="section-title mb-12">Pengaturan</div>
+      </div>
+      <div style="background:var(--white);margin:0 20px;border-radius:var(--r);box-shadow:var(--shadow-sm);padding:0 16px">
+        <div class="data-list">
+          <div class="data-row" style="cursor:pointer" onclick="alert('Ganti Password')">
+            <span class="dr-key">🔒 Ganti Password</span>
+            <span style="color:var(--gray-300);font-size:18px">›</span>
+          </div>
+          <div class="data-row">
+            <span class="dr-key">🌐 Bahasa</span>
+            <span class="dr-val" style="color:var(--gray-500)">Indonesia</span>
+          </div>
+          <div class="data-row">
+            <span class="dr-key">ℹ️ Versi Aplikasi</span>
+            <span class="dr-val" style="color:var(--gray-500)">v2.0.1</span>
+          </div>
+        </div>
+      </div>
+      <div style="padding:16px 20px 20px">
+        <a href="index.html" class="btn btn-danger btn-full" onclick="return confirm('Yakin ingin keluar dari akun?')">
+          <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:white;fill:none;stroke-width:2"><path d="M17 16l4-4m0 0l-4-4m4 4H7"/><path d="M3 21V3"/></svg>
+          Keluar dari Akun
+        </a>
+        <div style="text-align:center;margin-top:10px;font-size:11px;color:var(--gray-300)">ESS v2.0.1 · Data dilindungi &amp; terenkripsi</div>
+      </div>
+
+      <div style="height:calc(var(--nav-h) + 20px)"></div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="home.html" class="nav-item"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/><path d="M3 12v9h18V12"/></svg></div><span class="nav-label">Beranda</span></a>
+    <a href="kehadiran.html" class="nav-item"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><span class="nav-label">Kehadiran</span></a>
+    <a href="izin-cuti.html" class="nav-item"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span class="nav-badge">1</span></div><span class="nav-label">Izin &amp; Cuti</span></a>
+    <a href="loan.html" class="nav-item"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><span class="nav-label">Pinjaman</span></a>
+    <a href="profil.html" class="nav-item active"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span class="nav-label">Profil</span></a>
+  </nav>
+</div>
+<script src="js/app.js"></script>
+</body>
+</html>

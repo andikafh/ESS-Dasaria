@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ESS — Survey</title>
+  <link rel="stylesheet" href="../css/design-system.css">
+  <style>
+    .pkg-chip { display:inline-flex; align-items:center; gap:4px; padding:3px 8px; border-radius:8px; font-size:10px; font-weight:700; margin-right:4px; }
+  </style>
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar"><span class="s-time">09:41</span><div class="s-icons"><span style="font-size:13px">🔋</span></div></div>
+  <div class="app">
+    <div class="page" style="padding-bottom:0">
+
+      <div class="screen-header">
+        <a href="aktivitas.html" class="btn-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></a>
+        <h1>Aktivitas</h1>
+        <span class="header-action">+ Tambah</span>
+      </div>
+
+      <div class="tab-bar">
+        <a href="canvasing.html" class="tab-item">🗺️ Canvasing</a>
+        <a href="follow-up.html" class="tab-item">📞 Follow-up</a>
+        <a href="survey.html" class="tab-item active">📋 Survey</a>
+        <a href="closing.html" class="tab-item">🤝 Closing</a>
+      </div>
+
+      <div class="stat-strip-4" style="background:var(--gray-100)">
+        <div class="ss-cell"><div class="ss-val" style="color:var(--primary)">4</div><div class="ss-lbl">Aktif</div></div>
+        <div class="ss-cell"><div class="ss-val" style="color:var(--warning-dark)">1</div><div class="ss-lbl">Hari Ini</div></div>
+        <div class="ss-cell ss-success"><div class="ss-val">8</div><div class="ss-lbl">Selesai</div></div>
+        <div class="ss-cell"><div class="ss-val" style="color:var(--danger-dark)">1</div><div class="ss-lbl">Terlambat</div></div>
+      </div>
+
+      <!-- Conversion Rate Card -->
+      <div style="margin:14px 20px 0;background:linear-gradient(135deg,#1E1B4B,#4F46E5);border-radius:var(--r);padding:14px 16px;color:white;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-size:10px;color:rgba(255,255,255,.65);font-weight:600;letter-spacing:.4px;margin-bottom:4px">KONVERSI SURVEY → CLOSING</div>
+          <div style="font-size:26px;font-weight:800;letter-spacing:-.5px">75%</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.65)">6/8 survey berhasil closing</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:3px">vs Rata-rata Tim</div>
+          <div style="font-size:18px;font-weight:800;color:#A5F3FC">+13%</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.5)">Tim: 62%</div>
+        </div>
+      </div>
+
+      <!-- Survey Hari Ini -->
+      <div class="section" style="padding-top:16px">
+        <div class="section-row">
+          <div class="section-title">Survey Hari Ini</div>
+          <span style="font-size:12px;color:var(--gray-400)">12 Jun 2026</span>
+        </div>
+        <div class="card card-pad">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">
+            <div style="width:44px;height:44px;background:var(--warning-light);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px">📋</div>
+            <div style="flex:1">
+              <div style="font-size:15px;font-weight:700;color:var(--gray-900)">PT Indo Kreatif</div>
+              <div style="font-size:12px;color:var(--gray-400)">SRV-2024-012 · Pk. 14:00 – 16:00</div>
+            </div>
+            <span class="badge b-warning badge-dot">Upcoming</span>
+          </div>
+          <div style="background:var(--gray-50);border-radius:var(--r-sm);padding:12px;margin-bottom:12px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+              <span style="font-size:12px;color:var(--gray-400)">Lokasi</span>
+              <span style="font-size:12px;font-weight:600;color:var(--gray-800)">Jl. Hayam Wuruk No.3</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+              <span style="font-size:12px;color:var(--gray-400)">PIC</span>
+              <span style="font-size:12px;font-weight:600;color:var(--gray-800)">Bpk. Ahmad Fauzi (GM)</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+              <span style="font-size:12px;color:var(--gray-400)">Estimasi Nilai</span>
+              <span style="font-size:12px;font-weight:700;color:var(--primary)">Rp 32.000.000</span>
+            </div>
+            <div style="display:flex;justify-content:space-between">
+              <span style="font-size:12px;color:var(--gray-400)">Minat Paket</span>
+              <div>
+                <span class="pkg-chip" style="background:#EFF6FF;color:#1D4ED8">Paket 3</span>
+                <span class="pkg-chip" style="background:#F3E8FF;color:#6D28D9">Paket 4</span>
+              </div>
+            </div>
+          </div>
+          <div class="map-card" style="height:70px;margin-bottom:12px">
+            <div style="font-size:18px">📍</div>
+            <div style="font-size:11px;font-weight:600;color:var(--primary)">Hayam Wuruk, Jakarta Barat</div>
+          </div>
+          <button class="btn btn-primary btn-full" onclick="alert('Mulai Survey PT Indo Kreatif')">Mulai Survey</button>
+        </div>
+      </div>
+
+      <!-- Survey Queue -->
+      <div class="section" style="padding-top:16px">
+        <div class="section-row">
+          <div class="section-title">Antrean Survey</div>
+          <span class="badge b-primary">3 Pending</span>
+        </div>
+      </div>
+
+      <div style="background:var(--white)">
+        <div class="list-item">
+          <div class="li-icon" style="background:var(--primary-light)">📋</div>
+          <div class="li-body">
+            <div class="li-title">CV Berkah Indo Prima</div>
+            <div class="li-sub">SRV-2024-013 · Survey infrastruktur</div>
+            <div style="margin-top:4px">
+              <span class="pkg-chip" style="background:#EFF6FF;color:#1D4ED8">Paket 2</span>
+              <span class="pkg-chip" style="background:#F0FDF4;color:#166534">Paket 3</span>
+            </div>
+            <div class="li-note" style="margin-top:4px">Jadwal: 14 Jun 2026 · 09:00 – 11:00</div>
+          </div>
+          <div class="li-right">
+            <span class="badge b-primary">Terjadwal</span>
+            <div style="font-size:11px;color:var(--gray-400)">14 Jun</div>
+          </div>
+        </div>
+        <div class="list-item">
+          <div class="li-icon" style="background:var(--info-light)">📋</div>
+          <div class="li-body">
+            <div class="li-title">PT Makmur Bersama</div>
+            <div class="li-sub">SRV-2024-014 · Survey kebutuhan sistem</div>
+            <div style="margin-top:4px">
+              <span class="pkg-chip" style="background:#FEF3C7;color:#92400E">Paket 4</span>
+              <span class="pkg-chip" style="background:#FFF1F2;color:#9F1239">Paket 5</span>
+            </div>
+            <div class="li-note" style="margin-top:4px">Jadwal: 16 Jun 2026 · 10:00 – 12:00</div>
+          </div>
+          <div class="li-right">
+            <span class="badge b-info">Terjadwal</span>
+            <div style="font-size:11px;color:var(--gray-400)">16 Jun</div>
+          </div>
+        </div>
+        <div class="list-item">
+          <div class="li-icon" style="background:var(--danger-light)">📋</div>
+          <div class="li-body">
+            <div class="li-title">PT Sentosa Mandiri</div>
+            <div class="li-sub">SRV-2024-011 · Menunggu konfirmasi ulang</div>
+            <div style="margin-top:4px">
+              <span class="pkg-chip" style="background:#EFF6FF;color:#1D4ED8">Paket 1</span>
+            </div>
+            <div class="li-note" style="color:var(--danger-dark);font-weight:600;margin-top:4px">⚠ Terlambat 1 hari</div>
+          </div>
+          <div class="li-right">
+            <span class="badge b-danger">Terlambat</span>
+            <div style="font-size:11px;color:var(--gray-400)">11 Jun</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Completed -->
+      <div class="section" style="padding-top:16px;padding-bottom:20px">
+        <div class="section-row">
+          <div class="section-title">Selesai Bulan Ini</div>
+          <span class="badge b-success badge-dot">8 Survey</span>
+        </div>
+        <div class="alert alert-success">
+          <div class="alert-icon">📊</div>
+          <div class="alert-body">
+            <div class="alert-title">Konversi Survey → Closing</div>
+            <div class="alert-text">6 dari 8 survey (75%) berhasil lanjut ke tahap closing — di atas rata-rata tim 62%. Paket 3 paling diminati.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:calc(var(--nav-h) + 20px)"></div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="dashboard.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/><path d="M3 12v9h18V12"/></svg></div>
+      <span class="nav-label">Beranda</span>
+    </a>
+    <a href="aktivitas.html" class="nav-item active">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+      <span class="nav-label">Aktivitas</span>
+    </a>
+    <a href="notifikasi.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg><span class="nav-badge">3</span></div>
+      <span class="nav-label">Notifikasi</span>
+    </a>
+    <a href="profil.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <span class="nav-label">Profil</span>
+    </a>
+  </nav>
+</div>
+<script src="../js/app.js"></script>
+</body>
+</html>

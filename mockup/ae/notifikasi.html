@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ESS — Notifikasi AE</title>
+  <link rel="stylesheet" href="../css/design-system.css">
+  <style>
+    .notif-item {
+      display:flex; gap:12px; padding:14px 20px;
+      border-bottom:1px solid var(--gray-50);
+      cursor:pointer; transition:background .15s;
+    }
+    .notif-item:last-child { border-bottom:none; }
+    .notif-item.unread { background:var(--primary-light); }
+    .notif-item:active { background:var(--gray-50); }
+    .notif-icon { width:42px; height:42px; border-radius:13px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+    .notif-title { font-size:13px; font-weight:700; color:var(--gray-900); margin-bottom:3px; line-height:1.3; }
+    .notif-body  { font-size:12px; color:var(--gray-500); line-height:1.45; margin-bottom:4px; }
+    .notif-time  { font-size:11px; color:var(--gray-300); }
+    .notif-unread-dot { width:8px; height:8px; border-radius:50%; background:var(--primary); flex-shrink:0; margin-top:5px; }
+  </style>
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar"><span class="s-time">09:41</span><div class="s-icons"><span style="font-size:13px">🔋</span></div></div>
+  <div class="app">
+    <div class="page" style="padding-bottom:0">
+
+      <div class="screen-header" style="position:sticky;top:0;z-index:40">
+        <a href="dashboard.html" class="btn-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></a>
+        <h1>Notifikasi</h1>
+        <span class="header-action" onclick="alert('Semua sudah dibaca')">Baca Semua</span>
+      </div>
+
+      <!-- Filter chips -->
+      <div style="padding:12px 20px;display:flex;gap:8px;overflow-x:auto;border-bottom:1px solid var(--gray-100)">
+        <div style="padding:6px 14px;background:var(--primary);border-radius:20px;font-size:12px;font-weight:700;color:white;white-space:nowrap;flex-shrink:0">Semua</div>
+        <div style="padding:6px 14px;background:var(--gray-100);border-radius:20px;font-size:12px;font-weight:600;color:var(--gray-600);white-space:nowrap;flex-shrink:0">Follow Up</div>
+        <div style="padding:6px 14px;background:var(--gray-100);border-radius:20px;font-size:12px;font-weight:600;color:var(--gray-600);white-space:nowrap;flex-shrink:0">Atasan</div>
+        <div style="padding:6px 14px;background:var(--gray-100);border-radius:20px;font-size:12px;font-weight:600;color:var(--gray-600);white-space:nowrap;flex-shrink:0">Sistem</div>
+      </div>
+
+      <!-- Today label -->
+      <div style="padding:10px 20px 6px;font-size:11px;font-weight:700;color:var(--gray-400);letter-spacing:.5px">HARI INI</div>
+
+      <div style="background:var(--white)">
+        <!-- Unread: Follow Up Alert -->
+        <div class="notif-item unread" onclick="location.href='follow-up.html'">
+          <div class="notif-icon" style="background:#FEE2E2">🔴</div>
+          <div style="flex:1;min-width:0">
+            <div class="notif-title">Follow Up Overdue!</div>
+            <div class="notif-body">PT Berkah Indo belum di-follow up sejak 5 hari lalu. Prospect berisiko hilang.</div>
+            <div class="notif-time">09:30 · Follow Up Reminder</div>
+          </div>
+          <div class="notif-unread-dot"></div>
+        </div>
+
+        <!-- Unread: Supervisor instruction -->
+        <div class="notif-item unread">
+          <div class="notif-icon" style="background:#EDE9FE">👔</div>
+          <div style="flex:1;min-width:0">
+            <div class="notif-title">Instruksi Supervisor</div>
+            <div class="notif-body">Rudi Hermawan: "Prioritaskan area Kuningan untuk canvasing hari ini. Target minimal 3 CP baru."</div>
+            <div class="notif-time">08:45 · Supervisor</div>
+          </div>
+          <div class="notif-unread-dot"></div>
+        </div>
+
+        <!-- Unread: Survey reminder -->
+        <div class="notif-item unread" onclick="location.href='survey.html'">
+          <div class="notif-icon" style="background:#F3E8FF">📋</div>
+          <div style="flex:1;min-width:0">
+            <div class="notif-title">Survey Hari Ini</div>
+            <div class="notif-body">Survey dijadwalkan pukul 14:00 di PT Nusantara Karya. Pastikan persiapan paket sudah siap.</div>
+            <div class="notif-time">08:00 · Survey Reminder</div>
+          </div>
+          <div class="notif-unread-dot"></div>
+        </div>
+
+        <!-- Read: Prospect reminder -->
+        <div class="notif-item" onclick="location.href='customer-prospect.html'">
+          <div class="notif-icon" style="background:#FFF7ED">🎯</div>
+          <div style="flex:1;min-width:0">
+            <div class="notif-title">Prospect Warm Menunggu</div>
+            <div class="notif-body">CV Sinar Kreasi masih di status Warm. Segera upgrade ke Hot dengan follow up intensif.</div>
+            <div class="notif-time">07:30 · Prospect Alert</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Yesterday label -->
+      <div style="padding:14px 20px 6px;font-size:11px;font-weight:700;color:var(--gray-400);letter-spacing:.5px">KEMARIN</div>
+
+      <div style="background:var(--white)">
+        <div class="notif-item">
+          <div class="notif-icon" style="background:#ECFDF5">✅</div>
+          <div style="flex:1;min-width:0">
+            <div class="notif-title">Closing Dikonfirmasi</div>
+            <div class="notif-body">Closing PT Maju Bersama senilai Rp 15 Jt telah dikonfirmasi oleh Branch Leader. Selamat!</div>
+            <div class="notif-time">11 Jun 2026 · 16:20 · Sistem</div>
+          </div>
+        </div>
+
+        <div class="notif-item">
+          <div class="notif-icon" style="background:#EFF6FF">📢</div>
+          <div style="flex:1;min-width:0">
+            <div class="notif-title">Promo Double Bonus Juni</div>
+            <div class="notif-body">Dapatkan insentif 2× untuk setiap closing di atas Rp 20 Jt sepanjang Juni 2026. Berlaku s.d. 30 Jun.</div>
+            <div class="notif-time">11 Jun 2026 · 09:00 · Pengumuman</div>
+          </div>
+        </div>
+
+        <div class="notif-item">
+          <div class="notif-icon" style="background:#FEF3C7">⚠️</div>
+          <div style="flex:1;min-width:0">
+            <div class="notif-title">Peringatan: Prospect Cold</div>
+            <div class="notif-body">2 prospect masih di status Cold lebih dari 14 hari. Pertimbangkan untuk menutup atau re-approach.</div>
+            <div class="notif-time">11 Jun 2026 · 08:00 · Sistem</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:calc(var(--nav-h) + 20px)"></div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="dashboard.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/><path d="M3 12v9h18V12"/></svg></div>
+      <span class="nav-label">Beranda</span>
+    </a>
+    <a href="aktivitas.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+      <span class="nav-label">Aktivitas</span>
+    </a>
+    <a href="notifikasi.html" class="nav-item active">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg></div>
+      <span class="nav-label">Notifikasi</span>
+    </a>
+    <a href="profil.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <span class="nav-label">Profil</span>
+    </a>
+  </nav>
+</div>
+<script src="../js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ESS — Dashboard FAT</title>
+  <link rel="stylesheet" href="../css/design-system.css">
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar" style="background:transparent;position:absolute;top:0;left:0;right:0;z-index:60">
+    <span class="s-time" style="color:white">09:41</span>
+    <div class="s-icons"><svg viewBox="0 0 17 12" style="fill:white;width:16px;height:12px"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="1.5" width="3" height="10.5" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/></svg><span style="color:white;font-size:13px">🔋</span></div>
+  </div>
+
+  <div class="app">
+    <div class="page">
+
+      <!-- Hero -->
+      <div class="hero-fat" style="padding:60px 22px 24px;position:relative">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
+          <div style="width:50px;height:50px;border-radius:16px;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:white;flex-shrink:0">HW</div>
+          <div style="flex:1">
+            <div style="font-size:11px;color:rgba(255,255,255,.65);font-weight:600;margin-bottom:2px">Selamat Pagi 💼</div>
+            <div style="font-size:18px;font-weight:800;color:white;letter-spacing:-.4px">Hendro Wibowo</div>
+            <div style="margin-top:5px"><span class="role-tag">Finance, Admin &amp; Treasury</span></div>
+          </div>
+          <a href="../pengumuman.html" style="width:38px;height:38px;background:rgba(255,255,255,.15);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative">
+            <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:white;fill:none;stroke-width:2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+            <div style="position:absolute;top:6px;right:7px;width:7px;height:7px;background:#F79009;border-radius:4px;border:1.5px solid #0C1445"></div>
+          </a>
+        </div>
+
+        <!-- Loan Summary -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div style="background:rgba(255,255,255,.12);border-radius:12px;padding:14px">
+            <div style="font-size:11px;color:rgba(255,255,255,.65);margin-bottom:6px">Total Outstanding</div>
+            <div style="font-size:22px;font-weight:800;color:white;letter-spacing:-.5px">Rp 287 Jt</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.55)">34 karyawan aktif</div>
+          </div>
+          <div style="background:rgba(255,255,255,.12);border-radius:12px;padding:14px">
+            <div style="font-size:11px;color:rgba(255,255,255,.65);margin-bottom:6px">Cicilan Bulan Ini</div>
+            <div style="font-size:22px;font-weight:800;color:white;letter-spacing:-.5px">Rp 24.3 Jt</div>
+            <div style="font-size:11px;color:rgba(16,185,129,.8)">✓ Dipotong payroll</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loan Validation Queue -->
+      <div class="section" style="padding-top:16px">
+        <div class="section-row">
+          <div class="section-title">Antrean Validasi Loan</div>
+          <span class="badge b-warning">2 Menunggu</span>
+        </div>
+        <div class="alert alert-warning" style="margin-bottom:12px">
+          <div class="alert-icon">⏳</div>
+          <div class="alert-body">
+            <div class="alert-title">Pengajuan Sudah Diverifikasi HC</div>
+            <div class="alert-text">2 pengajuan telah lolos verifikasi HC Comben dan menunggu validasi akhir FAT sebelum disbursement.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:var(--white)">
+        <div class="lv-item">
+          <div class="lv-avatar" style="background:#DBEAFE;color:#1D4ED8">RH</div>
+          <div class="lv-body">
+            <div class="lv-name">Rini Handayani</div>
+            <div class="lv-detail">Staff Kontrak · 3th masa kerja · Cicilan Rp 417 rb/bln</div>
+          </div>
+          <div class="lv-right">
+            <div class="lv-amount">Rp 10 Jt</div>
+            <span class="badge b-warning badge-dot">Validasi FAT</span>
+          </div>
+        </div>
+        <div class="lv-item">
+          <div class="lv-avatar" style="background:#EDE9FE;color:#5B21B6">DK</div>
+          <div class="lv-body">
+            <div class="lv-name">Dewi Kusuma</div>
+            <div class="lv-detail">Staff Kontrak · 1.5th masa kerja · Cicilan Rp 278 rb/bln</div>
+          </div>
+          <div class="lv-right">
+            <div class="lv-amount">Rp 5 Jt</div>
+            <span class="badge b-warning badge-dot">Validasi FAT</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding:12px 20px 0;display:flex;gap:8px">
+        <button class="btn btn-success btn-sm" style="flex:1" onclick="alert('Setujui RH: Rp 10 Jt — Proses Disbursement')">✓ Setujui RH</button>
+        <button class="btn btn-success btn-sm" style="flex:1" onclick="alert('Setujui DK: Rp 5 Jt — Proses Disbursement')">✓ Setujui DK</button>
+      </div>
+
+      <!-- Active Loan Portfolio -->
+      <div class="section" style="padding-top:16px">
+        <div class="section-row">
+          <div class="section-title">Portofolio Pinjaman Aktif</div>
+          <a href="#" class="section-link">Semua</a>
+        </div>
+      </div>
+
+      <div style="background:var(--white)">
+        <div class="lv-item">
+          <div class="lv-avatar" style="background:#DCFCE7;color:#166534">AP</div>
+          <div class="lv-body">
+            <div class="lv-name">Andika Pratama</div>
+            <div class="lv-detail">Outstanding Rp 8.3 Jt · 12/24 cicilan · Lancar</div>
+          </div>
+          <div class="lv-right">
+            <div class="lv-amount">Rp 417 rb</div>
+            <span class="badge b-success badge-dot">Lancar</span>
+          </div>
+        </div>
+        <div class="lv-item">
+          <div class="lv-avatar" style="background:#FEF3C7;color:#92400E">BW</div>
+          <div class="lv-body">
+            <div class="lv-name">Bambang Wijaya</div>
+            <div class="lv-detail">Outstanding Rp 5.2 Jt · 8/12 cicilan · Lancar</div>
+          </div>
+          <div class="lv-right">
+            <div class="lv-amount">Rp 556 rb</div>
+            <span class="badge b-success badge-dot">Lancar</span>
+          </div>
+        </div>
+        <div class="lv-item">
+          <div class="lv-avatar" style="background:#FEF2F2;color:#991B1B">SN</div>
+          <div class="lv-body">
+            <div class="lv-name">Sari Nurhayati</div>
+            <div class="lv-detail">Outstanding Rp 12.5 Jt · 4/36 cicilan · Perhatian</div>
+          </div>
+          <div class="lv-right">
+            <div class="lv-amount">Rp 347 rb</div>
+            <span class="badge b-warning badge-dot">Monitor</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payroll Deduction Summary -->
+      <div class="section" style="padding:16px 20px 20px">
+        <div class="section-title" style="margin-bottom:14px">Rekap Potongan Payroll — Jun 2026</div>
+        <div class="kpi-card">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+            <div>
+              <div class="kpi-label">Total Potongan</div>
+              <div style="font-size:24px;font-weight:800;color:var(--primary);letter-spacing:-1px">Rp 24.3 Jt</div>
+            </div>
+            <div>
+              <div class="kpi-label">Karyawan Terdampak</div>
+              <div style="font-size:24px;font-weight:800;color:var(--gray-900);letter-spacing:-1px">34</div>
+            </div>
+          </div>
+          <div style="background:var(--gray-50);border-radius:var(--r-sm);padding:12px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+              <span style="font-size:12px;color:var(--gray-400)">Rata-rata cicilan</span>
+              <span style="font-size:12px;font-weight:700;color:var(--gray-800)">Rp 715 rb</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+              <span style="font-size:12px;color:var(--gray-400)">Tertinggi</span>
+              <span style="font-size:12px;font-weight:700;color:var(--gray-800)">Rp 2.1 Jt</span>
+            </div>
+            <div style="display:flex;justify-content:space-between">
+              <span style="font-size:12px;color:var(--gray-400)">Status disbursement</span>
+              <span style="font-size:12px;font-weight:700;color:var(--success-dark)">✓ Selesai</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FAT Bottom Nav -->
+    <nav class="bottom-nav">
+      <a href="dashboard-fat.html" class="nav-item active">
+        <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/><path d="M3 12v9h18V12"/></svg></div>
+        <span class="nav-label">Beranda</span>
+      </a>
+      <a href="#" class="nav-item" onclick="alert('Halaman Validasi Loan')">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          <span class="nav-badge">2</span>
+        </div>
+        <span class="nav-label">Validasi</span>
+      </a>
+      <a href="#" class="nav-item" onclick="alert('Outstanding Loans')">
+        <div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+        <span class="nav-label">Outstanding</span>
+      </a>
+      <a href="profil.html" class="nav-item">
+        <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <span class="nav-label">Profil</span>
+      </a>
+    </nav>
+  </div>
+</div>
+<script src="../js/app.js"></script>
+</body>
+</html>

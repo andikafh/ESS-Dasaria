@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ESS — Aktivitas AE</title>
+  <link rel="stylesheet" href="../css/design-system.css">
+  <style>
+    /* ─── Target Harian Card ─── */
+    .target-card {
+      background: linear-gradient(135deg, #1A55D4 0%, #1D6FF3 55%, #2F88FF 100%);
+      border-radius: var(--r);
+      padding: 18px 18px 18px 16px;
+      color: white;
+      box-shadow: 0 8px 24px rgba(29,111,243,.32), 0 2px 6px rgba(29,111,243,.18);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .gauge-wrap { position: relative; width: 88px; height: 88px; flex-shrink: 0; }
+    .gauge-wrap svg { display: block; transform: rotate(-90deg); }
+    .gauge-center {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+    }
+    .gauge-pct  { font-size: 20px; font-weight: 800; color: white; letter-spacing: -.5px; line-height: 1; }
+    .gauge-lbl  { font-size: 8px; color: rgba(255,255,255,.6); font-weight: 600; margin-top: 3px; text-transform: uppercase; letter-spacing: .4px; line-height: 1.3; }
+
+    .kpi-rows { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+    .kpi-r    { display: flex; align-items: center; gap: 8px; }
+    .kpi-r-lbl{ font-size: 11px; color: rgba(255,255,255,.75); font-weight: 600; width: 58px; flex-shrink: 0; }
+    .kpi-r-track{ flex: 1; height: 5px; background: rgba(255,255,255,.18); border-radius: 3px; overflow: hidden; }
+    .kpi-r-fill { height: 100%; border-radius: 3px; background: white; }
+    .kpi-r-val  { font-size: 11px; font-weight: 800; color: white; width: 30px; text-align: right; flex-shrink: 0; }
+
+    /* ─── Priority Card ─── */
+    .priority-card { background: white; border-radius: var(--r); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .pri-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--gray-50);
+      text-decoration: none;
+      transition: background .15s;
+    }
+    .pri-item:last-child { border-bottom: none; }
+    .pri-item:active { background: var(--gray-50); }
+    .pri-dot-box { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .pri-dot     { width: 10px; height: 10px; border-radius: 50%; }
+    .pri-body    { flex: 1; min-width: 0; }
+    .pri-title   { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+    .pri-desc    { font-size: 11px; color: var(--gray-400); }
+    .pri-arrow   { font-size: 20px; color: var(--gray-200); flex-shrink: 0; }
+
+    /* ─── Summary Grid ─── */
+    .sum-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .sum-card {
+      background: white; border-radius: var(--r);
+      box-shadow: var(--shadow-sm); padding: 14px;
+      display: block; text-decoration: none;
+      transition: box-shadow .15s; cursor: pointer;
+    }
+    .sum-card:active { box-shadow: var(--shadow-md); background: var(--gray-50); }
+    .sum-card-full { grid-column: 1 / -1; }
+
+    .sc-top   { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 9px; }
+    .sc-title { font-size: 10.5px; font-weight: 700; color: var(--gray-500); letter-spacing: .15px; line-height: 1.3; }
+    .sc-icon  { width: 30px; height: 30px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+    .sc-val   { font-size: 24px; font-weight: 800; letter-spacing: -.5px; color: var(--gray-900); line-height: 1; margin-bottom: 3px; }
+    .sc-frac  { font-size: 15px; color: var(--gray-300); font-weight: 500; letter-spacing: 0; }
+    .sc-sub   { font-size: 11px; color: var(--gray-400); margin-bottom: 8px; line-height: 1.35; }
+    .sc-footer{ display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+
+    .sc-prog-row  { display: flex; align-items: center; gap: 6px; width: 100%; margin-bottom: 6px; }
+    .sc-prog-track{ flex: 1; height: 4px; background: var(--gray-100); border-radius: 2px; overflow: hidden; }
+    .sc-prog-fill { height: 100%; border-radius: 2px; }
+
+    .mc-group { display: flex; align-items: center; gap: 3px; }
+    .mc-dot   { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .mc-text  { font-size: 10px; font-weight: 700; }
+
+    /* Customer Active inline layout */
+    .ca-row   { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .ca-left  { flex: 1; }
+    .ca-right { text-align: right; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar">
+    <span class="s-time">09:41</span>
+    <div class="s-icons"><span style="font-size:13px">🔋</span></div>
+  </div>
+
+  <div class="app">
+    <div class="page" style="padding-bottom:0">
+
+      <!-- Header -->
+      <div class="screen-header">
+        <h1 style="font-size:20px;font-weight:800;letter-spacing:-.5px;flex:1">Aktivitas</h1>
+        <button onclick="alert('Filter tanggal')" style="display:inline-flex;align-items:center;gap:5px;background:var(--primary-light);border:none;border-radius:20px;padding:7px 12px;font-size:12px;font-weight:700;color:var(--primary);cursor:pointer">
+          <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:var(--primary);fill:none;stroke-width:2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Hari ini
+        </button>
+      </div>
+
+      <!-- Target Harian -->
+      <div style="padding:14px 20px 0">
+        <div class="target-card">
+
+          <!-- Circular Gauge  r=36  C=226.2 -->
+          <div class="gauge-wrap">
+            <svg viewBox="0 0 88 88" width="88" height="88">
+              <circle cx="44" cy="44" r="36" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="8"/>
+              <circle cx="44" cy="44" r="36" fill="none" stroke="white"
+                stroke-width="8" stroke-linecap="round"
+                stroke-dasharray="153.8 226.2"/>
+            </svg>
+            <div class="gauge-center">
+              <div class="gauge-pct">68%</div>
+              <div class="gauge-lbl">Target<br>Harian</div>
+            </div>
+          </div>
+
+          <!-- KPI Rows -->
+          <div class="kpi-rows">
+            <div class="kpi-r">
+              <div class="kpi-r-lbl">Canvasing</div>
+              <div class="kpi-r-track"><div class="kpi-r-fill" style="width:50%"></div></div>
+              <div class="kpi-r-val">5/10</div>
+            </div>
+            <div class="kpi-r">
+              <div class="kpi-r-lbl">CP</div>
+              <div class="kpi-r-track"><div class="kpi-r-fill" style="width:80%"></div></div>
+              <div class="kpi-r-val">4/5</div>
+            </div>
+            <div class="kpi-r">
+              <div class="kpi-r-lbl">Follow Up</div>
+              <div class="kpi-r-track"><div class="kpi-r-fill" style="width:70%"></div></div>
+              <div class="kpi-r-val">7/10</div>
+            </div>
+            <div class="kpi-r">
+              <div class="kpi-r-lbl">Closing</div>
+              <div class="kpi-r-track"><div class="kpi-r-fill" style="width:50%"></div></div>
+              <div class="kpi-r-val">1/2</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Prioritas Hari Ini -->
+      <div class="section" style="padding-top:16px">
+        <div class="section-row">
+          <div class="section-title">Prioritas Hari Ini</div>
+          <a href="#" class="section-link">Lihat Semua</a>
+        </div>
+        <div class="priority-card">
+
+          <!-- MERAH — prospect overdue -->
+          <a href="follow-up.html" class="pri-item">
+            <div class="pri-dot-box" style="background:var(--danger-light)">
+              <div class="pri-dot" style="background:var(--danger)"></div>
+            </div>
+            <div class="pri-body">
+              <div class="pri-title" style="color:var(--danger-dark)">3 Prospect Overdue</div>
+              <div class="pri-desc">Belum dihubungi &gt; 7 hari</div>
+            </div>
+            <div class="pri-arrow">›</div>
+          </a>
+
+          <!-- KUNING — survey menunggu -->
+          <a href="survey.html" class="pri-item">
+            <div class="pri-dot-box" style="background:var(--warning-light)">
+              <div class="pri-dot" style="background:var(--warning)"></div>
+            </div>
+            <div class="pri-body">
+              <div class="pri-title" style="color:var(--warning-dark)">2 Survey Menunggu</div>
+              <div class="pri-desc">Dijadwalkan hari ini</div>
+            </div>
+            <div class="pri-arrow">›</div>
+          </a>
+
+          <!-- HIJAU — closing menunggu aktivasi -->
+          <a href="closing.html" class="pri-item">
+            <div class="pri-dot-box" style="background:var(--success-light)">
+              <div class="pri-dot" style="background:var(--success)"></div>
+            </div>
+            <div class="pri-body">
+              <div class="pri-title" style="color:var(--success-dark)">1 Closing Menunggu Aktivasi</div>
+              <div class="pri-desc">Segera lakukan aktivasi pelanggan</div>
+            </div>
+            <div class="pri-arrow">›</div>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- Ringkasan Aktivitas -->
+      <div class="section" style="padding-top:16px;padding-bottom:20px">
+        <div class="section-title" style="margin-bottom:12px">Ringkasan Aktivitas</div>
+        <div class="sum-grid">
+
+          <!-- 1. Kehadiran Lapangan -->
+          <a href="kehadiran-lapangan.html" class="sum-card">
+            <div class="sc-top">
+              <div class="sc-title">Kehadiran<br>Lapangan</div>
+              <span class="badge b-success badge-dot" style="font-size:9.5px;padding:3px 8px">Aktif</span>
+            </div>
+            <div class="sc-val" style="font-size:20px">4j 22m</div>
+            <div class="sc-sub">Durasi aktif hari ini</div>
+            <div class="sc-footer">
+              <span style="font-size:10px;color:var(--gray-500);font-weight:600">08:15 Check-in</span>
+              <span style="font-size:10px;color:var(--gray-300)">·</span>
+              <span style="font-size:10px;color:var(--gray-400)">5 Lokasi</span>
+            </div>
+          </a>
+
+          <!-- 2. Canvasing -->
+          <a href="canvasing.html" class="sum-card">
+            <div class="sc-top">
+              <div class="sc-title">Canvasing</div>
+              <div class="sc-icon" style="background:#EFF6FF">🗺️</div>
+            </div>
+            <div class="sc-val">5 <span class="sc-frac">/ 10</span></div>
+            <div class="sc-sub">Rumah dikunjungi</div>
+            <div class="sc-prog-row">
+              <div class="sc-prog-track">
+                <div class="sc-prog-fill" style="width:50%;background:var(--primary)"></div>
+              </div>
+              <span style="font-size:10px;font-weight:700;color:var(--primary)">50%</span>
+            </div>
+          </a>
+
+          <!-- 3. Customer Prospect -->
+          <a href="customer-prospect.html" class="sum-card">
+            <div class="sc-top">
+              <div class="sc-title">Customer Prospect</div>
+              <div class="sc-icon" style="background:#FFF7ED">🎯</div>
+            </div>
+            <div class="sc-val">12</div>
+            <div class="sc-sub">Total Prospect</div>
+            <div class="sc-footer">
+              <div class="mc-group">
+                <div class="mc-dot" style="background:var(--danger)"></div>
+                <span class="mc-text" style="color:var(--danger-dark)">Hot 3</span>
+              </div>
+              <div class="mc-group">
+                <div class="mc-dot" style="background:var(--warning)"></div>
+                <span class="mc-text" style="color:var(--warning-dark)">Warm 5</span>
+              </div>
+              <div class="mc-group">
+                <div class="mc-dot" style="background:var(--info)"></div>
+                <span class="mc-text" style="color:var(--info-dark)">Cold 4</span>
+              </div>
+            </div>
+          </a>
+
+          <!-- 4. Follow Up -->
+          <a href="follow-up.html" class="sum-card">
+            <div class="sc-top">
+              <div class="sc-title">Follow Up</div>
+              <div class="sc-icon" style="background:#FFF1F2">📞</div>
+            </div>
+            <div class="sc-val">7 <span class="sc-frac">/ 10</span></div>
+            <div class="sc-sub">Hari ini</div>
+            <div class="sc-footer">
+              <span class="badge b-danger" style="font-size:9.5px;padding:3px 8px">● 3 Overdue</span>
+            </div>
+          </a>
+
+          <!-- 5. Survey -->
+          <a href="survey.html" class="sum-card">
+            <div class="sc-top">
+              <div class="sc-title">Survey</div>
+              <div class="sc-icon" style="background:#F5F3FF">📋</div>
+            </div>
+            <div class="sc-val">2 <span class="sc-frac">/ 3</span></div>
+            <div class="sc-sub">Jadwal hari ini</div>
+            <div class="sc-footer">
+              <span class="badge b-warning" style="font-size:9.5px;padding:3px 8px">● 1 Terlambat</span>
+            </div>
+          </a>
+
+          <!-- 6. Closing -->
+          <a href="closing.html" class="sum-card">
+            <div class="sc-top">
+              <div class="sc-title">Closing</div>
+              <div class="sc-icon" style="background:#F0FDF4">🤝</div>
+            </div>
+            <div class="sc-val">1 <span class="sc-frac">/ 2</span></div>
+            <div class="sc-sub">Hari ini</div>
+            <div class="sc-footer">
+              <span class="badge b-warning" style="font-size:9.5px;padding:3px 8px">1 Menunggu Aktivasi</span>
+            </div>
+          </a>
+
+          <!-- 7. Customer Active — full width -->
+          <a href="customer-active.html" class="sum-card sum-card-full">
+            <div class="sc-top" style="margin-bottom:10px">
+              <div class="sc-title">Customer Active</div>
+              <div class="sc-icon" style="background:#FFFBEB">⭐</div>
+            </div>
+            <div class="ca-row">
+              <div class="ca-left">
+                <div class="sc-val" style="margin-bottom:2px">8</div>
+                <div class="sc-sub" style="margin-bottom:0">Pelanggan aktif</div>
+              </div>
+              <div style="width:1px;height:40px;background:var(--gray-100)"></div>
+              <div class="ca-right">
+                <div style="font-size:22px;font-weight:800;color:var(--danger-dark);letter-spacing:-.5px;line-height:1">2</div>
+                <div style="font-size:10px;color:var(--danger-dark);font-weight:700;margin-top:2px">Berisiko Churn</div>
+                <div style="font-size:10px;color:var(--gray-400);margin-top:1px">Perlu perhatian</div>
+              </div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+      <div style="height:calc(var(--nav-h) + 8px)"></div>
+    </div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav">
+    <a href="dashboard.html" class="nav-item">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/><path d="M3 12v9h18V12"/></svg>
+      </div>
+      <span class="nav-label">Beranda</span>
+    </a>
+    <a href="aktivitas.html" class="nav-item active">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      </div>
+      <span class="nav-label">Aktivitas</span>
+    </a>
+    <a href="notifikasi.html" class="nav-item">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+        <span class="nav-badge">3</span>
+      </div>
+      <span class="nav-label">Notifikasi</span>
+    </a>
+    <a href="profil.html" class="nav-item">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <span class="nav-label">Profil</span>
+    </a>
+  </nav>
+</div>
+<script src="../js/app.js"></script>
+</body>
+</html>

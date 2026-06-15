@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ESS — Profil Manajemen</title>
+  <link rel="stylesheet" href="../css/design-system.css">
+  <style>
+    .info-row { display:flex; align-items:flex-start; padding:13px 0; border-bottom:1px solid var(--gray-50); gap:12px; }
+    .info-row:last-child { border-bottom:none; }
+    .info-lbl { font-size:12px; color:var(--gray-400); font-weight:500; flex:0 0 120px; padding-top:1px; }
+    .info-val { font-size:13px; font-weight:700; color:var(--gray-900); flex:1; }
+  </style>
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar" style="background:transparent;position:absolute;top:0;left:0;right:0;z-index:60">
+    <span class="s-time" style="color:white">09:41</span>
+    <div class="s-icons"><svg viewBox="0 0 17 12" style="fill:white;width:16px;height:12px"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="1.5" width="3" height="10.5" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/></svg><span style="color:white;font-size:13px">🔋</span></div>
+  </div>
+
+  <div class="app">
+    <div class="page" style="padding-bottom:0">
+
+      <!-- Hero -->
+      <div class="hero-atasan" style="padding:58px 24px 28px">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
+          <div style="width:64px;height:64px;border-radius:20px;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:white;flex-shrink:0">BS</div>
+          <div style="flex:1">
+            <div style="font-size:19px;font-weight:800;color:white;letter-spacing:-.4px">Budi Santoso</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.7);margin-top:2px">Kepala Cabang</div>
+            <div style="margin-top:6px"><span class="role-tag">Manajemen</span></div>
+          </div>
+          <a href="dashboard-atasan.html" style="width:36px;height:36px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;text-decoration:none">
+            <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:white;fill:none;stroke-width:2"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/></svg>
+          </a>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <span style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:600;color:rgba(255,255,255,.9)">🏢 Cabang Jakarta Pusat</span>
+          <span style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:600;color:rgba(255,255,255,.9)">👔 Kepala Cabang</span>
+        </div>
+      </div>
+
+      <!-- Stats Strip -->
+      <div style="background:white;padding:16px 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--gray-100)">
+        <div style="background:white;text-align:center;padding:14px 8px">
+          <div style="font-size:22px;font-weight:800;color:var(--success-dark)">23</div>
+          <div style="font-size:11px;color:var(--gray-400);font-weight:500;margin-top:2px">Tim Hadir</div>
+        </div>
+        <div style="background:white;text-align:center;padding:14px 8px">
+          <div style="font-size:22px;font-weight:800;color:var(--warning-dark)">3</div>
+          <div style="font-size:11px;color:var(--gray-400);font-weight:500;margin-top:2px">Approval Pending</div>
+        </div>
+        <div style="background:white;text-align:center;padding:14px 8px">
+          <div style="font-size:22px;font-weight:800;color:var(--primary)">70%</div>
+          <div style="font-size:11px;color:var(--gray-400);font-weight:500;margin-top:2px">Target Sales</div>
+        </div>
+      </div>
+
+      <!-- Profile Info -->
+      <div style="margin:16px 20px 0">
+        <div style="font-size:11px;font-weight:700;color:var(--gray-400);letter-spacing:.5px;margin-bottom:10px">INFORMASI KARYAWAN</div>
+        <div class="card" style="padding:0 16px">
+          <div class="info-row"><span class="info-lbl">Nama Lengkap</span><span class="info-val">Budi Santoso</span></div>
+          <div class="info-row"><span class="info-lbl">NIK</span><span class="info-val">MGT-2020-001</span></div>
+          <div class="info-row"><span class="info-lbl">Jabatan</span><span class="info-val">Kepala Cabang</span></div>
+          <div class="info-row"><span class="info-lbl">Cabang</span><span class="info-val">Cabang Jakarta Pusat</span></div>
+          <div class="info-row"><span class="info-lbl">Lama Kerja</span><span class="info-val">6 Tahun 3 Bulan</span></div>
+          <div class="info-row"><span class="info-lbl">Atasan</span><span class="info-val">Direktur Regional Jawa</span></div>
+          <div class="info-row"><span class="info-lbl">Bergabung</span><span class="info-val">10 Maret 2020</span></div>
+          <div class="info-row"><span class="info-lbl">Email</span><span class="info-val">budi.santoso@company.co.id</span></div>
+          <div class="info-row"><span class="info-lbl">Telepon</span><span class="info-val">+62 811-2345-6789</span></div>
+        </div>
+      </div>
+
+      <!-- Pengaturan -->
+      <div style="margin:20px 20px 0">
+        <div style="font-size:11px;font-weight:700;color:var(--gray-400);letter-spacing:.5px;margin-bottom:10px">PENGATURAN</div>
+        <div class="card" style="padding:0 16px">
+          <div class="info-row" style="cursor:pointer" onclick="alert('Ganti Password')">
+            <span class="info-lbl">🔒 Ganti Password</span>
+            <span style="color:var(--gray-300);font-size:18px">›</span>
+          </div>
+          <div class="info-row">
+            <span class="info-lbl">🌐 Bahasa</span>
+            <span class="info-val" style="color:var(--gray-500)">Indonesia</span>
+          </div>
+          <div class="info-row">
+            <span class="info-lbl">ℹ️ Versi Aplikasi</span>
+            <span class="info-val" style="color:var(--gray-500)">v2.0.1</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Logout -->
+      <div style="padding:16px 20px 28px">
+        <a href="../index.html" class="btn btn-danger btn-full" onclick="return confirm('Yakin ingin keluar dari akun?')">
+          <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:white;fill:none;stroke-width:2"><path d="M17 16l4-4m0 0l-4-4m4 4H7"/><path d="M3 21V3"/></svg>
+          Keluar dari Akun
+        </a>
+        <div style="text-align:center;margin-top:10px;font-size:11px;color:var(--gray-300)">ESS v2.0.1 · Data dilindungi &amp; terenkripsi</div>
+      </div>
+
+      <div style="height:calc(var(--nav-h) + 20px)"></div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="dashboard-atasan.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/><path d="M3 12v9h18V12"/></svg></div>
+      <span class="nav-label">Beranda</span>
+    </a>
+    <a href="#" class="nav-item" onclick="alert('Halaman Tim')">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+      <span class="nav-label">Tim</span>
+    </a>
+    <a href="#" class="nav-item" onclick="alert('Halaman Approval')">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        <span class="nav-badge">3</span>
+      </div>
+      <span class="nav-label">Approval</span>
+    </a>
+    <a href="profil.html" class="nav-item active">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <span class="nav-label">Profil</span>
+    </a>
+  </nav>
+</div>
+<script src="../js/app.js"></script>
+</body>
+</html>

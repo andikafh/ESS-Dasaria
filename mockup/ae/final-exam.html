@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Final Exam Phase 2</title>
+  <link rel="stylesheet" href="../css/design-system.css">
+  <style>
+    body, .app, .page { background:#F5F7FB; }
+    .exam-hdr { background:linear-gradient(135deg,#1040B8,#1D6FF3); padding:52px 20px 16px; }
+    .opt { display:flex; align-items:flex-start; gap:12px; padding:14px 16px; background:white; border:1.5px solid #EEF0F7; border-radius:14px; margin-bottom:10px; cursor:pointer; transition:all .15s; -webkit-tap-highlight-color:transparent; }
+    .opt:active { background:#F5F8FF; }
+    .opt.selected { background:#EEF4FF; border-color:var(--primary); }
+    .opt.correct  { background:var(--success-light); border-color:var(--success); }
+    .opt-letter { width:30px; height:30px; border-radius:50%; background:#F5F7FB; border:1.5px solid #EEF0F7; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:#444E5E; flex-shrink:0; transition:all .15s; }
+    .opt.selected .opt-letter { background:var(--primary); border-color:var(--primary); color:white; }
+    .opt.correct  .opt-letter { background:var(--success); border-color:var(--success); color:white; }
+    .opt-text { font-size:13px; font-weight:500; color:#1A1A2E; line-height:1.55; flex:1; padding-top:5px; }
+    .opt.selected .opt-text { color:var(--primary); font-weight:600; }
+    .opt.correct  .opt-text  { color:var(--success-dark); font-weight:600; }
+    .nav-btn { flex:1; padding:14px; border-radius:12px; font-size:14px; font-weight:700; border:none; font-family:inherit; cursor:pointer; }
+  </style>
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar" style="background:transparent;position:absolute;top:0;left:0;right:0;z-index:60">
+    <span class="s-time" style="color:white">09:41</span>
+    <div class="s-icons"><svg viewBox="0 0 17 12" style="fill:white;width:15px;height:11px"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="1.5" width="3" height="10.5" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/></svg><span style="color:white;font-size:13px">🔋</span></div>
+  </div>
+
+  <div class="app">
+    <div class="page" style="padding-bottom:0">
+
+      <!-- Header (gradient) -->
+      <div class="exam-hdr">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+          <a href="modul-detail.html" style="width:34px;height:34px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:10px;display:flex;align-items:center;justify-content:center;text-decoration:none;flex-shrink:0">
+            <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:white;fill:none;stroke-width:2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+          </a>
+          <span style="flex:1;font-size:15px;font-weight:800;color:white">Final Exam Phase 2</span>
+          <!-- Timer -->
+          <div style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:6px 12px">
+            <svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:white;fill:none;stroke-width:2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            <span style="font-size:13px;font-weight:800;color:white" id="timer">00:29:45</span>
+          </div>
+        </div>
+        <!-- Sub info -->
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:11px;color:rgba(255,255,255,.7)">Communication · 15 Soal · Min. 75 untuk lulus</div>
+          <div style="text-align:right">
+            <span style="font-size:20px;font-weight:800;color:white" id="qNum">5</span>
+            <span style="font-size:11px;color:rgba(255,255,255,.65)"> / 15</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Exam Content -->
+      <div style="padding:16px">
+
+        <!-- Progress bar -->
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:18px">
+          <div style="flex:1;height:5px;background:#EEF1F7;border-radius:3px;overflow:hidden">
+            <div style="height:100%;background:var(--primary);border-radius:3px;transition:width .3s" id="qProgress"></div>
+          </div>
+          <span style="font-size:11px;font-weight:700;color:var(--primary)" id="qPct">33%</span>
+        </div>
+
+        <!-- Exam badge -->
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:14px">
+          <span style="background:var(--primary-light);color:var(--primary-dark);border-radius:6px;padding:3px 8px;font-size:10px;font-weight:700">Final Exam</span>
+          <span style="font-size:11px;color:#9BA5B4">Phase 2 — Communication</span>
+        </div>
+
+        <!-- Question -->
+        <div style="background:white;border-radius:16px;padding:16px;margin-bottom:16px;border:1px solid #EEF0F7">
+          <div style="font-size:10px;font-weight:700;color:#9BA5B4;letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px">Soal 5 dari 15</div>
+          <p style="font-size:14px;font-weight:600;color:#1A1A2E;line-height:1.65;margin:0" id="question">
+            Prospek mengatakan harga terlalu mahal. Langkah terbaik yang harus dilakukan AE adalah?
+          </p>
+        </div>
+
+        <!-- Options -->
+        <div id="options">
+          <div class="opt" onclick="selectOpt(this,'A',0)">
+            <div class="opt-letter">A</div>
+            <div class="opt-text">Memberikan diskon langsung</div>
+          </div>
+          <div class="opt selected correct" onclick="selectOpt(this,'B',1)">
+            <div class="opt-letter">B</div>
+            <div class="opt-text">Menjelaskan value dan manfaat yang didapat prospek</div>
+          </div>
+          <div class="opt" onclick="selectOpt(this,'C',2)">
+            <div class="opt-letter">C</div>
+            <div class="opt-text">Mengakhiri presentasi</div>
+          </div>
+          <div class="opt" onclick="selectOpt(this,'D',3)">
+            <div class="opt-letter">D</div>
+            <div class="opt-text">Menawarkan produk lain</div>
+          </div>
+        </div>
+
+        <!-- Progress Final Exam label -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;margin-bottom:6px">
+          <span style="font-size:11px;font-weight:600;color:#9BA5B4">Progress Final Exam</span>
+          <span style="font-size:11px;font-weight:700;color:var(--primary)" id="fpct">33%</span>
+        </div>
+        <div style="height:5px;background:#EEF1F7;border-radius:3px;overflow:hidden;margin-bottom:4px">
+          <div style="width:33%;height:100%;background:var(--primary);border-radius:3px;transition:width .3s" id="fProgress"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between">
+          <span style="font-size:10px;color:#B8C0CC">5 dijawab</span>
+          <span style="font-size:10px;color:#B8C0CC">15 total soal</span>
+        </div>
+
+      </div><!-- /padding -->
+
+      <!-- Nav buttons -->
+      <div style="position:sticky;bottom:var(--nav-h);background:white;padding:12px 16px;border-top:1px solid #EEF0F7;display:flex;gap:10px">
+        <button class="nav-btn" style="background:#F5F7FB;color:#444E5E;border:1px solid #EEF0F7" onclick="prevQ()">
+          ← Sebelumnya
+        </button>
+        <button class="nav-btn" style="background:var(--primary);color:white;box-shadow:0 4px 12px rgba(29,111,243,.25)" onclick="nextQ()">
+          Selanjutnya →
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="dashboard.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9M9 21V12h6v9"/></svg></div>
+      <span class="nav-label">Beranda</span>
+    </a>
+    <a href="aktivitas.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+      <span class="nav-label">Aktivitas</span>
+    </a>
+    <a href="notifikasi.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg></div>
+      <span class="nav-label">Notifikasi</span>
+    </a>
+    <a href="profil.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <span class="nav-label">Profil</span>
+    </a>
+  </nav>
+</div>
+<script src="../js/app.js"></script>
+<script>
+var total = 15, qIdx = 4, selected = 1;
+
+var questions = [
+  { q: "Apa tujuan utama dari tahap 'Greeting' dalam proses penjualan?", a: ["Menawarkan produk langsung","Membangun rapport dan kepercayaan awal","Menjelaskan harga","Meminta referensi"], correct: 1 },
+  { q: "Need Analysis bertujuan untuk?", a: ["Mengetahui anggaran prospek","Memahami kebutuhan dan masalah prospek secara mendalam","Memperpendek durasi kunjungan","Memberikan penawaran tercepat"], correct: 1 },
+  { q: "Teknik 'SPIN Selling' yang benar adalah?", a: ["Situation, Problem, Implication, Need-payoff","Sales, Price, Interest, Negotiation","Search, Plan, Implement, Navigate","Strength, Priority, Influence, Network"], correct: 0 },
+  { q: "Saat prospek tidak ada di tempat saat kunjungan pertama, langkah terbaik adalah?", a: ["Melewati dan mencari prospek lain","Meninggalkan brosur dan membuat janji ulang","Menelepon berulang kali","Melaporkan ke Branch Leader"], correct: 1 },
+  { q: "Prospek mengatakan harga terlalu mahal. Langkah terbaik yang harus dilakukan AE adalah?", a: ["Memberikan diskon langsung","Menjelaskan value dan manfaat yang didapat prospek","Mengakhiri presentasi","Menawarkan produk lain"], correct: 1 },
+  { q: "Closing yang baik ditandai dengan?", a: ["Prospek mau menerima brosur","Prospek mengisi formulir persetujuan","Prospek berjanji akan menelepon","Prospek tidak menolak tawaran"], correct: 1 },
+  { q: "Follow up sebaiknya dilakukan paling lambat berapa hari setelah kunjungan pertama?", a: ["7 hari","3 hari","14 hari","1 hari"], correct: 1 }
+];
+
+function updateDisplay() {
+  var pct = Math.round((qIdx+1)/total*100);
+  document.getElementById('qNum').textContent = qIdx+1;
+  document.getElementById('qProgress').style.width = pct+'%';
+  document.getElementById('qPct').textContent = pct+'%';
+  document.getElementById('fProgress').style.width = pct+'%';
+  document.getElementById('fpct').textContent = pct+'%';
+}
+
+function renderQuestion() {
+  var d = questions[qIdx % questions.length];
+  document.getElementById('question').textContent = d.q;
+  updateDisplay();
+  var html = '';
+  ['A','B','C','D'].forEach(function(l,i) {
+    var cls = 'opt' + (selected===i?' selected'+(i===d.correct?' correct':''):'');
+    html += '<div class="'+cls+'" onclick="selectOpt(this,\''+l+'\','+i+')">';
+    html += '<div class="opt-letter">'+l+'</div>';
+    html += '<div class="opt-text">'+d.a[i]+'</div></div>';
+  });
+  document.getElementById('options').innerHTML = html;
+}
+
+function selectOpt(el, letter, idx) {
+  selected = idx;
+  var d = questions[qIdx % questions.length];
+  document.querySelectorAll('.opt').forEach(function(o){ o.classList.remove('selected','correct'); });
+  el.classList.add('selected');
+  if (idx === d.correct) el.classList.add('correct');
+}
+
+function nextQ() {
+  if(qIdx < total-1) { qIdx++; selected=-1; renderQuestion(); }
+  else {
+    alert('Final Exam selesai! Nilai Anda: 85/100 — LULUS ✓\nSelamat! Phase 2 Communication berhasil diselesaikan.');
+    window.location.href='dashboard.html#learning';
+  }
+}
+function prevQ() { if(qIdx>0){ qIdx--; selected=-1; renderQuestion(); } }
+
+/* Timer */
+var sec = 29*60+45;
+setInterval(function(){
+  if(sec>0) sec--;
+  var m=Math.floor(sec/60), s=sec%60;
+  document.getElementById('timer').textContent='00:'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}, 1000);
+</script>
+</body>
+</html>

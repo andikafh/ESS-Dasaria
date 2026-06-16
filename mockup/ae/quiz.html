@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Quiz Modul</title>
+  <link rel="stylesheet" href="../css/design-system.css">
+  <style>
+    body, .app, .page { background:#F5F7FB; }
+    .quiz-hdr { background:white; padding:52px 20px 14px; border-bottom:1px solid #EEF0F7; display:flex; align-items:center; gap:12px; }
+    .back-btn { width:36px; height:36px; background:#F5F7FB; border-radius:10px; border:1px solid #EEF0F7; display:flex; align-items:center; justify-content:center; text-decoration:none; flex-shrink:0; }
+    .timer-badge { display:flex; align-items:center; gap:5px; background:#FEF3F2; border-radius:20px; padding:6px 12px; flex-shrink:0; }
+    .opt { display:flex; align-items:flex-start; gap:12px; padding:14px 16px; background:white; border:1.5px solid #EEF0F7; border-radius:14px; margin-bottom:10px; cursor:pointer; transition:all .15s; -webkit-tap-highlight-color:transparent; }
+    .opt:active { background:#F5F8FF; }
+    .opt.selected { background:#EEF4FF; border-color:var(--primary); }
+    .opt.correct  { background:var(--success-light); border-color:var(--success); }
+    .opt-letter { width:30px; height:30px; border-radius:50%; background:#F5F7FB; border:1.5px solid #EEF0F7; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:#444E5E; flex-shrink:0; transition:all .15s; }
+    .opt.selected .opt-letter { background:var(--primary); border-color:var(--primary); color:white; }
+    .opt.correct  .opt-letter { background:var(--success); border-color:var(--success); color:white; }
+    .opt-text { font-size:13px; font-weight:500; color:#1A1A2E; line-height:1.55; flex:1; padding-top:5px; }
+    .opt.selected .opt-text { color:var(--primary); font-weight:600; }
+    .opt.correct  .opt-text  { color:var(--success-dark); font-weight:600; }
+    .nav-btn { flex:1; padding:14px; border-radius:12px; font-size:14px; font-weight:700; border:none; font-family:inherit; cursor:pointer; }
+  </style>
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar" style="background:white;position:absolute;top:0;left:0;right:0;z-index:60">
+    <span class="s-time">09:41</span>
+    <div class="s-icons"><svg viewBox="0 0 17 12" style="fill:#1A1A2E;width:15px;height:11px"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="1.5" width="3" height="10.5" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/></svg><span style="font-size:13px">🔋</span></div>
+  </div>
+
+  <div class="app">
+    <div class="page" style="padding-bottom:0">
+
+      <!-- Header -->
+      <div class="quiz-hdr">
+        <a href="modul-detail.html" class="back-btn">
+          <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:#444E5E;fill:none;stroke-width:2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        </a>
+        <span style="flex:1;font-size:15px;font-weight:800;color:#1A1A2E">Quiz Modul</span>
+        <div class="timer-badge" id="timerBadge">
+          <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--danger);fill:none;stroke-width:2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <span style="font-size:13px;font-weight:800;color:var(--danger)" id="timer">00:14:36</span>
+        </div>
+      </div>
+
+      <!-- Quiz Content -->
+      <div style="padding:16px">
+
+        <!-- Meta row -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#1A1A2E">3. Handling Objection</div>
+            <div style="font-size:11px;color:#9BA5B4;margin-top:2px">Phase 2 — Communication</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:20px;font-weight:800;color:var(--primary);line-height:1" id="qNum">4</div>
+            <div style="font-size:11px;color:#9BA5B4">dari 10</div>
+          </div>
+        </div>
+
+        <!-- Progress bar -->
+        <div style="height:5px;background:#EEF1F7;border-radius:3px;overflow:hidden;margin-bottom:20px">
+          <div style="width:40%;height:100%;background:var(--primary);border-radius:3px" id="qProgress"></div>
+        </div>
+
+        <!-- Question -->
+        <div style="background:white;border-radius:16px;padding:16px;margin-bottom:16px;border:1px solid #EEF0F7">
+          <div style="font-size:10px;font-weight:700;color:#9BA5B4;letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px">Pertanyaan 4</div>
+          <p style="font-size:14px;font-weight:600;color:#1A1A2E;line-height:1.65;margin:0" id="question">
+            Teknik pertama yang harus dilakukan saat prospek menyampaikan objection adalah?
+          </p>
+        </div>
+
+        <!-- Options -->
+        <div id="options">
+          <div class="opt" onclick="selectOpt(this,'A')">
+            <div class="opt-letter">A</div>
+            <div class="opt-text">Menjelaskan keunggulan produk segera</div>
+          </div>
+          <div class="opt" onclick="selectOpt(this,'B')">
+            <div class="opt-letter">B</div>
+            <div class="opt-text">Menawarkan diskon</div>
+          </div>
+          <div class="opt selected correct" onclick="selectOpt(this,'C')">
+            <div class="opt-letter">C</div>
+            <div class="opt-text">Mendengarkan dan memahami keberatan prospek</div>
+          </div>
+          <div class="opt" onclick="selectOpt(this,'D')">
+            <div class="opt-letter">D</div>
+            <div class="opt-text">Mengalihkan pembicaraan</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Nav buttons -->
+      <div style="position:sticky;bottom:var(--nav-h);background:white;padding:12px 16px;border-top:1px solid #EEF0F7;display:flex;gap:10px">
+        <button class="nav-btn" style="background:#F5F7FB;color:#444E5E;border:1px solid #EEF0F7" onclick="prevQ()">
+          ← Sebelumnya
+        </button>
+        <button class="nav-btn" style="background:var(--primary);color:white;box-shadow:0 4px 12px rgba(29,111,243,.25)" onclick="nextQ()">
+          Selanjutnya →
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="dashboard.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9M9 21V12h6v9"/></svg></div>
+      <span class="nav-label">Beranda</span>
+    </a>
+    <a href="aktivitas.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+      <span class="nav-label">Aktivitas</span>
+    </a>
+    <a href="notifikasi.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg></div>
+      <span class="nav-label">Notifikasi</span>
+    </a>
+    <a href="profil.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <span class="nav-label">Profil</span>
+    </a>
+  </nav>
+</div>
+<script src="../js/app.js"></script>
+<script>
+var total = 10, current = 4;
+
+var questions = [
+  { q: "Teknik pertama yang harus dilakukan saat prospek menyampaikan objection adalah?", a: ["Menjelaskan keunggulan produk segera","Menawarkan diskon","Mendengarkan dan memahami keberatan prospek","Mengalihkan pembicaraan"], correct: 2 },
+  { q: "Apa yang dimaksud dengan 'Empathy Statement' dalam menangani objection?", a: ["Menyetujui semua keluhan prospek","Mengakui perasaan prospek sebelum memberikan solusi","Meminta maaf atas ketidaknyamanan","Menghindari perdebatan"], correct: 1 },
+  { q: "Saat prospek berkata 'Saya perlu pikir-pikir dulu', langkah terbaik adalah?", a: ["Membiarkan prospek pergi","Memberikan tenggat waktu penawaran","Menggali alasan di balik keberatan","Langsung menawarkan harga terendah"], correct: 2 },
+  { q: "Objection 'Harga terlalu mahal' paling tepat direspons dengan?", a: ["Memberikan diskon langsung","Menawarkan cicilan","Menjelaskan value dan manfaat yang didapat prospek","Membandingkan dengan kompetitor"], correct: 2 },
+  { q: "Teknik FAB dalam menjelaskan produk adalah singkatan dari?", a: ["Feature, Advantage, Benefit","Function, Area, Business","Fast, Accurate, Best","Focus, Action, Balance"], correct: 0 }
+];
+
+var qIdx = 3;
+var selected = 2;
+
+function renderQuestion() {
+  var d = questions[qIdx];
+  document.getElementById('question').textContent = d.q;
+  document.getElementById('qNum').textContent = qIdx + 1;
+  document.getElementById('qProgress').style.width = ((qIdx+1)/total*100)+'%';
+  var html = '';
+  ['A','B','C','D'].forEach(function(l,i) {
+    var cls = 'opt' + (selected===i?' selected'+(i===d.correct?' correct':''):'');
+    html += '<div class="'+cls+'" onclick="selectOpt(this,\''+l+'\','+i+')">';
+    html += '<div class="opt-letter">'+l+'</div>';
+    html += '<div class="opt-text">'+d.a[i]+'</div></div>';
+  });
+  document.getElementById('options').innerHTML = html;
+}
+
+function selectOpt(el, letter, idx) {
+  selected = idx;
+  document.querySelectorAll('.opt').forEach(function(o){ o.classList.remove('selected','correct'); });
+  el.classList.add('selected');
+  if (idx === questions[qIdx].correct) el.classList.add('correct');
+}
+
+function nextQ() {
+  if (qIdx < questions.length-1) { qIdx++; selected = -1; renderQuestion(); }
+  else { window.location.href='final-exam.html'; }
+}
+function prevQ() {
+  if (qIdx > 0) { qIdx--; selected = -1; renderQuestion(); }
+}
+
+/* Timer countdown */
+var sec = 14*60+36;
+setInterval(function(){
+  if(sec>0) sec--;
+  var m=Math.floor(sec/60), s=sec%60;
+  document.getElementById('timer').textContent='00:'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}, 1000);
+</script>
+</body>
+</html>

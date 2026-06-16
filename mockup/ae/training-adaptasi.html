@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ESS — Training &amp; Adaptasi</title>
+  <link rel="stylesheet" href="../css/design-system.css">
+  <style>
+    /* Phase card */
+    .phase-card {
+      background: var(--white); border-radius: var(--r);
+      box-shadow: var(--shadow-sm); overflow: hidden;
+    }
+    .phase-header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px; cursor: pointer;
+    }
+    .phase-num {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800; flex-shrink: 0;
+    }
+    .pn-done   { background: var(--success-light); color: var(--success-dark); }
+    .pn-active { background: #EDE9FE; color: #4C1D95; }
+    .pn-lock   { background: var(--gray-100); color: var(--gray-400); }
+
+    .phase-body { flex: 1; }
+    .phase-name { font-size: 14px; font-weight: 700; color: var(--gray-900); margin-bottom: 2px; }
+    .phase-sub  { font-size: 11px; color: var(--gray-400); }
+
+    /* Material list item */
+    .mat-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 16px; border-bottom: 1px solid var(--gray-50);
+    }
+    .mat-item:last-child { border-bottom: none; }
+    .mat-dot { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; }
+    .md-done    { background: var(--success-light); color: var(--success-dark); }
+    .md-active  { background: var(--warning-light); color: var(--warning-dark); }
+    .md-pending { background: var(--gray-100); color: var(--gray-400); }
+    .mat-title  { font-size: 13px; font-weight: 600; color: var(--gray-800); }
+    .mat-badge  { margin-left: auto; flex-shrink: 0; }
+
+    /* Assessment section */
+    .assess-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 16px; border-bottom: 1px solid var(--gray-50);
+    }
+    .assess-row:last-child { border-bottom: none; }
+    .assess-icon { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+    .assess-body { flex: 1; }
+    .assess-title{ font-size: 13px; font-weight: 600; color: var(--gray-900); }
+    .assess-sub  { font-size: 11px; color: var(--gray-400); margin-top: 1px; }
+
+    /* Cert badge */
+    .cert-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--success-light); border: 1px solid rgba(18,183,106,.25);
+      border-radius: 20px; padding: 4px 12px;
+      font-size: 11px; font-weight: 700; color: var(--success-dark);
+    }
+  </style>
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar">
+    <span class="s-time">09:41</span>
+    <div class="s-icons"><span style="font-size:13px">🔋</span></div>
+  </div>
+
+  <div class="app">
+    <div class="page" style="padding-bottom:0">
+
+      <!-- Header -->
+      <div class="screen-header">
+        <a href="dashboard-trainee.html" class="btn-back">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        </a>
+        <h1>Training &amp; Adaptasi</h1>
+        <span class="badge b-primary">65%</span>
+      </div>
+
+      <!-- Overall Progress Banner -->
+      <div style="background:linear-gradient(135deg,#1E1B4B,#3730A3);padding:18px 20px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div>
+            <div style="font-size:10px;color:rgba(255,255,255,.55);font-weight:600;letter-spacing:.5px;text-transform:uppercase;margin-bottom:3px">Status Adaptasi</div>
+            <div style="font-size:15px;font-weight:800;color:white">Phase 2 — Communication</div>
+          </div>
+          <span style="background:rgba(247,144,9,.3);border:1px solid rgba(247,144,9,.45);border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;color:#FEF3C7">In Progress</span>
+        </div>
+        <div style="background:rgba(255,255,255,.18);border-radius:6px;height:7px;overflow:hidden">
+          <div style="width:65%;background:white;border-radius:6px;height:100%"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:6px">
+          <span style="font-size:10px;color:rgba(255,255,255,.45)">Phase 1 Selesai · Phase 2 Aktif · Phase 3 Terkunci</span>
+          <span style="font-size:10px;color:rgba(255,255,255,.65);font-weight:700">65%</span>
+        </div>
+      </div>
+
+      <!-- PHASE 1: Fundamental (Completed) -->
+      <div class="section" style="padding-top:18px">
+        <div class="phase-card">
+          <div class="phase-header">
+            <div class="phase-num pn-done">✓</div>
+            <div class="phase-body">
+              <div class="phase-name">Phase 1 · Fundamental</div>
+              <div class="phase-sub">5 materi · Lulus 94 · Selesai 14 Jun 2026</div>
+            </div>
+            <div class="cert-badge">🎓 Certified</div>
+          </div>
+          <!-- Collapsed summary row -->
+          <div style="padding:0 16px 14px;display:flex;gap:8px;flex-wrap:wrap">
+            <span style="font-size:11px;color:var(--gray-400);background:var(--gray-50);border-radius:20px;padding:3px 9px">Company Introduction ✓</span>
+            <span style="font-size:11px;color:var(--gray-400);background:var(--gray-50);border-radius:20px;padding:3px 9px">Product Knowledge ✓</span>
+            <span style="font-size:11px;color:var(--gray-400);background:var(--gray-50);border-radius:20px;padding:3px 9px">Coverage Area ✓</span>
+            <span style="font-size:11px;color:var(--gray-400);background:var(--gray-50);border-radius:20px;padding:3px 9px">SOP Sales ✓</span>
+            <span style="font-size:11px;color:var(--gray-400);background:var(--gray-50);border-radius:20px;padding:3px 9px">Value Proposition ✓</span>
+          </div>
+          <div style="margin:0 16px 14px;display:flex;gap:8px">
+            <div style="flex:1;background:var(--success-light);border-radius:8px;padding:9px 12px;text-align:center">
+              <div style="font-size:16px;font-weight:800;color:var(--success-dark)">88</div>
+              <div style="font-size:10px;color:var(--success-dark);font-weight:600">Quiz</div>
+            </div>
+            <div style="flex:1;background:var(--success-light);border-radius:8px;padding:9px 12px;text-align:center">
+              <div style="font-size:16px;font-weight:800;color:var(--success-dark)">94</div>
+              <div style="font-size:10px;color:var(--success-dark);font-weight:600">Final Exam</div>
+            </div>
+            <div style="flex:1;background:var(--success-light);border-radius:8px;padding:9px 12px;text-align:center">
+              <div style="font-size:16px;font-weight:800;color:var(--success-dark)">≥80</div>
+              <div style="font-size:10px;color:var(--success-dark);font-weight:600">Min Lulus</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 2: Communication (Active — Expanded) -->
+      <div class="section" style="padding-top:12px">
+        <div class="phase-card" style="border:2px solid #A5B4FC">
+          <div class="phase-header" style="background:#F5F3FF">
+            <div class="phase-num pn-active">2</div>
+            <div class="phase-body">
+              <div class="phase-name" style="color:#3730A3">Phase 2 · Communication</div>
+              <div class="phase-sub">4 materi · Perlu: Quiz · Final Exam · Roleplay</div>
+            </div>
+            <span class="badge" style="background:#EDE9FE;color:#4C1D95;flex-shrink:0">Aktif</span>
+          </div>
+
+          <!-- Sub-label: Materi -->
+          <div style="padding:12px 16px 4px;font-size:11px;font-weight:700;color:var(--gray-400);letter-spacing:.5px;text-transform:uppercase">Materi</div>
+
+          <div class="mat-item">
+            <div class="mat-dot md-done">✓</div>
+            <div class="mat-title">Greeting &amp; Opening</div>
+            <span class="badge b-success mat-badge" style="font-size:10px;padding:2px 8px">Selesai</span>
+          </div>
+          <div class="mat-item">
+            <div class="mat-dot md-done">✓</div>
+            <div class="mat-title">Need Analysis</div>
+            <span class="badge b-success mat-badge" style="font-size:10px;padding:2px 8px">Selesai</span>
+          </div>
+          <div class="mat-item">
+            <div class="mat-dot md-active">▶</div>
+            <div class="mat-title">Handling Objection</div>
+            <span class="badge b-warning mat-badge" style="font-size:10px;padding:2px 8px">In Progress</span>
+          </div>
+          <div class="mat-item">
+            <div class="mat-dot md-pending">○</div>
+            <div class="mat-title" style="color:var(--gray-400)">Presentation Skill</div>
+            <span class="badge b-neutral mat-badge" style="font-size:10px;padding:2px 8px">Belum</span>
+          </div>
+
+          <!-- Sub-label: Validasi -->
+          <div style="padding:12px 16px 4px;font-size:11px;font-weight:700;color:var(--gray-400);letter-spacing:.5px;text-transform:uppercase">Validasi</div>
+
+          <div class="assess-row">
+            <div class="assess-icon" style="background:var(--success-light)">📝</div>
+            <div class="assess-body">
+              <div class="assess-title">Quiz</div>
+              <div class="assess-sub">Skor: 86 · Min lulus: 80</div>
+            </div>
+            <span class="badge b-success" style="font-size:10px;padding:2px 8px">Lulus ✓</span>
+          </div>
+          <div class="assess-row">
+            <div class="assess-icon" style="background:var(--warning-light)">📄</div>
+            <div class="assess-body">
+              <div class="assess-title">Final Exam</div>
+              <div class="assess-sub">Selesaikan materi dulu</div>
+            </div>
+            <span class="badge b-warning" style="font-size:10px;padding:2px 8px">Pending</span>
+          </div>
+          <div class="assess-row">
+            <div class="assess-icon" style="background:var(--gray-100)">🎭</div>
+            <div class="assess-body">
+              <div class="assess-title">Roleplay Simulation</div>
+              <div class="assess-sub">Setelah Final Exam lulus</div>
+            </div>
+            <span class="badge b-neutral" style="font-size:10px;padding:2px 8px">🔒</span>
+          </div>
+
+          <!-- Approval -->
+          <div style="padding:12px 16px 4px;font-size:11px;font-weight:700;color:var(--gray-400);letter-spacing:.5px;text-transform:uppercase">Approval</div>
+          <div class="assess-row">
+            <div class="assess-icon" style="background:var(--gray-100)">👔</div>
+            <div class="assess-body">
+              <div class="assess-title">Branch Leader</div>
+              <div class="assess-sub">Menunggu Roleplay selesai</div>
+            </div>
+            <span class="badge b-neutral" style="font-size:10px;padding:2px 8px">Belum</span>
+          </div>
+
+          <!-- CTA -->
+          <div style="padding:14px 16px">
+            <a href="#" onclick="alert('Lanjutkan materi: Handling Objection')" style="display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#3730A3,#4F46E5);border-radius:10px;padding:13px;font-size:14px;font-weight:700;color:white;text-decoration:none">
+              <svg viewBox="0 0 24 24" style="width:17px;height:17px;stroke:white;fill:none;stroke-width:2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Lanjutkan — Handling Objection
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 3: Sales Process (Locked) -->
+      <div class="section" style="padding-top:12px">
+        <div class="phase-card" style="opacity:.65">
+          <div class="phase-header">
+            <div class="phase-num pn-lock">🔒</div>
+            <div class="phase-body">
+              <div class="phase-name" style="color:var(--gray-500)">Phase 3 · Sales Process</div>
+              <div class="phase-sub">5 materi · Terbuka setelah Phase 2 selesai</div>
+            </div>
+          </div>
+          <div style="padding:0 16px 14px;display:flex;gap:8px;flex-wrap:wrap">
+            <span style="font-size:11px;color:var(--gray-300);background:var(--gray-50);border-radius:20px;padding:3px 9px">🔒 Prospecting</span>
+            <span style="font-size:11px;color:var(--gray-300);background:var(--gray-50);border-radius:20px;padding:3px 9px">🔒 Pipeline Management</span>
+            <span style="font-size:11px;color:var(--gray-300);background:var(--gray-50);border-radius:20px;padding:3px 9px">🔒 CRM</span>
+            <span style="font-size:11px;color:var(--gray-300);background:var(--gray-50);border-radius:20px;padding:3px 9px">🔒 Survey</span>
+            <span style="font-size:11px;color:var(--gray-300);background:var(--gray-50);border-radius:20px;padding:3px 9px">🔒 Closing Process</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gate System Info -->
+      <div class="section" style="padding-top:12px;padding-bottom:20px">
+        <div style="background:var(--primary-light);border:1px solid rgba(29,111,243,.15);border-radius:var(--r);padding:16px">
+          <div style="font-size:12px;font-weight:700;color:var(--primary-dark);margin-bottom:10px">🚦 Gate System — Jalur Lulus</div>
+          <div class="workflow">
+            <div class="wf-step">
+              <div class="wf-dot wf-done">✓</div>
+              <div class="wf-content">
+                <div class="wf-title">Phase 1 Fundamental — Lulus</div>
+                <div class="wf-sub">Final Exam 94 · Certified Fundamental</div>
+              </div>
+            </div>
+            <div class="wf-step">
+              <div class="wf-dot wf-active">▶</div>
+              <div class="wf-content">
+                <div class="wf-title" style="color:var(--warning-dark)">Phase 2 Communication — In Progress</div>
+                <div class="wf-sub">Selesaikan Roleplay &amp; tunggu Approval</div>
+              </div>
+            </div>
+            <div class="wf-step">
+              <div class="wf-dot wf-pending">3</div>
+              <div class="wf-content">
+                <div class="wf-title" style="color:var(--gray-400)">Phase 3 Sales Process</div>
+                <div class="wf-sub">Terkunci hingga Phase 2 selesai</div>
+              </div>
+            </div>
+            <div class="wf-step">
+              <div class="wf-dot wf-pending">🏟</div>
+              <div class="wf-content">
+                <div class="wf-title" style="color:var(--gray-400)">Aktivitas Lapangan Terbuka</div>
+                <div class="wf-sub">Shadowing → Canvasing → Prospecting → Closing</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:calc(var(--nav-h) + 20px)"></div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="dashboard-trainee.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/><path d="M3 12v9h18V12"/></svg></div>
+      <span class="nav-label">Beranda</span>
+    </a>
+    <a href="training-adaptasi.html" class="nav-item active">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <span class="nav-label">Training</span>
+    </a>
+    <a href="notifikasi.html" class="nav-item">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+      </div>
+      <span class="nav-label">Notifikasi</span>
+    </a>
+    <a href="profil.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <span class="nav-label">Profil</span>
+    </a>
+  </nav>
+</div>
+<script src="../js/app.js"></script>
+</body>
+</html>

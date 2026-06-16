@@ -3,243 +3,759 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>ESS — Dashboard AE</title>
+  <title>ESS — Mitra AE</title>
   <link rel="stylesheet" href="../css/design-system.css">
   <style>
-    .ae-info-row { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
-    .ae-chip { background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.2); border-radius:20px; padding:4px 10px; font-size:11px; font-weight:600; color:rgba(255,255,255,.9); }
+    body, .app, .page { background:#F5F7FB; }
 
-    .att-bar { display:grid; grid-template-columns:repeat(4,1fr); background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.18); border-radius:14px; overflow:hidden; margin-top:14px; }
-    .att-bar-cell { padding:12px 6px; text-align:center; }
-    .att-bar-cell + .att-bar-cell { border-left:1px solid rgba(255,255,255,.12); }
-    .att-bar-lbl { font-size:9px; color:rgba(255,255,255,.6); font-weight:600; letter-spacing:.3px; margin-bottom:4px; text-transform:uppercase; }
-    .att-bar-val { font-size:15px; font-weight:800; color:white; letter-spacing:-.5px; line-height:1; }
-    .att-bar-sub { font-size:9px; color:rgba(255,255,255,.5); margin-top:3px; }
+    /* ── HEADER ─────────────────────────────── */
+    .ae-hdr { background:white; padding:52px 20px 0; border-bottom:1px solid #F0F2F7; }
+    .ae-hdr-top { display:flex; align-items:flex-start; gap:12px; margin-bottom:14px; }
+    .ae-avatar { width:52px; height:52px; border-radius:50%; background:#EEF4FF; border:2.5px solid #C7DBFF; display:flex; align-items:center; justify-content:center; font-size:17px; font-weight:800; color:var(--primary); flex-shrink:0; }
+    .ae-status { display:inline-block; background:var(--primary); color:white; border-radius:20px; padding:4px 12px; font-size:11px; font-weight:700; letter-spacing:.3px; margin-top:5px; }
+    .ae-bell { width:40px; height:40px; background:#F5F7FB; border-radius:12px; display:flex; align-items:center; justify-content:center; text-decoration:none; position:relative; flex-shrink:0; border:1px solid #EEF0F7; }
+    .ae-branch-row { display:flex; gap:24px; padding:0 0 14px; align-items:flex-end; }
+    .ae-branch-item .lbl { font-size:10px; font-weight:600; color:#9BA5B4; letter-spacing:.3px; margin-bottom:2px; }
+    .ae-branch-item .val { font-size:14px; font-weight:700; color:var(--primary); }
+    .ae-bl-av { width:26px; height:26px; border-radius:50%; background:#FFE9E9; border:2px solid #FFBDBD; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:800; color:#E84E4E; flex-shrink:0; }
+    .ae-bl-wrap { display:flex; align-items:center; gap:7px; }
 
-    .pq-pill { flex:1; border-radius:10px; padding:10px 6px; text-align:center; }
-    .pq-pill-val { font-size:20px; font-weight:800; line-height:1; margin-bottom:3px; }
-    .pq-pill-lbl { font-size:10px; font-weight:600; }
+    /* ── ACTIVITY BAR ────────────────────────── */
+    .act-bar { display:grid; grid-template-columns:repeat(4,1fr); gap:7px; padding:14px 16px 16px; background:white; }
+    .ab-cell { background:#F8FAFD; border:1px solid #EEF1F7; border-radius:12px; padding:10px 6px 9px; text-align:center; }
+    .ab-lbl { font-size:8.5px; font-weight:700; color:#9BA5B4; letter-spacing:.3px; text-transform:uppercase; margin-bottom:6px; }
+    .ab-val { font-size:15px; font-weight:800; color:#1A1A2E; letter-spacing:-.4px; line-height:1; }
+    .ab-sub { font-size:8px; color:#B8C0CC; margin-top:3px; }
 
-    .pending-row { display:flex; align-items:center; gap:12px; padding:12px 16px; border-bottom:1px solid var(--gray-50); text-decoration:none; }
-    .pending-row:last-child { border-bottom:none; }
-    .p-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    /* ── TABS ────────────────────────────────── */
+    .ae-tabs { display:flex; background:white; border-bottom:1.5px solid #EEF0F7; position:sticky; top:0; z-index:30; }
+    .ae-tab { flex:1; padding:12px 8px 10px; display:flex; flex-direction:column; align-items:center; gap:4px; font-size:12px; font-weight:600; color:#9BA5B4; cursor:pointer; border-bottom:2.5px solid transparent; transition:all .2s; -webkit-tap-highlight-color:transparent; }
+    .ae-tab svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; }
+    .ae-tab.active { color:var(--primary); border-bottom-color:var(--primary); font-weight:700; }
 
-    .comm-card { background:linear-gradient(135deg,#064E3B,#065F46,#059669); border-radius:var(--r); padding:18px; color:white; }
+    /* ── GENERIC CARD ────────────────────────── */
+    .sc { background:white; border-radius:16px; margin:12px 16px 0; padding:16px; }
+    .sc:last-child { margin-bottom:0; }
+    .sc-hdr { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+    .sc-title { font-size:14px; font-weight:800; color:#1A1A2E; }
+    .sc-link  { font-size:12px; font-weight:600; color:var(--primary); text-decoration:none; display:flex; align-items:center; gap:3px; }
+
+    /* ── NEXT MILESTONE ──────────────────────── */
+    .ms-card { background:linear-gradient(145deg,#EEF4FF 0%,#E8F1FF 100%); border:1.5px solid #C7DBFF; border-radius:16px; padding:16px; margin:12px 16px 0; }
+    .ms-tag { font-size:10px; font-weight:700; color:var(--primary); text-transform:uppercase; letter-spacing:.5px; background:rgba(29,111,243,.1); border-radius:6px; padding:3px 9px; display:inline-flex; align-items:center; gap:4px; margin-bottom:10px; }
+    .ms-insight { font-size:15px; font-weight:800; color:#1A1A2E; line-height:1.45; margin-bottom:14px; letter-spacing:-.2px; }
+    .ms-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+    .ms-row:last-of-type { margin-bottom:0; }
+    .ms-name { font-size:11px; font-weight:700; color:#667085; width:28px; flex-shrink:0; }
+    .ms-track { flex:1; height:7px; background:rgba(29,111,243,.1); border-radius:4px; overflow:hidden; }
+    .ms-fill  { height:100%; border-radius:4px; }
+    .ms-count { font-size:11px; font-weight:800; color:#1A1A2E; width:36px; text-align:right; flex-shrink:0; }
+    .ms-gap   { font-size:10px; font-weight:600; color:var(--danger-dark); background:var(--danger-light); border-radius:20px; padding:2px 7px; flex-shrink:0; }
+    .ms-done  { font-size:10px; font-weight:600; color:var(--success-dark); background:var(--success-light); border-radius:20px; padding:2px 7px; flex-shrink:0; }
+    .ms-btns { display:flex; gap:8px; margin-top:14px; }
+    .ms-btn-pri { flex:1; padding:11px 8px; border-radius:10px; font-size:12px; font-weight:700; text-align:center; text-decoration:none; background:var(--primary); color:white; border:none; font-family:inherit; cursor:pointer; box-shadow:0 3px 10px rgba(29,111,243,.3); }
+    .ms-btn-sec { flex:1; padding:11px 8px; border-radius:10px; font-size:12px; font-weight:700; text-align:center; text-decoration:none; background:white; color:var(--primary); border:1.5px solid var(--primary); font-family:inherit; cursor:pointer; }
+
+    /* ── TASK PRIORITY ───────────────────────── */
+    .task-row { display:flex; align-items:center; gap:10px; padding:12px 0; border-bottom:1px solid #F5F7FB; }
+    .task-row:last-child { border-bottom:none; padding-bottom:0; }
+    .task-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    .task-body { flex:1; min-width:0; }
+    .task-title { font-size:13px; font-weight:700; color:#1A1A2E; margin-bottom:2px; }
+    .task-sub   { font-size:11px; color:#9BA5B4; }
+    .task-cta { display:inline-flex; align-items:center; padding:6px 11px; background:var(--primary); color:white; border-radius:8px; font-size:11px; font-weight:700; text-decoration:none; flex-shrink:0; -webkit-tap-highlight-color:transparent; }
+    .task-cta.warn { background:var(--warning); }
+    .task-cta.info { background:#0086C9; }
+
+    /* ── QUICK ACTIONS ───────────────────────── */
+    .qa-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+    .qa-item { display:flex; flex-direction:column; align-items:center; gap:6px; text-decoration:none; padding:6px 4px; border-radius:12px; -webkit-tap-highlight-color:transparent; }
+    .qa-item:active { background:var(--gray-50); }
+    .qa-icon { width:50px; height:50px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:22px; }
+    .qa-lbl  { font-size:11px; font-weight:600; color:#444E5E; text-align:center; line-height:1.3; }
+
+    /* ── PIPELINE FUNNEL ─────────────────────── */
+    .fstage { display:flex; align-items:center; gap:10px; margin-bottom:3px; }
+    .fs-meta { width:76px; text-align:right; flex-shrink:0; }
+    .fs-num  { font-size:18px; font-weight:800; line-height:1; }
+    .fs-lbl  { font-size:9px; color:#9BA5B4; margin-top:1px; }
+    .fs-bar  { height:32px; border-radius:10px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; transition:width .4s; }
+    .fs-bar-pct { font-size:10px; font-weight:700; color:white; opacity:.9; }
+    .fconv { display:flex; align-items:center; gap:6px; padding:3px 0 3px 86px; }
+    .fconv-icon { font-size:10px; color:#9BA5B4; }
+    .fconv-tag  { font-size:10px; font-weight:700; color:var(--success-dark); background:var(--success-light); border-radius:20px; padding:2px 8px; }
+    .fconv-hint { font-size:10px; color:#9BA5B4; }
+
+    /* ── QUALITY METRICS ─────────────────────── */
+    .q-pair { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .q-card { background:#F8FAFD; border:1px solid #EEF1F7; border-radius:14px; padding:14px 10px; display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center; }
+    .q-ring { position:relative; width:62px; height:62px; }
+    .q-ring svg { display:block; transform:rotate(-90deg); }
+    .q-ring-inner { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+    .q-score { font-size:16px; font-weight:800; line-height:1; }
+    .q-denom { font-size:9px; color:#B8C0CC; line-height:1.2; }
+    .q-grade { font-size:10px; font-weight:700; border-radius:6px; padding:3px 8px; }
+
+    /* ── ACHIEVEMENT ─────────────────────────── */
+    .ach-row { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+    .ach-cell { background:#F8FAFD; border:1px solid #EEF1F7; border-radius:12px; padding:12px 8px; text-align:center; }
+    .ach-ico  { font-size:20px; margin-bottom:6px; }
+    .ach-val  { font-size:14px; font-weight:800; color:#1A1A2E; letter-spacing:-.3px; line-height:1.2; margin-bottom:3px; }
+    .ach-lbl  { font-size:9px; font-weight:600; color:#9BA5B4; }
+
+    /* ── LEARNING JOURNEY HEADER ─────────────── */
+    .lj-card { background:linear-gradient(135deg,#1040B8,#1D6FF3,#5094FF); border-radius:16px; padding:18px; margin:12px 16px 0; color:white; display:flex; gap:14px; align-items:center; }
+    .lj-illus { font-size:48px; flex-shrink:0; }
+
+    /* ── PHASE ACCORDION ─────────────────────── */
+    .phase-wrap { background:white; border-radius:16px; overflow:hidden; margin:8px 16px 0; }
+    .ph-hdr { display:flex; align-items:center; gap:12px; padding:14px 16px; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+    .ph-hdr:active { background:#F9FAFC; }
+    .ph-dot { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; flex-shrink:0; }
+    .phd-done { background:var(--success-light); color:var(--success-dark); }
+    .phd-act  { background:var(--primary); color:white; }
+    .phd-lock { background:#EEF1F7; color:#B8C0CC; }
+    .ph-info { flex:1; }
+    .ph-pname { font-size:13px; font-weight:700; color:#1A1A2E; }
+    .ph-psub  { font-size:11px; color:#9BA5B4; margin-top:1px; }
+    .ph-right { display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex-shrink:0; }
+    .ph-pct  { font-size:13px; font-weight:800; color:#1A1A2E; }
+    .ph-pct.dim { color:#C0C8D4; }
+    .ph-badge { font-size:10px; font-weight:700; border-radius:20px; padding:2px 8px; }
+    .phb-done { background:var(--success-light); color:var(--success-dark); }
+    .phb-act  { background:var(--warning-light); color:var(--warning-dark); }
+    .phb-lock { background:#EEF1F7; color:#9BA5B4; }
+    .ph-chev { flex-shrink:0; transition:transform .2s; }
+    .ph-chev.open { transform:rotate(90deg); }
+    .ph-separator { height:1px; background:#F5F7FB; margin:0 16px; }
+
+    /* ── MODULE ROWS ─────────────────────────── */
+    .mod-section { background:#F8FAFD; }
+    .mod-prog-bar { height:4px; background:#EEF1F7; overflow:hidden; }
+    .mod-prog-fill { height:100%; background:var(--warning); }
+    .mod-row { display:flex; align-items:center; gap:10px; padding:11px 16px; border-bottom:1px solid #F0F2F7; text-decoration:none; cursor:pointer; }
+    .mod-row:last-child { border-bottom:none; }
+    .mod-row:active { background:#F0F2F7; }
+    .mc { width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:800; flex-shrink:0; }
+    .mc-d { background:var(--success-light); color:var(--success-dark); }
+    .mc-a { background:var(--primary-light); color:var(--primary); }
+    .mc-l { background:#E8ECF0; color:#B8C0CC; }
+    .m-name { flex:1; font-size:12px; font-weight:600; color:#1A1A2E; }
+    .m-name.dim { color:#9BA5B4; }
+    .m-st { font-size:10px; font-weight:700; border-radius:6px; padding:2px 7px; white-space:nowrap; }
+    .mst-d { background:var(--success-light); color:var(--success-dark); }
+    .mst-a { background:var(--warning-light); color:var(--warning-dark); }
+    .mst-l { background:#EEF1F7; color:#9BA5B4; }
+    .m-pct { font-size:11px; font-weight:800; color:#1A1A2E; width:32px; text-align:right; flex-shrink:0; }
+    .m-pct.dim { color:#C0C8D4; }
+    .exam-row { display:flex; align-items:center; gap:12px; padding:12px 16px; background:#F0F2F7; }
+    .exam-ico { width:34px; height:34px; border-radius:10px; background:#E8ECF0; display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0; }
+    .mod-cta { padding:12px 16px; background:#F8FAFD; border-top:1px solid #EEF1F7; }
+
+    /* ── FIELD REQUIREMENTS ──────────────────── */
+    .req-item { display:flex; align-items:center; gap:8px; padding:11px 0; border-bottom:1px solid #F5F7FB; }
+    .req-item:last-child { border-bottom:none; padding-bottom:0; }
+    .req-ico { font-size:16px; flex-shrink:0; }
+    .req-name { font-size:12px; font-weight:600; color:#444E5E; width:108px; flex-shrink:0; }
+    .req-track { flex:1; height:6px; background:#EEF1F7; border-radius:3px; overflow:hidden; }
+    .req-fill  { height:100%; border-radius:3px; background:var(--primary); }
+    .req-val   { font-size:12px; font-weight:800; color:#1A1A2E; width:42px; text-align:right; flex-shrink:0; }
+
+    /* ── CERT CHECKLIST ──────────────────────── */
+    .cert-row { display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid #F5F7FB; }
+    .cert-row:last-child { border-bottom:none; padding-bottom:0; }
+    .cert-ico { width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; flex-shrink:0; }
+    .ci-done { background:var(--success-light); color:var(--success-dark); }
+    .ci-prog { background:var(--warning-light); color:var(--warning-dark); }
+    .ci-lock { background:#EEF1F7; color:#B8C0CC; }
+    .cert-label { flex:1; font-size:12px; font-weight:600; color:#444E5E; }
+    .cert-label.done { color:#1A1A2E; }
+    .cert-tag { font-size:10px; font-weight:700; border-radius:6px; padding:2px 8px; white-space:nowrap; }
+    .cta-d { background:var(--success-light); color:var(--success-dark); }
+    .cta-p { background:var(--warning-light); color:var(--warning-dark); }
+    .cta-l { background:#EEF1F7; color:#9BA5B4; }
   </style>
 </head>
 <body>
 <div class="phone">
-  <div class="status-bar" style="background:transparent;position:absolute;top:0;left:0;right:0;z-index:60">
-    <span class="s-time" style="color:white">09:41</span>
-    <div class="s-icons"><svg viewBox="0 0 17 12" style="fill:white;width:16px;height:12px"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="1.5" width="3" height="10.5" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/></svg><span style="color:white;font-size:13px">🔋</span></div>
+  <!-- Status bar -->
+  <div class="status-bar" style="background:white;position:absolute;top:0;left:0;right:0;z-index:60">
+    <span class="s-time">09:41</span>
+    <div class="s-icons">
+      <svg viewBox="0 0 17 12" style="fill:#1A1A2E;width:15px;height:11px"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="1.5" width="3" height="10.5" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/></svg>
+      <span style="font-size:13px">🔋</span>
+    </div>
   </div>
 
   <div class="app">
     <div class="page" style="padding-bottom:0">
 
-      <!-- Hero -->
-      <div class="hero-ae" style="padding:58px 20px 22px">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-          <div style="width:48px;height:48px;border-radius:15px;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:white;flex-shrink:0">AP</div>
+      <!-- ═══ HEADER ═══ -->
+      <div class="ae-hdr">
+        <div class="ae-hdr-top">
+          <div class="ae-avatar">AP</div>
           <div style="flex:1">
-            <div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:1px">Selamat Pagi 👋</div>
-            <div style="font-size:17px;font-weight:800;color:white;letter-spacing:-.4px">Andika Pratama</div>
-            <div style="margin-top:4px"><span class="role-tag">Staff Mitra AE</span></div>
+            <div style="font-size:17px;font-weight:800;color:#1A1A2E;letter-spacing:-.3px">Andika Pratama</div>
+            <div style="font-size:12px;color:#9BA5B4;margin-top:1px">Mitra AE</div>
+            <span class="ae-status">Adaptation</span>
           </div>
-          <a href="notifikasi.html" style="width:38px;height:38px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0;text-decoration:none">
-            <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:white;fill:none;stroke-width:2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
-            <div style="position:absolute;top:6px;right:7px;width:7px;height:7px;background:#F79009;border-radius:4px;border:1.5px solid #2D2A7A"></div>
+          <a href="notifikasi.html" class="ae-bell">
+            <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:#444E5E;fill:none;stroke-width:2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+            <div style="position:absolute;top:8px;right:9px;width:7px;height:7px;background:var(--danger);border-radius:50%;border:1.5px solid white"></div>
           </a>
         </div>
-        <div class="ae-info-row">
-          <span class="ae-chip">🏢 Cabang Jakarta Pusat</span>
-          <span class="ae-chip">📍 Area Sudirman</span>
-          <span class="ae-chip">👔 SPV: Rudi Hermawan</span>
-        </div>
-        <div class="att-bar">
-          <div class="att-bar-cell">
-            <div class="att-bar-lbl">Check In</div>
-            <div class="att-bar-val">08:23</div>
-            <div class="att-bar-sub">✓ Tepat</div>
+        <div class="ae-branch-row">
+          <div class="ae-branch-item">
+            <div class="lbl">Branch</div>
+            <div class="val">Karangploso</div>
           </div>
-          <div class="att-bar-cell">
-            <div class="att-bar-lbl">Check Out</div>
-            <div class="att-bar-val">—</div>
-            <div class="att-bar-sub">Aktif</div>
-          </div>
-          <div class="att-bar-cell">
-            <div class="att-bar-lbl">Durasi</div>
-            <div class="att-bar-val">4j22m</div>
-            <div class="att-bar-sub">Lapangan</div>
-          </div>
-          <div class="att-bar-cell">
-            <div class="att-bar-lbl">Jarak</div>
-            <div class="att-bar-val">12.4</div>
-            <div class="att-bar-sub">km</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Activity Performance -->
-      <div class="section" style="padding-top:18px">
-        <div class="section-row">
-          <div class="section-title">Performa Hari Ini</div>
-          <span style="font-size:12px;color:var(--gray-400)">12 Jun 2026</span>
-        </div>
-        <div class="act-grid">
-          <a href="canvasing.html" class="act-card" style="text-decoration:none">
-            <span class="act-emoji">🗺️</span>
-            <div class="act-num act-done">5</div>
-            <div class="act-lbl">Canvasing</div>
-            <div class="act-tgt">Target 8</div>
-          </a>
-          <a href="customer-prospect.html" class="act-card" style="text-decoration:none">
-            <span class="act-emoji">🎯</span>
-            <div class="act-num act-info">3</div>
-            <div class="act-lbl">CP Baru</div>
-            <div class="act-tgt">Target 5</div>
-          </a>
-          <a href="follow-up.html" class="act-card" style="text-decoration:none">
-            <span class="act-emoji">📞</span>
-            <div class="act-num act-warn">7</div>
-            <div class="act-lbl">Follow-up</div>
-            <div class="act-tgt">Target 10</div>
-          </a>
-          <a href="survey.html" class="act-card" style="text-decoration:none">
-            <span class="act-emoji">📋</span>
-            <div class="act-num act-purple">2</div>
-            <div class="act-lbl">Survey</div>
-            <div class="act-tgt">Target 3</div>
-          </a>
-          <a href="closing.html" class="act-card" style="text-decoration:none">
-            <span class="act-emoji">🤝</span>
-            <div class="act-num act-done">1</div>
-            <div class="act-lbl">Closing</div>
-            <div class="act-tgt">Target 2</div>
-          </a>
-          <a href="customer-active.html" class="act-card" style="text-decoration:none">
-            <span class="act-emoji">⭐</span>
-            <div class="act-num act-done">24</div>
-            <div class="act-lbl">Aktif</div>
-            <div class="act-tgt">Total</div>
-          </a>
-        </div>
-      </div>
-
-      <!-- Prospect Quality -->
-      <div class="section" style="padding-top:16px">
-        <div class="section-title" style="margin-bottom:12px">Kualitas Prospect</div>
-        <div class="card" style="padding:16px">
-          <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
-            <div style="width:56px;height:56px;border-radius:50%;background:conic-gradient(var(--primary) 0% 72%,var(--gray-100) 72%);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative">
-              <div style="position:absolute;width:40px;height:40px;border-radius:50%;background:white"></div>
-              <span style="position:relative;z-index:1;font-size:13px;font-weight:800;color:var(--primary)">72</span>
-            </div>
-            <div>
-              <div style="font-size:14px;font-weight:800;color:var(--gray-900)">Quality Score: 72/100</div>
-              <div style="font-size:12px;color:var(--gray-400);margin-top:2px">Baik · 12 prospect aktif</div>
-            </div>
-          </div>
-          <div style="display:flex;gap:8px">
-            <div class="pq-pill" style="background:#F0F9FF">
-              <div class="pq-pill-val" style="color:#0369A1">4</div>
-              <div class="pq-pill-lbl" style="color:#0369A1">❄️ Cold</div>
-            </div>
-            <div class="pq-pill" style="background:#FFFBEB">
-              <div class="pq-pill-val" style="color:#92400E">6</div>
-              <div class="pq-pill-lbl" style="color:#92400E">🌤️ Warm</div>
-            </div>
-            <div class="pq-pill" style="background:#FFF7ED">
-              <div class="pq-pill-val" style="color:#C2410C">2</div>
-              <div class="pq-pill-lbl" style="color:#C2410C">🔥 Hot</div>
+          <div class="ae-bl-wrap">
+            <div class="ae-bl-av">AN</div>
+            <div class="ae-branch-item">
+              <div class="lbl">Branch Leader</div>
+              <div class="val">Anisa</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Pending Tasks -->
-      <div class="section" style="padding-top:16px">
-        <div class="section-row">
-          <div class="section-title">Tugas Menunggu</div>
-          <span class="badge b-warning">3 item</span>
+      <!-- ═══ ACTIVITY BAR ═══ -->
+      <div class="act-bar" style="border-bottom:1px solid #F0F2F7">
+        <div class="ab-cell">
+          <div class="ab-lbl">Check In</div>
+          <div style="font-size:11px;margin-bottom:3px">✅</div>
+          <div class="ab-val">08:23</div>
         </div>
-        <div style="background:var(--white);border-radius:var(--r);box-shadow:var(--shadow-sm);overflow:hidden">
-          <a href="follow-up.html" class="pending-row" style="color:inherit">
-            <div class="p-dot" style="background:var(--danger)"></div>
+        <div class="ab-cell">
+          <div class="ab-lbl">Check Out</div>
+          <div style="font-size:11px;margin-bottom:3px;opacity:.3">🕐</div>
+          <div class="ab-val" style="color:#C0C8D4">--:--</div>
+        </div>
+        <div class="ab-cell">
+          <div class="ab-lbl">Durasi</div>
+          <div style="font-size:11px;margin-bottom:3px">🏃</div>
+          <div class="ab-val">4j 22m</div>
+          <div class="ab-sub">Canvasing</div>
+        </div>
+        <div class="ab-cell">
+          <div class="ab-lbl">Jarak</div>
+          <div style="font-size:11px;margin-bottom:3px">📍</div>
+          <div class="ab-val">12.4 km</div>
+        </div>
+      </div>
+
+      <!-- ═══ TAB BAR ═══ -->
+      <div class="ae-tabs">
+        <div class="ae-tab active" data-tab="perf" onclick="switchTab('perf',this)">
+          <svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+          Performance
+        </div>
+        <div class="ae-tab" data-tab="learn" onclick="switchTab('learn',this)">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          Learning
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════ -->
+      <!-- TAB: PERFORMANCE                         -->
+      <!-- ════════════════════════════════════════ -->
+      <div data-content="perf">
+
+        <!-- ▸ NEXT MILESTONE ──────────────────── -->
+        <div class="ms-card">
+          <div class="ms-tag">
+            <svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Next Milestone
+          </div>
+          <div class="ms-insight">Butuh 4 Warm Prospect lagi<br>untuk mencapai target bulan ini!</div>
+          <!-- per-metric rows -->
+          <div class="ms-row">
+            <span class="ms-name">CP</span>
+            <div class="ms-track"><div class="ms-fill" style="width:75%;background:#0369A1"></div></div>
+            <span class="ms-count">15/20</span>
+            <span class="ms-gap">–5</span>
+          </div>
+          <div class="ms-row">
+            <span class="ms-name" style="color:var(--primary);font-weight:800">WP</span>
+            <div class="ms-track" style="background:rgba(29,111,243,.15)"><div class="ms-fill" style="width:60%;background:var(--primary)"></div></div>
+            <span class="ms-count" style="color:var(--primary)">6/10</span>
+            <span class="ms-gap" style="background:#EEF4FF;color:var(--primary);font-weight:800;border:1.5px solid var(--primary)">–4 !</span>
+          </div>
+          <div class="ms-row">
+            <span class="ms-name">HP</span>
+            <div class="ms-track"><div class="ms-fill" style="width:40%;background:#7C3AED"></div></div>
+            <span class="ms-count">2/5</span>
+            <span class="ms-gap">–3</span>
+          </div>
+          <div class="ms-row">
+            <span class="ms-name">Cls</span>
+            <div class="ms-track"><div class="ms-fill" style="width:33%;background:var(--success-dark)"></div></div>
+            <span class="ms-count">1/3</span>
+            <span class="ms-gap">–2</span>
+          </div>
+          <div class="ms-btns">
+            <a href="customer-prospect.html" class="ms-btn-pri">+ Cari Prospect Baru</a>
+            <a href="follow-up.html" class="ms-btn-sec">Lanjutkan Follow Up</a>
+          </div>
+        </div>
+
+        <!-- ▸ TASK PRIORITAS HARI INI ─────────── -->
+        <div class="sc">
+          <div class="sc-hdr">
+            <div class="sc-title">Tugas Prioritas Hari Ini</div>
+            <a href="follow-up.html" class="sc-link">Lihat Semua
+              <svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </a>
+          </div>
+          <div class="task-row">
+            <div class="task-dot" style="background:var(--danger)"></div>
+            <div class="task-body">
+              <div class="task-title">Follow Up Overdue</div>
+              <div class="task-sub">3 prospect belum dihubungi &gt;3 hari</div>
+            </div>
+            <a href="follow-up.html" class="task-cta">Hubungi →</a>
+          </div>
+          <div class="task-row">
+            <div class="task-dot" style="background:var(--warning)"></div>
+            <div class="task-body">
+              <div class="task-title">Survey Belum Dijadwalkan</div>
+              <div class="task-sub">2 prospect menunggu jadwal survey</div>
+            </div>
+            <a href="survey.html" class="task-cta warn">Jadwalkan →</a>
+          </div>
+          <div class="task-row">
+            <div class="task-dot" style="background:var(--primary)"></div>
+            <div class="task-body">
+              <div class="task-title">Presentasi Hari Ini</div>
+              <div class="task-sub">1 presentasi terjadwal jam 14:00</div>
+            </div>
+            <a href="#" onclick="return false" class="task-cta info">Mulai →</a>
+          </div>
+          <div class="task-row" style="border-bottom:none;padding-bottom:0">
+            <div class="task-dot" style="background:#9BA5B4"></div>
+            <div class="task-body">
+              <div class="task-title">Prospect Belum Dihubungi</div>
+              <div class="task-sub">4 prospect baru dari canvasing kemarin</div>
+            </div>
+            <a href="customer-prospect.html" class="task-cta" style="background:#667085">Lihat →</a>
+          </div>
+        </div>
+
+        <!-- ▸ QUICK ACTIONS ───────────────────── -->
+        <div class="sc">
+          <div class="sc-title" style="margin-bottom:14px">Aksi Cepat</div>
+          <div class="qa-grid">
+            <a href="canvasing.html" class="qa-item">
+              <div class="qa-icon" style="background:#EEF4FF">🗺️</div>
+              <span class="qa-lbl">Canvasing</span>
+            </a>
+            <a href="customer-prospect.html" class="qa-item">
+              <div class="qa-icon" style="background:#FFF7ED">🎯</div>
+              <span class="qa-lbl">Prospecting</span>
+            </a>
+            <a href="survey.html" class="qa-item">
+              <div class="qa-icon" style="background:#ECFDF3">📋</div>
+              <span class="qa-lbl">Survey</span>
+            </a>
+            <a href="#" onclick="return false" class="qa-item">
+              <div class="qa-icon" style="background:#F5F3FF">🎤</div>
+              <span class="qa-lbl">Presentasi</span>
+            </a>
+            <a href="follow-up.html" class="qa-item">
+              <div class="qa-icon" style="background:#FFF1F2">📞</div>
+              <span class="qa-lbl">Follow Up</span>
+            </a>
+            <a href="closing.html" class="qa-item">
+              <div class="qa-icon" style="background:#ECFDF3">🤝</div>
+              <span class="qa-lbl">Closing</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- ▸ PIPELINE FUNNEL ─────────────────── -->
+        <div class="sc">
+          <div class="sc-hdr">
+            <div class="sc-title">Pipeline Funnel</div>
+            <a href="customer-prospect.html" class="sc-link">Detail
+              <svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </a>
+          </div>
+          <!-- CP -->
+          <div class="fstage">
+            <div class="fs-meta">
+              <div class="fs-num" style="color:#0369A1">25</div>
+              <div class="fs-lbl">Cold Prospect</div>
+            </div>
             <div style="flex:1">
-              <div style="font-size:13px;font-weight:600;color:var(--gray-900)">Follow Up Diperlukan</div>
-              <div style="font-size:11px;color:var(--gray-400)">3 prospect overdue &gt; 3 hari</div>
+              <div class="fs-bar" style="background:linear-gradient(90deg,#0369A1,#0EA5E9);width:100%">
+                <span class="fs-bar-pct">100%</span>
+              </div>
             </div>
-            <span style="font-size:20px;color:var(--gray-200)">›</span>
-          </a>
-          <a href="customer-prospect.html" class="pending-row" style="color:inherit">
-            <div class="p-dot" style="background:var(--warning)"></div>
+          </div>
+          <div class="fconv">
+            <span class="fconv-icon">↓</span>
+            <span class="fconv-tag">48% konversi</span>
+            <span class="fconv-hint">CP → WP</span>
+          </div>
+          <!-- WP -->
+          <div class="fstage">
+            <div class="fs-meta">
+              <div class="fs-num" style="color:#B45309">12</div>
+              <div class="fs-lbl">Warm Prospect</div>
+            </div>
             <div style="flex:1">
-              <div style="font-size:13px;font-weight:600;color:var(--gray-900)">Prospect Overdue</div>
-              <div style="font-size:11px;color:var(--gray-400)">1 prospect tidak diupdate 7+ hari</div>
+              <div class="fs-bar" style="background:linear-gradient(90deg,#F59E0B,#FBBF24);width:55%">
+                <span class="fs-bar-pct">48%</span>
+              </div>
             </div>
-            <span style="font-size:20px;color:var(--gray-200)">›</span>
-          </a>
-          <a href="survey.html" class="pending-row" style="color:inherit">
-            <div class="p-dot" style="background:var(--info)"></div>
+          </div>
+          <div class="fconv">
+            <span class="fconv-icon">↓</span>
+            <span class="fconv-tag">33% konversi</span>
+            <span class="fconv-hint">WP → HP</span>
+          </div>
+          <!-- HP -->
+          <div class="fstage">
+            <div class="fs-meta">
+              <div class="fs-num" style="color:#6D28D9">4</div>
+              <div class="fs-lbl">Hot Prospect</div>
+            </div>
             <div style="flex:1">
-              <div style="font-size:13px;font-weight:600;color:var(--gray-900)">Survey Menunggu Jadwal</div>
-              <div style="font-size:11px;color:var(--gray-400)">2 prospect hot belum dijadwalkan</div>
-            </div>
-            <span style="font-size:20px;color:var(--gray-200)">›</span>
-          </a>
-        </div>
-      </div>
-
-      <!-- Estimated Commission -->
-      <div class="section" style="padding-top:16px">
-        <div class="section-title" style="margin-bottom:12px">Estimasi Komisi — Juni 2026</div>
-        <div class="comm-card">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px">
-            <div>
-              <div style="font-size:10px;color:rgba(255,255,255,.65);font-weight:600;letter-spacing:.5px;margin-bottom:4px">PENCAPAIAN SAAT INI</div>
-              <div style="font-size:28px;font-weight:800;color:white;letter-spacing:-1px;line-height:1">Rp 2.400.000</div>
-              <div style="font-size:12px;color:rgba(255,255,255,.65);margin-top:4px">Target: Rp 4.000.000</div>
-            </div>
-            <div style="text-align:right">
-              <div style="font-size:10px;color:rgba(255,255,255,.65);margin-bottom:4px">Progress</div>
-              <div style="font-size:30px;font-weight:800;color:white;letter-spacing:-1px;line-height:1">60%</div>
+              <div class="fs-bar" style="background:linear-gradient(90deg,#7C3AED,#8B5CF6);width:36%">
+                <span class="fs-bar-pct">16%</span>
+              </div>
             </div>
           </div>
-          <div style="background:rgba(255,255,255,.2);border-radius:6px;height:8px;overflow:hidden">
-            <div style="width:60%;background:white;border-radius:6px;height:100%"></div>
+          <div class="fconv">
+            <span class="fconv-icon">↓</span>
+            <span class="fconv-tag" style="background:var(--warning-light);color:var(--warning-dark)">25% konversi</span>
+            <span class="fconv-hint">HP → Closing</span>
           </div>
-          <div style="display:flex;justify-content:space-between;margin-top:6px">
-            <span style="font-size:10px;color:rgba(255,255,255,.5)">1 Jun</span>
-            <span style="font-size:10px;color:rgba(255,255,255,.5)">30 Jun</span>
+          <!-- Closing -->
+          <div class="fstage" style="margin-bottom:0">
+            <div class="fs-meta">
+              <div class="fs-num" style="color:var(--success-dark)">1</div>
+              <div class="fs-lbl">Closing ✓</div>
+            </div>
+            <div style="flex:1">
+              <div class="fs-bar" style="background:linear-gradient(90deg,#059669,#10B981);width:20%">
+                <span class="fs-bar-pct">4%</span>
+              </div>
+            </div>
+          </div>
+          <!-- Insight -->
+          <div style="margin-top:12px;padding:10px 12px;background:#FFFBEB;border-radius:10px;border-left:3px solid var(--warning)">
+            <div style="font-size:12px;font-weight:700;color:var(--warning-dark)">⚡ Insight</div>
+            <div style="font-size:11px;color:#92400E;margin-top:4px;line-height:1.5">Konversi WP→HP (33%) di bawah rata-rata. Tingkatkan kualitas follow up untuk mendorong lebih banyak Hot Prospect.</div>
           </div>
         </div>
-      </div>
 
-      <!-- Pipeline -->
-      <div class="section" style="padding-top:16px;padding-bottom:20px">
-        <div class="section-row">
-          <div class="section-title">Pipeline Penjualan</div>
-          <a href="customer-prospect.html" class="section-link">Semua</a>
-        </div>
-        <div class="card overflow-hidden">
-          <div class="pipeline">
-            <div class="pl-step pl-new"><div class="pl-count">12</div><div class="pl-label">Canvas</div></div>
-            <div class="pl-step pl-followup"><div class="pl-count">7</div><div class="pl-label">FU</div></div>
-            <div class="pl-step pl-survey"><div class="pl-count">4</div><div class="pl-label">Survey</div></div>
-            <div class="pl-step pl-closing"><div class="pl-count">2</div><div class="pl-label">Closing</div></div>
-            <div class="pl-step pl-active"><div class="pl-count">24</div><div class="pl-label">Aktif</div></div>
+        <!-- ▸ QUALITY METRICS ─────────────────── -->
+        <div class="sc">
+          <div class="sc-title" style="margin-bottom:14px">Quality Metrics</div>
+          <div class="q-pair">
+            <!-- Quality Prospect Score -->
+            <div class="q-card">
+              <div class="q-ring">
+                <svg width="62" height="62" viewBox="0 0 62 62">
+                  <circle cx="31" cy="31" r="24" fill="none" stroke="#EEF1F7" stroke-width="7"/>
+                  <circle cx="31" cy="31" r="24" fill="none" stroke="var(--primary)" stroke-width="7" stroke-linecap="round" stroke-dasharray="108 151"/>
+                </svg>
+                <div class="q-ring-inner">
+                  <span class="q-score" style="color:var(--primary)">72</span>
+                  <span class="q-denom">/100</span>
+                </div>
+              </div>
+              <div style="font-size:12px;font-weight:800;color:#1A1A2E;line-height:1.3">Quality Prospect Score</div>
+              <span class="q-grade" style="background:var(--success-light);color:var(--success-dark)">Baik</span>
+              <div style="font-size:10px;color:#9BA5B4">15 prospect aktif</div>
+            </div>
+            <!-- Closing Health Score -->
+            <div class="q-card">
+              <div class="q-ring">
+                <svg width="62" height="62" viewBox="0 0 62 62">
+                  <circle cx="31" cy="31" r="24" fill="none" stroke="#EEF1F7" stroke-width="7"/>
+                  <circle cx="31" cy="31" r="24" fill="none" stroke="var(--success)" stroke-width="7" stroke-linecap="round" stroke-dasharray="128 151"/>
+                </svg>
+                <div class="q-ring-inner">
+                  <span class="q-score" style="color:var(--success-dark)">85</span>
+                  <span class="q-denom">/100</span>
+                </div>
+              </div>
+              <div style="font-size:12px;font-weight:800;color:#1A1A2E;line-height:1.3">Closing Health Score</div>
+              <span class="q-grade" style="background:var(--success-light);color:var(--success-dark)">Sangat Baik</span>
+              <div style="font-size:10px;color:#9BA5B4">Dari 4 closing</div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div style="height:calc(var(--nav-h) + 20px)"></div>
+        <!-- ▸ ACHIEVEMENT ──────────────────────── -->
+        <div class="sc" style="margin-bottom:0;border-radius:16px 16px 0 0">
+          <div class="sc-hdr">
+            <div class="sc-title">Pencapaian Juni 2026</div>
+            <span style="font-size:11px;font-weight:600;color:#9BA5B4">Bulan Berjalan</span>
+          </div>
+          <div class="ach-row">
+            <div class="ach-cell">
+              <div class="ach-ico">🤝</div>
+              <div class="ach-val">1</div>
+              <div class="ach-lbl">Closing</div>
+            </div>
+            <div class="ach-cell">
+              <div class="ach-ico">💰</div>
+              <div class="ach-val" style="font-size:12px">2.4 Jt</div>
+              <div class="ach-lbl">Revenue</div>
+            </div>
+            <div class="ach-cell">
+              <div class="ach-ico">🎁</div>
+              <div class="ach-val" style="font-size:12px">480K</div>
+              <div class="ach-lbl">Komisi Est.</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="height:calc(var(--nav-h) + 16px)"></div>
+      </div><!-- /performance -->
+
+      <!-- ════════════════════════════════════════ -->
+      <!-- TAB: LEARNING                            -->
+      <!-- ════════════════════════════════════════ -->
+      <div data-content="learn" style="display:none">
+
+        <!-- ▸ LEARNING JOURNEY HEADER ───────────── -->
+        <div class="lj-card">
+          <div style="flex:1">
+            <div style="font-size:10px;color:rgba(255,255,255,.6);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Learning Journey</div>
+            <div style="font-size:14px;font-weight:600;color:rgba(255,255,255,.85);margin-bottom:4px">Phase 2 dari 4</div>
+            <div style="font-size:38px;font-weight:800;color:white;letter-spacing:-1.5px;line-height:1">55%</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.65);margin-bottom:12px">Progress Keseluruhan</div>
+            <div style="background:rgba(255,255,255,.2);border-radius:4px;height:5px;overflow:hidden">
+              <div style="width:55%;height:100%;background:white;border-radius:4px"></div>
+            </div>
+          </div>
+          <div style="font-size:52px;flex-shrink:0;opacity:.85">🧗</div>
+        </div>
+
+        <!-- ▸ PHASE ACCORDION ────────────────────── -->
+
+        <!-- Phase 1: Selesai (collapsed) -->
+        <div class="phase-wrap">
+          <div class="ph-hdr" onclick="togglePhase(1)">
+            <div class="ph-dot phd-done">✓</div>
+            <div class="ph-info">
+              <div class="ph-pname">Phase 1 — Fundamental</div>
+              <div class="ph-psub">5 modul · Final Exam 92</div>
+            </div>
+            <div class="ph-right">
+              <span class="ph-badge phb-done">Selesai</span>
+              <span class="ph-pct">100%</span>
+            </div>
+            <svg viewBox="0 0 24 24" class="ph-chev" id="chev-1" style="width:16px;height:16px;stroke:#C0C8D4;fill:none;stroke-width:2;flex-shrink:0;margin-left:6px"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+          <div id="phase-1" style="display:none;border-top:1px solid #F5F7FB">
+            <div class="mod-section">
+              <div class="mod-row"><div class="mc mc-d">✓</div><div class="m-name">Company Introduction</div><span class="m-st mst-d">Selesai</span><div class="m-pct">100%</div></div>
+              <div class="mod-row"><div class="mc mc-d">✓</div><div class="m-name">Product Knowledge</div><span class="m-st mst-d">Selesai</span><div class="m-pct">100%</div></div>
+              <div class="mod-row"><div class="mc mc-d">✓</div><div class="m-name">Coverage Area</div><span class="m-st mst-d">Selesai</span><div class="m-pct">100%</div></div>
+              <div class="mod-row"><div class="mc mc-d">✓</div><div class="m-name">SOP Sales</div><span class="m-st mst-d">Selesai</span><div class="m-pct">100%</div></div>
+              <div class="mod-row"><div class="mc mc-d">✓</div><div class="m-name">Quiz Modul</div><span class="m-st mst-d">Lulus</span><div class="m-pct">88%</div></div>
+            </div>
+            <div class="exam-row">
+              <div class="exam-ico">🏅</div>
+              <div style="flex:1"><div style="font-size:12px;font-weight:700;color:var(--success-dark)">Final Exam Phase 1 — Lulus</div><div style="font-size:10px;color:var(--success-dark);opacity:.7">Nilai: 92 / 100</div></div>
+              <span style="background:var(--success-light);color:var(--success-dark);border-radius:6px;padding:3px 8px;font-size:10px;font-weight:700">92 ✓</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase 2: In Progress (expanded by default) -->
+        <div class="phase-wrap" style="border:1.5px solid var(--primary)">
+          <div class="ph-hdr" style="background:#F0F6FF" onclick="togglePhase(2)">
+            <div class="ph-dot phd-act">2</div>
+            <div class="ph-info">
+              <div class="ph-pname" style="color:var(--primary)">Phase 2 — Communication</div>
+              <div class="ph-psub">4 modul · Final Exam terkunci</div>
+            </div>
+            <div class="ph-right">
+              <span class="ph-badge phb-act">In Progress</span>
+              <span class="ph-pct">55%</span>
+            </div>
+            <svg viewBox="0 0 24 24" class="ph-chev open" id="chev-2" style="width:16px;height:16px;stroke:var(--primary);fill:none;stroke-width:2;flex-shrink:0;margin-left:6px"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+          <div id="phase-2" style="display:block;border-top:1px solid #EEF1F7">
+            <!-- Phase progress bar -->
+            <div class="mod-prog-bar"><div class="mod-prog-fill" style="width:55%"></div></div>
+            <div class="mod-section">
+              <a href="modul-detail.html?m=greeting" class="mod-row">
+                <div class="mc mc-d">✓</div>
+                <div class="m-name">Greeting</div>
+                <span class="m-st mst-d">Selesai</span>
+                <div class="m-pct">100%</div>
+                <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:#C0C8D4;fill:none;stroke-width:2;flex-shrink:0"><path d="M9 18l6-6-6-6"/></svg>
+              </a>
+              <a href="modul-detail.html?m=needanalysis" class="mod-row">
+                <div class="mc mc-d">✓</div>
+                <div class="m-name">Need Analysis</div>
+                <span class="m-st mst-d">Selesai</span>
+                <div class="m-pct">100%</div>
+                <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:#C0C8D4;fill:none;stroke-width:2;flex-shrink:0"><path d="M9 18l6-6-6-6"/></svg>
+              </a>
+              <a href="modul-detail.html" class="mod-row" style="background:#FFFBF0">
+                <div class="mc mc-a">▶</div>
+                <div class="m-name" style="color:var(--warning-dark)">Handling Objection</div>
+                <span class="m-st mst-a">In Progress</span>
+                <div class="m-pct" style="color:var(--warning-dark)">60%</div>
+                <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--warning);fill:none;stroke-width:2;flex-shrink:0"><path d="M9 18l6-6-6-6"/></svg>
+              </a>
+              <div class="mod-row" style="opacity:.55;cursor:default">
+                <div class="mc mc-l">🔒</div>
+                <div class="m-name dim">Presentation</div>
+                <span class="m-st mst-l">Terkunci</span>
+                <div class="m-pct dim">0%</div>
+              </div>
+            </div>
+            <!-- Final Exam locked -->
+            <div class="exam-row">
+              <div class="exam-ico">🔒</div>
+              <div style="flex:1">
+                <div style="font-size:12px;font-weight:700;color:#9BA5B4">Final Exam Phase 2</div>
+                <div style="font-size:10px;color:#B8C0CC;margin-top:2px">Selesaikan semua modul untuk membuka</div>
+              </div>
+            </div>
+            <!-- CTA -->
+            <div class="mod-cta">
+              <a href="modul-detail.html" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--primary);border-radius:12px;padding:13px;font-size:13px;font-weight:700;color:white;text-decoration:none;box-shadow:0 4px 14px rgba(29,111,243,.28)">
+                <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:white;fill:none;stroke-width:2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Lanjutkan — Handling Objection
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase 3: Locked -->
+        <div class="phase-wrap" style="opacity:.55">
+          <div class="ph-hdr" style="cursor:not-allowed">
+            <div class="ph-dot phd-lock">3</div>
+            <div class="ph-info">
+              <div class="ph-pname" style="color:#9BA5B4">Phase 3 — Sales Process</div>
+              <div class="ph-psub">Terbuka setelah Phase 2 selesai</div>
+            </div>
+            <div class="ph-right">
+              <span class="ph-badge phb-lock">Terkunci</span>
+              <span class="ph-pct dim">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase 4: Locked -->
+        <div class="phase-wrap" style="opacity:.45;margin-bottom:0">
+          <div class="ph-hdr" style="cursor:not-allowed">
+            <div class="ph-dot phd-lock">🔒</div>
+            <div class="ph-info">
+              <div class="ph-pname" style="color:#9BA5B4">Phase 4 — Field Adaptation</div>
+              <div class="ph-psub">Terbuka setelah Phase 3 selesai</div>
+            </div>
+            <div class="ph-right">
+              <span class="ph-badge phb-lock">Terkunci</span>
+              <span class="ph-pct dim">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ▸ FIELD ADAPTATION REQUIREMENT ─────── -->
+        <div class="sc">
+          <div class="sc-hdr">
+            <div class="sc-title">Field Adaptation Requirement</div>
+            <a href="shadowing.html" class="sc-link">Detail
+              <svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </a>
+          </div>
+          <div style="font-size:11px;color:#9BA5B4;margin-bottom:12px">Aktivitas lapangan yang wajib dipenuhi selain materi pembelajaran.</div>
+          <div class="req-item">
+            <span class="req-ico">👁️</span>
+            <span class="req-name">Join Visit</span>
+            <div class="req-track"><div class="req-fill" style="width:60%"></div></div>
+            <span class="req-val">3 / 5</span>
+          </div>
+          <div class="req-item">
+            <span class="req-ico">🎤</span>
+            <span class="req-name">Join Presentasi</span>
+            <div class="req-track"><div class="req-fill" style="width:33%"></div></div>
+            <span class="req-val">1 / 3</span>
+          </div>
+          <div class="req-item">
+            <span class="req-ico">📋</span>
+            <span class="req-name">Join Survey</span>
+            <div class="req-track"><div class="req-fill" style="width:67%"></div></div>
+            <span class="req-val">2 / 3</span>
+          </div>
+          <div class="req-item">
+            <span class="req-ico">🗺️</span>
+            <span class="req-name">Canvasing Mandiri</span>
+            <div class="req-track"><div class="req-fill" style="width:40%;background:var(--warning)"></div></div>
+            <span class="req-val" style="color:var(--warning-dark)">40 / 100</span>
+          </div>
+        </div>
+
+        <!-- ▸ SYARAT CERTIFIED ───────────────────── -->
+        <div class="sc" style="margin-bottom:0;border-radius:16px 16px 0 0">
+          <div class="sc-hdr">
+            <div class="sc-title">Syarat Menjadi Certified</div>
+            <span style="font-size:11px;font-weight:600;color:#9BA5B4">2/7 terpenuhi</span>
+          </div>
+          <!-- checklist -->
+          <div class="cert-row">
+            <div class="cert-ico ci-done">✓</div>
+            <div class="cert-label done">Phase 1 Fundamental selesai</div>
+            <span class="cert-tag cta-d">✓ Lulus</span>
+          </div>
+          <div class="cert-row">
+            <div class="cert-ico ci-prog">⟳</div>
+            <div class="cert-label">Phase 2 Communication (55%)</div>
+            <span class="cert-tag cta-p">55%</span>
+          </div>
+          <div class="cert-row">
+            <div class="cert-ico ci-lock">🔒</div>
+            <div class="cert-label">Phase 3 Sales Process</div>
+            <span class="cert-tag cta-l">Terkunci</span>
+          </div>
+          <div class="cert-row">
+            <div class="cert-ico ci-lock">🔒</div>
+            <div class="cert-label">Phase 4 Field Adaptation</div>
+            <span class="cert-tag cta-l">Terkunci</span>
+          </div>
+          <div class="cert-row">
+            <div class="cert-ico ci-done">✓</div>
+            <div class="cert-label done">Semua quiz Phase 1 lulus</div>
+            <span class="cert-tag cta-d">✓ Lulus</span>
+          </div>
+          <div class="cert-row">
+            <div class="cert-ico ci-prog">⟳</div>
+            <div class="cert-label">Field requirement (2/4 terpenuhi)</div>
+            <span class="cert-tag cta-p">Proses</span>
+          </div>
+          <div class="cert-row">
+            <div class="cert-ico ci-lock">🔒</div>
+            <div class="cert-label">Semua Final Exam lulus</div>
+            <span class="cert-tag cta-l">Terkunci</span>
+          </div>
+          <!-- graduation hint -->
+          <div style="margin-top:14px;padding:12px;background:linear-gradient(135deg,#EEF4FF,#F0F6FF);border-radius:12px;border:1px dashed #A5C3FF;text-align:center">
+            <div style="font-size:12px;font-weight:700;color:var(--primary);margin-bottom:4px">🏅 Status Certified</div>
+            <div style="font-size:11px;color:#667085;line-height:1.5">Setelah semua syarat terpenuhi, status otomatis berubah dari <b>Adaptation</b> menjadi <b>Certified</b> dan Learning Center aktif.</div>
+          </div>
+        </div>
+
+        <div style="height:calc(var(--nav-h) + 16px)"></div>
+      </div><!-- /learning -->
+
     </div>
   </div>
 
+  <!-- ═══ BOTTOM NAV ═══ -->
   <nav class="bottom-nav">
     <a href="dashboard.html" class="nav-item active">
-      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/><path d="M3 12v9h18V12"/></svg></div>
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9M9 21V12h6v9"/></svg></div>
       <span class="nav-label">Beranda</span>
     </a>
     <a href="aktivitas.html" class="nav-item">
@@ -256,6 +772,24 @@
     </a>
   </nav>
 </div>
+
 <script src="../js/app.js"></script>
+<script>
+function switchTab(id, el) {
+  document.querySelectorAll('[data-content]').forEach(function(c){ c.style.display='none'; });
+  document.querySelectorAll('.ae-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelector('[data-content="'+id+'"]').style.display='block';
+  el.classList.add('active');
+}
+
+function togglePhase(n) {
+  var content = document.getElementById('phase-'+n);
+  var chev    = document.getElementById('chev-'+n);
+  if (!content) return;
+  var open = content.style.display === 'block';
+  content.style.display = open ? 'none' : 'block';
+  if (chev) chev.classList.toggle('open', !open);
+}
+</script>
 </body>
 </html>

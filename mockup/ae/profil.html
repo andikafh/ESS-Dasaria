@@ -6,6 +6,19 @@
   <title>ESS — Profil AE</title>
   <link rel="stylesheet" href="../css/design-system.css">
   <style>
+    /* ── HEADER (matches dashboard.html) ── */
+    .ae-hdr { background:white; padding:52px 20px 0; border-bottom:1px solid #F0F2F7; }
+    .ae-hdr-top { display:flex; align-items:flex-start; gap:12px; margin-bottom:14px; }
+    .ae-avatar { width:52px; height:52px; border-radius:50%; background:#EEF4FF; border:2.5px solid #C7DBFF; display:flex; align-items:center; justify-content:center; font-size:17px; font-weight:800; color:var(--primary); flex-shrink:0; }
+    .ae-status { display:inline-block; background:var(--primary); color:white; border-radius:20px; padding:4px 12px; font-size:11px; font-weight:700; letter-spacing:.3px; margin-top:5px; }
+    .ae-btn { width:40px; height:40px; background:#F5F7FB; border-radius:12px; display:flex; align-items:center; justify-content:center; text-decoration:none; flex-shrink:0; border:1px solid #EEF0F7; cursor:pointer; }
+    .ae-branch-row { display:flex; gap:24px; padding:0 0 14px; align-items:flex-end; }
+    .ae-branch-item .lbl { font-size:10px; font-weight:600; color:#9BA5B4; letter-spacing:.3px; margin-bottom:2px; }
+    .ae-branch-item .val { font-size:14px; font-weight:700; color:var(--primary); }
+    .ae-bl-av { width:26px; height:26px; border-radius:50%; background:#FFE9E9; border:2px solid #FFBDBD; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:800; color:#E84E4E; flex-shrink:0; }
+    .ae-bl-wrap { display:flex; align-items:center; gap:7px; }
+
+    /* ── CONTENT ── */
     .info-row { display:flex; align-items:flex-start; padding:13px 0; border-bottom:1px solid var(--gray-50); gap:12px; }
     .info-row:last-child { border-bottom:none; }
     .info-lbl { font-size:12px; color:var(--gray-400); font-weight:500; flex:0 0 120px; padding-top:1px; }
@@ -23,30 +36,44 @@
 </head>
 <body>
 <div class="phone">
-  <div class="status-bar" style="background:transparent;position:absolute;top:0;left:0;right:0;z-index:60">
-    <span class="s-time" style="color:white">09:41</span>
-    <div class="s-icons"><svg viewBox="0 0 17 12" style="fill:white;width:16px;height:12px"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="1.5" width="3" height="10.5" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/></svg><span style="color:white;font-size:13px">🔋</span></div>
+  <!-- Status bar: white bg, dark icons -->
+  <div class="status-bar" style="background:white;position:absolute;top:0;left:0;right:0;z-index:60">
+    <span class="s-time">09:41</span>
+    <div class="s-icons">
+      <svg viewBox="0 0 17 12" style="fill:#1A1A2E;width:15px;height:11px"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="1.5" width="3" height="10.5" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/></svg>
+      <span style="font-size:13px">🔋</span>
+    </div>
   </div>
 
   <div class="app">
     <div class="page" style="padding-bottom:0">
 
-      <!-- Hero -->
-      <div style="background:linear-gradient(150deg,#1E1B4B,#4F46E5,#818CF8);padding:58px 24px 28px">
-        <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
-          <div style="width:64px;height:64px;border-radius:20px;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:white;flex-shrink:0">AP</div>
+      <!-- ═══ HEADER (flat white, konsisten dengan Beranda) ═══ -->
+      <div class="ae-hdr">
+        <div class="ae-hdr-top">
+          <div class="ae-avatar">AP</div>
           <div style="flex:1">
-            <div style="font-size:19px;font-weight:800;color:white;letter-spacing:-.4px">Andika Pratama</div>
-            <div style="font-size:12px;color:rgba(255,255,255,.7);margin-top:2px">Staff Mitra AE</div>
-            <div style="margin-top:6px"><span class="role-tag">ID: AE-2024-047</span></div>
+            <div style="font-size:17px;font-weight:800;color:#1A1A2E;letter-spacing:-.3px">Andika Pratama</div>
+            <div style="font-size:12px;color:#9BA5B4;margin-top:1px">Mitra AE · ID: AE-2024-047</div>
+            <span class="ae-status">Adaptation</span>
           </div>
-          <a href="dashboard.html" style="width:36px;height:36px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;text-decoration:none">
-            <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:white;fill:none;stroke-width:2"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/></svg>
+          <!-- Edit Profil button -->
+          <a href="#" class="ae-btn" onclick="alert('Fitur edit profil akan segera tersedia.')">
+            <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:#444E5E;fill:none;stroke-width:2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
           </a>
         </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <span style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:600;color:rgba(255,255,255,.9)">🏢 Cabang Jakarta Pusat</span>
-          <span style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:600;color:rgba(255,255,255,.9)">📍 Area Sudirman</span>
+        <div class="ae-branch-row">
+          <div class="ae-branch-item">
+            <div class="lbl">Branch</div>
+            <div class="val">Karangploso</div>
+          </div>
+          <div class="ae-bl-wrap">
+            <div class="ae-bl-av">AN</div>
+            <div class="ae-branch-item">
+              <div class="lbl">Branch Leader</div>
+              <div class="val">Anisa</div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -57,9 +84,9 @@
           <div class="info-row"><span class="info-lbl">Nama Lengkap</span><span class="info-val">Andika Pratama</span></div>
           <div class="info-row"><span class="info-lbl">ID Karyawan</span><span class="info-val">AE-2024-047</span></div>
           <div class="info-row"><span class="info-lbl">Jabatan</span><span class="info-val">Account Executive</span></div>
-          <div class="info-row"><span class="info-lbl">Cabang</span><span class="info-val">Cabang Jakarta Pusat</span></div>
-          <div class="info-row"><span class="info-lbl">Area Kerja</span><span class="info-val">Area Sudirman</span></div>
-          <div class="info-row"><span class="info-lbl">Branch Leader</span><span class="info-val">Budi Santoso</span></div>
+          <div class="info-row"><span class="info-lbl">Cabang</span><span class="info-val">Karangploso</span></div>
+          <div class="info-row"><span class="info-lbl">Area Kerja</span><span class="info-val">Area Karangploso</span></div>
+          <div class="info-row"><span class="info-lbl">Branch Leader</span><span class="info-val">Anisa</span></div>
           <div class="info-row"><span class="info-lbl">Supervisor</span><span class="info-val">Rudi Hermawan</span></div>
           <div class="info-row"><span class="info-lbl">Bergabung</span><span class="info-val">03 Januari 2024</span></div>
           <div class="info-row"><span class="info-lbl">Telepon</span><span class="info-val">+62 812-3456-7890</span></div>

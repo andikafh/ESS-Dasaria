@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ESS — Shadowing</title>
+  <link rel="stylesheet" href="../css/design-system.css">
+  <style>
+    /* Target group card */
+    .tgt-group {
+      background: var(--white); border-radius: var(--r);
+      box-shadow: var(--shadow-sm); overflow: hidden;
+    }
+    .tgt-group-header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px; border-bottom: 1px solid var(--gray-50);
+    }
+    .tgh-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 19px; flex-shrink: 0; }
+    .tgh-body { flex: 1; }
+    .tgh-title { font-size: 14px; font-weight: 700; color: var(--gray-900); margin-bottom: 2px; }
+    .tgh-sub   { font-size: 11px; color: var(--gray-400); }
+
+    /* Circular mini progress */
+    .mini-gauge { position: relative; width: 48px; height: 48px; flex-shrink: 0; }
+    .mini-gauge svg { display: block; transform: rotate(-90deg); }
+    .mg-center { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+    .mg-text   { font-size: 11px; font-weight: 800; }
+
+    /* Visit log item */
+    .visit-log {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 12px 16px; border-bottom: 1px solid var(--gray-50);
+      text-decoration: none;
+    }
+    .visit-log:last-child { border-bottom: none; }
+    .vl-avatar { width: 38px; height: 38px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: white; flex-shrink: 0; }
+    .vl-body   { flex: 1; min-width: 0; }
+    .vl-name   { font-size: 13px; font-weight: 700; color: var(--gray-900); margin-bottom: 3px; }
+    .vl-meta   { font-size: 11px; color: var(--gray-400); margin-bottom: 5px; }
+    .vl-chips  { display: flex; gap: 4px; flex-wrap: wrap; }
+    .vl-chip   { font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 6px; }
+    .vc-gps    { background: var(--success-light); color: var(--success-dark); }
+    .vc-foto   { background: var(--info-light); color: var(--info-dark); }
+    .vc-appr   { background: var(--primary-light); color: var(--primary-dark); }
+    .vc-pending{ background: var(--warning-light); color: var(--warning-dark); }
+  </style>
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar">
+    <span class="s-time">09:41</span>
+    <div class="s-icons"><span style="font-size:13px">🔋</span></div>
+  </div>
+
+  <div class="app">
+    <div class="page" style="padding-bottom:0">
+
+      <!-- Header -->
+      <div class="screen-header">
+        <a href="dashboard-field.html" class="btn-back">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        </a>
+        <h1>Shadowing</h1>
+        <span class="badge b-warning">1 Tersisa</span>
+      </div>
+
+      <!-- Info banner -->
+      <div style="padding:12px 20px 0">
+        <div style="background:var(--primary-light);border:1px solid rgba(29,111,243,.15);border-radius:var(--r-sm);padding:12px 14px;display:flex;gap:10px;align-items:flex-start">
+          <span style="font-size:16px;flex-shrink:0">ℹ️</span>
+          <div style="font-size:12px;color:var(--primary-dark);line-height:1.6">
+            Setiap aktivitas shadowing wajib disertai validasi <strong>GPS</strong>, <strong>Foto</strong>, dan <strong>Approval Tandem AE</strong>.
+          </div>
+        </div>
+      </div>
+
+      <!-- Target Group 1: Join Visit -->
+      <div class="section" style="padding-top:16px">
+        <div class="section-title" style="margin-bottom:10px">Ringkasan Target</div>
+        <div style="display:flex;gap:10px">
+
+          <!-- Join Visit -->
+          <div style="flex:1;background:var(--white);border-radius:var(--r);box-shadow:var(--shadow-sm);padding:14px;text-align:center">
+            <div class="mini-gauge" style="margin:0 auto 8px">
+              <svg viewBox="0 0 48 48" width="48" height="48">
+                <circle cx="24" cy="24" r="18" fill="none" stroke="var(--gray-100)" stroke-width="5"/>
+                <circle cx="24" cy="24" r="18" fill="none" stroke="var(--success)" stroke-width="5" stroke-linecap="round" stroke-dasharray="113.1 113.1"/>
+              </svg>
+              <div class="mg-center"><span class="mg-text" style="color:var(--success-dark)">✓</span></div>
+            </div>
+            <div style="font-size:16px;font-weight:800;color:var(--success-dark)">5/5</div>
+            <div style="font-size:10px;font-weight:600;color:var(--gray-500);margin-top:2px">Join Visit</div>
+            <span class="badge b-success" style="margin-top:6px;font-size:9.5px;padding:2px 8px">Selesai ✓</span>
+          </div>
+
+          <!-- Join Presentasi -->
+          <div style="flex:1;background:var(--white);border-radius:var(--r);box-shadow:var(--shadow-sm);padding:14px;text-align:center">
+            <div class="mini-gauge" style="margin:0 auto 8px">
+              <svg viewBox="0 0 48 48" width="48" height="48">
+                <circle cx="24" cy="24" r="18" fill="none" stroke="var(--gray-100)" stroke-width="5"/>
+                <circle cx="24" cy="24" r="18" fill="none" stroke="var(--success)" stroke-width="5" stroke-linecap="round" stroke-dasharray="113.1 113.1"/>
+              </svg>
+              <div class="mg-center"><span class="mg-text" style="color:var(--success-dark)">✓</span></div>
+            </div>
+            <div style="font-size:16px;font-weight:800;color:var(--success-dark)">3/3</div>
+            <div style="font-size:10px;font-weight:600;color:var(--gray-500);margin-top:2px">Join Presentasi</div>
+            <span class="badge b-success" style="margin-top:6px;font-size:9.5px;padding:2px 8px">Selesai ✓</span>
+          </div>
+
+          <!-- Join Survey -->
+          <div style="flex:1;background:var(--white);border-radius:var(--r);box-shadow:var(--shadow-sm);padding:14px;text-align:center">
+            <div class="mini-gauge" style="margin:0 auto 8px">
+              <svg viewBox="0 0 48 48" width="48" height="48">
+                <circle cx="24" cy="24" r="18" fill="none" stroke="var(--gray-100)" stroke-width="5"/>
+                <circle cx="24" cy="24" r="18" fill="none" stroke="var(--warning)" stroke-width="5" stroke-linecap="round" stroke-dasharray="75.4 113.1"/>
+              </svg>
+              <div class="mg-center"><span class="mg-text" style="color:var(--warning-dark)">2/3</span></div>
+            </div>
+            <div style="font-size:16px;font-weight:800;color:var(--warning-dark)">2/3</div>
+            <div style="font-size:10px;font-weight:600;color:var(--gray-500);margin-top:2px">Join Survey</div>
+            <span class="badge b-warning" style="margin-top:6px;font-size:9.5px;padding:2px 8px">⏳ 1 Lagi</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Log Aktivitas -->
+      <div class="section" style="padding-top:16px">
+        <div class="section-row">
+          <div class="section-title">Log Aktivitas Shadowing</div>
+          <span style="font-size:12px;color:var(--gray-400)">10 aktivitas</span>
+        </div>
+      </div>
+
+      <div style="background:var(--white)">
+
+        <!-- Log 1 -->
+        <div class="visit-log">
+          <div class="vl-avatar" style="background:var(--primary)">BS</div>
+          <div class="vl-body">
+            <div class="vl-name">Join Visit — Bapak Suharto</div>
+            <div class="vl-meta">15 Jun 2026 · 09:00 · Tandem: Rudi Hermawan</div>
+            <div class="vl-chips">
+              <span class="vl-chip vc-gps">📡 GPS</span>
+              <span class="vl-chip vc-foto">📸 3 Foto</span>
+              <span class="vl-chip vc-appr">✓ Approved</span>
+            </div>
+          </div>
+          <span class="badge b-success" style="font-size:9.5px;padding:2px 8px;flex-shrink:0">Visit ✓</span>
+        </div>
+
+        <!-- Log 2 -->
+        <div class="visit-log">
+          <div class="vl-avatar" style="background:#7C3AED">PR</div>
+          <div class="vl-body">
+            <div class="vl-name">Join Visit — PT Prima Raya</div>
+            <div class="vl-meta">14 Jun 2026 · 10:30 · Tandem: Rudi Hermawan</div>
+            <div class="vl-chips">
+              <span class="vl-chip vc-gps">📡 GPS</span>
+              <span class="vl-chip vc-foto">📸 2 Foto</span>
+              <span class="vl-chip vc-appr">✓ Approved</span>
+            </div>
+          </div>
+          <span class="badge b-success" style="font-size:9.5px;padding:2px 8px;flex-shrink:0">Visit ✓</span>
+        </div>
+
+        <!-- Log 3 -->
+        <div class="visit-log">
+          <div class="vl-avatar" style="background:var(--success)">KT</div>
+          <div class="vl-body">
+            <div class="vl-name">Join Presentasi — CV Karya Tama</div>
+            <div class="vl-meta">13 Jun 2026 · 13:00 · Tandem: Rudi Hermawan</div>
+            <div class="vl-chips">
+              <span class="vl-chip vc-gps">📡 GPS</span>
+              <span class="vl-chip vc-foto">📸 4 Foto</span>
+              <span class="vl-chip vc-appr">✓ Approved</span>
+            </div>
+          </div>
+          <span class="badge b-success" style="font-size:9.5px;padding:2px 8px;flex-shrink:0">Presentasi ✓</span>
+        </div>
+
+        <!-- Log 4 -->
+        <div class="visit-log">
+          <div class="vl-avatar" style="background:var(--warning-dark)">BM</div>
+          <div class="vl-body">
+            <div class="vl-name">Join Survey — Bpk. Maulana</div>
+            <div class="vl-meta">12 Jun 2026 · 14:00 · Tandem: Rudi Hermawan</div>
+            <div class="vl-chips">
+              <span class="vl-chip vc-gps">📡 GPS</span>
+              <span class="vl-chip vc-foto">📸 5 Foto</span>
+              <span class="vl-chip vc-appr">✓ Approved</span>
+            </div>
+          </div>
+          <span class="badge b-success" style="font-size:9.5px;padding:2px 8px;flex-shrink:0">Survey ✓</span>
+        </div>
+
+        <!-- Log 5 - Survey pending -->
+        <div class="visit-log">
+          <div class="vl-avatar" style="background:var(--gray-400)">—</div>
+          <div class="vl-body">
+            <div class="vl-name" style="color:var(--gray-500)">Join Survey — Terjadwal</div>
+            <div class="vl-meta">18 Jun 2026 · 10:00 · Area: Jakarta Utara</div>
+            <div class="vl-chips">
+              <span class="vl-chip vc-pending">⏳ Belum dilakukan</span>
+            </div>
+          </div>
+          <span class="badge b-warning" style="font-size:9.5px;padding:2px 8px;flex-shrink:0">Upcoming</span>
+        </div>
+
+      </div>
+
+      <!-- Add Button -->
+      <div style="padding:16px 20px 24px">
+        <button class="btn btn-primary btn-full" onclick="alert('Tambah Aktivitas Shadowing — GPS &amp; Foto Wajib')">
+          <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:white;fill:none;stroke-width:2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Tambah Aktivitas Shadowing
+        </button>
+      </div>
+
+      <div style="height:calc(var(--nav-h) + 20px)"></div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="dashboard-field.html" class="nav-item active">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/><path d="M3 12v9h18V12"/></svg></div>
+      <span class="nav-label">Beranda</span>
+    </a>
+    <a href="aktivitas.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+      <span class="nav-label">Aktivitas</span>
+    </a>
+    <a href="notifikasi.html" class="nav-item">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+      </div>
+      <span class="nav-label">Notifikasi</span>
+    </a>
+    <a href="profil.html" class="nav-item">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <span class="nav-label">Profil</span>
+    </a>
+  </nav>
+</div>
+<script src="../js/app.js"></script>
+</body>
+</html>

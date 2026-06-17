@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ESS — Inbox</title>
+  <link rel="stylesheet" href="css/design-system.css">
+  <style>
+    body, .app, .page { background: #F4F6F9; }
+
+    /* HEADER */
+    .page-header {
+      background: white;
+      padding: 52px 20px 0;
+      border-bottom: 1px solid #F3F4F6;
+      position: sticky; top: 0; z-index: 40;
+    }
+    .ph-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .ph-title { font-size: 20px; font-weight: 800; color: #111827; }
+    .ph-search {
+      width: 36px; height: 36px; border-radius: 10px; background: #F4F6F9;
+      display: flex; align-items: center; justify-content: center; cursor: pointer; border: none;
+    }
+    .ph-search svg { width: 18px; height: 18px; stroke: #374151; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* TAB underline */
+    .tab-underline { display: flex; }
+    .tu-btn {
+      flex: 1; padding: 10px 0; font-size: 14px; font-weight: 600; color: #9CA3AF;
+      text-align: center; border: none; background: transparent; cursor: pointer;
+      border-bottom: 2.5px solid transparent; position: relative;
+    }
+    .tu-btn.active { color: #1D6FF3; border-bottom-color: #1D6FF3; }
+    .tu-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 18px; height: 18px; border-radius: 9px;
+      background: #EF4444; color: white;
+      font-size: 9px; font-weight: 800; padding: 0 4px;
+      margin-left: 4px; vertical-align: middle;
+    }
+
+    /* TAB CONTENT */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* SUB-FILTER PILLS */
+    .sub-filter { padding: 12px 16px 8px; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+    .sub-filter::-webkit-scrollbar { display: none; }
+    .sf-btn {
+      flex-shrink: 0; padding: 6px 14px;
+      border: 1.5px solid #E5E7EB; border-radius: 20px;
+      font-size: 12px; font-weight: 600; color: #6B7280;
+      background: white; cursor: pointer; white-space: nowrap;
+    }
+    .sf-btn.active { background: #1D6FF3; border-color: #1D6FF3; color: white; }
+
+    /* SECTION LABEL */
+    .section-label { padding: 14px 16px 6px; font-size: 12px; font-weight: 700; color: #9CA3AF; letter-spacing: .5px; }
+
+    /* INFORMASI ITEM */
+    .info-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px 16px; background: white; border-bottom: 1px solid #F9FAFB;
+      text-decoration: none; position: relative;
+    }
+    .info-item:first-of-type { }
+    .ii-icon { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .ii-icon svg { width: 20px; height: 20px; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .ii-body { flex: 1; min-width: 0; }
+    .ii-cat { font-size: 10.5px; font-weight: 700; margin-bottom: 3px; }
+    .ii-title { font-size: 13px; font-weight: 700; color: #111827; margin-bottom: 3px; line-height: 1.4; }
+    .ii-text { font-size: 11.5px; color: #6B7280; line-height: 1.5; margin-bottom: 4px; }
+    .ii-time { font-size: 11px; color: #9CA3AF; }
+    .ii-unread { width: 8px; height: 8px; border-radius: 50%; background: #1D6FF3; flex-shrink: 0; margin-top: 5px; }
+    .ii-read { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+
+    /* PROSES ITEM */
+    /* Menunggu Tindakan */
+    .tindakan-card {
+      background: white; margin: 10px 16px;
+      border-radius: 14px; box-shadow: 0 2px 10px rgba(0,0,0,.06); overflow: hidden;
+    }
+    .tc-head { padding: 13px 16px 11px; border-bottom: 1px solid #F3F4F6; }
+    .tc-title { font-size: 13px; font-weight: 700; color: #111827; }
+    .tindakan-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 13px 16px; border-bottom: 1px solid #F9FAFB;
+      text-decoration: none;
+    }
+    .tindakan-item:last-child { border-bottom: none; }
+    .ti-icon { width: 40px; height: 40px; border-radius: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .ti-icon svg { width: 20px; height: 20px; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .ti-body { flex: 1; }
+    .ti-title { font-size: 13px; font-weight: 700; color: #111827; margin-bottom: 2px; }
+    .ti-desc { font-size: 11.5px; color: #6B7280; line-height: 1.5; }
+    .ti-time { font-size: 10.5px; color: #9CA3AF; margin-top: 2px; }
+    .ti-warn { flex-shrink: 0; }
+    .ti-warn svg { width: 20px; height: 20px; stroke: #D97706; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .ti-chevron { flex-shrink: 0; }
+    .ti-chevron svg { width: 16px; height: 16px; stroke: #D1D5DB; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* Pengajuan Saya items */
+    .pengajuan-card {
+      background: white; margin: 0 16px;
+      border-radius: 14px; box-shadow: 0 2px 10px rgba(0,0,0,.06); overflow: hidden;
+    }
+    .pj-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 13px 16px; border-bottom: 1px solid #F9FAFB;
+      text-decoration: none;
+    }
+    .pj-item:last-child { border-bottom: none; }
+    .pj-icon { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .pj-icon svg { width: 21px; height: 21px; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .pj-body { flex: 1; min-width: 0; }
+    .pj-name { font-size: 13px; font-weight: 700; color: #111827; margin-bottom: 3px; }
+    .pj-date { font-size: 11.5px; color: #6B7280; margin-bottom: 2px; }
+    .pj-note { font-size: 11.5px; color: #9CA3AF; }
+    .pj-right { text-align: right; flex-shrink: 0; }
+    .pj-status { margin-bottom: 4px; white-space: nowrap; }
+    .s-ok      { background: #DCFCE7; color: #15803D; border-radius: 20px; padding: 3px 8px; font-size: 10.5px; font-weight: 700; display: inline-flex; align-items: center; gap: 3px; }
+    .s-ok-dot  { width: 5px; height: 5px; border-radius: 50%; background: #16A34A; }
+    .s-wait    { background: #FFF7ED; color: #D97706; border-radius: 20px; padding: 3px 8px; font-size: 10.5px; font-weight: 700; display: inline-flex; align-items: center; gap: 3px; }
+    .s-wait-dot { width: 5px; height: 5px; border-radius: 50%; background: #F59E0B; }
+    .pj-approver { font-size: 10.5px; color: #6B7280; line-height: 1.4; }
+    .pj-approver strong { color: #374151; font-size: 11px; }
+    .pj-sla { font-size: 10px; color: #D97706; display: flex; align-items: center; gap: 2px; justify-content: flex-end; margin-top: 2px; }
+    .pj-sla svg { width: 10px; height: 10px; stroke: #D97706; fill: none; stroke-width: 2; }
+    .pj-chevron svg { width: 14px; height: 14px; stroke: #D1D5DB; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; margin-top: 8px; }
+
+    .lihat-semua { text-align: center; padding: 14px; margin: 0 16px; }
+    .lihat-semua a { font-size: 13px; color: #1D6FF3; font-weight: 700; text-decoration: none; }
+  </style>
+</head>
+<body>
+<div class="phone">
+  <div class="app">
+    <div class="page" style="padding:0">
+
+      <!-- HEADER -->
+      <div class="page-header">
+        <div class="ph-row">
+          <span class="ph-title">Inbox</span>
+          <button class="ph-search">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </button>
+        </div>
+        <div class="tab-underline">
+          <button class="tu-btn active" onclick="switchInboxTab('informasi',this)">Informasi</button>
+          <button class="tu-btn" onclick="switchInboxTab('proses',this)">Proses Saya <span class="tu-badge">2</span></button>
+        </div>
+      </div>
+
+      <!-- ══════ TAB: INFORMASI ══════ -->
+      <div id="tab-informasi" class="tab-content active">
+
+        <!-- Sub-filter -->
+        <div class="sub-filter">
+          <button class="sf-btn active">Semua</button>
+          <button class="sf-btn">Pengumuman</button>
+          <button class="sf-btn">Kebijakan</button>
+          <button class="sf-btn">Informasi</button>
+          <button class="sf-btn">Reminder</button>
+        </div>
+
+        <!-- Hari Ini -->
+        <div class="section-label">Hari Ini</div>
+
+        <div>
+          <a href="#" class="info-item">
+            <div class="ii-icon" style="background:#EEF4FF">
+              <svg viewBox="0 0 24 24" style="stroke:#1D6FF3"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+            </div>
+            <div class="ii-body">
+              <div class="ii-cat" style="color:#1D6FF3">Pengumuman HC</div>
+              <div class="ii-title">Perubahan Kebijakan Izin Sakit</div>
+              <div class="ii-text">Mulai 1 Agustus 2026, pengajuan izin sakit lebih dari 2 hari wajib melampirkan surat dokter.</div>
+              <div class="ii-time">2 jam lalu</div>
+            </div>
+            <div class="ii-unread"></div>
+          </a>
+
+          <a href="#" class="info-item">
+            <div class="ii-icon" style="background:#F0FDFA">
+              <svg viewBox="0 0 24 24" style="stroke:#0D9488"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div class="ii-body">
+              <div class="ii-cat" style="color:#0D9488">Informasi Perusahaan</div>
+              <div class="ii-title">Libur Nasional 17 Agustus 2026</div>
+              <div class="ii-text">Hari Minggu, 17 Agustus 2026 ditetapkan sebagai libur nasional.</div>
+              <div class="ii-time">1 hari lalu</div>
+            </div>
+            <div class="ii-unread"></div>
+          </a>
+
+          <a href="#" class="info-item">
+            <div class="ii-icon" style="background:#EDE9FE">
+              <svg viewBox="0 0 24 24" style="stroke:#7C3AED"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </div>
+            <div class="ii-body">
+              <div class="ii-cat" style="color:#7C3AED">Kebijakan Baru</div>
+              <div class="ii-title">Pembaruan Kebijakan Work From Office</div>
+              <div class="ii-text">Efektif 1 Juli 2026, seluruh karyawan wajib WFO minimal 4 hari dalam seminggu.</div>
+              <div class="ii-time">2 hari lalu</div>
+            </div>
+            <div class="ii-unread"></div>
+          </a>
+
+          <a href="#" class="info-item">
+            <div class="ii-icon" style="background:#FFF7ED">
+              <svg viewBox="0 0 24 24" style="stroke:#EA580C"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            </div>
+            <div class="ii-body">
+              <div class="ii-cat" style="color:#EA580C">Event Perusahaan</div>
+              <div class="ii-title">Employee Gathering 2026</div>
+              <div class="ii-text">Akan dilaksanakan pada 20 September 2026 di Batu, Jawa Timur.</div>
+              <div class="ii-time">3 hari lalu</div>
+            </div>
+            <div class="ii-read"></div>
+          </a>
+        </div>
+
+        <!-- Sebelumnya -->
+        <div class="section-label">Sebelumnya</div>
+
+        <div>
+          <a href="#" class="info-item">
+            <div class="ii-icon" style="background:#F1F5F9">
+              <svg viewBox="0 0 24 24" style="stroke:#374151"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            </div>
+            <div class="ii-body">
+              <div class="ii-cat" style="color:#374151">Pengumuman Direksi</div>
+              <div class="ii-title">Performa Perusahaan Q2 2026</div>
+              <div class="ii-text">Laporan kinerja kuartal kedua 2026 telah dirilis. Total revenue tumbuh 14% YoY.</div>
+              <div class="ii-time">5 hari lalu</div>
+            </div>
+            <div class="ii-read"></div>
+          </a>
+
+          <a href="#" class="info-item" style="border-bottom:none">
+            <div class="ii-icon" style="background:#FEF9C3">
+              <svg viewBox="0 0 24 24" style="stroke:#CA8A04"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div class="ii-body">
+              <div class="ii-cat" style="color:#CA8A04">Reminder Dokumen</div>
+              <div class="ii-title">Perpanjangan NPWP Tahunan</div>
+              <div class="ii-text">Harap pastikan NPWP Anda masih aktif dan sesuai dengan data HR.</div>
+              <div class="ii-time">1 minggu lalu</div>
+            </div>
+            <div class="ii-read"></div>
+          </a>
+        </div>
+
+        <div style="height:calc(var(--nav-h) + 24px)"></div>
+      </div>
+
+      <!-- ══════ TAB: PROSES SAYA ══════ -->
+      <div id="tab-proses" class="tab-content">
+
+        <!-- Sub-filter -->
+        <div class="sub-filter">
+          <button class="sf-btn active">Semua</button>
+          <button class="sf-btn">Menunggu <span style="background:#FFF7ED;color:#D97706;border-radius:10px;padding:1px 5px;font-size:10px;font-weight:700">2</span></button>
+          <button class="sf-btn">Disetujui <span style="background:#DCFCE7;color:#15803D;border-radius:10px;padding:1px 5px;font-size:10px;font-weight:700">3</span></button>
+          <button class="sf-btn">Ditolak <span style="background:#FEF2F2;color:#DC2626;border-radius:10px;padding:1px 5px;font-size:10px;font-weight:700">1</span></button>
+        </div>
+
+        <!-- MENUNGGU TINDAKAN -->
+        <div class="tindakan-card">
+          <div class="tc-head"><span class="tc-title">Menunggu Tindakan</span></div>
+
+          <a href="profil.html" class="tindakan-item">
+            <div class="ti-icon" style="background:#FFF7ED">
+              <svg viewBox="0 0 24 24" style="stroke:#D97706"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div class="ti-body">
+              <div class="ti-title">Lengkapi Data Kontak Darurat</div>
+              <div class="ti-desc">Harap lengkapi data kontak darurat terbaru untuk keperluan administrasi.</div>
+              <div class="ti-time">5 hari lalu</div>
+            </div>
+            <div class="ti-warn">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div class="ti-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </a>
+
+          <a href="profil.html" class="tindakan-item">
+            <div class="ti-icon" style="background:#FFF7ED">
+              <svg viewBox="0 0 24 24" style="stroke:#D97706"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            </div>
+            <div class="ti-body">
+              <div class="ti-title">Upload NPWP</div>
+              <div class="ti-desc">NPWP Anda belum terverifikasi. Harap unggah NPWP terbaru.</div>
+              <div class="ti-time">7 hari lalu</div>
+            </div>
+            <div class="ti-warn">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div class="ti-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </a>
+        </div>
+
+        <!-- PENGAJUAN SAYA -->
+        <div class="section-label" style="margin-top:4px">Pengajuan Saya</div>
+
+        <div class="pengajuan-card">
+
+          <!-- Cuti Tahunan - Disetujui -->
+          <a href="izin-cuti.html" class="pj-item">
+            <div class="pj-icon" style="background:#DCFCE7">
+              <svg viewBox="0 0 24 24" style="stroke:#16A34A"><path d="M3 12s0-7 9-7 9 7 9 7-2 5-9 5-9-5-9-5z"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <div class="pj-body">
+              <div class="pj-name">Cuti Tahunan</div>
+              <div class="pj-date">4 – 7 Jul 2026 (4 hari)</div>
+            </div>
+            <div class="pj-right">
+              <div class="pj-status"><span class="s-ok"><span class="s-ok-dot"></span>Disetujui</span></div>
+              <div class="pj-approver">Disetujui oleh<br><strong>Branch Leader</strong><br>04 Jul 2026</div>
+              <div class="pj-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+            </div>
+          </a>
+
+          <!-- Dinas Luar - Menunggu -->
+          <a href="izin-cuti.html" class="pj-item">
+            <div class="pj-icon" style="background:#FFF7ED">
+              <svg viewBox="0 0 24 24" style="stroke:#D97706"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.69A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.98 7.06l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            </div>
+            <div class="pj-body">
+              <div class="pj-name">Dinas Luar</div>
+              <div class="pj-date">10 – 12 Jul 2026 (3 hari)</div>
+              <div class="pj-note">Meeting klien Surabaya</div>
+            </div>
+            <div class="pj-right">
+              <div class="pj-status"><span class="s-wait"><span class="s-wait-dot"></span>Menunggu</span></div>
+              <div class="pj-approver">Diproses oleh<br><strong>HC</strong></div>
+              <div class="pj-sla">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                SLA: 1 hari lagi
+              </div>
+              <div class="pj-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+            </div>
+          </a>
+
+          <!-- Izin Sakit - Disetujui -->
+          <a href="izin-cuti.html" class="pj-item">
+            <div class="pj-icon" style="background:#EDE9FE">
+              <svg viewBox="0 0 24 24" style="stroke:#7C3AED"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0112 2a8 8 0 018 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div class="pj-body">
+              <div class="pj-name">Izin Sakit</div>
+              <div class="pj-date">9 Jul 2026 (1 hari)</div>
+              <div class="pj-note">Demam dan perlu istirahat</div>
+            </div>
+            <div class="pj-right">
+              <div class="pj-status"><span class="s-ok"><span class="s-ok-dot"></span>Disetujui</span></div>
+              <div class="pj-approver">Disetujui oleh<br><strong>HC</strong><br>09 Jul 2026</div>
+              <div class="pj-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+            </div>
+          </a>
+
+        </div>
+
+        <div class="lihat-semua">
+          <a href="izin-cuti.html">Lihat Semua Riwayat &rsaquo;</a>
+        </div>
+
+        <div style="height:calc(var(--nav-h) + 24px)"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <a href="home.html" class="nav-item">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      </div>
+      <span class="nav-label">Beranda</span>
+    </a>
+    <a href="notifikasi.html" class="nav-item active">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+        <span class="nav-badge">3</span>
+      </div>
+      <span class="nav-label">Inbox</span>
+    </a>
+    <a href="profil.html" class="nav-item">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      <span class="nav-label">Profil</span>
+    </a>
+  </nav>
+
+</div>
+<script src="js/app.js"></script>
+<script>
+  function switchInboxTab(tabId, btn) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tu-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tabId).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+</body>
+</html>

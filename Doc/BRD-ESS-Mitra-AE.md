@@ -494,4 +494,624 @@ Analisis proses bisnis disesuaikan dengan seluruh ruang lingkup fitur yang ada p
 
 ---
 
+# BAB 4
+# Rincian Fitur & Layar Aplikasi
+
+Bagian ini menjelaskan secara rinci setiap layar dan fitur aplikasi yang harus dibangun untuk modul ESS Mitra AE, sesuai dengan desain mockup yang telah dibuat.
+
+## Layar 1: Login Mitra AE (login-mitra.html)
+
+**Deskripsi:** Layar masuk khusus untuk Mitra AE. Terpisah dari login Staff Kontrak karena perbedaan scope fitur dan role akses.
+
+**Elemen UI:**
+- Logo perusahaan
+- Label role "Mitra Account Executive"
+- Field input NIK/ID AE
+- Field input Password dengan toggle show/hide
+- Tombol "Masuk" (primary, full width)
+- Link "Lupa Password?"
+
+**Navigasi:** Setelah login → Dashboard Beranda AE (ae/dashboard.html)
+
+---
+
+## Layar 2: Dashboard Beranda AE (ae/dashboard.html)
+
+**Deskripsi:** Halaman utama Mitra AE. Berfungsi sebagai command center harian — menampilkan status aktivitas, panduan tindakan, pipeline, dan learning dalam satu halaman dengan dua tab utama.
+
+### Header Section
+- Avatar dengan inisial nama (misalnya AP = Andika Pratama)
+- Nama lengkap AE
+- Badge status: "Adaptation" (kuning/biru) atau "Certified" (hijau)
+- Ikon notifikasi dengan badge jumlah notif belum terbaca
+- Nama branch dan nama Branch Leader
+
+### Activity Bar (4 sel horizontal)
+| Sel | Konten |
+| --- | ------ |
+| Check In | Waktu check-in hari ini (✅ 08:23) atau tanda belum check-in |
+| Check Out | Waktu check-out atau tanda belum check-out |
+| Durasi | Total durasi aktivitas hari ini (misalnya: 4j 22m) |
+| Jarak | Total jarak tempuh hari ini (misalnya: 12.4 km) |
+
+### Tab Navigation
+- **Performance** (default) — metrik lapangan dan pipeline
+- **Learning** — adaptasi atau learning center (bergantung status AE)
+
+---
+
+### Tab Performance
+
+#### 1. Next Milestone Card
+Card yang disorot untuk memandu tindakan AE berikutnya.
+
+**Konten:**
+- Label "Next Milestone" dengan ikon checkmark
+- Insight text: kalimat yang menjelaskan target terdekat yang belum terpenuhi (misalnya: "Butuh 4 Warm Prospect lagi untuk mencapai target bulan ini!")
+- Tabel per-metrik (CP, WP, HP, Closing):
+  - Nama metrik
+  - Progress bar
+  - Current count / Target bulan ini
+  - Gap indicator (–5, –4, dst.)
+  - Metrik dengan gap terbesar disorot dengan border merah sebagai bottleneck
+- Dua CTA button:
+  - "+ Cari Prospect Baru" (primary)
+  - "Lanjutkan Follow Up" (secondary)
+
+**Aturan Bisnis:** Sistem mengidentifikasi metrik dengan persentase gap terbesar terhadap target, dan menampilkannya sebagai fokus Next Milestone. Card diperbarui otomatis setiap ada perubahan data pipeline.
+
+#### 2. Tugas Prioritas Hari Ini
+Daftar tindakan yang perlu dilakukan AE hari ini, dibuat otomatis oleh sistem berdasarkan data pipeline dan jadwal.
+
+**Sumber data tugas:**
+- Follow up overdue: prospect yang tidak dihubungi lebih dari 3 hari
+- Survey belum dijadwalkan: WP atau HP yang belum ada jadwal survey
+- Presentasi hari ini: jadwal presentasi yang sudah ditetapkan
+- Prospect baru belum dihubungi: CP yang baru diinput dan belum ada aktivitas
+
+**Tampilan setiap item:**
+- Indikator warna (merah = urgent, kuning = penting, biru = jadwal)
+- Judul tugas dan deskripsi singkat
+- Nama prospect terkait
+- Tombol aksi langsung: "Hubungi →", "Jadwalkan →", "Mulai →"
+
+#### 3. Quick Actions Grid (2×3)
+Shortcut langsung ke fitur utama:
+- Canvasing → Halaman input canvasing
+- Prospecting → Halaman customer prospect
+- Survey → Halaman daftar survey
+- Presentasi → Halaman daftar presentasi
+- Follow Up → Halaman follow up queue
+- Closing → Halaman proses closing
+
+#### 4. Pipeline Funnel
+Visualisasi pipeline AE dalam bentuk corong:
+
+| Stage | Count | Conversion Rate |
+| ----- | ----- | --------------- |
+| CP (Cold Prospect) | [count] | — |
+| WP (Warm Prospect) | [count] | [WP/CP × 100]% |
+| HP (Hot Prospect) | [count] | [HP/WP × 100]% |
+| Closing | [count] | [Closing/HP × 100]% |
+
+Setiap stage menggunakan warna berbeda (gradasi biru → hijau).
+
+#### 5. Quality Metrics
+Dua ring progress (circular gauge) yang ditampilkan berdampingan:
+
+**Quality Prospect Score (0–100):**
+- Mengukur kualitas keseluruhan prospect dalam pipeline AE
+- Faktor: kelengkapan data prospect, konsistensi follow up, pola waktu konversi
+- Grade: Sangat Baik (85–100) / Baik (70–84) / Cukup (55–69) / Perlu Perhatian (<55)
+
+**Closing Health Score (0–100):**
+- Mengukur kualitas proses dari prospect hingga closing
+- Faktor: kualitas prospect di tahap HP, kesiapan instalasi, faktor risiko
+- Grade: menggunakan skala yang sama
+
+#### 6. Achievement Bulan Ini
+Grid pencapaian:
+- Total closing bulan ini (count)
+- Revenue yang dihasilkan (estimasi)
+- Estimasi komisi (bersifat indikatif)
+
+Data diperbarui otomatis setiap ada perubahan status prospect menjadi Closing.
+
+---
+
+### Tab Learning — Status Adaptation
+
+#### Header Progress
+- Label fase aktif: "Phase [X] — [Nama Fase]"
+- Persentase total progress (misalnya: 65%)
+- Indikator 4 fase (ikon atau badge dengan status masing-masing)
+
+#### Daftar Fase (Accordion)
+- **Phase 1 — Fundamental** (Selesai): badge hijau, collapsed, tampilkan skor
+- **Phase 2 — Communication** (Aktif): badge biru, expanded, tampilkan detail modul
+- **Phase 3 — Sales Process** (Terkunci): badge abu-abu, collapsed
+- **Phase 4 — Field Adaptation** (Terkunci): badge abu-abu, collapsed
+
+Setiap fase expanded menampilkan:
+- Daftar modul dengan status (Selesai ✓ / In Progress / Terkunci)
+- Persentase per modul
+- Status kuis per modul
+- Status Final Exam
+- Tombol CTA: "Lanjutkan — [nama modul aktif]"
+
+#### Field Adaptation Requirement
+Progress 4 indikator:
+- Join Visit: [progress]/5 (progress bar)
+- Join Presentasi: [progress]/3 (progress bar)
+- Join Survey: [progress]/3 (progress bar)
+- Canvasing Mandiri: [progress]/100 (progress bar)
+
+#### Syarat Menjadi Certified (Checklist)
+Daftar semua syarat sertifikasi dengan status terkini:
+- Phase 1 Selesai ✓ / ○
+- Phase 1 Final Exam Lulus ✓ / ○
+- Phase 2 Selesai ✓ / ○
+- Phase 2 Final Exam Lulus ✓ / ○
+- Phase 3 Selesai ✓ / ○
+- Phase 3 Final Exam Lulus ✓ / ○
+- Phase 4 Selesai ✓ / ○
+- Phase 4 Final Exam Lulus ✓ / ○
+- Join Visit 5x ✓ / ○
+- Join Presentasi 3x ✓ / ○
+- Join Survey 3x ✓ / ○
+- Canvasing Mandiri 100x ✓ / ○
+
+---
+
+### Tab Learning — Status Certified (Learning Center)
+
+**Deskripsi:** Setelah AE mendapat status Certified, Tab Learning bertransformasi menjadi Learning Center untuk pengembangan berkelanjutan. Adaptation Journey tidak lagi ditampilkan.
+
+**Konten Learning Center:**
+
+| Kategori | Deskripsi |
+| -------- | --------- |
+| Product Update | Informasi fitur produk baru, perubahan paket, atau upgrade layanan |
+| Promo Update | Informasi promo aktif, syarat promo, dan periode berlaku |
+| SOP Update | Perubahan atau pembaruan prosedur kerja dan alur penjualan |
+| Coverage Update | Informasi area coverage baru atau perubahan area jangkauan layanan |
+| Knowledge Base | FAQ, panduan penanganan keberatan, troubleshooting umum |
+| Best Practice | Teknik penjualan yang telah terbukti berhasil, studi kasus sukses |
+| Studi Kasus | Kasus nyata di lapangan beserta analisis dan pembelajaran |
+| Panduan Teknis | Panduan teknis pemasangan, spesifikasi produk, dan terminologi teknis |
+
+Setiap item konten menampilkan: ikon kategori, judul, tanggal publikasi, ringkasan singkat, dan tombol akses konten lengkap.
+
+**Pengelolaan konten:** Tim HC mengelola dan memperbarui seluruh konten Learning Center melalui panel admin.
+
+---
+
+## Layar 3: Aktivitas (ae/aktivitas.html)
+
+**Deskripsi:** Halaman rekap aktivitas lapangan AE untuk hari ini atau periode tertentu.
+
+**Elemen UI:**
+
+**Header:**
+- Judul "Aktivitas"
+- Tombol filter/date selector
+
+**Target Harian Card:**
+- Gauge circular menampilkan persentase pencapaian target harian (misalnya 68%)
+- Label "Target Harian"
+- 4 KPI row dengan mini progress bar:
+  - Canvasing: [aktual]/[target]
+  - CP (Prospect Baru): [aktual]/[target]
+  - Follow Up: [aktual]/[target]
+  - Closing: [aktual]/[target]
+
+**Tugas Prioritas:**
+- Daftar aksi yang perlu dilakukan hari ini (sama logikanya dengan Task Priority di Dashboard)
+
+**Ringkasan Aktivitas (summary grid):**
+- Total canvasing hari ini
+- Total prospect baru
+- Follow up dalam antrian
+- Survey terjadwal
+- Pipeline closing
+- Customer aktif total
+
+---
+
+## Layar 4: Kehadiran Lapangan (ae/kehadiran-lapangan.html)
+
+**Deskripsi:** Halaman yang menampilkan detail aktivitas lapangan harian AE dengan data GPS dan timeline pergerakan.
+
+**Elemen UI:**
+
+**Header GPS Check-in:**
+- Status GPS (badge: "GPS Aktif" / "GPS Tidak Aktif")
+- Waktu check-in hari ini
+- Status check-out
+- Koordinat lokasi check-in
+- Tombol akses peta
+
+**Timeline Aktivitas Hari Ini:**
+Timeline vertikal yang menampilkan semua stop dan aktivitas selama hari kerja:
+- 08:00 — Check In (lokasi: [nama area])
+- 08:45 — Canvasing (durasi: 45 menit)
+- 09:30 — Prospect Baru — [nama prospect]
+- 11:00 — Follow Up — [nama prospect]
+- 14:00 — Survey — [nama prospect]
+- 17:00 — Check Out
+
+**Rekap Statistik:**
+- Durasi total di lapangan
+- Total jarak tempuh
+- Jumlah stop/titik kunjungan
+
+---
+
+## Layar 5: Customer Prospect / Pipeline Management (ae/customer-prospect.html)
+
+**Deskripsi:** Halaman manajemen pipeline prospect AE. Titik masuk untuk input prospect baru dan pengelolaan status seluruh prospect.
+
+**Elemen UI:**
+
+**Header:**
+- Judul "Customer Prospect"
+- Tombol "+ Baru" (tambah prospect baru)
+
+**Pipeline Summary Strip (4 tahap):**
+Visualisasi corong mini horizontal:
+- Canvasing: [count]
+- Follow-up: [count]
+- Survey: [count]
+- Closing: [count]
+
+**Search & Filter:**
+- Input pencarian nama/perusahaan
+- Tombol filter lanjutan (status, tanggal, area)
+
+**Tab Filter:**
+- Semua ([total count]) | Cold | Warm | Hot
+
+**Daftar Prospect:**
+Setiap item prospect menampilkan:
+- Avatar inisial dengan warna sesuai status (biru = cold, kuning = warm, merah = hot)
+- Nama prospect dengan emoji status: ❄️ Cold, 🌤️ Warm, 🔥 Hot
+- Sub-info: status tahap (Canvasing/Follow-up/Survey/Closing) dan keterangan singkat
+- Nominal estimasi (untuk tahap Closing, misalnya: "Rp 24 Jt")
+- Health Score bar (visual progress bar + skor angka + hari sejak last contact)
+- Badge status
+- Tanggal interaksi terakhir
+
+**Aturan Bisnis Prospect:**
+- Input prospect baru dimulai dengan status CP (Cold Prospect)
+- Perpindahan status mengikuti urutan ketat: CP → WP → HP → Closing
+- Tidak dapat melompat status
+- Sistem mencegah duplikasi (berdasarkan nomor telepon atau nama yang sama)
+- Health Score diperbarui otomatis berdasarkan aktivitas dan waktu
+
+---
+
+## Layar 6: Follow Up Management (ae/follow-up.html)
+
+**Deskripsi:** Halaman khusus manajemen antrian follow up. Membantu AE memprioritaskan prospect mana yang perlu segera dihubungi.
+
+**Elemen UI:**
+
+**Header:**
+- Judul "Follow Up"
+- Counter total prospect dalam antrian
+
+**Tab Queue:**
+- **Hari Ini**: jadwal follow up yang sudah ditetapkan untuk hari ini
+- **Overdue**: prospect yang belum dihubungi lebih dari 3 hari (ditampilkan dengan indikator merah)
+- **Belum Dihubungi**: prospect baru (CP) yang belum ada aktivitas sama sekali
+
+**Setiap Item Follow Up:**
+- Nama prospect dan status pipeline
+- Tanggal terakhir dihubungi
+- Hari sejak last contact (indikator: ≤1 hari = hijau, 2–3 hari = kuning, >3 hari = merah)
+- Risiko kehilangan prospect (persentase estimasi risiko lost)
+- Tombol aksi: "Hubungi Sekarang"
+- Catatan follow up terakhir (preview singkat)
+
+**Aturan Bisnis:**
+- Prospect yang tidak dihubungi lebih dari 3 hari otomatis masuk kategori overdue
+- Overdue prospect memunculkan notifikasi dan tugas prioritas di Dashboard
+- Sistem melacak tanggal dan catatan setiap aktivitas follow up
+
+---
+
+## Layar 7: Survey (ae/survey.html)
+
+**Deskripsi:** Halaman pengelolaan aktivitas survey lokasi calon pelanggan.
+
+**Elemen UI:**
+
+**Header:**
+- Judul "Survey"
+- Tombol filter (status: terjadwal/selesai/belum dijadwalkan)
+
+**Daftar Survey:**
+Setiap item menampilkan:
+- Nama prospect
+- Status survey: Terjadwal / Selesai / Belum Dijadwalkan
+- Tanggal jadwal survey (jika terjadwal)
+- Tanggal realisasi survey (jika sudah selesai)
+- Paket yang diminati (dicatat saat survey)
+- Catatan teknisi (diisi setelah survey selesai)
+- Tombol: "Jadwalkan" (untuk yang belum), "Update" (untuk yang sudah)
+
+**Form Input Survey:**
+- Nama prospect (auto-fill dari pipeline)
+- Tanggal survey
+- Paket yang diminati
+- Catatan lokasi (kondisi, hambatan, dll.)
+- Status hasil survey
+
+---
+
+## Layar 8: Closing (ae/closing.html)
+
+**Deskripsi:** Halaman proses closing — transisi prospect menjadi pelanggan aktif.
+
+**Elemen UI:**
+
+**Daftar HP yang Siap Closing:**
+- Prospect berstatus Hot Prospect yang sudah siap closing
+- Health Score dan estimasi nilai kontrak
+- Tombol "Proses Closing"
+
+**Form Closing:**
+- Nama prospect
+- Paket yang dipilih
+- Nominal kontrak
+- Tanggal tanda tangan kontrak
+- Catatan tambahan
+
+**Setelah Closing:**
+- Status prospect berubah menjadi "Closing" (ditandai terpilih)
+- Revenue dan estimasi komisi AE diperbarui otomatis di Achievement
+- Prospect masuk ke daftar Customer Active
+
+---
+
+## Layar 9: Customer Active (ae/customer-active.html)
+
+**Deskripsi:** Halaman monitoring pelanggan aktif yang dihasilkan dari closing AE.
+
+**Elemen UI:**
+
+**Daftar Customer Aktif:**
+Setiap item menampilkan:
+- Nama pelanggan
+- Paket yang berlangganan
+- Tanggal aktivasi
+- Durasi berlangganan
+- Jumlah keluhan yang tercatat
+- Indikator risiko churn (Rendah/Sedang/Tinggi)
+- Tombol "Lihat Detail"
+
+**Ringkasan:**
+- Total pelanggan aktif
+- Rata-rata durasi berlangganan
+- Pelanggan dengan risiko churn tinggi
+
+---
+
+## Layar 10: Training & Adaptasi (ae/training-adaptasi.html)
+
+**Deskripsi:** Halaman detail Adaptation Journey. Menampilkan seluruh 4 fase dengan modul, progress, kuis, dan final exam.
+
+**Elemen UI:**
+
+**Banner Progress Keseluruhan:**
+- Fase aktif: "Phase [X] — [Nama Fase]"
+- Badge status: "In Progress"
+- Progress bar total (persentase keseluruhan)
+- Ringkasan: "Phase 1 Selesai · Phase 2 Aktif · Phase 3 Terkunci"
+
+**Phase 1 — Fundamental (Selesai, Collapsed):**
+- Badge "✓ Certified"
+- Skor kuis dan final exam yang dicapai (misalnya: Quiz: 88 | Final Exam: 94)
+- Min. lulus: ≥80
+- Tombol expand untuk melihat detail modul
+
+**Phase 2 — Communication (Aktif, Expanded):**
+- Badge "Aktif"
+- Progress bar fase (misalnya: 45%)
+- Daftar modul:
+  - Setiap modul menampilkan: ikon/nomor modul, nama modul, status (Selesai/In Progress/Terkunci), persentase
+- Status kuis per modul
+- Status Final Exam fase
+
+**Phase 3 & 4 (Terkunci, Collapsed):**
+- Badge "Terkunci" (abu-abu)
+- Keterangan syarat unlock: "Selesaikan Phase [X-1] untuk membuka fase ini"
+
+---
+
+## Layar 11: Detail Modul (ae/modul-detail.html)
+
+**Deskripsi:** Halaman konten pembelajaran satu modul. AE membaca materi dan menandai selesai sebelum dapat mengakses kuis.
+
+**Elemen UI:**
+
+**Breadcrumb/Header:**
+- Nama fase → Nama modul
+- Tombol kembali
+- Persentase progress modul
+
+**Daftar Sub-Topik/Materi:**
+- Setiap sub-topik: nomor urut, judul, status (Selesai/Belum)
+- Sub-topik yang sedang aktif ditampilkan expanded
+
+**Area Konten Materi:**
+- Teks konten
+- Gambar atau ilustrasi (jika ada)
+- Tombol "Tandai Selesai" setelah dibaca
+- Navigasi: "Materi Sebelumnya" | "Materi Berikutnya"
+
+**Status Kuis (di bagian bawah):**
+- Jika semua materi sudah selesai: tombol "Mulai Kuis" aktif
+- Jika ada materi yang belum selesai: tombol "Kuis Terkunci" (disabled) + info berapa materi tersisa
+
+---
+
+## Layar 12: Kuis Modul (ae/quiz.html)
+
+**Deskripsi:** Halaman pengerjaan kuis setelah semua materi modul diselesaikan.
+
+**Elemen UI:**
+
+**Header:**
+- Nama modul
+- Judul "Kuis Modul"
+- Timer countdown (misalnya: "15:30 tersisa")
+- Progress: "Soal [nomor] dari [total]"
+
+**Area Soal:**
+- Nomor soal
+- Teks pertanyaan
+- 4–5 pilihan jawaban (radio button)
+- Jawaban yang dipilih di-highlight
+
+**Navigasi Soal:**
+- Grid nomor soal (memudahkan navigasi langsung ke soal tertentu)
+- Soal yang sudah dijawab: solid
+- Soal yang belum dijawab: outline
+- Tombol "Sebelumnya" dan "Berikutnya"
+- Tombol "Kirim Jawaban" (hanya aktif setelah semua soal terjawab, atau saat waktu habis)
+
+**Layar Hasil Kuis:**
+- Skor: [nilai]/100
+- Status: "Lulus" (hijau, jika ≥80) atau "Belum Lulus" (merah)
+- Feedback per soal: soal benar (hijau), soal salah + jawaban yang benar (merah)
+- Tombol: "Coba Lagi" (jika belum lulus) atau "Lanjut ke Modul Berikutnya" (jika lulus)
+
+**Aturan Bisnis:**
+- Timer tidak dapat dijeda
+- Jika waktu habis, jawaban yang sudah diisi otomatis disubmit
+- Nilai minimum lulus: 80 dari 100
+- Jumlah percobaan maksimal ditentukan oleh HC
+
+---
+
+## Layar 13: Final Exam (ae/final-exam.html)
+
+**Deskripsi:** Ujian akhir fase yang hanya dapat diakses setelah semua kuis modul dalam fase tersebut lulus. Mekanisme serupa dengan kuis namun dengan scope lebih luas dan bobot lebih berat.
+
+**Perbedaan dengan Kuis:**
+- Jumlah soal lebih banyak (20–30 soal)
+- Waktu pengerjaan lebih panjang
+- Tidak dapat keluar sebelum selesai
+- Kelulusan fase bergantung pada kelulusan Final Exam ini
+- Nilai minimum: 80 dari 100
+
+**Setelah Final Exam:**
+- Lulus: fase ditandai Selesai, fase berikutnya terbuka
+- Belum lulus: AE dapat mengulang (jumlah percobaan sesuai kebijakan HC)
+
+---
+
+## Layar 14: Notifikasi (ae/notifikasi.html)
+
+**Deskripsi:** Halaman daftar semua notifikasi yang diterima AE.
+
+**Elemen UI:**
+
+**Daftar Notifikasi (diurutkan terbaru):**
+Setiap item notifikasi menampilkan:
+- Ikon kategori notifikasi (prospect, learning, tugas, informasi)
+- Judul notifikasi
+- Deskripsi singkat
+- Timestamp (misalnya: "2 jam lalu", "Kemarin", "3 hari lalu")
+- Indikator belum terbaca (dot biru)
+- Tombol aksi jika ada (misalnya: "Hubungi Sekarang", "Lihat Detail")
+
+**Kategori Notifikasi:**
+- Prospect overdue: "[Nama prospect] belum dihubungi selama [X] hari"
+- Tugas prioritas: "Ada [X] tugas yang perlu diselesaikan hari ini"
+- Learning reminder: "Lanjutkan Phase 2 — Anda sudah 3 hari tidak belajar"
+- Informasi Branch Leader: "[Nama BL] mengirimkan instruksi: [preview]"
+- Achievement: "Selamat! Anda mencapai target closing bulan ini!"
+- Sertifikasi: "Selamat! Semua syarat terpenuhi. Status Anda sekarang: Certified!"
+
+---
+
+## Layar 15: Profil AE (ae/profil.html)
+
+**Deskripsi:** Halaman informasi profil Mitra AE. Read-only; perubahan data dikontrol oleh HC.
+
+**Seksi Identitas:**
+- Avatar dengan inisial (lingkaran berwarna)
+- Nama lengkap AE
+- ID AE
+- Badge status: "Adaptation" atau "Certified"
+
+**Seksi Informasi Kerja:**
+- Branch yang ditugaskan
+- Area kerja (coverage)
+- Nama Branch Leader / Atasan Langsung
+
+**Seksi Kontak:**
+- Nomor telepon
+- Kontak darurat
+
+**Seksi Perangkat Kerja:**
+- Perangkat yang digunakan (brand, model)
+- IMEI perangkat
+- Tanggal registrasi perangkat
+- Tanggal terakhir aktif
+
+**Seksi Aset Perusahaan:**
+Setiap aset yang diberikan perusahaan:
+- Telepon perusahaan: nomor, kondisi
+- Seragam: jumlah, kondisi
+- ID Card: nomor, status
+- Perlengkapan marketing (jika ada)
+- Disclaimer: "Mitra AE bertanggung jawab atas seluruh aset yang ditetapkan oleh perusahaan."
+
+**Seksi Akun:**
+- Tombol Logout (danger color)
+
+---
+
+# BAB 5
+# Rincian Proses yang Dilengkapi dari Mockup
+
+## Proses Detail: Input Prospect Baru
+
+| No | Tahapan | PIC | Keterangan |
+| -- | ------- | --- | ---------- |
+| 1 | AE menekan tombol "+ Baru" di halaman Customer Prospect | Mitra AE | Tombol tersedia di pojok kanan atas halaman Customer Prospect. |
+| 2 | Sistem menampilkan form input prospect | Sistem | Form berisi field: nama prospect, nomor telepon, alamat, area, keterangan. |
+| 3 | AE mengisi data prospect | Mitra AE | AE melengkapi data calon pelanggan yang ditemui di lapangan. |
+| 4 | Sistem memvalidasi duplikasi | Sistem | Sebelum menyimpan, sistem mengecek apakah nomor telepon atau nama sudah pernah ada di database AE. Jika ya, sistem menampilkan peringatan. |
+| 5 | AE mengonfirmasi dan menyimpan | Mitra AE | AE menekan Simpan. Prospect masuk ke pipeline dengan status Cold Prospect (CP). |
+| 6 | Sistem memperbarui Pipeline Funnel | Sistem | Counter CP di Pipeline Funnel bertambah. Next Milestone diperbarui jika diperlukan. |
+
+## Proses Detail: Perubahan Status Prospect
+
+| No | Tahapan | PIC | Keterangan |
+| -- | ------- | --- | ---------- |
+| 1 | AE membuka detail prospect | Mitra AE | AE mengetuk prospect dari daftar di Customer Prospect. |
+| 2 | AE menilai kesiapan prospect | Mitra AE | Berdasarkan hasil interaksi, AE menentukan apakah prospect sudah siap naik status. |
+| 3 | AE memilih opsi ubah status | Mitra AE | Tombol "Ubah Status" tersedia di halaman detail prospect. |
+| 4 | Sistem menampilkan opsi status berikutnya | Sistem | Hanya status yang valid ditampilkan (CP → WP, WP → HP, HP → Closing). Tidak dapat melompat tahap. |
+| 5 | AE mengisi catatan perubahan | Mitra AE | AE mengisi alasan atau catatan perubahan status (misalnya: "Sudah survey, tertarik paket 100 Mbps"). |
+| 6 | Sistem memperbarui status dan pipeline | Sistem | Status prospect diperbarui. Pipeline Funnel, conversion rate, dan Quality Score diperbarui otomatis. |
+
+## Proses Detail: Follow Up Harian
+
+| No | Tahapan | PIC | Keterangan |
+| -- | ------- | --- | ---------- |
+| 1 | AE membuka menu Follow Up atau Tab Aktivitas | Mitra AE | AE dapat mengakses follow up dari Quick Actions, Tugas Prioritas, atau menu Aktivitas. |
+| 2 | Sistem menampilkan antrian follow up | Sistem | Antrian terbagi: Hari Ini / Overdue / Belum Dihubungi. |
+| 3 | AE memilih prospect yang akan dihubungi | Mitra AE | AE memilih dari antrian, dimulai dari yang overdue atau yang paling mendesak. |
+| 4 | AE melakukan kontak dengan prospect | Mitra AE | AE menghubungi prospect (telepon, WhatsApp, atau kunjungan). |
+| 5 | AE mencatat hasil follow up | Mitra AE | Setelah kontak, AE mencatat: tanggal follow up, metode, hasil singkat, dan tindak lanjut berikutnya. |
+| 6 | AE menentukan jadwal follow up berikutnya | Mitra AE | AE mengatur tanggal follow up berikutnya jika diperlukan. |
+| 7 | Sistem memperbarui data prospect | Sistem | Data "last contact" diperbarui, timer overdue direset. Health Score diperbarui. |
+
+---
+
 *Dokumen ini merupakan Business Requirement Document versi 1.0 untuk ESS Workforce Digital Platform — Mitra AE. Seluruh requirement, scope, dan proses bisnis yang tercantum di atas didasarkan pada analisis desain mockup dan kebutuhan operasional Mitra AE pada perusahaan ISP. Dokumen ini perlu divalidasi dan disetujui oleh seluruh stakeholder sebelum proses development dimulai.*

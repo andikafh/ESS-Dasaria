@@ -6,146 +6,411 @@
   <title>ESS — Izin &amp; Cuti</title>
   <link rel="stylesheet" href="css/design-system.css">
   <style>
-    .saldo-banner {
-      background: linear-gradient(135deg, #065F46 0%, #059669 60%, #10B981 100%);
-      margin: 14px 20px 0; border-radius: var(--r);
-      padding: 18px 20px; color: white;
-      display: flex; align-items: center; gap: 16px;
-      box-shadow: 0 8px 24px rgba(6,95,70,.25);
+    body, .app, .page { background: #F4F6F9; }
+
+    /* HEADER */
+    .page-header {
+      background: white;
+      padding: 52px 20px 14px;
+      border-bottom: 1px solid #F3F4F6;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 40;
     }
-    .sb-icon { font-size: 40px; flex-shrink: 0; }
-    .sb-info .sb-lbl { font-size: 12px; opacity: .8; font-weight: 500; margin-bottom: 4px; }
-    .sb-info .sb-val { font-size: 32px; font-weight: 800; letter-spacing: -1px; line-height: 1; }
-    .sb-info .sb-sub { font-size: 11px; opacity: .7; margin-top: 4px; }
-    .sb-right { margin-left: auto; text-align: right; }
-    .sb-right .sr-lbl { font-size: 10px; opacity: .7; margin-bottom: 3px; }
-    .sb-right .sr-val { font-size: 14px; font-weight: 700; }
+    .ph-left { display: flex; align-items: center; gap: 12px; }
+    .back-btn {
+      width: 36px; height: 36px; border-radius: 10px; background: #F4F6F9;
+      display: flex; align-items: center; justify-content: center; text-decoration: none; flex-shrink: 0;
+    }
+    .back-btn svg { width: 20px; height: 20px; stroke: #374151; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .ph-title { font-size: 17px; font-weight: 800; color: #111827; }
+    .btn-ajukan {
+      background: #1D6FF3; color: white; text-decoration: none;
+      border-radius: 10px; padding: 9px 16px;
+      font-size: 13px; font-weight: 700;
+    }
+
+    /* SALDO CARD */
+    .saldo-card {
+      margin: 12px 16px;
+      background: white; border-radius: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
+      overflow: hidden;
+    }
+    .saldo-top { padding: 16px; display: flex; align-items: center; gap: 14px; border-bottom: 1px solid #F3F4F6; }
+    .saldo-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      background: linear-gradient(135deg, #4ADE80, #16A34A);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .saldo-icon svg { width: 28px; height: 28px; stroke: white; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .saldo-main { flex: 1; }
+    .saldo-main-lbl { font-size: 10px; font-weight: 700; color: #9CA3AF; letter-spacing: .5px; margin-bottom: 4px; }
+    .saldo-main-val { font-size: 32px; font-weight: 800; color: #16A34A; letter-spacing: -1.5px; line-height: 1; }
+    .saldo-main-sub { font-size: 11px; color: #6B7280; margin-top: 3px; }
+    .saldo-breakdown { display: grid; grid-template-columns: repeat(3,1fr); }
+    .sb-col { padding: 12px 8px; text-align: center; border-right: 1px solid #F9FAFB; }
+    .sb-col:last-child { border-right: none; }
+    .sb-lbl { font-size: 9.5px; font-weight: 700; color: #9CA3AF; letter-spacing: .3px; margin-bottom: 5px; }
+    .sb-val { font-size: 20px; font-weight: 800; color: #111827; line-height: 1; }
+    .sb-unit { font-size: 9.5px; color: #9CA3AF; margin-top: 2px; }
+    .saldo-footer {
+      padding: 10px 16px;
+      background: #F9FAFB; border-top: 1px solid #F3F4F6;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .sf-left { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #6B7280; }
+    .sf-left svg { width: 13px; height: 13px; stroke: #9CA3AF; fill: none; stroke-width: 2; }
+    .sf-right { font-size: 12px; color: #1D6FF3; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 3px; }
+
+    /* RINGKASAN KEHADIRAN */
+    .ringkasan-card {
+      margin: 0 16px;
+      background: white; border-radius: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.06); overflow: hidden;
+    }
+    .rk-head {
+      padding: 13px 16px 11px; border-bottom: 1px solid #F3F4F6;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .rk-title { font-size: 12px; font-weight: 700; color: #111827; letter-spacing: .2px; }
+    .rk-period { display: flex; align-items: center; gap: 4px; font-size: 12px; color: #6B7280; font-weight: 600; cursor: pointer; }
+    .rk-period svg { width: 14px; height: 14px; stroke: #9CA3AF; fill: none; stroke-width: 1.8; }
+    .rk-stats { display: grid; grid-template-columns: repeat(5,1fr); }
+    .rks-col { padding: 12px 4px; text-align: center; border-right: 1px solid #F9FAFB; }
+    .rks-col:last-child { border-right: none; }
+    .rks-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px; }
+    .rks-icon svg { width: 15px; height: 15px; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .rks-val { font-size: 18px; font-weight: 800; color: #111827; line-height: 1; margin-bottom: 2px; }
+    .rks-lbl { font-size: 9.5px; color: #9CA3AF; font-weight: 500; line-height: 1.3; }
+
+    /* INFO BOX */
+    .info-box {
+      margin: 10px 16px;
+      background: #EEF4FF; border-radius: 12px;
+      padding: 12px 14px; display: flex; align-items: flex-start; gap: 10px;
+    }
+    .ib-icon { width: 32px; height: 32px; border-radius: 9px; background: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .ib-icon svg { width: 16px; height: 16px; stroke: #1D6FF3; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .ib-body { flex: 1; }
+    .ib-title { font-size: 13px; font-weight: 700; color: #1D3A6E; margin-bottom: 2px; }
+    .ib-text { font-size: 12px; color: #374151; line-height: 1.5; }
+    .ib-link { font-size: 12px; color: #1D6FF3; font-weight: 700; text-decoration: none; white-space: nowrap; }
+
+    /* SECTION TITLE */
+    .sec-head { padding: 16px 16px 8px; }
+    .sec-title { font-size: 13px; font-weight: 800; color: #111827; letter-spacing: .2px; }
+
+    /* FILTER TABS (pill) */
+    .filter-tabs { padding: 0 16px 10px; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+    .filter-tabs::-webkit-scrollbar { display: none; }
+    .ft-btn {
+      flex-shrink: 0; padding: 7px 14px;
+      border: 1.5px solid #E5E7EB; border-radius: 20px;
+      font-size: 12px; font-weight: 600; color: #6B7280;
+      background: white; cursor: pointer; white-space: nowrap;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .ft-btn.active { background: #1D6FF3; border-color: #1D6FF3; color: white; }
+    .ft-cnt {
+      background: rgba(255,255,255,.25); border-radius: 10px;
+      padding: 1px 6px; font-size: 10.5px; font-weight: 700;
+    }
+    .ft-btn:not(.active) .ft-cnt { background: #F3F4F6; color: #374151; }
+
+    /* PENGAJUAN ITEMS */
+    .pengajuan-list { background: white; margin: 0 16px; border-radius: 14px; box-shadow: 0 2px 10px rgba(0,0,0,.06); overflow: hidden; }
+    .pj-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px 16px; border-bottom: 1px solid #F9FAFB;
+      text-decoration: none;
+    }
+    .pj-item:last-child { border-bottom: none; }
+    .pj-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .pj-icon svg { width: 22px; height: 22px; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .pj-body { flex: 1; min-width: 0; }
+    .pj-name { font-size: 13px; font-weight: 700; color: #111827; margin-bottom: 3px; }
+    .pj-date { display: flex; align-items: center; gap: 5px; font-size: 11.5px; color: #6B7280; margin-bottom: 3px; }
+    .pj-date svg { width: 12px; height: 12px; stroke: #9CA3AF; fill: none; stroke-width: 1.8; }
+    .pj-note { font-size: 11.5px; color: #9CA3AF; }
+    .pj-right { text-align: right; flex-shrink: 0; }
+    .pj-status { margin-bottom: 5px; }
+    .s-ok      { background: #DCFCE7; color: #15803D; border-radius: 20px; padding: 3px 9px; font-size: 10.5px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; }
+    .s-ok-dot  { width: 5px; height: 5px; border-radius: 50%; background: #16A34A; }
+    .s-wait    { background: #FFF7ED; color: #D97706; border-radius: 20px; padding: 3px 9px; font-size: 10.5px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; }
+    .s-wait-dot { width: 5px; height: 5px; border-radius: 50%; background: #F59E0B; }
+    .s-err     { background: #FEF2F2; color: #DC2626; border-radius: 20px; padding: 3px 9px; font-size: 10.5px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; }
+    .s-err-dot { width: 5px; height: 5px; border-radius: 50%; background: #EF4444; }
+    .pj-approver { font-size: 11px; color: #6B7280; line-height: 1.4; }
+    .pj-approver strong { color: #374151; }
+    .pj-sla { font-size: 10.5px; color: #D97706; display: flex; align-items: center; gap: 3px; }
+    .pj-sla svg { width: 11px; height: 11px; stroke: #D97706; fill: none; stroke-width: 2; }
+    .pj-chevron { margin-top: 8px; }
+    .pj-chevron svg { width: 16px; height: 16px; stroke: #D1D5DB; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* Lihat Semua */
+    .lihat-semua { text-align: center; padding: 14px; margin: 0 16px; }
+    .lihat-semua a { font-size: 13px; color: #1D6FF3; font-weight: 700; text-decoration: none; }
   </style>
 </head>
 <body>
 <div class="phone">
-  <div class="status-bar">
-    <span class="s-time">09:41</span>
-    <div class="s-icons"><svg viewBox="0 0 17 12" style="fill:var(--gray-900);width:16px;height:12px"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="1.5" width="3" height="10.5" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/></svg><span style="font-size:13px">🔋</span></div>
-  </div>
-
   <div class="app">
-    <div class="page" style="padding-bottom:0">
+    <div class="page" style="padding:0">
 
-      <!-- Screen Header -->
-      <div class="screen-header" style="position:sticky;top:0;z-index:40">
-        <a href="home.html" class="btn-back"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></a>
-        <h1>Izin &amp; Cuti</h1>
-        <a href="ajukan-izin.html" class="btn btn-primary btn-sm">+ Ajukan</a>
-      </div>
-
-      <!-- Saldo Banner -->
-      <div class="saldo-banner">
-        <div class="sb-icon">🏖️</div>
-        <div class="sb-info">
-          <div class="sb-lbl">SALDO CUTI TAHUNAN</div>
-          <div class="sb-val">12 Hari</div>
-          <div class="sb-sub">Tersisa dari alokasi 2026</div>
+      <!-- HEADER -->
+      <div class="page-header">
+        <div class="ph-left">
+          <a href="home.html" class="back-btn">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          </a>
+          <span class="ph-title">Izin &amp; Cuti</span>
         </div>
-        <div class="sb-right">
-          <div class="sr-lbl">DIGUNAKAN</div>
-          <div class="sr-val">0 Hari</div>
-        </div>
+        <a href="ajukan-izin.html" class="btn-ajukan">+ Ajukan</a>
       </div>
 
-      <div style="height:12px"></div>
-
-      <!-- Tab -->
-      <div class="tab-bar">
-        <div class="tab-item active">Semua</div>
-        <div class="tab-item">Izin</div>
-        <div class="tab-item">Cuti</div>
-        <div class="tab-item">Pending</div>
-      </div>
-
-      <!-- List -->
-      <div class="divider-8"></div>
-
-      <div style="background:var(--white);border-radius:var(--r) var(--r) 0 0;overflow:hidden">
-
-        <a href="status-approved.html" class="list-item">
-          <div class="li-icon" style="background:var(--info-light)">🏥</div>
-          <div class="li-body">
-            <div class="li-title">Izin Sakit</div>
-            <div class="li-sub">09 Juni 2026 · 1 hari</div>
-            <div class="li-note">Demam dan perlu istirahat</div>
+      <!-- SALDO CUTI TAHUNAN -->
+      <div class="saldo-card">
+        <div class="saldo-top">
+          <div class="saldo-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M9 15l2 2 4-4"/></svg>
           </div>
-          <div class="li-right">
-            <span class="badge b-success badge-dot">Disetujui</span>
-            <span style="font-size:11px;color:var(--gray-300)">09 Jun</span>
-          </div>
-        </a>
-
-        <a href="status-approved.html" class="list-item">
-          <div class="li-icon" style="background:var(--success-light)">🏖️</div>
-          <div class="li-body">
-            <div class="li-title">Cuti Tahunan</div>
-            <div class="li-sub">04 Juni 2026 · 1 hari</div>
-            <div class="li-note">Keperluan keluarga</div>
-          </div>
-          <div class="li-right">
-            <span class="badge b-success badge-dot">Disetujui</span>
-            <span style="font-size:11px;color:var(--gray-300)">04 Jun</span>
-          </div>
-        </a>
-
-        <div class="list-item">
-          <div class="li-icon" style="background:var(--warning-light)">✈️</div>
-          <div class="li-body">
-            <div class="li-title">Dinas Luar</div>
-            <div class="li-sub">25–27 Juni 2026 · 3 hari</div>
-            <div class="li-note">Meeting klien Surabaya</div>
-          </div>
-          <div class="li-right">
-            <span class="badge b-warning badge-dot">Pending</span>
-            <span style="font-size:11px;color:var(--gray-300)">12 Jun</span>
+          <div class="saldo-main">
+            <div class="saldo-main-lbl">SALDO CUTI TAHUNAN</div>
+            <div class="saldo-main-val">12 Hari</div>
+            <div class="saldo-main-sub">Sisa dari alokasi 2026</div>
           </div>
         </div>
-
-        <a href="status-rejected.html" class="list-item">
-          <div class="li-icon" style="background:var(--danger-light)">📋</div>
-          <div class="li-body">
-            <div class="li-title">Izin Pribadi Mendesak</div>
-            <div class="li-sub">15 Mei 2026 · 1 hari</div>
-            <div class="li-note">Keperluan pribadi mendadak</div>
+        <div class="saldo-breakdown">
+          <div class="sb-col">
+            <div class="sb-lbl">HAK TAHUNAN</div>
+            <div class="sb-val">12</div>
+            <div class="sb-unit">Hari</div>
           </div>
-          <div class="li-right">
-            <span class="badge b-danger badge-dot">Ditolak</span>
-            <span style="font-size:11px;color:var(--gray-300)">15 Mei</span>
+          <div class="sb-col">
+            <div class="sb-lbl">TERPAKAI</div>
+            <div class="sb-val">0</div>
+            <div class="sb-unit">Hari</div>
+          </div>
+          <div class="sb-col">
+            <div class="sb-lbl">SISA</div>
+            <div class="sb-val" style="color:#16A34A">12</div>
+            <div class="sb-unit" style="color:#16A34A">Hari</div>
+          </div>
+        </div>
+        <div class="saldo-footer">
+          <div class="sf-left">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Periode perhitungan 1 Jan – 31 Des 2026
+          </div>
+          <a href="#" class="sf-right">
+            Lihat Riwayat
+            <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:#1D6FF3;fill:none;stroke-width:2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- RINGKASAN KEHADIRAN BULAN INI -->
+      <div class="ringkasan-card" style="margin-top:10px">
+        <div class="rk-head">
+          <span class="rk-title">RINGKASAN KEHADIRAN BULAN INI</span>
+          <div class="rk-period">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Juli 2026
+            <svg viewBox="0 0 24 24" style="width:12px;height:12px"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+        <div class="rk-stats">
+          <div class="rks-col">
+            <div class="rks-icon" style="background:#DCFCE7">
+              <svg viewBox="0 0 24 24" style="stroke:#16A34A"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="rks-val">18</div>
+            <div class="rks-lbl">Hadir</div>
+          </div>
+          <div class="rks-col">
+            <div class="rks-icon" style="background:#FFF7ED">
+              <svg viewBox="0 0 24 24" style="stroke:#D97706"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="rks-val">2</div>
+            <div class="rks-lbl">Terlambat kali</div>
+          </div>
+          <div class="rks-col">
+            <div class="rks-icon" style="background:#EEF4FF">
+              <svg viewBox="0 0 24 24" style="stroke:#1D6FF3"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div class="rks-val">1</div>
+            <div class="rks-lbl">Izin kali</div>
+          </div>
+          <div class="rks-col">
+            <div class="rks-icon" style="background:#EDE9FE">
+              <svg viewBox="0 0 24 24" style="stroke:#7C3AED"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0112 2a8 8 0 018 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div class="rks-val">0</div>
+            <div class="rks-lbl">Sakit kali</div>
+          </div>
+          <div class="rks-col">
+            <div class="rks-icon" style="background:#FFF7ED">
+              <svg viewBox="0 0 24 24" style="stroke:#EA580C"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <div class="rks-val">0</div>
+            <div class="rks-lbl">Cuti hari</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INFO KEBIJAKAN -->
+      <div class="info-box">
+        <div class="ib-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="ib-body">
+          <div class="ib-title">Ingat!</div>
+          <div class="ib-text">Sakit lebih dari 2 hari wajib melampirkan surat keterangan dokter.</div>
+        </div>
+        <a href="#" class="ib-link">Lihat Kebijakan ›</a>
+      </div>
+
+      <!-- PENGAJUAN SAYA -->
+      <div class="sec-head"><span class="sec-title">PENGAJUAN SAYA</span></div>
+
+      <!-- FILTER TABS -->
+      <div class="filter-tabs">
+        <button class="ft-btn active">Semua</button>
+        <button class="ft-btn">Menunggu <span class="ft-cnt">1</span></button>
+        <button class="ft-btn">Disetujui <span class="ft-cnt">3</span></button>
+        <button class="ft-btn">Ditolak <span class="ft-cnt">1</span></button>
+      </div>
+
+      <!-- LIST PENGAJUAN -->
+      <div class="pengajuan-list">
+
+        <!-- 1. Cuti Tahunan - Disetujui -->
+        <a href="#" class="pj-item">
+          <div class="pj-icon" style="background:#DCFCE7">
+            <svg viewBox="0 0 24 24" style="stroke:#16A34A"><path d="M3 12s0-7 9-7 9 7 9 7-2 5-9 5-9-5-9-5z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <div class="pj-body">
+            <div class="pj-name">Cuti Tahunan</div>
+            <div class="pj-date">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              4 – 7 Jul 2026 (4 hari)
+            </div>
+            <div class="pj-note">Keperluan keluarga</div>
+          </div>
+          <div class="pj-right">
+            <div class="pj-status"><span class="s-ok"><span class="s-ok-dot"></span>Disetujui</span></div>
+            <div class="pj-approver">Disetujui oleh<br><strong>Branch Leader</strong><br>04 Jul 2026</div>
+            <div class="pj-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
           </div>
         </a>
 
-        <a href="status-approved.html" class="list-item">
-          <div class="li-icon" style="background:var(--success-light)">💍</div>
-          <div class="li-body">
-            <div class="li-title">Cuti Menikah</div>
-            <div class="li-sub">10–12 Maret 2026 · 3 hari</div>
-            <div class="li-note">Pernikahan saudara</div>
+        <!-- 2. Dinas Luar - Menunggu -->
+        <a href="#" class="pj-item">
+          <div class="pj-icon" style="background:#FFF7ED">
+            <svg viewBox="0 0 24 24" style="stroke:#D97706"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.69A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.98 7.06l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
           </div>
-          <div class="li-right">
-            <span class="badge b-success badge-dot">Disetujui</span>
-            <span style="font-size:11px;color:var(--gray-300)">Mar</span>
+          <div class="pj-body">
+            <div class="pj-name">Dinas Luar</div>
+            <div class="pj-date">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              10 – 12 Jul 2026 (3 hari)
+            </div>
+            <div class="pj-note">Meeting klien Surabaya</div>
+          </div>
+          <div class="pj-right">
+            <div class="pj-status"><span class="s-wait"><span class="s-wait-dot"></span>Menunggu</span></div>
+            <div class="pj-approver">Sedang diproses oleh<br><strong>HC</strong></div>
+            <div class="pj-sla">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              SLA: 2 hari lagi
+            </div>
+            <div class="pj-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </div>
+        </a>
+
+        <!-- 3. Izin Sakit - Disetujui -->
+        <a href="#" class="pj-item">
+          <div class="pj-icon" style="background:#EDE9FE">
+            <svg viewBox="0 0 24 24" style="stroke:#7C3AED"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0112 2a8 8 0 018 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="pj-body">
+            <div class="pj-name">Izin Sakit</div>
+            <div class="pj-date">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              9 Jul 2026 (1 hari)
+            </div>
+            <div class="pj-note">Demam dan perlu istirahat</div>
+          </div>
+          <div class="pj-right">
+            <div class="pj-status"><span class="s-ok"><span class="s-ok-dot"></span>Disetujui</span></div>
+            <div class="pj-approver">Disetujui oleh<br><strong>Branch Leader</strong><br>09 Jul 2026</div>
+            <div class="pj-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </div>
+        </a>
+
+        <!-- 4. Izin Pribadi Mendesak - Ditolak -->
+        <a href="#" class="pj-item">
+          <div class="pj-icon" style="background:#FEF2F2">
+            <svg viewBox="0 0 24 24" style="stroke:#DC2626"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div class="pj-body">
+            <div class="pj-name">Izin Pribadi Mendesak</div>
+            <div class="pj-date">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              15 Mei 2026 (1 hari)
+            </div>
+            <div class="pj-note">Keperluan pribadi mendadak</div>
+          </div>
+          <div class="pj-right">
+            <div class="pj-status"><span class="s-err"><span class="s-err-dot"></span>Ditolak</span></div>
+            <div class="pj-approver">Ditolak oleh<br><strong>HC</strong><br>15 Mei 2026</div>
+            <div class="pj-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
           </div>
         </a>
 
       </div>
 
-      <div style="height:calc(var(--nav-h) + 20px)"></div>
+      <!-- LIHAT SEMUA -->
+      <div class="lihat-semua">
+        <a href="#">Lihat Semua Riwayat &rsaquo;</a>
+      </div>
+
+      <div style="height:calc(var(--nav-h) + 16px)"></div>
     </div>
   </div>
 
+  <!-- BOTTOM NAV: Beranda | Inbox | Profil -->
   <nav class="bottom-nav">
-    <a href="home.html" class="nav-item"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/><path d="M3 12v9h18V12"/></svg></div><span class="nav-label">Beranda</span></a>
-    <a href="kehadiran.html" class="nav-item"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><span class="nav-label">Kehadiran</span></a>
-    <a href="izin-cuti.html" class="nav-item active"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span class="nav-badge">1</span></div><span class="nav-label">Izin &amp; Cuti</span></a>
-    <a href="loan.html" class="nav-item"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><span class="nav-label">Pinjaman</span></a>
-    <a href="profil.html" class="nav-item"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span class="nav-label">Profil</span></a>
+    <a href="home.html" class="nav-item">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      </div>
+      <span class="nav-label">Beranda</span>
+    </a>
+    <a href="notifikasi.html" class="nav-item">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+        <span class="nav-badge">3</span>
+      </div>
+      <span class="nav-label">Inbox</span>
+    </a>
+    <a href="profil.html" class="nav-item">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      <span class="nav-label">Profil</span>
+    </a>
   </nav>
+
 </div>
 <script src="js/app.js"></script>
 </body>

@@ -3,371 +3,436 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>ESS — Beranda Staff Kontrak</title>
+  <title>ESS — Beranda</title>
   <link rel="stylesheet" href="css/design-system.css">
   <style>
-    /* ── Dashboard Hero ── */
-    .dash-hero {
-      background: linear-gradient(150deg, #0F2B6E 0%, #1A55D4 55%, #2A7CFF 100%);
-      padding: 20px 20px 32px;
-      color: white;
-      position: relative;
+    body, .app, .page { background: #F4F6F9; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(140deg, #0B1F5C 0%, #1540A8 55%, #1D6FF3 100%);
+      padding: 52px 20px 24px;
+    }
+    .hero-row {
+      display: flex; align-items: flex-start; justify-content: space-between;
+    }
+    .hero-user { display: flex; align-items: center; gap: 12px; }
+    .hero-avatar {
+      width: 46px; height: 46px; border-radius: 50%;
+      background: linear-gradient(135deg,#60A5FA,#3B82F6);
+      border: 2.5px solid rgba(255,255,255,.55);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px; font-weight: 800; color: white; flex-shrink: 0;
+    }
+    .hero-greeting { font-size: 11px; color: rgba(255,255,255,.7); margin-bottom: 2px; }
+    .hero-name { font-size: 18px; font-weight: 800; color: white; letter-spacing: -.4px; margin-bottom: 5px; }
+    .hero-chips { display: flex; align-items: center; gap: 6px; }
+    .hero-role { font-size: 12px; color: rgba(255,255,255,.85); font-weight: 600; }
+    .pkwt-chip {
+      background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.35);
+      border-radius: 5px; padding: 2px 7px;
+      font-size: 10px; font-weight: 800; color: white; letter-spacing: .5px;
+    }
+    .inbox-btn {
+      width: 40px; height: 40px; flex-shrink: 0;
+      background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.2);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; position: relative; margin-top: 2px;
+    }
+    .inbox-btn svg { width: 20px; height: 20px; stroke: white; stroke-width: 1.8; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .inbox-n {
+      position: absolute; top: -5px; right: -5px;
+      min-width: 18px; height: 18px; border-radius: 9px;
+      background: #EF4444; border: 2px solid #1540A8;
+      font-size: 9px; font-weight: 800; color: white;
+      display: flex; align-items: center; justify-content: center; padding: 0 3px;
+    }
+
+    /* ── STATUS HARI INI ── */
+    .status-card {
+      margin: 0 16px; margin-top: -12px;
+      background: white; border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,.12);
+      overflow: hidden; position: relative; z-index: 5;
+    }
+    .sc-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 13px 16px 11px; border-bottom: 1px solid #F3F4F6;
+    }
+    .sc-htitle { font-size: 13px; font-weight: 700; color: #111827; }
+    .sc-badge-hadir {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: #DCFCE7; color: #15803D;
+      border-radius: 20px; padding: 3px 10px;
+      font-size: 11px; font-weight: 700;
+    }
+    .sc-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #16A34A; }
+    .sc-body { padding: 13px 16px; }
+    .sc-schedule-row {
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 12px; align-items: center; margin-bottom: 12px;
+    }
+    .sc-schedule { }
+    .sc-sched-time { font-size: 22px; font-weight: 800; color: #111827; letter-spacing: -.8px; line-height: 1; margin-bottom: 2px; }
+    .sc-sched-type { font-size: 12px; color: #6B7280; font-weight: 500; }
+    .sc-checkinout { text-align: right; }
+    .sc-co-lbl { font-size: 10px; color: #9CA3AF; font-weight: 500; margin-bottom: 2px; }
+    .sc-co-val { font-size: 16px; font-weight: 800; color: #111827; }
+    .sc-co-val.dash { color: #D1D5DB; }
+    .btn-checkout {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 13px;
+      background: #1D6FF3; color: white; border: none; border-radius: 11px;
+      font-size: 14px; font-weight: 700; cursor: pointer;
+      box-shadow: 0 4px 14px rgba(29,111,243,.3);
+    }
+    .btn-checkout svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .sc-note {
+      display: flex; align-items: center; gap: 6px;
+      margin-top: 10px; padding: 9px 12px;
+      background: #FFFBEB; border-radius: 8px;
+      font-size: 11.5px; color: #92400E;
+    }
+    .sc-note svg { width: 14px; height: 14px; stroke: #D97706; fill: none; stroke-width: 2; flex-shrink: 0; }
+    .sc-note a { color: #D97706; font-weight: 700; text-decoration: none; }
+
+    /* ── JADWAL HARI INI ── */
+    .section-card {
+      background: white; margin: 10px 16px;
+      border-radius: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
       overflow: hidden;
     }
-    .dash-hero::after {
-      content: '';
-      position: absolute;
-      top: -60px; right: -60px;
-      width: 200px; height: 200px;
-      background: rgba(255,255,255,.05);
-      border-radius: 50%;
-    }
-    .dash-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; position: relative; z-index: 1; }
-    .app-logo { font-size: 22px; font-weight: 800; letter-spacing: -1px; }
-    .app-logo span { color: rgba(255,255,255,.6); font-weight: 400; font-size: 14px; margin-left: 6px; }
-    .notif-btn {
-      width: 40px; height: 40px;
-      background: rgba(255,255,255,.15);
-      border-radius: 13px;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; border: 1px solid rgba(255,255,255,.2);
-      position: relative;
-    }
-    .notif-btn svg { width: 20px; height: 20px; stroke: white; stroke-width: 1.8; fill: none; }
-    .notif-dot { position: absolute; top: 8px; right: 9px; width: 8px; height: 8px; background: #FF6B6B; border-radius: 50%; border: 2px solid #1A55D4; }
-
-    /* User card */
-    .user-card { display: flex; align-items: center; gap: 14px; position: relative; z-index: 1; margin-bottom: 22px; }
-    .user-avatar {
-      width: 54px; height: 54px; border-radius: 16px;
-      background: rgba(255,255,255,.22);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 22px; font-weight: 800; color: white;
-      border: 2px solid rgba(255,255,255,.35);
-      flex-shrink: 0; letter-spacing: -.5px;
-    }
-    .user-info { flex: 1; }
-    .user-name { font-size: 18px; font-weight: 800; letter-spacing: -.4px; margin-bottom: 4px; }
-    .user-meta { display: flex; gap: 6px; align-items: center; }
-    .user-meta span { font-size: 12px; opacity: .8; }
-    .user-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,.5); }
-
-    /* Quick stats strip */
-    .stat-strip {
-      display: grid; grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px; position: relative; z-index: 1;
-    }
-    .strip-item { background: rgba(255,255,255,.12); border-radius: 14px; padding: 12px; border: 1px solid rgba(255,255,255,.12); }
-    .strip-lbl  { font-size: 11px; opacity: .75; margin-bottom: 5px; }
-    .strip-val  { font-size: 18px; font-weight: 800; letter-spacing: -.5px; }
-    .strip-sub  { font-size: 10px; opacity: .65; margin-top: 2px; }
-
-    /* Quick actions */
-    .quick-actions { background: white; padding: 20px 20px 16px; }
-    .qa-title { font-size: 13px; font-weight: 600; color: var(--gray-400); letter-spacing: .3px; text-transform: uppercase; margin-bottom: 16px; }
-
-    /* Attendance widget */
-    .attend-card { background: var(--white); border-radius: var(--r); box-shadow: var(--shadow-sm); overflow: hidden; }
-    .attend-header {
-      padding: 14px 16px 12px;
+    .s-head {
       display: flex; align-items: center; justify-content: space-between;
-      border-bottom: 1px solid var(--gray-50);
+      padding: 13px 16px 11px; border-bottom: 1px solid #F3F4F6;
     }
-    .attend-title { font-size: 14px; font-weight: 700; color: var(--gray-900); }
-    .attend-date  { font-size: 12px; color: var(--gray-400); margin-top: 1px; }
-    .attend-times {
-      display: grid; grid-template-columns: 1fr 1px 1fr;
-      gap: 0;
+    .s-title { font-size: 13px; font-weight: 700; color: #111827; }
+    .s-link { font-size: 12px; color: #1D6FF3; font-weight: 600; text-decoration: none; }
+    .jadwal-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px; border-bottom: 1px solid #F9FAFB;
+      text-decoration: none;
     }
-    .at-box { padding: 16px 18px; }
-    .at-sep { background: var(--gray-100); }
-    .at-lbl { font-size: 11px; color: var(--gray-400); font-weight: 500; margin-bottom: 4px; }
-    .at-val { font-size: 28px; font-weight: 800; color: var(--gray-900); letter-spacing: -1px; line-height: 1; }
-    .at-sub { font-size: 11px; color: var(--gray-400); margin-top: 4px; }
-    .at-sub.ok   { color: var(--success); }
-    .at-sub.late { color: var(--warning-dark); }
-    .attend-footer { padding: 12px 16px; display: flex; align-items: center; gap: 8px; }
+    .jadwal-row:last-child { border-bottom: none; }
+    .jadwal-type-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .jadwal-type-icon svg { width: 18px; height: 18px; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .jadwal-info { flex: 1; }
+    .jadwal-name { font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 1px; }
+    .jadwal-detail { font-size: 12px; color: #9CA3AF; }
+    .jadwal-chevron svg { width: 16px; height: 16px; stroke: #D1D5DB; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-    /* Loan card */
-    .loan-card {
-      background: linear-gradient(135deg, #0D1F4E 0%, #122663 40%, #1A3A9E 100%);
-      border-radius: var(--r); padding: 20px;
-      color: white; cursor: pointer;
-      box-shadow: 0 10px 28px rgba(13,31,78,.35), 0 2px 6px rgba(13,31,78,.2);
+    /* ── RINGKASAN BULAN ── */
+    .ringkasan-bulan { margin: 10px 16px; background: white; border-radius: 14px; box-shadow: 0 2px 10px rgba(0,0,0,.06); overflow: hidden; }
+    .rb-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 13px 16px 11px; border-bottom: 1px solid #F3F4F6;
     }
-    .lc-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; }
-    .lc-lbl { font-size: 12px; opacity: .7; font-weight: 500; }
-    .lc-arrow { font-size: 18px; opacity: .6; }
-    .lc-amount { font-size: 34px; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 16px; line-height: 1.1; }
-    .lc-progress-lbl { display: flex; justify-content: space-between; font-size: 10px; opacity: .65; margin-bottom: 6px; }
-    .lc-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
-    .lc-footer-item .lf-lbl { font-size: 10px; opacity: .65; margin-bottom: 3px; }
-    .lc-footer-item .lf-val { font-size: 14px; font-weight: 700; }
+    .rb-period {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 12px; color: #6B7280; font-weight: 600;
+    }
+    .rb-period svg { width: 14px; height: 14px; stroke: #9CA3AF; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .rb-grid { display: grid; grid-template-columns: repeat(5,1fr); }
+    .rb-cell { padding: 12px 4px; text-align: center; border-right: 1px solid #F9FAFB; }
+    .rb-cell:last-child { border-right: none; }
+    .rb-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin: 0 auto 6px; }
+    .rb-icon svg { width: 15px; height: 15px; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .rb-val { font-size: 19px; font-weight: 800; color: #111827; line-height: 1; margin-bottom: 3px; }
+    .rb-val.green { color: #16A34A; }
+    .rb-val.orange { color: #D97706; }
+    .rb-val.blue { color: #1D6FF3; }
+    .rb-val.red { color: #DC2626; }
+    .rb-lbl { font-size: 9.5px; color: #9CA3AF; font-weight: 500; line-height: 1.2; }
 
-    /* Leave balance */
-    .leave-card {
-      background: var(--white); border-radius: var(--r); box-shadow: var(--shadow-sm);
-      padding: 16px; display: flex; align-items: center; gap: 14px; cursor: pointer;
+    /* ── LAYANAN SAYA ── */
+    .layanan-section { margin: 10px 16px; }
+    .sec-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .sec-ttl { font-size: 14px; font-weight: 700; color: #111827; }
+    .sec-lnk { font-size: 12px; color: #1D6FF3; font-weight: 600; text-decoration: none; }
+    .layanan-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+    .layanan-item {
+      display: flex; flex-direction: column; align-items: center; gap: 7px;
+      padding: 13px 4px;
+      background: white; border-radius: 14px;
+      box-shadow: 0 1px 6px rgba(0,0,0,.05);
+      text-decoration: none;
     }
-    .leave-icon {
-      width: 52px; height: 52px; border-radius: 16px;
-      background: linear-gradient(135deg, #DCFCE7, #F0FDF4);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 24px; flex-shrink: 0;
-    }
-    .leave-info { flex: 1; }
-    .leave-days { font-size: 28px; font-weight: 800; color: var(--success-dark); letter-spacing: -1px; line-height: 1; }
+    .lv-icon { width: 44px; height: 44px; border-radius: 13px; display: flex; align-items: center; justify-content: center; }
+    .lv-icon svg { width: 22px; height: 22px; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+    .lv-lbl { font-size: 10px; font-weight: 600; color: #374151; text-align: center; line-height: 1.35; }
+    .lv-blue   { background: #EEF4FF; } .lv-blue svg   { stroke: #1D6FF3; }
+    .lv-green  { background: #DCFCE7; } .lv-green svg  { stroke: #16A34A; }
+    .lv-orange { background: #FFF7ED; } .lv-orange svg { stroke: #EA580C; }
+    .lv-teal   { background: #F0FDFA; } .lv-teal svg   { stroke: #0D9488; }
+    .lv-purple { background: #EDE9FE; } .lv-purple svg { stroke: #7C3AED; }
+    .lv-amber  { background: #FFFBEB; } .lv-amber svg  { stroke: #D97706; }
+    .lv-gray   { background: #F3F4F6; } .lv-gray svg   { stroke: #6B7280; }
 
-    /* Announcement mini */
-    .ann-mini { display: flex; gap: 12px; align-items: flex-start; padding: 12px 16px; background: var(--white); border-bottom: 1px solid var(--gray-50); cursor: pointer; }
-    .ann-mini:last-child { border-bottom: none; border-radius: 0 0 var(--r) var(--r); }
-    .ann-mini:first-child { border-radius: var(--r) var(--r) 0 0; }
-    .ann-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
-    .ann-mini h5 { font-size: 13px; font-weight: 600; color: var(--gray-900); margin-bottom: 3px; line-height: 1.3; }
-    .ann-mini p  { font-size: 12px; color: var(--gray-400); line-height: 1.4; }
-    .ann-mini .ann-time { font-size: 11px; color: var(--gray-300); margin-top: 4px; }
+    /* Governance banner */
+    .gov-banner {
+      margin: 10px 16px;
+      background: white; border-radius: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
+      padding: 14px 14px;
+      display: flex; align-items: center; gap: 12px;
+      text-decoration: none;
+    }
+    .gov-icon { width: 40px; height: 40px; border-radius: 11px; background: #EEF4FF; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .gov-icon svg { width: 20px; height: 20px; stroke: #1D6FF3; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .gov-text { flex: 1; }
+    .gov-title { font-size: 12px; font-weight: 700; color: #111827; margin-bottom: 2px; }
+    .gov-desc { font-size: 11px; color: #6B7280; line-height: 1.5; }
+    .gov-chevron svg { width: 16px; height: 16px; stroke: #D1D5DB; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
   </style>
 </head>
 <body>
 <div class="phone">
 
-  <!-- Status Bar -->
+  <!-- Status bar -->
   <div class="status-bar" style="background:transparent;position:absolute;top:0;left:0;right:0;z-index:60">
-    <span class="s-time" style="color:white">09:41</span>
+    <span class="s-time" style="color:white">9:41</span>
     <div class="s-icons">
-      <svg viewBox="0 0 17 12" style="fill:white;width:16px;height:12px"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="1.5" width="3" height="10.5" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
-      <svg viewBox="0 0 24 16" style="fill:white;width:16px;height:12px"><path d="M12 2C7.3 2 3 4 0 7.3l2.2 2.2C4.7 7 8.2 5.5 12 5.5s7.3 1.5 9.8 4l2.2-2.2C21 4 16.7 2 12 2zm0 7c-2.8 0-5.3 1.1-7.1 2.9L7 14c1.3-1.3 3.1-2.1 5-2.1s3.7.8 5 2.1l2.1-2.1C17.3 10.1 14.8 9 12 9zm0 7l3.5 3.5L12 23l-3.5-3.5L12 16z"/></svg>
-      <span style="color:white;font-size:13px">🔋</span>
+      <svg viewBox="0 0 17 12" style="fill:white;width:15px;height:11px"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="1.5" width="3" height="10.5" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+      <svg viewBox="0 0 24 18" style="fill:white;width:16px;height:12px"><path d="M12 2C7.3 2 3 4 0 7.3l2.2 2.2C4.7 7 8.2 5.5 12 5.5s7.3 1.5 9.8 4l2.2-2.2C21 4 16.7 2 12 2zm0 6c-2.8 0-5.3 1.1-7.2 2.8L7 13c1.3-1.3 3.1-2 5-2s3.7.8 5 2l2.2-2.2C17.3 9.1 14.8 8 12 8zm0 6l3 3-3 3-3-3 3-3z"/></svg>
+      <svg viewBox="0 0 25 12" style="width:24px;height:12px"><rect x="0" y="1" width="22" height="10" rx="2.5" fill="none" stroke="white" stroke-width="1.1" opacity=".55"/><rect x="22.5" y="3.5" width="2" height="5" rx="1" fill="white" opacity=".45"/><rect x="1.5" y="2.5" width="15" height="7" rx="1.5" fill="white"/></svg>
     </div>
   </div>
 
   <div class="app">
-    <div class="page" style="padding-bottom:0">
+    <div class="page" style="padding:0">
 
-      <!-- Hero -->
-      <div class="dash-hero" style="padding-top:58px">
-        <div class="dash-topbar">
-          <div>
-            <div class="app-logo">ESS <span>v2.0</span></div>
-          </div>
-          <a href="pengumuman.html" class="notif-btn">
-            <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
-            <div class="notif-dot"></div>
-          </a>
-        </div>
-
-        <div class="user-card">
-          <div class="user-avatar">AP</div>
-          <div class="user-info">
-            <div class="user-name">Andi Pratama</div>
-            <div class="user-meta">
-              <span>Staff HC Comben</span>
-              <span class="dot"></span>
-              <span>Jakarta Pusat</span>
-            </div>
-          </div>
-          <span class="role-tag">Staff Kontrak</span>
-        </div>
-
-        <div class="stat-strip">
-          <div class="strip-item">
-            <div class="strip-lbl">Kehadiran</div>
-            <div class="strip-val">22</div>
-            <div class="strip-sub">hari bulan ini</div>
-          </div>
-          <div class="strip-item">
-            <div class="strip-lbl">Saldo Cuti</div>
-            <div class="strip-val">12</div>
-            <div class="strip-sub">hari tersisa</div>
-          </div>
-          <div class="strip-item">
-            <div class="strip-lbl">Pengajuan</div>
-            <div class="strip-val">1</div>
-            <div class="strip-sub">pending review</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Quick Actions -->
-      <div class="quick-actions">
-        <div class="qa-title">Menu Utama</div>
-        <div class="quick-chips">
-          <a href="kehadiran.html" class="q-chip">
-            <div class="q-chip-icon qc-blue">🕐</div>
-            <span class="q-chip-label">Kehadiran</span>
-          </a>
-          <a href="izin-cuti.html" class="q-chip">
-            <div class="q-chip-icon qc-green">📅</div>
-            <span class="q-chip-label">Izin &amp; Cuti</span>
-          </a>
-          <a href="loan.html" class="q-chip">
-            <div class="q-chip-icon qc-orange">💳</div>
-            <span class="q-chip-label">Pinjaman</span>
-          </a>
-          <a href="profil.html" class="q-chip">
-            <div class="q-chip-icon qc-purple">👤</div>
-            <span class="q-chip-label">Profil Saya</span>
-          </a>
-          <a href="pengumuman.html" class="q-chip">
-            <div class="q-chip-icon qc-teal">📢</div>
-            <span class="q-chip-label">Pengumuman</span>
-          </a>
-        </div>
-      </div>
-
-      <div class="divider-8"></div>
-
-      <!-- Attendance Widget -->
-      <div class="section">
-        <div class="attend-card">
-          <div class="attend-header">
+      <!-- ── HERO ── -->
+      <div class="hero">
+        <div class="hero-row">
+          <div class="hero-user">
+            <div class="hero-avatar">AP</div>
             <div>
-              <div class="attend-title">Kehadiran Hari Ini</div>
-              <div class="attend-date">Kamis, 12 Juni 2026</div>
-            </div>
-            <span class="badge b-success badge-dot">Hadir</span>
-          </div>
-          <div class="attend-times">
-            <div class="at-box">
-              <div class="at-lbl">JAM MASUK</div>
-              <div class="at-val">08:15</div>
-              <div class="at-sub ok">Tepat Waktu</div>
-            </div>
-            <div class="at-sep"></div>
-            <div class="at-box">
-              <div class="at-lbl">JAM KELUAR</div>
-              <div class="at-val">17:32</div>
-              <div class="at-sub ok">Normal</div>
+              <div class="hero-greeting">Selamat pagi,</div>
+              <div class="hero-name">Andika Pratama</div>
+              <div class="hero-chips">
+                <span class="hero-role">Branch Leader</span>
+                <span class="pkwt-chip">PKWT</span>
+              </div>
             </div>
           </div>
-          <div class="attend-footer">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-            <span style="font-size:12px;color:var(--gray-400)">Total 9 jam 17 menit kerja hari ini</span>
-            <a href="kehadiran.html" style="margin-left:auto;font-size:12px;font-weight:700;color:var(--primary)">Lihat →</a>
+          <a href="notifikasi.html" class="inbox-btn">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <div class="inbox-n">3</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- ── STATUS HARI INI ── -->
+      <div class="status-card">
+        <div class="sc-header">
+          <span class="sc-htitle">Status Hari Ini</span>
+          <div class="sc-badge-hadir"><span class="sc-badge-dot"></span>Hadir</div>
+        </div>
+        <div class="sc-body">
+          <div class="sc-schedule-row">
+            <div class="sc-schedule">
+              <div class="sc-sched-time">09:00 – 17:00</div>
+              <div class="sc-sched-type">Regular Schedule · Head Office Blitar</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div class="sc-checkinout" style="text-align:left">
+                <div class="sc-co-lbl">Check In</div>
+                <div class="sc-co-val">08:56</div>
+              </div>
+              <div class="sc-checkinout">
+                <div class="sc-co-lbl">Check Out</div>
+                <div class="sc-co-val dash">—</div>
+              </div>
+            </div>
+          </div>
+          <button class="btn-checkout" onclick="alert('Check Out berhasil dicatat.')">
+            <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Check Out
+          </button>
+          <div class="sc-note">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Jangan lupa isi aktivitas harian Anda hari ini.&nbsp;
+            <a href="notifikasi.html">Lihat &rsaquo;</a>
           </div>
         </div>
       </div>
 
-      <div style="height:14px"></div>
-
-      <!-- Loan Card -->
-      <div class="px-20">
-        <a href="loan.html" class="loan-card" style="display:block">
-          <div class="lc-top">
-            <div class="lc-lbl">PINJAMAN AKTIF · OUTSTANDING</div>
-            <div class="lc-arrow">›</div>
+      <!-- ── JADWAL HARI INI ── -->
+      <div class="section-card">
+        <div class="s-head">
+          <span class="s-title">Jadwal Hari Ini</span>
+          <a href="kehadiran.html" class="s-link">Lihat Detail ›</a>
+        </div>
+        <a href="kehadiran.html" class="jadwal-row">
+          <div class="jadwal-type-icon" style="background:#EEF4FF">
+            <svg viewBox="0 0 24 24" style="stroke:#1D6FF3"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
           </div>
-          <div class="lc-amount">Rp 4.500.000</div>
-          <div class="lc-progress-lbl">
-            <span>Sudah dibayar: Rp 3.500.000</span>
-            <span>44%</span>
+          <div class="jadwal-info">
+            <div class="jadwal-name">Regular Schedule</div>
+            <div class="jadwal-detail">09:00 – 17:00 · Head Office Blitar</div>
           </div>
-          <div class="prog-wrap"><div class="prog-bar prog-white" style="width:44%"></div></div>
-          <div class="lc-footer">
-            <div class="lc-footer-item">
-              <div class="lf-lbl">TOTAL PINJAMAN</div>
-              <div class="lf-val">Rp 8.000.000</div>
-            </div>
-            <div class="lc-footer-item">
-              <div class="lf-lbl">CICILAN / BULAN</div>
-              <div class="lf-val">Rp 750.000</div>
-            </div>
-            <div class="lc-footer-item">
-              <div class="lf-lbl">SISA TENOR</div>
-              <div class="lf-val">14 Bulan</div>
-            </div>
-            <div class="lc-footer-item">
-              <div class="lf-lbl">ESTIMASI LUNAS</div>
-              <div class="lf-val">Jun 2027</div>
-            </div>
+          <div class="jadwal-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </a>
+        <a href="kehadiran.html" class="jadwal-row">
+          <div class="jadwal-type-icon" style="background:#DCFCE7">
+            <svg viewBox="0 0 24 24" style="stroke:#16A34A"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
           </div>
+          <div class="jadwal-info">
+            <div class="jadwal-name">Project Assignment</div>
+            <div class="jadwal-detail">FTTH Karangploso · 13:00 – Selesai · Site Karangploso</div>
+          </div>
+          <div class="jadwal-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
         </a>
       </div>
 
-      <div style="height:14px"></div>
-
-      <!-- Leave Balance -->
-      <div class="px-20">
-        <a href="izin-cuti.html" class="leave-card" style="display:flex">
-          <div class="leave-icon">🏖️</div>
-          <div class="leave-info">
-            <div style="font-size:12px;color:var(--gray-400);font-weight:500;margin-bottom:4px">SALDO CUTI TAHUNAN</div>
-            <div class="leave-days">12 Hari</div>
-            <div style="font-size:12px;color:var(--gray-400);margin-top:4px">Tersisa dari alokasi 2026</div>
+      <!-- ── RINGKASAN BULAN INI ── -->
+      <div class="ringkasan-bulan">
+        <div class="rb-head">
+          <span class="s-title">Ringkasan Bulan Ini</span>
+          <div class="rb-period">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Juli 2026
+            <svg viewBox="0 0 24 24" style="width:12px;height:12px"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
-          <div style="align-self:center">
-            <div class="prog-wrap on-white" style="width:80px;margin-bottom:4px"><div class="prog-bar prog-success" style="width:0%"></div></div>
-            <div style="font-size:10px;color:var(--gray-300);text-align:right">12/12 hari</div>
-          </div>
-        </a>
-      </div>
-
-      <div style="height:14px"></div>
-
-      <!-- Announcements -->
-      <div class="section">
-        <div class="section-row">
-          <div class="section-title">Pengumuman Terbaru</div>
-          <a href="pengumuman.html" class="section-link">Lihat Semua</a>
         </div>
-        <div class="card overflow-hidden" style="padding:0">
-          <a href="pengumuman.html" class="ann-mini">
-            <div class="ann-dot" style="background:var(--primary)"></div>
-            <div>
-              <h5>Update Kebijakan Work From Office</h5>
-              <p>Efektif 1 Juli 2026, seluruh karyawan diwajibkan WFO 5 hari...</p>
-              <div class="ann-time">12 Jun 2026 · Kebijakan</div>
-            </div>
-          </a>
-          <a href="pengumuman.html" class="ann-mini">
-            <div class="ann-dot" style="background:var(--success)"></div>
-            <div>
-              <h5>Libur Nasional &amp; Cuti Bersama Juli</h5>
-              <p>Jadwal libur dan cuti bersama bulan Juli 2026. Harap rencanakan...</p>
-              <div class="ann-time">10 Jun 2026 · Informasi</div>
-            </div>
-          </a>
-          <a href="pengumuman.html" class="ann-mini">
-            <div class="ann-dot" style="background:var(--warning)"></div>
-            <div>
-              <h5>Jadwal Payroll Juni 2026</h5>
-              <p>Gaji Juni ditransfer 28 Juni 2026. Pastikan rekening bank sudah benar...</p>
-              <div class="ann-time">08 Jun 2026 · Payroll</div>
-            </div>
-          </a>
+        <div class="rb-grid">
+          <div class="rb-cell">
+            <div class="rb-icon" style="background:#F4F6F9"><svg viewBox="0 0 24 24" style="stroke:#374151"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+            <div class="rb-val">22</div>
+            <div class="rb-lbl">Hari Kerja</div>
+          </div>
+          <div class="rb-cell">
+            <div class="rb-icon" style="background:#DCFCE7"><svg viewBox="0 0 24 24" style="stroke:#16A34A"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div class="rb-val green">18</div>
+            <div class="rb-lbl">Hadir</div>
+          </div>
+          <div class="rb-cell">
+            <div class="rb-icon" style="background:#FFF7ED"><svg viewBox="0 0 24 24" style="stroke:#D97706"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div class="rb-val orange">2</div>
+            <div class="rb-lbl">Terlambat</div>
+          </div>
+          <div class="rb-cell">
+            <div class="rb-icon" style="background:#EEF4FF"><svg viewBox="0 0 24 24" style="stroke:#1D6FF3"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M9 15l2 2 4-4"/></svg></div>
+            <div class="rb-val blue">1</div>
+            <div class="rb-lbl">Izin</div>
+          </div>
+          <div class="rb-cell">
+            <div class="rb-icon" style="background:#FEF2F2"><svg viewBox="0 0 24 24" style="stroke:#DC2626"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+            <div class="rb-val red">1</div>
+            <div class="rb-lbl">Cuti</div>
+          </div>
         </div>
       </div>
+
+      <!-- ── LAYANAN SAYA ── -->
+      <div class="layanan-section">
+        <div class="sec-row">
+          <span class="sec-ttl">Layanan Saya</span>
+          <a href="#" class="sec-lnk">Kelola Layanan ›</a>
+        </div>
+        <div class="layanan-grid">
+          <!-- Row 1 -->
+          <a href="kehadiran.html" class="layanan-item">
+            <div class="lv-icon lv-green">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M9 15l2 2 4-4"/></svg>
+            </div>
+            <span class="lv-lbl">Kehadiran &amp; Jadwal</span>
+          </a>
+          <a href="izin-cuti.html" class="layanan-item">
+            <div class="lv-icon lv-teal">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="13" y2="18"/></svg>
+            </div>
+            <span class="lv-lbl">Izin &amp; Cuti</span>
+          </a>
+          <a href="profil.html" class="layanan-item">
+            <div class="lv-icon lv-orange">
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            </div>
+            <span class="lv-lbl">Benefit &amp; Fasilitas</span>
+          </a>
+          <a href="profil.html" class="layanan-item">
+            <div class="lv-icon lv-purple">
+              <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            </div>
+            <span class="lv-lbl">Aset Saya</span>
+          </a>
+          <!-- Row 2 -->
+          <a href="#" class="layanan-item">
+            <div class="lv-icon lv-blue">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </div>
+            <span class="lv-lbl">Dokumen Perusahaan</span>
+          </a>
+          <a href="notifikasi.html" class="layanan-item">
+            <div class="lv-icon lv-amber">
+              <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+            </div>
+            <span class="lv-lbl">Pengumuman</span>
+          </a>
+          <a href="#" class="layanan-item">
+            <div class="lv-icon lv-gray">
+              <svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg>
+            </div>
+            <span class="lv-lbl">Bantuan</span>
+          </a>
+          <!-- spacer -->
+          <div></div>
+        </div>
+      </div>
+
+      <!-- ── GOVERNANCE BANNER ── -->
+      <a href="#" class="gov-banner">
+        <div class="gov-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="gov-text">
+          <div class="gov-title">Disiplin Kita Tanggung Jawab Bersama</div>
+          <div class="gov-desc">Pastikan Anda mengajukan izin/cuti sesuai kebijakan perusahaan. Terima kasih.</div>
+        </div>
+        <div class="gov-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
 
       <div style="height:calc(var(--nav-h) + 20px)"></div>
     </div>
   </div>
 
-  <!-- Bottom Nav — Staff Kontrak -->
+  <!-- ── BOTTOM NAV: Beranda | Inbox | Profil ── -->
   <nav class="bottom-nav">
     <a href="home.html" class="nav-item active">
-      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/><path d="M3 12v9h18V12"/></svg></div>
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      </div>
       <span class="nav-label">Beranda</span>
     </a>
-    <a href="kehadiran.html" class="nav-item">
-      <div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-      <span class="nav-label">Kehadiran</span>
-    </a>
-    <a href="izin-cuti.html" class="nav-item">
+    <a href="notifikasi.html" class="nav-item">
       <div class="nav-icon">
-        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        <span class="nav-badge">1</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+        <span class="nav-badge">3</span>
       </div>
-      <span class="nav-label">Pengajuan</span>
-    </a>
-    <a href="loan.html" class="nav-item">
-      <div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
-      <span class="nav-label">Loan</span>
+      <span class="nav-label">Inbox</span>
     </a>
     <a href="profil.html" class="nav-item">
-      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
       <span class="nav-label">Profil</span>
     </a>
   </nav>
+
 </div>
 <script src="js/app.js"></script>
 </body>

@@ -3,183 +3,543 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>ESS — Kehadiran</title>
+  <title>ESS — Jadwal Kerja</title>
   <link rel="stylesheet" href="css/design-system.css">
   <style>
-    .k-hero {
-      background: linear-gradient(150deg, #0F2B6E 0%, #1A55D4 55%, #2A7CFF 100%);
-      padding: 58px 20px 24px;
-      color: white;
-    }
-    .k-date-row { display: flex; align-items: center; gap: 6px; margin-bottom: 20px; font-size: 13px; opacity: .8; }
-    .k-times-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-    .k-time-box { background: rgba(255,255,255,.12); border-radius: 14px; padding: 14px 16px; border: 1px solid rgba(255,255,255,.12); }
-    .k-time-lbl { font-size: 11px; opacity: .75; font-weight: 500; margin-bottom: 5px; }
-    .k-time-val { font-size: 30px; font-weight: 800; letter-spacing: -1px; line-height: 1; }
-    .k-time-sub { font-size: 11px; margin-top: 4px; opacity: .7; }
-    .k-gps      { display: flex; align-items: center; gap: 6px; font-size: 12px; opacity: .75; margin-bottom: 14px; }
-    .btn-checkin {
-      width: 100%; padding: 15px;
-      background: white; color: var(--primary);
-      border: none; border-radius: 14px;
-      font-size: 15px; font-weight: 800; cursor: pointer;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      transition: opacity .2s;
-    }
-    .btn-checkin:active { opacity: .85; }
+    body, .app, .page { background: #F4F6F9; }
 
-    /* Monthly summary */
-    .month-summary { background: var(--white); padding: 16px 20px; border-bottom: 1px solid var(--gray-100); }
-    .ms-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-    .ms-item { text-align: center; }
-    .ms-val  { font-size: 20px; font-weight: 800; color: var(--gray-900); }
-    .ms-lbl  { font-size: 10px; color: var(--gray-400); font-weight: 500; margin-top: 2px; }
-    .ms-item.hadir  .ms-val { color: var(--success-dark); }
-    .ms-item.late   .ms-val { color: var(--warning-dark); }
-    .ms-item.izin   .ms-val { color: var(--info); }
-    .ms-item.alpha  .ms-val { color: var(--danger-dark); }
+    /* HEADER */
+    .page-header {
+      background: white;
+      padding: 52px 20px 0;
+      border-bottom: 1px solid #F3F4F6;
+      position: sticky; top: 0; z-index: 40;
+    }
+    .ph-row { display: flex; align-items: center; gap: 12px; margin-bottom: 0; }
+    .back-btn {
+      width: 36px; height: 36px; border-radius: 10px; background: #F4F6F9;
+      display: flex; align-items: center; justify-content: center; text-decoration: none; flex-shrink: 0;
+    }
+    .back-btn svg { width: 20px; height: 20px; stroke: #374151; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .ph-title { font-size: 17px; font-weight: 800; color: #111827; }
+
+    /* TAB underline style */
+    .tab-underline { display: flex; gap: 0; padding: 0; margin-top: 12px; }
+    .tu-btn {
+      flex: 1; padding: 10px 0; font-size: 14px; font-weight: 600; color: #9CA3AF;
+      text-align: center; border: none; background: transparent; cursor: pointer;
+      border-bottom: 2.5px solid transparent;
+    }
+    .tu-btn.active { color: #1D6FF3; border-bottom-color: #1D6FF3; }
+
+    /* TAB CONTENT */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* WEEK STRIP */
+    .week-section { background: white; padding: 14px 16px; margin-bottom: 1px; }
+    .week-section-title { font-size: 13px; font-weight: 700; color: #111827; margin-bottom: 12px; }
+    .week-strip { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; }
+    .week-day { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 2px; border-radius: 10px; cursor: pointer; }
+    .week-day.active { background: #1D6FF3; }
+    .wd-name { font-size: 9.5px; font-weight: 600; color: #9CA3AF; }
+    .week-day.active .wd-name { color: rgba(255,255,255,.8); }
+    .wd-num { font-size: 14px; font-weight: 700; color: #374151; }
+    .week-day.active .wd-num { color: white; }
+    .wd-dot-row { display: flex; gap: 2px; justify-content: center; min-height: 5px; }
+    .wd-dot { width: 4px; height: 4px; border-radius: 50%; }
+    .dot-r { background: #1D6FF3; }
+    .dot-p { background: #16A34A; }
+    .dot-s { background: #D97706; }
+    .dot-l { background: #D1D5DB; }
+    .week-day.active .wd-dot { background: rgba(255,255,255,.7); }
+    .week-legend { display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
+    .wl-item { display: flex; align-items: center; gap: 4px; font-size: 10.5px; color: #6B7280; }
+    .wl-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    /* DETAIL SECTIONS */
+    .detail-section { background: white; margin: 10px 16px; border-radius: 14px; box-shadow: 0 2px 10px rgba(0,0,0,.06); overflow: hidden; }
+    .ds-head { padding: 13px 16px 11px; border-bottom: 1px solid #F3F4F6; display: flex; align-items: center; justify-content: space-between; }
+    .ds-title { font-size: 13px; font-weight: 700; color: #111827; }
+    .ds-period { font-size: 12px; color: #6B7280; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+    .ds-period svg { width: 14px; height: 14px; stroke: #9CA3AF; fill: none; stroke-width: 1.8; }
+
+    /* JADWAL ROW */
+    .jadwal-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px; border-bottom: 1px solid #F9FAFB;
+      text-decoration: none;
+    }
+    .jadwal-row:last-child { border-bottom: none; }
+    .jr-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .jr-icon svg { width: 18px; height: 18px; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .jr-info { flex: 1; }
+    .jr-name { font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 2px; }
+    .jr-detail { font-size: 11.5px; color: #9CA3AF; }
+    .jr-chevron svg { width: 16px; height: 16px; stroke: #D1D5DB; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* DISTRIBUSI JADWAL */
+    .distrib-grid { display: grid; grid-template-columns: repeat(4,1fr); }
+    .dg-cell { padding: 14px 6px; text-align: center; border-right: 1px solid #F9FAFB; }
+    .dg-cell:last-child { border-right: none; }
+    .dg-val { font-size: 20px; font-weight: 800; line-height: 1; margin-bottom: 3px; }
+    .dg-lbl { font-size: 9.5px; font-weight: 500; color: #9CA3AF; }
+    .dg-sub { font-size: 9px; color: #D1D5DB; }
+
+    /* CALENDAR */
+    .calendar-grid { padding: 12px 12px 16px; }
+    .cal-header { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; margin-bottom: 6px; }
+    .cal-head-cell { text-align: center; font-size: 10px; font-weight: 700; color: #9CA3AF; padding: 4px 0; }
+    .cal-body { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; }
+    .cal-cell { text-align: center; padding: 4px 2px; border-radius: 6px; }
+    .cal-cell.empty { }
+    .cal-cell.today { background: #1D6FF3; border-radius: 8px; }
+    .cal-date { font-size: 12px; font-weight: 600; color: #374151; }
+    .cal-cell.today .cal-date { color: white; }
+    .cal-code { font-size: 9px; font-weight: 700; }
+    .cc-r { color: #1D6FF3; }
+    .cc-p { color: #16A34A; }
+    .cc-s { color: #D97706; }
+    .cc-l { color: #9CA3AF; }
+    .cal-cell.today .cal-code { color: rgba(255,255,255,.85); }
+
+    /* KEHADIRAN TAB */
+    .ringkasan-grid { display: grid; grid-template-columns: repeat(5,1fr); }
+    .rk-cell { padding: 14px 4px; text-align: center; border-right: 1px solid #F9FAFB; }
+    .rk-cell:last-child { border-right: none; }
+    .rk-val { font-size: 19px; font-weight: 800; line-height: 1; margin-bottom: 3px; }
+    .rk-lbl { font-size: 9px; font-weight: 600; color: #9CA3AF; line-height: 1.3; }
+
+    /* Circular progress */
+    .progress-section { padding: 16px; display: flex; align-items: center; gap: 20px; }
+    .circle-wrap { position: relative; width: 80px; height: 80px; flex-shrink: 0; }
+    .circle-wrap svg { transform: rotate(-90deg); }
+    .circle-label { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .circle-pct { font-size: 18px; font-weight: 800; color: #111827; }
+    .circle-sub { font-size: 8.5px; color: #9CA3AF; font-weight: 500; }
+    .progress-info { flex: 1; }
+    .prog-title { font-size: 14px; font-weight: 700; color: #111827; margin-bottom: 4px; }
+    .prog-trend { display: flex; align-items: center; gap: 4px; }
+    .trend-up { font-size: 11px; font-weight: 700; color: #16A34A; }
+    .trend-desc { font-size: 11px; color: #6B7280; }
+
+    /* RIWAYAT LIST */
+    .riwayat-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 13px 16px; border-bottom: 1px solid #F9FAFB;
+      text-decoration: none;
+    }
+    .riwayat-item:last-child { border-bottom: none; }
+    .ri-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .ri-icon svg { width: 18px; height: 18px; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .ri-info { flex: 1; }
+    .ri-date { font-size: 12px; font-weight: 700; color: #1D6FF3; margin-bottom: 2px; }
+    .ri-type { font-size: 11.5px; color: #6B7280; margin-bottom: 4px; }
+    .ri-times { display: grid; grid-template-columns: repeat(3,1fr); gap: 4px; }
+    .ri-tc { }
+    .ri-tc-lbl { font-size: 9.5px; color: #9CA3AF; margin-bottom: 1px; }
+    .ri-tc-val { font-size: 11.5px; font-weight: 700; color: #111827; }
+    .ri-right { text-align: right; }
+    .badge-hadir   { background: #DCFCE7; color: #15803D; border-radius: 20px; padding: 3px 9px; font-size: 10.5px; font-weight: 700; white-space: nowrap; }
+    .badge-late    { background: #FFF7ED; color: #D97706; border-radius: 20px; padding: 3px 9px; font-size: 10.5px; font-weight: 700; white-space: nowrap; }
+    .badge-izin    { background: #EEF4FF; color: #1D6FF3; border-radius: 20px; padding: 3px 9px; font-size: 10.5px; font-weight: 700; white-space: nowrap; }
   </style>
 </head>
 <body>
 <div class="phone">
-  <div class="status-bar" style="background:transparent;position:absolute;top:0;left:0;right:0;z-index:60">
-    <span class="s-time" style="color:white">09:41</span>
-    <div class="s-icons"><svg viewBox="0 0 17 12" style="fill:white;width:16px;height:12px"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="1.5" width="3" height="10.5" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/></svg><span style="color:white;font-size:13px">🔋</span></div>
-  </div>
-
   <div class="app">
-    <div class="page" style="padding-bottom:0">
+    <div class="page" style="padding:0">
 
-      <!-- Hero -->
-      <div class="k-hero">
-        <div class="k-date-row">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          Kamis, 12 Juni 2026
+      <!-- HEADER -->
+      <div class="page-header">
+        <div class="ph-row">
+          <a href="home.html" class="back-btn">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          </a>
+          <span class="ph-title">Jadwal Kerja</span>
         </div>
-
-        <div class="k-times-grid">
-          <div class="k-time-box">
-            <div class="k-time-lbl">☀️ JAM MASUK</div>
-            <div class="k-time-val">08:15</div>
-            <div class="k-time-sub">✓ Tepat Waktu</div>
-          </div>
-          <div class="k-time-box">
-            <div class="k-time-lbl">🌙 JAM KELUAR</div>
-            <div class="k-time-val">17:32</div>
-            <div class="k-time-sub">✓ Normal</div>
-          </div>
-        </div>
-
-        <div class="k-gps">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0112 2a8 8 0 018 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
-          📍 Jl. Sudirman No. 1, Jakarta Pusat · IP: 192.168.1.10
-        </div>
-
-        <button class="btn-checkin" onclick="alert('Check-In sudah tercatat pukul 08:15')">
-          ✅ Sudah Check-In Hari Ini
-        </button>
-      </div>
-
-      <!-- Monthly Summary -->
-      <div class="month-summary">
-        <div style="font-size:12px;color:var(--gray-400);font-weight:600;margin-bottom:12px">REKAP JUNI 2026</div>
-        <div class="ms-grid">
-          <div class="ms-item hadir">
-            <div class="ms-val">22</div>
-            <div class="ms-lbl">Hadir</div>
-          </div>
-          <div class="ms-item late">
-            <div class="ms-val">2</div>
-            <div class="ms-lbl">Terlambat</div>
-          </div>
-          <div class="ms-item izin">
-            <div class="ms-val">1</div>
-            <div class="ms-lbl">Izin</div>
-          </div>
-          <div class="ms-item alpha">
-            <div class="ms-val">0</div>
-            <div class="ms-lbl">Alpha</div>
-          </div>
+        <div class="tab-underline">
+          <button class="tu-btn active" onclick="switchKhTab('overview',this)">Overview</button>
+          <button class="tu-btn" onclick="switchKhTab('kehadiran',this)">Kehadiran</button>
         </div>
       </div>
 
-      <!-- Filter Tab -->
-      <div class="tab-bar">
-        <div class="tab-item active">Hari Ini</div>
-        <div class="tab-item">Minggu Ini</div>
-        <div class="tab-item">Bulan Ini</div>
+      <!-- ══════════ TAB: OVERVIEW ══════════ -->
+      <div id="tab-overview" class="tab-content active">
+
+        <!-- WEEK STRIP -->
+        <div class="week-section">
+          <div class="week-section-title">Jadwal Minggu Ini</div>
+          <div class="week-strip">
+            <div class="week-day">
+              <span class="wd-name">Sen</span>
+              <span class="wd-num">14</span>
+              <div class="wd-dot-row"><div class="wd-dot dot-r"></div></div>
+            </div>
+            <div class="week-day">
+              <span class="wd-name">Sel</span>
+              <span class="wd-num">15</span>
+              <div class="wd-dot-row"><div class="wd-dot dot-r"></div><div class="wd-dot dot-p"></div></div>
+            </div>
+            <div class="week-day active">
+              <span class="wd-name">Rab</span>
+              <span class="wd-num">16</span>
+              <div class="wd-dot-row"><div class="wd-dot"></div><div class="wd-dot"></div></div>
+            </div>
+            <div class="week-day">
+              <span class="wd-name">Kam</span>
+              <span class="wd-num">17</span>
+              <div class="wd-dot-row"><div class="wd-dot dot-r"></div></div>
+            </div>
+            <div class="week-day">
+              <span class="wd-name">Jum</span>
+              <span class="wd-num">18</span>
+              <div class="wd-dot-row"><div class="wd-dot dot-p"></div></div>
+            </div>
+            <div class="week-day">
+              <span class="wd-name">Sab</span>
+              <span class="wd-num">19</span>
+              <div class="wd-dot-row"><div class="wd-dot dot-p"></div></div>
+            </div>
+            <div class="week-day">
+              <span class="wd-name">Min</span>
+              <span class="wd-num">20</span>
+              <div class="wd-dot-row"><div class="wd-dot dot-l"></div></div>
+            </div>
+          </div>
+          <div class="week-legend">
+            <div class="wl-item"><div class="wl-dot" style="background:#1D6FF3"></div>Regular</div>
+            <div class="wl-item"><div class="wl-dot" style="background:#16A34A"></div>Project</div>
+            <div class="wl-item"><div class="wl-dot" style="background:#D97706"></div>Shift</div>
+            <div class="wl-item"><div class="wl-dot" style="background:#D1D5DB"></div>Libur</div>
+          </div>
+        </div>
+
+        <!-- DETAIL HARI INI -->
+        <div class="detail-section">
+          <div class="ds-head">
+            <span class="ds-title">Detail 16 Juli 2026</span>
+          </div>
+          <a href="#" class="jadwal-row">
+            <div class="jr-icon" style="background:#EEF4FF">
+              <svg viewBox="0 0 24 24" style="stroke:#1D6FF3"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div class="jr-info">
+              <div class="jr-name">Regular Schedule</div>
+              <div class="jr-detail">09:00 – 17:00 · Head Office Blitar</div>
+            </div>
+            <div class="jr-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </a>
+          <a href="#" class="jadwal-row">
+            <div class="jr-icon" style="background:#DCFCE7">
+              <svg viewBox="0 0 24 24" style="stroke:#16A34A"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div class="jr-info">
+              <div class="jr-name">Project Assignment</div>
+              <div class="jr-detail">FTTH Karangploso · 13:00 – Selesai · Site Karangploso</div>
+            </div>
+            <div class="jr-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </a>
+        </div>
+
+        <!-- RINGKASAN BULAN DISTRIBUSI -->
+        <div class="detail-section">
+          <div class="ds-head">
+            <span class="ds-title">Ringkasan Bulan Ini</span>
+            <div class="ds-period">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              Juli 2026 <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:#9CA3AF;fill:none;stroke-width:2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+          <div class="distrib-grid">
+            <div class="dg-cell">
+              <div class="dg-val" style="color:#1D6FF3">18</div>
+              <div class="dg-lbl">Regular</div>
+              <div class="dg-sub">Hari</div>
+            </div>
+            <div class="dg-cell">
+              <div class="dg-val" style="color:#16A34A">6</div>
+              <div class="dg-lbl">Project</div>
+              <div class="dg-sub">Hari</div>
+            </div>
+            <div class="dg-cell">
+              <div class="dg-val" style="color:#D97706">4</div>
+              <div class="dg-lbl">Shift</div>
+              <div class="dg-sub">Hari</div>
+            </div>
+            <div class="dg-cell">
+              <div class="dg-val" style="color:#9CA3AF">2</div>
+              <div class="dg-lbl">Libur</div>
+              <div class="dg-sub">Hari</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- KALENDER BULAN INI -->
+        <div class="detail-section" style="margin-bottom:10px">
+          <div class="ds-head">
+            <span class="ds-title">Kalender Bulan Ini</span>
+            <div class="ds-period">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              Juli 2026 <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:#9CA3AF;fill:none;stroke-width:2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+          <div class="calendar-grid">
+            <div class="cal-header">
+              <div class="cal-head-cell">Sen</div>
+              <div class="cal-head-cell">Sel</div>
+              <div class="cal-head-cell">Rab</div>
+              <div class="cal-head-cell">Kam</div>
+              <div class="cal-head-cell">Jum</div>
+              <div class="cal-head-cell">Sab</div>
+              <div class="cal-head-cell">Min</div>
+            </div>
+            <div class="cal-body">
+              <!-- Jul 2026: 1=Rab -->
+              <div class="cal-cell empty"></div>
+              <div class="cal-cell empty"></div>
+              <div class="cal-cell"><div class="cal-date">1</div><div class="cal-code cc-r">R</div></div>
+              <div class="cal-cell"><div class="cal-date">2</div><div class="cal-code cc-r">R</div></div>
+              <div class="cal-cell"><div class="cal-date">3</div><div class="cal-code cc-p">P</div></div>
+              <div class="cal-cell"><div class="cal-date">4</div><div class="cal-code cc-p">P</div></div>
+              <div class="cal-cell"><div class="cal-date">5</div><div class="cal-code cc-l">L</div></div>
+              <div class="cal-cell"><div class="cal-date">6</div><div class="cal-code cc-r">R</div></div>
+              <div class="cal-cell"><div class="cal-date">7</div><div class="cal-code cc-r">R</div></div>
+              <div class="cal-cell"><div class="cal-date">8</div><div class="cal-code cc-r">R</div></div>
+              <div class="cal-cell"><div class="cal-date">9</div><div class="cal-code cc-p">P</div></div>
+              <div class="cal-cell"><div class="cal-date">10</div><div class="cal-code cc-r">R</div></div>
+              <div class="cal-cell"><div class="cal-date">11</div><div class="cal-code cc-l">L</div></div>
+              <div class="cal-cell"><div class="cal-date">12</div><div class="cal-code cc-l">L</div></div>
+              <div class="cal-cell"><div class="cal-date">13</div><div class="cal-code cc-r">R</div></div>
+              <div class="cal-cell"><div class="cal-date">14</div><div class="cal-code cc-r">R</div></div>
+              <div class="cal-cell"><div class="cal-date">15</div><div class="cal-code cc-p">P</div></div>
+              <div class="cal-cell today"><div class="cal-date">16</div><div class="cal-code">R+P</div></div>
+              <div class="cal-cell"><div class="cal-date">17</div><div class="cal-code cc-r">R</div></div>
+              <div class="cal-cell"><div class="cal-date">18</div><div class="cal-code cc-p">P</div></div>
+              <div class="cal-cell"><div class="cal-date">19</div><div class="cal-code cc-p">P</div></div>
+              <div class="cal-cell"><div class="cal-date">20</div><div class="cal-code cc-l">L</div></div>
+              <div class="cal-cell"><div class="cal-date">21</div><div class="cal-code cc-r">R</div></div>
+              <div class="cal-cell"><div class="cal-date">22</div><div class="cal-code cc-r">R</div></div>
+              <div class="cal-cell"><div class="cal-date">23</div><div class="cal-code cc-r">R</div></div>
+              <div class="cal-cell"><div class="cal-date">24</div><div class="cal-code cc-l">L</div></div>
+              <div class="cal-cell"><div class="cal-date">25</div><div class="cal-code cc-r">R</div></div>
+              <div class="cal-cell"><div class="cal-date">26</div><div class="cal-code cc-l">L</div></div>
+              <div class="cal-cell"><div class="cal-date">27</div><div class="cal-code cc-r">R</div></div>
+              <div class="cal-cell"><div class="cal-date">28</div><div class="cal-code cc-r">R</div></div>
+              <div class="cal-cell"><div class="cal-date">29</div><div class="cal-code cc-r">R</div></div>
+              <div class="cal-cell"><div class="cal-date">30</div><div class="cal-code cc-r">R</div></div>
+              <div class="cal-cell"><div class="cal-date">31</div><div class="cal-code cc-r">R</div></div>
+              <div class="cal-cell empty"></div>
+              <div class="cal-cell empty"></div>
+              <div class="cal-cell empty"></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="height:calc(var(--nav-h) + 24px)"></div>
       </div>
 
-      <!-- History List -->
-      <div style="background:var(--white)">
-        <div class="att-row">
-          <div class="att-date"><div class="ad-day">12</div><div class="ad-mon">JUN</div></div>
-          <div class="att-sep"></div>
-          <div class="att-info"><div class="att-status">Hadir</div><div class="att-time">08:15 – 17:32 · 9j 17m · Jl. Sudirman</div></div>
-          <span class="badge b-success">Hadir</span>
+      <!-- ══════════ TAB: KEHADIRAN ══════════ -->
+      <div id="tab-kehadiran" class="tab-content">
+
+        <!-- RINGKASAN KEHADIRAN -->
+        <div class="detail-section" style="margin-top:10px">
+          <div class="ds-head">
+            <span class="ds-title">Ringkasan Kehadiran</span>
+            <div class="ds-period">Juli 2026</div>
+          </div>
+          <div class="ringkasan-grid">
+            <div class="rk-cell">
+              <div class="rk-val" style="color:#374151">22</div>
+              <div class="rk-lbl">Hari Kerja</div>
+            </div>
+            <div class="rk-cell">
+              <div class="rk-val" style="color:#16A34A">20</div>
+              <div class="rk-lbl">Hadir</div>
+            </div>
+            <div class="rk-cell">
+              <div class="rk-val" style="color:#D97706">2</div>
+              <div class="rk-lbl">Terlambat</div>
+            </div>
+            <div class="rk-cell">
+              <div class="rk-val" style="color:#1D6FF3">1</div>
+              <div class="rk-lbl">Izin</div>
+            </div>
+            <div class="rk-cell">
+              <div class="rk-val" style="color:#DC2626">1</div>
+              <div class="rk-lbl">Cuti</div>
+            </div>
+          </div>
         </div>
-        <div class="att-row">
-          <div class="att-date"><div class="ad-day">11</div><div class="ad-mon">JUN</div></div>
-          <div class="att-sep"></div>
-          <div class="att-info"><div class="att-status">Hadir</div><div class="att-time">08:22 – 17:15 · 8j 53m</div></div>
-          <span class="badge b-success">Hadir</span>
+
+        <!-- TINGKAT KEHADIRAN -->
+        <div class="detail-section">
+          <div class="ds-head"><span class="ds-title">Tingkat Kehadiran</span></div>
+          <div class="progress-section">
+            <div class="circle-wrap">
+              <svg width="80" height="80" viewBox="0 0 80 80">
+                <circle cx="40" cy="40" r="32" fill="none" stroke="#E5E7EB" stroke-width="7"/>
+                <!-- 91% of circumference: 2π×32 ≈ 201.1, 91% ≈ 183 -->
+                <circle cx="40" cy="40" r="32" fill="none" stroke="#1D6FF3" stroke-width="7"
+                  stroke-dasharray="183 201" stroke-linecap="round"/>
+              </svg>
+              <div class="circle-label">
+                <span class="circle-pct">91%</span>
+                <span class="circle-sub">Kehadiran</span>
+              </div>
+            </div>
+            <div class="progress-info">
+              <div class="prog-title">Sangat Baik!</div>
+              <div class="prog-trend">
+                <span class="trend-up">↑ 5%</span>
+                <span class="trend-desc">lebih baik dari bulan lalu</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="att-row">
-          <div class="att-date"><div class="ad-day">10</div><div class="ad-mon">JUN</div></div>
-          <div class="att-sep"></div>
-          <div class="att-info"><div class="att-status">Terlambat</div><div class="att-time">08:46 – 17:30 · +16 menit terlambat</div></div>
-          <span class="badge b-warning">Terlambat</span>
+
+        <!-- RIWAYAT KEHADIRAN -->
+        <div class="detail-section">
+          <div class="ds-head">
+            <span class="ds-title">Riwayat Kehadiran</span>
+            <div class="ds-period" style="cursor:pointer">
+              <svg viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="10" y2="18"/></svg>
+              Filter
+            </div>
+          </div>
+
+          <a href="#" class="riwayat-item">
+            <div class="ri-icon" style="background:#EEF4FF">
+              <svg viewBox="0 0 24 24" style="stroke:#1D6FF3"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div class="ri-info">
+              <div class="ri-date">Rabu, 16 Juli 2026</div>
+              <div class="ri-type">Regular Schedule</div>
+              <div class="ri-times">
+                <div class="ri-tc"><div class="ri-tc-lbl">Check In</div><div class="ri-tc-val">08:56</div></div>
+                <div class="ri-tc"><div class="ri-tc-lbl">Check Out</div><div class="ri-tc-val">17:03</div></div>
+                <div class="ri-tc"><div class="ri-tc-lbl">Durasi</div><div class="ri-tc-val">8j 7m</div></div>
+              </div>
+            </div>
+            <div>
+              <span class="badge-hadir">Hadir</span>
+              <div style="text-align:right;margin-top:4px">
+                <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:#D1D5DB;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="9 18 15 12 9 6"/></svg>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="riwayat-item">
+            <div class="ri-icon" style="background:#DCFCE7">
+              <svg viewBox="0 0 24 24" style="stroke:#16A34A"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div class="ri-info">
+              <div class="ri-date">Selasa, 15 Juli 2026</div>
+              <div class="ri-type">Project Assignment · FTTH Karangploso</div>
+              <div class="ri-times">
+                <div class="ri-tc"><div class="ri-tc-lbl">Check In</div><div class="ri-tc-val">07:51</div></div>
+                <div class="ri-tc"><div class="ri-tc-lbl">Check Out</div><div class="ri-tc-val">18:15</div></div>
+                <div class="ri-tc"><div class="ri-tc-lbl">Durasi</div><div class="ri-tc-val">10j 24m</div></div>
+              </div>
+            </div>
+            <div>
+              <span class="badge-hadir">Hadir</span>
+              <div style="text-align:right;margin-top:4px">
+                <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:#D1D5DB;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="9 18 15 12 9 6"/></svg>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="riwayat-item">
+            <div class="ri-icon" style="background:#FFF7ED">
+              <svg viewBox="0 0 24 24" style="stroke:#D97706"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="ri-info">
+              <div class="ri-date">Senin, 14 Juli 2026</div>
+              <div class="ri-type">Regular Schedule</div>
+              <div class="ri-times">
+                <div class="ri-tc"><div class="ri-tc-lbl">Check In</div><div class="ri-tc-val">09:12</div></div>
+                <div class="ri-tc"><div class="ri-tc-lbl">Check Out</div><div class="ri-tc-val">17:02</div></div>
+                <div class="ri-tc"><div class="ri-tc-lbl">Durasi</div><div class="ri-tc-val">7j 50m</div></div>
+              </div>
+            </div>
+            <div>
+              <span class="badge-late">Terlambat</span>
+              <div style="text-align:right;margin-top:4px">
+                <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:#D1D5DB;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="9 18 15 12 9 6"/></svg>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="riwayat-item">
+            <div class="ri-icon" style="background:#EEF4FF">
+              <svg viewBox="0 0 24 24" style="stroke:#1D6FF3"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div class="ri-info">
+              <div class="ri-date">Minggu, 13 Juli 2026</div>
+              <div class="ri-type">Regular Schedule</div>
+              <div class="ri-times">
+                <div class="ri-tc"><div class="ri-tc-lbl">Check In</div><div class="ri-tc-val">08:45</div></div>
+                <div class="ri-tc"><div class="ri-tc-lbl">Check Out</div><div class="ri-tc-val">17:00</div></div>
+                <div class="ri-tc"><div class="ri-tc-lbl">Durasi</div><div class="ri-tc-val">8j 15m</div></div>
+              </div>
+            </div>
+            <div>
+              <span class="badge-hadir">Hadir</span>
+              <div style="text-align:right;margin-top:4px">
+                <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:#D1D5DB;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="9 18 15 12 9 6"/></svg>
+              </div>
+            </div>
+          </a>
         </div>
-        <div class="att-row">
-          <div class="att-date"><div class="ad-day">09</div><div class="ad-mon">JUN</div></div>
-          <div class="att-sep"></div>
-          <div class="att-info"><div class="att-status">Izin Sakit</div><div class="att-time">Disetujui HC · 1 hari</div></div>
-          <span class="badge b-info">Izin</span>
-        </div>
-        <div class="att-row">
-          <div class="att-date"><div class="ad-day">06</div><div class="ad-mon">JUN</div></div>
-          <div class="att-sep"></div>
-          <div class="att-info"><div class="att-status">Hadir</div><div class="att-time">08:05 – 17:00 · 8j 55m</div></div>
-          <span class="badge b-success">Hadir</span>
-        </div>
-        <div class="att-row">
-          <div class="att-date"><div class="ad-day">05</div><div class="ad-mon">JUN</div></div>
-          <div class="att-sep"></div>
-          <div class="att-info"><div class="att-status">Hadir</div><div class="att-time">08:10 – 17:05 · 8j 55m</div></div>
-          <span class="badge b-success">Hadir</span>
-        </div>
-        <div class="att-row">
-          <div class="att-date"><div class="ad-day">04</div><div class="ad-mon">JUN</div></div>
-          <div class="att-sep"></div>
-          <div class="att-info"><div class="att-status">Cuti Tahunan</div><div class="att-time">Disetujui · 1 hari</div></div>
-          <span class="badge b-neutral">Cuti</span>
-        </div>
-        <div class="att-row">
-          <div class="att-date"><div class="ad-day">03</div><div class="ad-mon">JUN</div></div>
-          <div class="att-sep"></div>
-          <div class="att-info"><div class="att-status">Terlambat</div><div class="att-time">09:02 – 17:00 · +32 menit terlambat</div></div>
-          <span class="badge b-warning">Terlambat</span>
-        </div>
-        <div class="att-row">
-          <div class="att-date"><div class="ad-day">02</div><div class="ad-mon">JUN</div></div>
-          <div class="att-sep"></div>
-          <div class="att-info"><div class="att-status">Hadir</div><div class="att-time">08:00 – 17:10 · 9j 10m</div></div>
-          <span class="badge b-success">Hadir</span>
-        </div>
+
+        <div style="height:calc(var(--nav-h) + 24px)"></div>
       </div>
 
-      <div style="height:calc(var(--nav-h) + 20px)"></div>
     </div>
   </div>
 
+  <!-- BOTTOM NAV -->
   <nav class="bottom-nav">
-    <a href="home.html" class="nav-item"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/><path d="M3 12v9h18V12"/></svg></div><span class="nav-label">Beranda</span></a>
-    <a href="kehadiran.html" class="nav-item active"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><span class="nav-label">Kehadiran</span></a>
-    <a href="izin-cuti.html" class="nav-item"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span class="nav-badge">1</span></div><span class="nav-label">Izin &amp; Cuti</span></a>
-    <a href="loan.html" class="nav-item"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><span class="nav-label">Pinjaman</span></a>
-    <a href="profil.html" class="nav-item"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span class="nav-label">Profil</span></a>
+    <a href="home.html" class="nav-item">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      </div>
+      <span class="nav-label">Beranda</span>
+    </a>
+    <a href="notifikasi.html" class="nav-item">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+        <span class="nav-badge">3</span>
+      </div>
+      <span class="nav-label">Inbox</span>
+    </a>
+    <a href="profil.html" class="nav-item">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      <span class="nav-label">Profil</span>
+    </a>
   </nav>
+
 </div>
 <script src="js/app.js"></script>
+<script>
+  function switchKhTab(tabId, btn) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tu-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tabId).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
 </body>
 </html>

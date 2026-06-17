@@ -6,159 +6,522 @@
   <title>ESS — Profil Saya</title>
   <link rel="stylesheet" href="css/design-system.css">
   <style>
+    body, .app, .page { background: #F4F6F9; }
+
+    /* ── HERO ── */
     .profil-hero {
-      background: linear-gradient(150deg, #0F2B6E 0%, #1A55D4 55%, #2A7CFF 100%);
-      padding: 28px 20px 36px; text-align: center; color: white;
+      background: linear-gradient(160deg, #0B1F5C 0%, #1540A8 50%, #1D6FF3 100%);
+      padding: 52px 20px 28px;
+      text-align: center; color: white; position: relative;
     }
-    .p-avatar {
-      width: 80px; height: 80px; border-radius: 24px;
-      background: rgba(255,255,255,.22); margin: 0 auto 14px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 32px; font-weight: 800; letter-spacing: -1px;
-      border: 2.5px solid rgba(255,255,255,.4);
-    }
-    .p-name    { font-size: 22px; font-weight: 800; letter-spacing: -.5px; margin-bottom: 6px; }
-    .p-meta    { font-size: 13px; opacity: .8; margin-bottom: 14px; }
-    .p-badges  { display: flex; justify-content: center; gap: 8px; }
     .p-edit-btn {
-      position: absolute; top: 20px; right: 20px;
-      background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.25);
-      color: white; border-radius: 10px; padding: 8px 14px;
-      font-size: 13px; font-weight: 600; cursor: pointer;
-      text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+      position: absolute; top: 56px; right: 20px;
+      background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25);
+      color: white; border-radius: 9px; padding: 7px 12px;
+      font-size: 12px; font-weight: 600; text-decoration: none;
+      display: flex; align-items: center; gap: 5px;
     }
-    .profil-hero { position: relative; }
+    .p-edit-btn svg { width: 13px; height: 13px; stroke: white; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .p-avatar {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: linear-gradient(135deg, #60A5FA, #3B82F6);
+      margin: 0 auto 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 30px; font-weight: 800; color: white;
+      border: 3px solid rgba(255,255,255,.4);
+      box-shadow: 0 4px 20px rgba(0,0,0,.3);
+    }
+    .p-name { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+    .p-role { font-size: 13px; opacity: .8; margin-bottom: 4px; }
+    .p-id   { font-size: 12px; opacity: .65; margin-bottom: 14px; }
+    .p-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(34,197,94,.25); border: 1px solid rgba(134,239,172,.5);
+      border-radius: 20px; padding: 4px 12px;
+      font-size: 12px; font-weight: 700; color: #86EFAC;
+    }
+    .p-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #4ADE80; }
+
+    /* ── HORIZONTAL TAB NAV ── */
+    .htab-nav {
+      background: white;
+      border-bottom: 1px solid #F3F4F6;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .htab-nav::-webkit-scrollbar { display: none; }
+    .htab-inner {
+      display: flex; padding: 0 16px; gap: 0; min-width: max-content;
+    }
+    .htab-btn {
+      padding: 12px 16px;
+      font-size: 13px; font-weight: 600; color: #9CA3AF;
+      border: none; background: transparent;
+      border-bottom: 2.5px solid transparent;
+      cursor: pointer; white-space: nowrap;
+    }
+    .htab-btn.active { color: #1D6FF3; border-bottom-color: #1D6FF3; }
+
+    /* ── DATA ROWS ── */
+    .data-card {
+      background: white; margin: 12px 16px;
+      border-radius: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
+      overflow: hidden;
+    }
+    .dc-head {
+      padding: 14px 16px 10px;
+      border-bottom: 1px solid #F3F4F6;
+    }
+    .dc-title { font-size: 14px; font-weight: 700; color: #111827; }
+
+    .data-row-icon {
+      display: flex; align-items: flex-start;
+      padding: 12px 16px; gap: 12px;
+      border-bottom: 1px solid #F9FAFB;
+    }
+    .data-row-icon:last-child { border-bottom: none; }
+    .dri-icon {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: #EEF4FF;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .dri-icon svg { width: 16px; height: 16px; stroke: #1D6FF3; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .dri-label { font-size: 11px; color: #9CA3AF; font-weight: 500; margin-bottom: 2px; }
+    .dri-val   { font-size: 13px; font-weight: 600; color: #111827; }
+    .dri-val.mono { font-family: monospace; }
+
+    /* ── KONTAK DARURAT ── */
+    .kontak-card {
+      background: white; margin: 0 16px 10px;
+      border-radius: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
+      padding: 14px 16px;
+    }
+    .kk-head {
+      display: flex; align-items: center;
+      justify-content: space-between; margin-bottom: 12px;
+    }
+    .kk-name { font-size: 14px; font-weight: 700; color: #111827; }
+    .kk-status-ok    { background: #DCFCE7; color: #15803D; border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 700; }
+    .kk-status-warn  { background: #FEF9C3; color: #A16207; border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 700; }
+    .kk-status-off   { background: #F3F4F6; color: #9CA3AF; border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 700; }
+    .kk-rows { display: flex; flex-direction: column; gap: 6px; }
+    .kk-row  { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #6B7280; }
+    .kk-row svg { width: 14px; height: 14px; stroke: #9CA3AF; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+    .kk-row span { color: #374151; font-weight: 500; }
+    .kk-divider { height: 1px; background: #F3F4F6; margin: 12px 0; }
+
+    /* Status legend */
+    .status-legend {
+      margin: 0 16px 12px;
+      background: white; border-radius: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
+      padding: 14px 16px;
+    }
+    .sl-title { font-size: 12px; font-weight: 700; color: #374151; margin-bottom: 10px; }
+    .sl-item  { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 12px; color: #6B7280; }
+    .sl-item:last-child { margin-bottom: 0; }
+    .sl-dot-ok   { width: 8px; height: 8px; border-radius: 50%; background: #4ADE80; flex-shrink: 0; }
+    .sl-dot-warn { width: 8px; height: 8px; border-radius: 50%; background: #FACC15; flex-shrink: 0; }
+    .sl-dot-off  { width: 8px; height: 8px; border-radius: 50%; background: #D1D5DB; flex-shrink: 0; }
+
+    /* ── PENGATURAN SECTION ── */
+    .menu-list-card {
+      background: white; margin: 12px 16px;
+      border-radius: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
+      overflow: hidden;
+    }
+    .menu-row {
+      display: flex; align-items: center;
+      padding: 14px 16px; gap: 12px;
+      border-bottom: 1px solid #F9FAFB;
+      cursor: pointer; text-decoration: none;
+    }
+    .menu-row:last-child { border-bottom: none; }
+    .mr-icon {
+      width: 34px; height: 34px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .mr-icon svg { width: 16px; height: 16px; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .mr-label { font-size: 13px; font-weight: 600; color: #374151; flex: 1; }
+    .mr-val   { font-size: 12px; color: #9CA3AF; }
+    .mr-chevron svg { width: 16px; height: 16px; stroke: #D1D5DB; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* Logout */
+    .btn-logout {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 14px;
+      background: #FEF2F2; color: #DC2626;
+      border: 1.5px solid #FECACA;
+      border-radius: 12px; font-size: 14px; font-weight: 700;
+      cursor: pointer; text-decoration: none;
+    }
+    .btn-logout svg { width: 18px; height: 18px; stroke: #DC2626; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* Tab content switcher */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
   </style>
 </head>
 <body>
 <div class="phone">
-  <div class="status-bar" style="background:transparent;position:absolute;top:0;left:0;right:0;z-index:60">
-    <span class="s-time" style="color:white">09:41</span>
-    <div class="s-icons"><svg viewBox="0 0 17 12" style="fill:white;width:16px;height:12px"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="1.5" width="3" height="10.5" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/></svg><span style="color:white;font-size:13px">🔋</span></div>
-  </div>
-
   <div class="app">
-    <div class="page" style="padding-bottom:0">
+    <div class="page" style="padding:0">
 
-      <!-- Hero -->
-      <div class="profil-hero" style="padding-top:58px">
-        <a href="#" class="p-edit-btn">✏️ Edit</a>
+      <!-- ── HERO ── -->
+      <div class="profil-hero">
+        <a href="#" class="p-edit-btn">
+          <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Edit
+        </a>
         <div class="p-avatar">AP</div>
         <div class="p-name">Andi Pratama</div>
-        <div class="p-meta">NIK 2024001 · Staff HC Comben · Jakarta Pusat</div>
-        <div class="p-badges">
-          <span class="badge b-white badge-dot">Karyawan Aktif</span>
-          <span class="badge b-white">📅 2 Thn 4 Bln</span>
+        <div class="p-role">Staff PKWT</div>
+        <div class="p-id">ST-2024-0157</div>
+        <div class="p-badge">
+          <span class="p-badge-dot"></span>
+          Aktif
         </div>
       </div>
 
-      <!-- Stats strip -->
-      <div style="background:white;padding:16px 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--gray-100)">
-        <div style="background:white;text-align:center;padding:14px 8px">
-          <div style="font-size:22px;font-weight:800;color:var(--success-dark)">12</div>
-          <div style="font-size:11px;color:var(--gray-400);font-weight:500;margin-top:2px">Saldo Cuti</div>
-        </div>
-        <div style="background:white;text-align:center;padding:14px 8px">
-          <div style="font-size:22px;font-weight:800;color:var(--primary)">22</div>
-          <div style="font-size:11px;color:var(--gray-400);font-weight:500;margin-top:2px">Hadir Bln Ini</div>
-        </div>
-        <div style="background:white;text-align:center;padding:14px 8px">
-          <div style="font-size:22px;font-weight:800;color:var(--warning-dark)">0</div>
-          <div style="font-size:11px;color:var(--gray-400);font-weight:500;margin-top:2px">SP Aktif</div>
+      <!-- ── HORIZONTAL TAB NAV ── -->
+      <div class="htab-nav">
+        <div class="htab-inner">
+          <button class="htab-btn active" onclick="switchTab('data-pribadi', this)">Data Pribadi</button>
+          <button class="htab-btn" onclick="switchTab('pekerjaan', this)">Pekerjaan</button>
+          <button class="htab-btn" onclick="switchTab('kontak-darurat', this)">Kontak Darurat</button>
+          <button class="htab-btn" onclick="switchTab('aset', this)">Aset</button>
+          <button class="htab-btn" onclick="switchTab('lainnya', this)">Lainnya</button>
         </div>
       </div>
 
-      <div class="divider-8"></div>
+      <!-- ── TAB: DATA PRIBADI ── -->
+      <div id="tab-data-pribadi" class="tab-content active">
+        <div class="data-card">
+          <div class="dc-head"><span class="dc-title">Data Pribadi</span></div>
 
-      <!-- Data Pribadi -->
-      <div style="padding:0 20px 14px;padding-top:16px">
-        <div class="section-title mb-12">Data Pribadi</div>
-      </div>
-      <div style="background:var(--white);margin:0 20px;border-radius:var(--r);box-shadow:var(--shadow-sm);padding:0 16px">
-        <div class="data-list">
-          <div class="data-row"><span class="dr-key">Nama Lengkap</span><span class="dr-val">Andi Pratama</span></div>
-          <div class="data-row"><span class="dr-key">NIK</span><span class="dr-val">2024001</span></div>
-          <div class="data-row"><span class="dr-key">Jabatan</span><span class="dr-val">Staff HC Comben</span></div>
-          <div class="data-row"><span class="dr-key">Cabang</span><span class="dr-val">Jakarta Pusat</span></div>
-          <div class="data-row"><span class="dr-key">Unit Kerja</span><span class="dr-val">Human Capital</span></div>
-          <div class="data-row"><span class="dr-key">Lama Kerja</span><span class="dr-val">2 Tahun 4 Bulan</span></div>
-          <div class="data-row"><span class="dr-key">Atasan Langsung</span><span class="dr-val">Budi Santoso</span></div>
-          <div class="data-row"><span class="dr-key">Bergabung</span><span class="dr-val">15 Februari 2024</span></div>
-        </div>
-      </div>
-
-      <div style="height:16px"></div>
-
-      <!-- Kontak -->
-      <div style="padding:0 20px 12px">
-        <div class="section-title mb-12">Kontak &amp; Darurat</div>
-      </div>
-      <div style="background:var(--white);margin:0 20px;border-radius:var(--r);box-shadow:var(--shadow-sm);padding:0 16px">
-        <div class="data-list">
-          <div class="data-row"><span class="dr-key">Email</span><span class="dr-val">andi.pratama@company.id</span></div>
-          <div class="data-row"><span class="dr-key">No. HP</span><span class="dr-val">+62 812-3456-7890</span></div>
-          <div class="data-row"><span class="dr-key">Kontak Darurat</span><span class="dr-val">Sari Pratama (Istri)</span></div>
-          <div class="data-row"><span class="dr-key">No. Darurat</span><span class="dr-val">+62 813-9876-5432</span></div>
-        </div>
-      </div>
-
-      <div style="height:16px"></div>
-
-      <!-- Kepegawaian -->
-      <div style="padding:0 20px 12px">
-        <div class="section-title mb-12">Status Kepegawaian</div>
-      </div>
-      <div style="background:var(--white);margin:0 20px;border-radius:var(--r);box-shadow:var(--shadow-sm);padding:0 16px">
-        <div class="data-list">
-          <div class="data-row"><span class="dr-key">Status</span><span class="dr-val"><span class="badge b-success badge-dot">Aktif</span></span></div>
-          <div class="data-row"><span class="dr-key">Saldo Cuti</span><span class="dr-val" style="color:var(--success-dark);font-size:16px;font-weight:800">12 Hari</span></div>
-          <div class="data-row"><span class="dr-key">SP Aktif</span><span class="dr-val">Tidak Ada</span></div>
-          <div class="data-row"><span class="dr-key">Outstanding Loan</span><span class="dr-val" style="color:var(--warning-dark)">Rp 4.500.000</span></div>
-        </div>
-      </div>
-
-      <div style="height:16px"></div>
-
-      <!-- Pengaturan & Logout -->
-      <div style="padding:0 20px 12px">
-        <div class="section-title mb-12">Pengaturan</div>
-      </div>
-      <div style="background:var(--white);margin:0 20px;border-radius:var(--r);box-shadow:var(--shadow-sm);padding:0 16px">
-        <div class="data-list">
-          <div class="data-row" style="cursor:pointer" onclick="alert('Ganti Password')">
-            <span class="dr-key">🔒 Ganti Password</span>
-            <span style="color:var(--gray-300);font-size:18px">›</span>
+          <div class="data-row-icon">
+            <div class="dri-icon">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div>
+              <div class="dri-label">Tanggal Lahir / Kota</div>
+              <div class="dri-val">Bandung, 14 Maret 1995</div>
+            </div>
           </div>
-          <div class="data-row">
-            <span class="dr-key">🌐 Bahasa</span>
-            <span class="dr-val" style="color:var(--gray-500)">Indonesia</span>
+
+          <div class="data-row-icon">
+            <div class="dri-icon">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div>
+              <div class="dri-label">Jenis Kelamin</div>
+              <div class="dri-val">Laki-Laki</div>
+            </div>
           </div>
-          <div class="data-row">
-            <span class="dr-key">ℹ️ Versi Aplikasi</span>
-            <span class="dr-val" style="color:var(--gray-500)">v2.0.1</span>
+
+          <div class="data-row-icon">
+            <div class="dri-icon">
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            </div>
+            <div>
+              <div class="dri-label">Status Pernikahan</div>
+              <div class="dri-val">Menikah</div>
+            </div>
+          </div>
+
+          <div class="data-row-icon">
+            <div class="dri-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0112 2a8 8 0 018 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <div class="dri-label">Alamat</div>
+              <div class="dri-val">Jl. Raya Kebayoran Baru No. 5, Kec. Kebayoran Baru, Jakarta Selatan</div>
+            </div>
+          </div>
+
+          <div class="data-row-icon">
+            <div class="dri-icon">
+              <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.69A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.98 7.06l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            </div>
+            <div>
+              <div class="dri-label">No. HP</div>
+              <div class="dri-val mono">+62 812-3456-7890</div>
+            </div>
+          </div>
+
+          <div class="data-row-icon">
+            <div class="dri-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <div class="dri-label">Email</div>
+              <div class="dri-val">andi.pratama@company.id</div>
+            </div>
           </div>
         </div>
-      </div>
-      <div style="padding:16px 20px 20px">
-        <a href="index.html" class="btn btn-danger btn-full" onclick="return confirm('Yakin ingin keluar dari akun?')">
-          <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:white;fill:none;stroke-width:2"><path d="M17 16l4-4m0 0l-4-4m4 4H7"/><path d="M3 21V3"/></svg>
-          Keluar dari Akun
-        </a>
-        <div style="text-align:center;margin-top:10px;font-size:11px;color:var(--gray-300)">ESS v2.0.1 · Data dilindungi &amp; terenkripsi</div>
+        <div style="height:calc(var(--nav-h) + 24px)"></div>
       </div>
 
-      <div style="height:calc(var(--nav-h) + 20px)"></div>
+      <!-- ── TAB: PEKERJAAN ── -->
+      <div id="tab-pekerjaan" class="tab-content">
+        <div class="data-card">
+          <div class="dc-head"><span class="dc-title">Data Pekerjaan</span></div>
+
+          <div class="data-row-icon">
+            <div class="dri-icon">
+              <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+            </div>
+            <div>
+              <div class="dri-label">Jabatan</div>
+              <div class="dri-val">Staff PKWT — HC Comben</div>
+            </div>
+          </div>
+
+          <div class="data-row-icon">
+            <div class="dri-icon">
+              <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <div>
+              <div class="dri-label">Cabang / Unit Kerja</div>
+              <div class="dri-val">Jakarta Pusat · Human Capital</div>
+            </div>
+          </div>
+
+          <div class="data-row-icon">
+            <div class="dri-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <div class="dri-label">Bergabung · Lama Kerja</div>
+              <div class="dri-val">15 Februari 2024 · 2 Thn 4 Bln</div>
+            </div>
+          </div>
+
+          <div class="data-row-icon">
+            <div class="dri-icon">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div>
+              <div class="dri-label">Atasan Langsung</div>
+              <div class="dri-val">Budi Santoso</div>
+            </div>
+          </div>
+
+          <div class="data-row-icon">
+            <div class="dri-icon" style="background:#FEF9C3">
+              <svg viewBox="0 0 24 24" style="stroke:#CA8A04"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0112 2a8 8 0 018 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <div class="dri-label">Status</div>
+              <div class="dri-val"><span style="background:#DCFCE7;color:#15803D;border-radius:20px;padding:2px 10px;font-size:12px;font-weight:700">Aktif · PKWT</span></div>
+            </div>
+          </div>
+
+          <div class="data-row-icon">
+            <div class="dri-icon" style="background:#EEF4FF">
+              <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div>
+              <div class="dri-label">Saldo Cuti</div>
+              <div class="dri-val" style="color:#15803D;font-weight:800;font-size:15px">12 Hari</div>
+            </div>
+          </div>
+        </div>
+        <div style="height:calc(var(--nav-h) + 24px)"></div>
+      </div>
+
+      <!-- ── TAB: KONTAK DARURAT ── -->
+      <div id="tab-kontak-darurat" class="tab-content">
+
+        <!-- Kontak 1 — Aktif & Terverifikasi -->
+        <div class="kontak-card">
+          <div class="kk-head">
+            <div class="kk-name">Sari Pratama</div>
+            <span class="kk-status-ok">Aktif</span>
+          </div>
+          <div class="kk-rows">
+            <div class="kk-row">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span>Hubungan:</span> Istri
+            </div>
+            <div class="kk-row">
+              <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.69A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.98 7.06l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+              <span>Nomor:</span> +62 813-9876-5432
+            </div>
+            <div class="kk-row">
+              <svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0112 2a8 8 0 018 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span>Alamat:</span> Jl. Raya Kebayoran No. 5, Jakarta Selatan
+            </div>
+          </div>
+        </div>
+
+        <!-- Kontak 2 — Belum Diverifikasi -->
+        <div class="kontak-card">
+          <div class="kk-head">
+            <div class="kk-name">Hendra Pratama</div>
+            <span class="kk-status-warn">Belum Diverifikasi</span>
+          </div>
+          <div class="kk-rows">
+            <div class="kk-row">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span>Hubungan:</span> Ayah
+            </div>
+            <div class="kk-row">
+              <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.69A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.98 7.06l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+              <span>Nomor:</span> +62 822-1234-5678
+            </div>
+            <div class="kk-row">
+              <svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0112 2a8 8 0 018 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span>Alamat:</span> Jl. Dago No. 12, Bandung
+            </div>
+          </div>
+        </div>
+
+        <!-- Kontak 3 — Tidak Aktif -->
+        <div class="kontak-card" style="opacity:.7">
+          <div class="kk-head">
+            <div class="kk-name">Dewi Pratama</div>
+            <span class="kk-status-off">Tidak Aktif</span>
+          </div>
+          <div class="kk-rows">
+            <div class="kk-row">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span>Hubungan:</span> Ibu
+            </div>
+            <div class="kk-row">
+              <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.69A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.98 7.06l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+              <span>Nomor:</span> +62 811-9999-0000
+            </div>
+          </div>
+        </div>
+
+        <!-- Status Legend -->
+        <div class="status-legend">
+          <div class="sl-title">Keterangan Status</div>
+          <div class="sl-item"><div class="sl-dot-ok"></div> <strong>Aktif</strong> — Kontak telah diverifikasi dan valid</div>
+          <div class="sl-item"><div class="sl-dot-warn"></div> <strong>Belum Diverifikasi</strong> — Menunggu validasi HC</div>
+          <div class="sl-item"><div class="sl-dot-off"></div> <strong>Tidak Aktif</strong> — Nomor tidak dapat dihubungi</div>
+        </div>
+
+        <div style="padding:0 16px 16px">
+          <button class="btn-logout" style="background:#EEF4FF;color:#1D6FF3;border-color:#BFDBFE" onclick="alert('Fitur tambah kontak darurat.')">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Tambah Kontak Darurat
+          </button>
+        </div>
+
+        <div style="height:calc(var(--nav-h) + 24px)"></div>
+      </div>
+
+      <!-- ── TAB: ASET ── -->
+      <div id="tab-aset" class="tab-content">
+        <div class="data-card">
+          <div class="dc-head"><span class="dc-title">Aset Saya</span></div>
+          <div style="padding:20px 16px;text-align:center">
+            <div style="width:52px;height:52px;background:#F4F6F9;border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
+              <svg viewBox="0 0 24 24" style="width:24px;height:24px;stroke:#9CA3AF;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <div style="font-size:13px;font-weight:600;color:#374151;margin-bottom:4px">Belum ada aset tercatat</div>
+            <div style="font-size:12px;color:#9CA3AF">Aset yang dipinjamkan perusahaan akan muncul di sini</div>
+          </div>
+        </div>
+        <div style="height:calc(var(--nav-h) + 24px)"></div>
+      </div>
+
+      <!-- ── TAB: LAINNYA ── -->
+      <div id="tab-lainnya" class="tab-content">
+        <div class="menu-list-card">
+          <a class="menu-row" href="#" onclick="alert('Ganti Password')">
+            <div class="mr-icon" style="background:#FEF2F2">
+              <svg viewBox="0 0 24 24" style="stroke:#DC2626"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            </div>
+            <span class="mr-label">Ganti Password</span>
+            <div class="mr-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </a>
+          <a class="menu-row" href="#">
+            <div class="mr-icon" style="background:#F0FDF4">
+              <svg viewBox="0 0 24 24" style="stroke:#16A34A"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+            </div>
+            <span class="mr-label">Bahasa</span>
+            <span class="mr-val">Indonesia</span>
+            <div class="mr-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </a>
+          <a class="menu-row" href="#">
+            <div class="mr-icon" style="background:#EEF4FF">
+              <svg viewBox="0 0 24 24" style="stroke:#1D6FF3"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <span class="mr-label">Versi Aplikasi</span>
+            <span class="mr-val">v2.1.0</span>
+          </a>
+          <a class="menu-row" href="#">
+            <div class="mr-icon" style="background:#F9FAFB">
+              <svg viewBox="0 0 24 24" style="stroke:#374151"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <span class="mr-label">Kebijakan Privasi</span>
+            <div class="mr-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </a>
+        </div>
+
+        <div style="padding:0 16px 16px">
+          <a href="index.html" class="btn-logout" onclick="return confirm('Yakin ingin keluar dari akun?')">
+            <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Keluar dari Akun
+          </a>
+          <div style="text-align:center;margin-top:10px;font-size:11px;color:#9CA3AF">ESS v2.1.0 · Data dilindungi &amp; terenkripsi</div>
+        </div>
+
+        <div style="height:calc(var(--nav-h) + 24px)"></div>
+      </div>
+
     </div>
   </div>
 
+  <!-- ── BOTTOM NAV 3 TAB ── -->
   <nav class="bottom-nav">
-    <a href="home.html" class="nav-item"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/><path d="M3 12v9h18V12"/></svg></div><span class="nav-label">Beranda</span></a>
-    <a href="kehadiran.html" class="nav-item"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><span class="nav-label">Kehadiran</span></a>
-    <a href="izin-cuti.html" class="nav-item"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span class="nav-badge">1</span></div><span class="nav-label">Izin &amp; Cuti</span></a>
-    <a href="loan.html" class="nav-item"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><span class="nav-label">Pinjaman</span></a>
-    <a href="profil.html" class="nav-item active"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span class="nav-label">Profil</span></a>
+    <a href="home.html" class="nav-item">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      </div>
+      <span class="nav-label">Beranda</span>
+    </a>
+    <a href="notifikasi.html" class="nav-item">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 01-3.46 0"/>
+        </svg>
+        <span class="nav-badge">3</span>
+      </div>
+      <span class="nav-label">Notifikasi</span>
+    </a>
+    <a href="profil.html" class="nav-item active">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      <span class="nav-label">Profil</span>
+    </a>
   </nav>
+
 </div>
 <script src="js/app.js"></script>
+<script>
+  function switchTab(tabId, btn) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.htab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tabId).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
 </body>
 </html>

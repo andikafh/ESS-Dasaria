@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laporan — Branch Leader</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height:100%; font-family:'Inter',-apple-system,sans-serif; font-size:14px; color:#101828; background:#F5F7FA; -webkit-font-smoothing:antialiased; }
+    a { text-decoration:none; color:inherit; }
+    button { font-family:inherit; cursor:pointer; border:none; background:none; }
+    .mgmt-layout { display:flex; height:100vh; overflow:hidden; }
+
+    /* SIDEBAR */
+    .sidebar { width:230px; flex-shrink:0; background:#0D1B3E; height:100vh; display:flex; flex-direction:column; overflow-y:auto; }
+    .sidebar::-webkit-scrollbar { width:3px; }
+    .sidebar::-webkit-scrollbar-thumb { background:rgba(255,255,255,.1); border-radius:2px; }
+    .sb-logo { display:flex; align-items:center; gap:10px; padding:22px 18px 16px; color:white; font-size:14px; font-weight:800; letter-spacing:-.3px; border-bottom:1px solid rgba(255,255,255,.07); }
+    .sb-logo svg { width:22px; height:22px; stroke:white; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-nav { padding:10px 10px; flex:1; }
+    .sb-item { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; transition:all .15s; cursor:pointer; position:relative; text-decoration:none; margin-bottom:1px; }
+    .sb-item:hover { background:rgba(255,255,255,.07); color:rgba(255,255,255,.9); }
+    .sb-item.active { background:rgba(29,111,243,.28); color:white; font-weight:700; }
+    .sb-item svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-badge { margin-left:auto; background:#F04438; color:white; font-size:9px; font-weight:800; min-width:17px; height:17px; border-radius:9px; display:flex; align-items:center; justify-content:center; padding:0 4px; }
+    .sb-connect { padding:6px 10px 20px; border-top:1px solid rgba(255,255,255,.07); margin-top:auto; }
+    .sb-connect-label { font-size:10px; font-weight:700; color:rgba(255,255,255,.3); text-transform:uppercase; letter-spacing:.8px; padding:10px 10px 6px; }
+    .sb-connect-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.5); font-size:12px; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
+    .sb-connect-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.85); }
+    .sb-connect-item svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-connect-sub { font-size:10px; color:rgba(255,255,255,.25); margin-left:auto; }
+
+    /* MAIN */
+    .main-content { flex:1; height:100vh; overflow-y:auto; background:#F5F7FA; }
+    .topbar { background:white; height:62px; display:flex; align-items:center; justify-content:space-between; padding:0 28px; border-bottom:1px solid #EAECF0; position:sticky; top:0; z-index:20; }
+    .topbar-left { display:flex; align-items:center; gap:14px; }
+    .topbar-btn { width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:8px; color:#667085; }
+    .topbar-btn svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; }
+    .page-title { font-size:16px; font-weight:700; color:#101828; line-height:1.1; }
+    .page-sub { font-size:12px; color:#667085; }
+    .topbar-right { display:flex; align-items:center; gap:14px; }
+    .topbar-date { font-size:12px; color:#667085; display:flex; align-items:center; gap:5px; }
+    .topbar-date svg { width:14px; height:14px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .user-chip { display:flex; align-items:center; gap:9px; padding:6px 10px; border-radius:10px; cursor:pointer; }
+    .user-chip:hover { background:#F5F7FA; }
+    .user-av { width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,#1D6FF3,#1558C8); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:white; flex-shrink:0; }
+    .user-name { font-size:13px; font-weight:700; color:#101828; }
+    .user-role { font-size:11px; color:#98A2B3; display:flex; align-items:center; gap:3px; }
+    .user-role svg { width:12px; height:12px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    .content-area { padding:22px 28px 32px; }
+
+    /* PERIOD SELECTOR */
+    .period-bar { display:flex; align-items:center; gap:10px; margin-bottom:18px; }
+    .period-btn { padding:7px 16px; border:1px solid #EAECF0; border-radius:8px; background:white; font-size:13px; font-weight:600; color:#344054; cursor:pointer; transition:all .15s; }
+    .period-btn.active { background:#1D6FF3; color:white; border-color:#1D6FF3; }
+    .period-btn:not(.active):hover { background:#F9FAFB; }
+    .period-label { font-size:13px; font-weight:700; color:#101828; margin-left:auto; }
+    .btn-export { display:flex; align-items:center; gap:6px; padding:7px 14px; border:1px solid #EAECF0; border-radius:8px; background:white; font-size:13px; font-weight:600; color:#344054; cursor:pointer; }
+    .btn-export svg { width:15px; height:15px; stroke:#667085; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .btn-export:hover { background:#F9FAFB; }
+
+    /* REPORT GRID */
+    .report-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+
+    .r-card { background:white; border:1px solid #EAECF0; border-radius:12px; overflow:hidden; }
+    .r-head { padding:13px 18px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #F2F4F7; }
+    .r-title { font-size:13px; font-weight:700; color:#101828; display:flex; align-items:center; gap:7px; }
+    .r-title svg { width:15px; height:15px; stroke:#667085; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .r-link { font-size:12px; font-weight:600; color:#1D6FF3; cursor:pointer; }
+    .r-body { padding:16px 18px; }
+
+    /* BAR CHART (CSS) */
+    .bar-chart { display:flex; align-items:flex-end; gap:8px; height:110px; }
+    .bar-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; }
+    .bar { width:100%; border-radius:5px 5px 0 0; background:#EFF6FF; position:relative; cursor:pointer; transition:background .15s; }
+    .bar:hover { background:#1D6FF3; }
+    .bar.filled { background:#1D6FF3; }
+    .bar.current { background:#0D3A8C; }
+    .bar-lbl { font-size:10px; color:#98A2B3; }
+    .bar-val { font-size:10px; font-weight:800; color:#344054; }
+
+    /* STATS ROW */
+    .stats-row { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .stat-box { text-align:center; padding:10px 6px; border-radius:9px; background:#F9FAFB; }
+    .stat-val { font-size:22px; font-weight:800; color:#101828; }
+    .stat-lbl { font-size:10px; color:#667085; margin-top:2px; }
+    .stat-d   { font-size:10px; font-weight:600; margin-top:2px; }
+    .stat-d.pos { color:#027A48; }
+    .stat-d.neg { color:#B42318; }
+
+    /* LIST REPORT */
+    .r-list { display:flex; flex-direction:column; gap:0; }
+    .r-row { display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid #F9FAFB; }
+    .r-row:last-child { border-bottom:none; }
+    .r-rank { width:22px; text-align:center; font-size:11px; font-weight:800; color:#98A2B3; }
+    .r-av { width:28px; height:28px; border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:800; color:white; flex-shrink:0; }
+    .r-info { flex:1; }
+    .r-name { font-size:12px; font-weight:700; color:#101828; }
+    .r-sub { font-size:10px; color:#667085; }
+    .r-stat { font-size:13px; font-weight:800; color:#101828; }
+    .r-delta { font-size:10px; font-weight:600; }
+    .r-delta.pos { color:#027A48; }
+
+    .trend-line { display:flex; align-items:center; justify-content:space-between; margin-top:8px; }
+    .trend-item { text-align:center; }
+    .t-lbl { font-size:10px; color:#98A2B3; margin-bottom:3px; }
+    .t-val { font-size:14px; font-weight:800; color:#101828; }
+    .t-bar { width:40px; height:4px; border-radius:2px; background:#EFF6FF; overflow:hidden; margin-top:4px; }
+    .t-fill { height:100%; border-radius:2px; background:#1D6FF3; }
+  </style>
+</head>
+<body>
+<div class="mgmt-layout">
+
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+      DASARATA
+    </div>
+    <nav class="sb-nav">
+      <a href="dashboard.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="tim.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Tim Saya
+      </a>
+      <a href="approval.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Approval
+        <span class="sb-badge">2</span>
+      </a>
+      <a href="learning.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        Learning
+      </a>
+      <a href="laporan.html" class="sb-item active">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Laporan
+      </a>
+    </nav>
+    <div class="sb-connect">
+      <div class="sb-connect-label">Connect</div>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>CRM<span class="sb-connect-sub">Sistem CRM</span></a>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>ERP<span class="sb-connect-sub">ERP Operasional</span></a>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>NOC<span class="sb-connect-sub">Monitoring NOC</span></a>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Ticketing<span class="sb-connect-sub">Sistem Ticket</span></a>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>Maps<span class="sb-connect-sub">Google Maps</span></a>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="topbar-btn"><svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <div class="topbar-titles">
+          <div class="page-title">Laporan</div>
+          <div class="page-sub">Cabang Karangploso</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-date">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Jumat, 12 Juni 2026
+        </div>
+        <div class="user-chip">
+          <div class="user-av">BS</div>
+          <div>
+            <div class="user-name">Budi Santoso</div>
+            <div class="user-role">Branch Leader <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="content-area">
+
+      <!-- PERIOD BAR -->
+      <div class="period-bar">
+        <button class="period-btn">Mingguan</button>
+        <button class="period-btn active">Bulanan</button>
+        <button class="period-btn">Kuartal</button>
+        <span class="period-label">Juni 2026</span>
+        <button class="btn-export">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export
+        </button>
+      </div>
+
+      <div class="report-grid">
+
+        <!-- Instalasi Tren -->
+        <div class="r-card">
+          <div class="r-head">
+            <div class="r-title">
+              <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
+              Tren Instalasi (6 Bulan)
+            </div>
+            <a class="r-link">Detail ›</a>
+          </div>
+          <div class="r-body">
+            <div class="stats-row" style="margin-bottom:14px;">
+              <div class="stat-box">
+                <div class="stat-val">9</div>
+                <div class="stat-lbl">Closing Juni</div>
+                <div class="stat-d pos">▲ +2 vs Mei</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-val">54</div>
+                <div class="stat-lbl">Total YTD</div>
+                <div class="stat-d pos">▲ +12%</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-val">9.0</div>
+                <div class="stat-lbl">Rata-rata/Bln</div>
+                <div class="stat-d pos">▲ +1.2</div>
+              </div>
+            </div>
+            <div class="bar-chart">
+              <div class="bar-col">
+                <div class="bar-val">6</div>
+                <div class="bar filled" style="height:46%;"></div>
+                <div class="bar-lbl">Jan</div>
+              </div>
+              <div class="bar-col">
+                <div class="bar-val">8</div>
+                <div class="bar filled" style="height:61%;"></div>
+                <div class="bar-lbl">Feb</div>
+              </div>
+              <div class="bar-col">
+                <div class="bar-val">9</div>
+                <div class="bar filled" style="height:69%;"></div>
+                <div class="bar-lbl">Mar</div>
+              </div>
+              <div class="bar-col">
+                <div class="bar-val">11</div>
+                <div class="bar filled" style="height:84%;"></div>
+                <div class="bar-lbl">Apr</div>
+              </div>
+              <div class="bar-col">
+                <div class="bar-val">7</div>
+                <div class="bar filled" style="height:54%;"></div>
+                <div class="bar-lbl">Mei</div>
+              </div>
+              <div class="bar-col">
+                <div class="bar-val">9</div>
+                <div class="bar current" style="height:69%;"></div>
+                <div class="bar-lbl">Jun</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Customer Aktif -->
+        <div class="r-card">
+          <div class="r-head">
+            <div class="r-title">
+              <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              Pertumbuhan Customer
+            </div>
+            <a class="r-link">Detail ›</a>
+          </div>
+          <div class="r-body">
+            <div class="stats-row" style="margin-bottom:14px;">
+              <div class="stat-box">
+                <div class="stat-val">4.285</div>
+                <div class="stat-lbl">Customer Aktif</div>
+                <div class="stat-d pos">▲ +85 bln ini</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-val">12</div>
+                <div class="stat-lbl">Churn</div>
+                <div class="stat-d neg">▼ 0.28%</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-val">97</div>
+                <div class="stat-lbl">Retensi %</div>
+                <div class="stat-d pos">▲ Baik</div>
+              </div>
+            </div>
+            <div class="trend-line">
+              <div class="trend-item">
+                <div class="t-lbl">Jan</div>
+                <div class="t-val">3.840</div>
+                <div class="t-bar"><div class="t-fill" style="width:75%;"></div></div>
+              </div>
+              <div class="trend-item">
+                <div class="t-lbl">Feb</div>
+                <div class="t-val">3.930</div>
+                <div class="t-bar"><div class="t-fill" style="width:77%;"></div></div>
+              </div>
+              <div class="trend-item">
+                <div class="t-lbl">Mar</div>
+                <div class="t-val">4.050</div>
+                <div class="t-bar"><div class="t-fill" style="width:80%;"></div></div>
+              </div>
+              <div class="trend-item">
+                <div class="t-lbl">Apr</div>
+                <div class="t-val">4.130</div>
+                <div class="t-bar"><div class="t-fill" style="width:82%;"></div></div>
+              </div>
+              <div class="trend-item">
+                <div class="t-lbl">Mei</div>
+                <div class="t-val">4.200</div>
+                <div class="t-bar"><div class="t-fill" style="width:85%;"></div></div>
+              </div>
+              <div class="trend-item">
+                <div class="t-lbl">Jun</div>
+                <div class="t-val">4.285</div>
+                <div class="t-bar"><div class="t-fill" style="width:100%;"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top AE -->
+        <div class="r-card">
+          <div class="r-head">
+            <div class="r-title">
+              <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              Top AE — Closing Bulan Ini
+            </div>
+          </div>
+          <div class="r-body">
+            <div class="r-list">
+              <div class="r-row">
+                <div class="r-rank">1</div>
+                <div class="r-av" style="background:linear-gradient(135deg,#7F56D9,#5925DC);">DS</div>
+                <div class="r-info"><div class="r-name">Dian Safira</div><div class="r-sub">22 WP aktif</div></div>
+                <div style="text-align:right;"><div class="r-stat">4</div><div class="r-delta pos">closing</div></div>
+              </div>
+              <div class="r-row">
+                <div class="r-rank">2</div>
+                <div class="r-av" style="background:linear-gradient(135deg,#1D6FF3,#1558C8);">AR</div>
+                <div class="r-info"><div class="r-name">Andi Ramadan</div><div class="r-sub">18 WP aktif</div></div>
+                <div style="text-align:right;"><div class="r-stat">3</div><div class="r-delta pos">closing</div></div>
+              </div>
+              <div class="r-row">
+                <div class="r-rank">3</div>
+                <div class="r-av" style="background:linear-gradient(135deg,#12B76A,#027A48);">NF</div>
+                <div class="r-info"><div class="r-name">Nova Fitriani</div><div class="r-sub">11 WP aktif</div></div>
+                <div style="text-align:right;"><div class="r-stat">2</div><div class="r-delta pos">closing</div></div>
+              </div>
+              <div class="r-row">
+                <div class="r-rank">4</div>
+                <div class="r-av" style="background:linear-gradient(135deg,#667085,#344054);">SR</div>
+                <div class="r-info"><div class="r-name">Siti Rahayu</div><div class="r-sub">14 WP aktif</div></div>
+                <div style="text-align:right;"><div class="r-stat">0</div><div class="r-delta" style="color:#98A2B3;">closing</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kehadiran Summary -->
+        <div class="r-card">
+          <div class="r-head">
+            <div class="r-title">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              Ringkasan Kehadiran Juni
+            </div>
+            <a class="r-link">Detail ›</a>
+          </div>
+          <div class="r-body">
+            <div class="stats-row">
+              <div class="stat-box">
+                <div class="stat-val">96%</div>
+                <div class="stat-lbl">Tingkat Kehadiran</div>
+                <div class="stat-d pos">▲ Baik</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-val">4</div>
+                <div class="stat-lbl">Total Izin</div>
+                <div class="stat-d" style="color:#98A2B3;">hari kerja</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-val">1</div>
+                <div class="stat-lbl">Total Sakit</div>
+                <div class="stat-d" style="color:#98A2B3;">hari kerja</div>
+              </div>
+            </div>
+            <div style="margin-top:14px;padding:12px;background:#F9FAFB;border-radius:8px;">
+              <div style="font-size:12px;font-weight:700;color:#344054;margin-bottom:6px;">Check-In Hari Ini</div>
+              <div style="display:flex;gap:16px;font-size:12px;">
+                <span style="color:#027A48;font-weight:700;">✓ 16 Hadir</span>
+                <span style="color:#B54708;font-weight:700;">⏰ 1 Izin</span>
+                <span style="color:#B42318;font-weight:700;">⚠ 2 Belum</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /report-grid -->
+    </div>
+  </main>
+</div>
+
+<script>
+document.querySelectorAll('.period-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learning & Adaptasi AE — Branch Leader</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height:100%; font-family:'Inter',-apple-system,sans-serif; font-size:14px; color:#101828; background:#F5F7FA; -webkit-font-smoothing:antialiased; }
+    a { text-decoration:none; color:inherit; }
+    button { font-family:inherit; cursor:pointer; border:none; background:none; }
+    .mgmt-layout { display:flex; height:100vh; overflow:hidden; }
+
+    /* SIDEBAR */
+    .sidebar { width:230px; flex-shrink:0; background:#0D1B3E; height:100vh; display:flex; flex-direction:column; overflow-y:auto; }
+    .sidebar::-webkit-scrollbar { width:3px; }
+    .sidebar::-webkit-scrollbar-thumb { background:rgba(255,255,255,.1); border-radius:2px; }
+    .sb-logo { display:flex; align-items:center; gap:10px; padding:22px 18px 16px; color:white; font-size:14px; font-weight:800; letter-spacing:-.3px; border-bottom:1px solid rgba(255,255,255,.07); }
+    .sb-logo svg { width:22px; height:22px; stroke:white; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-nav { padding:10px 10px; flex:1; }
+    .sb-item { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; transition:all .15s; cursor:pointer; position:relative; text-decoration:none; margin-bottom:1px; }
+    .sb-item:hover { background:rgba(255,255,255,.07); color:rgba(255,255,255,.9); }
+    .sb-item.active { background:rgba(29,111,243,.28); color:white; font-weight:700; }
+    .sb-item svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-badge { margin-left:auto; background:#F04438; color:white; font-size:9px; font-weight:800; min-width:17px; height:17px; border-radius:9px; display:flex; align-items:center; justify-content:center; padding:0 4px; }
+    .sb-connect { padding:6px 10px 20px; border-top:1px solid rgba(255,255,255,.07); margin-top:auto; }
+    .sb-connect-label { font-size:10px; font-weight:700; color:rgba(255,255,255,.3); text-transform:uppercase; letter-spacing:.8px; padding:10px 10px 6px; }
+    .sb-connect-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.5); font-size:12px; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
+    .sb-connect-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.85); }
+    .sb-connect-item svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-connect-sub { font-size:10px; color:rgba(255,255,255,.25); margin-left:auto; }
+
+    /* MAIN */
+    .main-content { flex:1; height:100vh; overflow-y:auto; background:#F5F7FA; }
+    .topbar { background:white; height:62px; display:flex; align-items:center; justify-content:space-between; padding:0 28px; border-bottom:1px solid #EAECF0; position:sticky; top:0; z-index:20; }
+    .topbar-left { display:flex; align-items:center; gap:14px; }
+    .topbar-btn { width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:8px; color:#667085; }
+    .topbar-btn svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; }
+    .page-title { font-size:16px; font-weight:700; color:#101828; line-height:1.1; }
+    .page-sub { font-size:12px; color:#667085; }
+    .topbar-right { display:flex; align-items:center; gap:14px; }
+    .topbar-date { font-size:12px; color:#667085; display:flex; align-items:center; gap:5px; }
+    .topbar-date svg { width:14px; height:14px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .user-chip { display:flex; align-items:center; gap:9px; padding:6px 10px; border-radius:10px; cursor:pointer; }
+    .user-chip:hover { background:#F5F7FA; }
+    .user-av { width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,#1D6FF3,#1558C8); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:white; flex-shrink:0; }
+    .user-name { font-size:13px; font-weight:700; color:#101828; }
+    .user-role { font-size:11px; color:#98A2B3; display:flex; align-items:center; gap:3px; }
+    .user-role svg { width:12px; height:12px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    .content-area { padding:22px 28px 32px; }
+
+    /* PHASE SUMMARY */
+    .phase-strip { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:18px; }
+    .ph-card { background:white; border:1px solid #EAECF0; border-radius:12px; padding:18px 20px; text-align:center; }
+    .ph-num { font-size:40px; font-weight:800; letter-spacing:-2px; line-height:1; margin-bottom:4px; }
+    .ph-lbl { font-size:13px; font-weight:700; margin-bottom:4px; }
+    .ph-desc { font-size:11px; color:#98A2B3; }
+    .ph-card.blue .ph-num, .ph-card.blue .ph-lbl { color:#1D6FF3; }
+    .ph-card.blue { border-top:3px solid #1D6FF3; }
+    .ph-card.orange .ph-num, .ph-card.orange .ph-lbl { color:#B54708; }
+    .ph-card.orange { border-top:3px solid #F79009; }
+    .ph-card.green .ph-num, .ph-card.green .ph-lbl { color:#027A48; }
+    .ph-card.green { border-top:3px solid #12B76A; }
+
+    /* AE ADAPTASI LIST */
+    .ae-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+    .ae-card { background:white; border:1px solid #EAECF0; border-radius:12px; padding:16px; }
+    .ae-head { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+    .ae-av { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; color:white; flex-shrink:0; }
+    .ae-name { font-size:14px; font-weight:700; color:#101828; }
+    .ae-pos { font-size:11px; color:#667085; }
+    .ae-phase { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; margin-left:auto; }
+    .ae-phase.training { background:#EFF6FF; color:#1558C8; }
+    .ae-phase.adaptasi { background:#FFFAEB; color:#B54708; }
+    .ae-phase.certified { background:#ECFDF3; color:#027A48; }
+    .progress-section { margin-bottom:10px; }
+    .prog-label { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; }
+    .prog-title { font-size:12px; color:#344054; font-weight:600; }
+    .prog-pct { font-size:12px; font-weight:800; color:#101828; }
+    .prog-bar { width:100%; height:7px; border-radius:4px; background:#F2F4F7; overflow:hidden; }
+    .prog-fill { height:100%; border-radius:4px; }
+    .prog-fill.blue { background:#1D6FF3; }
+    .prog-fill.orange { background:#F79009; }
+    .prog-fill.green { background:#12B76A; }
+    .ae-milestones { display:flex; flex-direction:column; gap:5px; margin-top:12px; border-top:1px solid #F9FAFB; padding-top:10px; }
+    .milestone { display:flex; align-items:center; gap:8px; font-size:11px; }
+    .ms-check { width:16px; height:16px; border-radius:4px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .ms-check.done { background:#ECFDF3; }
+    .ms-check.done svg { stroke:#027A48; }
+    .ms-check.todo { background:#F2F4F7; }
+    .ms-check.todo svg { stroke:#98A2B3; }
+    .ms-check svg { width:10px; height:10px; fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+    .ms-text { color:#344054; }
+    .ms-text.done { color:#667085; }
+    .ae-footer { margin-top:12px; display:flex; align-items:center; justify-content:space-between; }
+    .ae-days { font-size:11px; color:#98A2B3; }
+    .btn-sm { font-size:11px; font-weight:700; color:#1D6FF3; cursor:pointer; }
+  </style>
+</head>
+<body>
+<div class="mgmt-layout">
+
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+      DASARATA
+    </div>
+    <nav class="sb-nav">
+      <a href="dashboard.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="tim.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Tim Saya
+      </a>
+      <a href="approval.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Approval
+        <span class="sb-badge">2</span>
+      </a>
+      <a href="learning.html" class="sb-item active">
+        <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        Learning
+      </a>
+      <a href="laporan.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Laporan
+      </a>
+    </nav>
+    <div class="sb-connect">
+      <div class="sb-connect-label">Connect</div>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>CRM<span class="sb-connect-sub">Sistem CRM</span></a>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>ERP<span class="sb-connect-sub">ERP Operasional</span></a>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>NOC<span class="sb-connect-sub">Monitoring NOC</span></a>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Ticketing<span class="sb-connect-sub">Sistem Ticket</span></a>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>Maps<span class="sb-connect-sub">Google Maps</span></a>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="topbar-btn"><svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <div class="topbar-titles">
+          <div class="page-title">Learning & Adaptasi AE</div>
+          <div class="page-sub">Cabang Karangploso · 12 AE Total</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-date">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Jumat, 12 Juni 2026
+        </div>
+        <div class="user-chip">
+          <div class="user-av">BS</div>
+          <div>
+            <div class="user-name">Budi Santoso</div>
+            <div class="user-role">Branch Leader <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="content-area">
+
+      <!-- PHASE SUMMARY -->
+      <div class="phase-strip">
+        <div class="ph-card blue">
+          <div class="ph-num">4</div>
+          <div class="ph-lbl">Training</div>
+          <div class="ph-desc">Dalam proses training dasar</div>
+        </div>
+        <div class="ph-card orange">
+          <div class="ph-num">2</div>
+          <div class="ph-lbl">Adaptasi</div>
+          <div class="ph-desc">On Field dengan pendampingan</div>
+        </div>
+        <div class="ph-card green">
+          <div class="ph-num">8</div>
+          <div class="ph-lbl">Certified</div>
+          <div class="ph-desc">Lulus & mandiri di lapangan</div>
+        </div>
+      </div>
+
+      <!-- AE CARDS GRID -->
+      <div class="ae-grid">
+
+        <!-- AE: Training 1 -->
+        <div class="ae-card">
+          <div class="ae-head">
+            <div class="ae-av" style="background:linear-gradient(135deg,#F04438,#B42318);">BW</div>
+            <div>
+              <div class="ae-name">Bima Wicaksono</div>
+              <div class="ae-pos">Account Executive · AE-00112</div>
+            </div>
+            <div class="ae-phase training">Training</div>
+          </div>
+          <div class="progress-section">
+            <div class="prog-label"><span class="prog-title">Progress Training</span><span class="prog-pct">40%</span></div>
+            <div class="prog-bar"><div class="prog-fill blue" style="width:40%;"></div></div>
+          </div>
+          <div class="ae-milestones">
+            <div class="milestone">
+              <div class="ms-check done"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <span class="ms-text done">Orientasi & Regulasi</span>
+            </div>
+            <div class="milestone">
+              <div class="ms-check done"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <span class="ms-text done">Produk & Harga</span>
+            </div>
+            <div class="milestone">
+              <div class="ms-check todo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/></svg></div>
+              <span class="ms-text">Teknik Penjualan</span>
+            </div>
+            <div class="milestone">
+              <div class="ms-check todo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/></svg></div>
+              <span class="ms-text">Ujian & Sertifikasi</span>
+            </div>
+          </div>
+          <div class="ae-footer">
+            <span class="ae-days">Mulai: 2 Jun 2026 · Hari ke-10</span>
+            <span class="btn-sm">Lihat Detail ›</span>
+          </div>
+        </div>
+
+        <!-- AE: Training 2 -->
+        <div class="ae-card">
+          <div class="ae-head">
+            <div class="ae-av" style="background:linear-gradient(135deg,#7F56D9,#5925DC);">MA</div>
+            <div>
+              <div class="ae-name">Maya Andriani</div>
+              <div class="ae-pos">Account Executive · AE-00118</div>
+            </div>
+            <div class="ae-phase training">Training</div>
+          </div>
+          <div class="progress-section">
+            <div class="prog-label"><span class="prog-title">Progress Training</span><span class="prog-pct">20%</span></div>
+            <div class="prog-bar"><div class="prog-fill blue" style="width:20%;"></div></div>
+          </div>
+          <div class="ae-milestones">
+            <div class="milestone">
+              <div class="ms-check done"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <span class="ms-text done">Orientasi & Regulasi</span>
+            </div>
+            <div class="milestone">
+              <div class="ms-check todo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/></svg></div>
+              <span class="ms-text">Produk & Harga</span>
+            </div>
+            <div class="milestone">
+              <div class="ms-check todo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/></svg></div>
+              <span class="ms-text">Teknik Penjualan</span>
+            </div>
+            <div class="milestone">
+              <div class="ms-check todo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/></svg></div>
+              <span class="ms-text">Ujian & Sertifikasi</span>
+            </div>
+          </div>
+          <div class="ae-footer">
+            <span class="ae-days">Mulai: 9 Jun 2026 · Hari ke-3</span>
+            <span class="btn-sm">Lihat Detail ›</span>
+          </div>
+        </div>
+
+        <!-- AE: Adaptasi -->
+        <div class="ae-card">
+          <div class="ae-head">
+            <div class="ae-av" style="background:linear-gradient(135deg,#F79009,#B54708);">RP</div>
+            <div>
+              <div class="ae-name">Rizal Pratama</div>
+              <div class="ae-pos">Account Executive · AE-00098</div>
+            </div>
+            <div class="ae-phase adaptasi">Adaptasi</div>
+          </div>
+          <div class="progress-section">
+            <div class="prog-label"><span class="prog-title">Target Adaptasi (30 hari)</span><span class="prog-pct">65%</span></div>
+            <div class="prog-bar"><div class="prog-fill orange" style="width:65%;"></div></div>
+          </div>
+          <div style="font-size:11px;color:#667085;margin-top:8px;display:flex;gap:16px;">
+            <span>Customer: <strong style="color:#101828;">41</strong></span>
+            <span>Target: <strong style="color:#101828;">80</strong></span>
+            <span>Pipeline: <strong style="color:#101828;">7 WP</strong></span>
+          </div>
+          <div class="ae-footer" style="margin-top:12px;">
+            <span class="ae-days">Adaptasi sejak 20 Mei 2026 · Hari ke-23</span>
+            <span class="btn-sm">Lihat Detail ›</span>
+          </div>
+        </div>
+
+        <!-- AE: Certified -->
+        <div class="ae-card">
+          <div class="ae-head">
+            <div class="ae-av" style="background:linear-gradient(135deg,#1D6FF3,#1558C8);">AR</div>
+            <div>
+              <div class="ae-name">Andi Ramadan</div>
+              <div class="ae-pos">Account Executive · AE-00071</div>
+            </div>
+            <div class="ae-phase certified">Certified</div>
+          </div>
+          <div class="progress-section">
+            <div class="prog-label"><span class="prog-title">Customer Aktif</span><span class="prog-pct">324 / target 300</span></div>
+            <div class="prog-bar"><div class="prog-fill green" style="width:100%;"></div></div>
+          </div>
+          <div style="font-size:11px;color:#667085;margin-top:8px;display:flex;gap:16px;">
+            <span>Pipeline: <strong style="color:#101828;">18 WP / 5 HP</strong></span>
+            <span>Sertifikasi: <strong style="color:#027A48;">Jun 2025</strong></span>
+          </div>
+          <div class="ae-footer" style="margin-top:12px;">
+            <span class="ae-days">12 bulan aktif di lapangan</span>
+            <span class="btn-sm">Lihat Detail ›</span>
+          </div>
+        </div>
+
+      </div><!-- /ae-grid -->
+    </div>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report &amp; Analytics — Regional Jawa Timur</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height:100%; font-family:'Inter',-apple-system,sans-serif; font-size:14px; color:#101828; background:#F5F7FA; -webkit-font-smoothing:antialiased; }
+    a { text-decoration:none; color:inherit; }
+    button { font-family:inherit; cursor:pointer; border:none; background:none; }
+
+    /* ── LAYOUT ── */
+    .mgmt-layout { display:flex; height:100vh; overflow:hidden; }
+
+    /* ── SIDEBAR ── */
+    .sidebar { width:230px; flex-shrink:0; background:#0D1B3E; height:100vh; display:flex; flex-direction:column; overflow-y:auto; overflow-x:hidden; }
+    .sidebar::-webkit-scrollbar { width:3px; }
+    .sidebar::-webkit-scrollbar-thumb { background:rgba(255,255,255,.1); border-radius:2px; }
+    .sb-logo { display:flex; align-items:center; gap:10px; padding:22px 18px 16px; color:white; font-size:14px; font-weight:800; letter-spacing:-.3px; border-bottom:1px solid rgba(255,255,255,.07); }
+    .sb-logo svg { width:22px; height:22px; stroke:white; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-nav { padding:10px 10px; flex:1; }
+    .sb-item { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; transition:all .15s; cursor:pointer; position:relative; text-decoration:none; margin-bottom:1px; }
+    .sb-item:hover { background:rgba(255,255,255,.07); color:rgba(255,255,255,.9); }
+    .sb-item.active { background:rgba(29,111,243,.28); color:white; font-weight:700; }
+    .sb-item svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-badge { margin-left:auto; background:#F04438; color:white; font-size:9px; font-weight:800; min-width:17px; height:17px; border-radius:9px; display:flex; align-items:center; justify-content:center; padding:0 4px; }
+    .sb-group { margin-bottom:1px; }
+    .sb-group-head { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; cursor:pointer; user-select:none; transition:all .15s; }
+    .sb-group-head:hover, .sb-group-head.open { color:rgba(255,255,255,.9); background:rgba(255,255,255,.05); }
+    .sb-ico { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-chev { margin-left:auto; width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; transition:transform .2s; }
+    .sb-group-head.open .sb-chev { transform:rotate(90deg); }
+    .sb-sub { padding-left:14px; overflow:hidden; max-height:0; transition:max-height .25s ease; }
+    .sb-sub.open { max-height:200px; }
+    .sb-sub-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.45); font-size:12px; font-weight:500; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
+    .sb-sub-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.8); }
+    .sb-sub-item.active { background:rgba(29,111,243,.2); color:#60A5FA; font-weight:700; }
+    .sb-sub-dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; }
+    .sb-connect { padding:6px 10px 20px; border-top:1px solid rgba(255,255,255,.07); margin-top:auto; }
+    .sb-connect-label { font-size:10px; font-weight:700; color:rgba(255,255,255,.3); text-transform:uppercase; letter-spacing:.8px; padding:10px 10px 6px; }
+    .sb-connect-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.5); font-size:12px; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
+    .sb-connect-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.85); }
+    .sb-connect-item svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-connect-sub { font-size:10px; color:rgba(255,255,255,.25); margin-left:auto; }
+
+    /* ── MAIN ── */
+    .main-content { flex:1; height:100vh; overflow-y:auto; background:#F5F7FA; }
+
+    /* ── TOPBAR ── */
+    .topbar { background:white; height:62px; flex-shrink:0; display:flex; align-items:center; justify-content:space-between; padding:0 28px; border-bottom:1px solid #EAECF0; position:sticky; top:0; z-index:20; }
+    .topbar-left { display:flex; align-items:center; gap:14px; }
+    .topbar-btn { width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:8px; color:#667085; }
+    .topbar-btn:hover { background:#F2F4F7; }
+    .topbar-btn svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; }
+    .page-title { font-size:16px; font-weight:700; color:#101828; line-height:1.1; }
+    .page-sub { font-size:12px; color:#667085; }
+    .topbar-right { display:flex; align-items:center; gap:14px; }
+    .topbar-date { font-size:12px; color:#667085; display:flex; align-items:center; gap:5px; }
+    .topbar-date svg { width:14px; height:14px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .topbar-notif { position:relative; width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:9px; border:1px solid #EAECF0; background:white; cursor:pointer; flex-shrink:0; }
+    .topbar-notif svg { width:17px; height:17px; stroke:#667085; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .notif-dot { position:absolute; top:6px; right:7px; width:8px; height:8px; background:#F04438; border-radius:50%; border:1.5px solid white; }
+    .topbar-notif:hover { background:#F9FAFB; }
+    .topbar-logout { display:flex; align-items:center; gap:6px; padding:7px 13px; border-radius:9px; background:#FEF3F2; border:1px solid #FECDCA; color:#B42318; font-size:12px; font-weight:700; cursor:pointer; text-decoration:none; transition:all .15s; flex-shrink:0; }
+    .topbar-logout:hover { background:#FEE4E2; }
+    .topbar-logout svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .user-chip { display:flex; align-items:center; gap:9px; padding:6px 10px; border-radius:10px; cursor:pointer; }
+    .user-chip:hover { background:#F5F7FA; }
+    .user-av { width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,#7C3AED,#5B21B6); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:white; flex-shrink:0; }
+    .user-name { font-size:13px; font-weight:700; color:#101828; }
+    .user-role { font-size:11px; color:#98A2B3; display:flex; align-items:center; gap:3px; }
+    .user-role svg { width:12px; height:12px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* ── CONTENT ── */
+    .content-area { padding:22px 28px 32px; }
+
+    /* ── PAGE TABS ── */
+    .pg-tabs { display:flex; gap:4px; background:white; border:1px solid #EAECF0; padding:4px; border-radius:10px; margin-bottom:18px; width:fit-content; }
+    .pg-tab { padding:7px 18px; border-radius:8px; font-size:13px; font-weight:600; color:#667085; cursor:pointer; transition:all .15s; }
+    .pg-tab.active { background:#1D6FF3; color:white; }
+    .pg-tab:not(.active):hover { background:#F9FAFB; color:#344054; }
+
+    /* ── KPI STRIP 3 ── */
+    .kpi-strip-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:18px; }
+    .kpi-strip-3b { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:18px; }
+    .kpi-strip-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:18px; }
+    .kpi-card { background:white; border-radius:12px; padding:16px 18px; border:1px solid #EAECF0; display:flex; align-items:flex-start; gap:12px; }
+    .kpi-ico { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .kpi-ico svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .kpi-ico.blue   { background:#EFF6FF; color:#1D6FF3; }
+    .kpi-ico.green  { background:#ECFDF3; color:#027A48; }
+    .kpi-ico.orange { background:#FFFAEB; color:#B54708; }
+    .kpi-ico.red    { background:#FEF3F2; color:#B42318; }
+    .kpi-ico.purple { background:#F4F3FF; color:#5925DC; }
+    .kpi-val { font-size:24px; font-weight:800; color:#101828; letter-spacing:-1px; line-height:1; margin-bottom:3px; }
+    .kpi-lbl { font-size:11px; color:#667085; }
+    .kpi-sub { font-size:11px; color:#98A2B3; margin-top:3px; }
+
+    /* ── WIDGET ── */
+    .w-card { background:white; border-radius:12px; border:1px solid #EAECF0; overflow:hidden; margin-bottom:16px; }
+    .w-head { padding:13px 18px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #F2F4F7; }
+    .w-title { font-size:13px; font-weight:700; color:#101828; display:flex; align-items:center; gap:7px; }
+    .w-title svg { width:15px; height:15px; stroke:#667085; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .w-link { font-size:12px; font-weight:600; color:#1D6FF3; cursor:pointer; }
+    .w-body { padding:0; }
+
+    /* ── DATA TABLE ── */
+    .data-table { width:100%; border-collapse:collapse; }
+    .data-table th { font-size:11px; font-weight:700; color:#667085; text-align:left; padding:9px 14px; background:#F9FAFB; border-bottom:1px solid #EAECF0; }
+    .data-table td { font-size:12px; color:#344054; padding:10px 14px; border-bottom:1px solid #F9FAFB; vertical-align:middle; }
+    .data-table tr:last-child td { border-bottom:none; }
+    .data-table tr:hover td { background:#FAFAFA; }
+    .t-name { font-weight:600; color:#101828; }
+    .row-gold td { background:#FFFBEB !important; }
+    .row-warn td { background:#FFFCF5 !important; }
+
+    /* ── BADGES ── */
+    .badge { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; }
+    .badge.green  { background:#ECFDF3; color:#027A48; }
+    .badge.orange { background:#FFFAEB; color:#B54708; }
+    .badge.red    { background:#FEF3F2; color:#B42318; }
+    .badge.blue   { background:#EFF6FF; color:#1558C8; }
+    .badge.gray   { background:#F2F4F7; color:#667085; }
+    .badge.gold   { background:#FFFBEB; color:#B54708; }
+
+    /* ── RANK NUMBER ── */
+    .rank-num { font-size:12px; font-weight:800; width:24px; height:24px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; }
+    .rank-num.gold   { background:#FFFBEB; color:#B54708; }
+    .rank-num.silver { background:#F9FAFB; color:#667085; }
+    .rank-num.bronze { background:#FEF3F2; color:#B42318; }
+    .rank-num.plain  { background:#F2F4F7; color:#344054; }
+
+    /* ── HORIZONTAL BAR CHART ── */
+    .bar-chart { padding:16px 18px; }
+    .bar-row { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+    .bar-row:last-child { margin-bottom:0; }
+    .bar-label { font-size:12px; font-weight:600; color:#344054; width:130px; flex-shrink:0; }
+    .bar-track { flex:1; height:20px; background:#F2F4F7; border-radius:6px; overflow:hidden; position:relative; }
+    .bar-fill { height:100%; border-radius:6px; display:flex; align-items:center; padding-left:8px; }
+    .bar-fill span { font-size:11px; font-weight:700; color:white; }
+    .bar-val { font-size:12px; font-weight:700; color:#344054; width:28px; text-align:right; flex-shrink:0; }
+
+    /* ── RISK SECTION ── */
+    .risk-section { background:white; border:1px solid #EAECF0; border-radius:12px; margin-bottom:14px; overflow:hidden; }
+    .risk-section-head { padding:12px 16px; font-size:13px; font-weight:700; color:#101828; border-bottom:1px solid #F2F4F7; display:flex; align-items:center; gap:8px; }
+    .risk-section-head svg { width:15px; height:15px; stroke:#667085; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* risk list cards */
+    .risk-list { padding:12px 16px; display:flex; flex-direction:column; gap:8px; }
+    .risk-card { border:1px solid #EAECF0; border-radius:9px; padding:12px 14px; display:flex; align-items:center; gap:12px; }
+    .risk-card-body { flex:1; }
+    .risk-card-title { font-size:12px; font-weight:700; color:#101828; margin-bottom:2px; }
+    .risk-card-sub { font-size:11px; color:#667085; }
+    .sev-badge { font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; flex-shrink:0; }
+    .sev-badge.high   { background:#FEF3F2; color:#B42318; }
+    .sev-badge.medium { background:#FFFAEB; color:#B54708; }
+    .sev-badge.low    { background:#F2F4F7; color:#667085; }
+
+    /* ── TREND ARROW ── */
+    .trend-up   { color:#027A48; font-weight:800; }
+    .trend-down { color:#B42318; font-weight:800; }
+
+    /* ── DASH FOOT ── */
+    .dash-foot { margin-top:20px; display:flex; align-items:center; gap:6px; font-size:12px; color:#98A2B3; }
+    .dash-foot svg { width:13px; height:13px; stroke:#98A2B3; fill:none; stroke-width:2; cursor:pointer; }
+    .dash-foot svg:hover { stroke:#1D6FF3; }
+  </style>
+</head>
+<body>
+<div class="mgmt-layout">
+
+  <!-- ══════════ SIDEBAR ══════════ -->
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+      GRIYANET
+    </div>
+    <nav class="sb-nav">
+      <a href="dashboard.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <div class="sb-group">
+        <div class="sb-group-head" id="people-head" onclick="togglePeople()">
+          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          People
+          <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="sb-sub" id="people-sub">
+          <a href="people.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Workforce Map</a>
+          <a href="people.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Workforce Capacity</a>
+          <a href="people.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Succession View</a>
+        </div>
+      </div>
+      <a href="approval.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Approval
+        <span class="sb-badge">14</span>
+      </a>
+      <a href="learning.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg>
+        Learning
+      </a>
+      <a href="laporan.html" class="sb-item active">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Report &amp; Analytics
+      </a>
+    </nav>
+
+    <div class="sb-connect">
+      <div class="sb-connect-label">Connect</div>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        ERP <span class="sb-connect-sub">ERP Operasional</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        CRM <span class="sb-connect-sub">Sistem CRM</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        NOC <span class="sb-connect-sub">Monitoring NOC</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        Ticketing <span class="sb-connect-sub">Sistem Ticket</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+        GIS <span class="sb-connect-sub">Peta Wilayah</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+        Monitoring <span class="sb-connect-sub">Network</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ══════════ MAIN CONTENT ══════════ -->
+  <main class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="topbar-btn"><svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <div>
+          <div class="page-title">Report &amp; Analytics</div>
+          <div class="page-sub">Regional Jawa Timur · 4 Region</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-date">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Jumat, 12 Juni 2026
+        </div>
+        <button class="topbar-notif">
+          <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="notif-dot"></span>
+        </button>
+        <div class="user-chip">
+          <div class="user-av">AH</div>
+          <div>
+            <div class="user-name">Agus Hermawan</div>
+            <div class="user-role">General Regional Manager <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+        </div>
+        <a href="../../../index.html" class="topbar-logout">
+          <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Keluar
+        </a>
+      </div>
+    </header>
+
+    <div class="content-area">
+
+      <!-- PAGE TABS -->
+      <div class="pg-tabs">
+        <div class="pg-tab active" onclick="switchTab('tab-perf', this)">Regional Performance</div>
+        <div class="pg-tab" onclick="switchTab('tab-workforce', this)">Workforce Analytics</div>
+        <div class="pg-tab" onclick="switchTab('tab-learning', this)">Learning Analytics</div>
+        <div class="pg-tab" onclick="switchTab('tab-risk', this)">Risk Analytics</div>
+      </div>
+
+      <!-- ══ TAB: REGIONAL PERFORMANCE ══ -->
+      <div id="tab-perf" class="tab-panel">
+        <div class="kpi-strip-3">
+          <div class="kpi-card">
+            <div class="kpi-ico gold" style="background:#FFFBEB;color:#B54708;">
+              <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            </div>
+            <div>
+              <div class="kpi-val" style="font-size:15px;letter-spacing:0;">Surabaya Barat</div>
+              <div class="kpi-lbl">Top Region</div>
+              <div class="kpi-sub">Score 91 · Rank #1</div>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-ico blue"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            <div>
+              <div class="kpi-val">52.450</div>
+              <div class="kpi-lbl">Total Customer Aktif</div>
+              <div class="kpi-sub">Lintas 4 Region</div>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-ico green"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div>
+              <div class="kpi-val">189</div>
+              <div class="kpi-lbl">Total Instalasi MTD</div>
+              <div class="kpi-sub">Jun 2026</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Region Ranking Table -->
+        <div class="w-card">
+          <div class="w-head">
+            <div class="w-title">
+              <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              Region Ranking
+            </div>
+            <a class="w-link">Export ›</a>
+          </div>
+          <div class="w-body">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Region</th>
+                  <th>HoR</th>
+                  <th>Customer Aktif</th>
+                  <th>Pipeline</th>
+                  <th>Instalasi</th>
+                  <th>Score</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="row-gold">
+                  <td><span class="rank-num gold">1</span></td>
+                  <td class="t-name">Surabaya Barat</td>
+                  <td>Indah P</td>
+                  <td>15.200</td>
+                  <td>45/12</td>
+                  <td>58</td>
+                  <td style="font-weight:800;color:#027A48;">91</td>
+                  <td><span class="badge green">Top Performer</span></td>
+                </tr>
+                <tr>
+                  <td><span class="rank-num silver">2</span></td>
+                  <td class="t-name">Sidoarjo</td>
+                  <td>Rina K</td>
+                  <td>13.800</td>
+                  <td>38/10</td>
+                  <td>52</td>
+                  <td style="font-weight:800;color:#027A48;">85</td>
+                  <td><span class="badge blue">On Track</span></td>
+                </tr>
+                <tr>
+                  <td><span class="rank-num bronze">3</span></td>
+                  <td class="t-name">Malang Raya</td>
+                  <td>Ricky M</td>
+                  <td>12.450</td>
+                  <td>32/8</td>
+                  <td>47</td>
+                  <td style="font-weight:800;color:#B54708;">78</td>
+                  <td><span class="badge blue">On Track</span></td>
+                </tr>
+                <tr class="row-warn">
+                  <td><span class="rank-num plain">4</span></td>
+                  <td class="t-name">Gresik-Lamongan</td>
+                  <td>Wahyu A</td>
+                  <td>11.000</td>
+                  <td>28/7</td>
+                  <td>32</td>
+                  <td style="font-weight:800;color:#B42318;">64</td>
+                  <td><span class="badge orange">Perlu Perhatian</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Top 5 Branch -->
+        <div class="w-card">
+          <div class="w-head">
+            <div class="w-title">
+              <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              Top 5 Branch
+            </div>
+            <a class="w-link">Lihat Semua ›</a>
+          </div>
+          <div class="w-body">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Branch</th>
+                  <th>Region</th>
+                  <th>Score</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="rank-num gold">1</span></td>
+                  <td class="t-name">Surabaya Pusat</td>
+                  <td>Surabaya Barat</td>
+                  <td style="font-weight:800;color:#027A48;">94</td>
+                  <td><span class="badge green">Top</span></td>
+                </tr>
+                <tr>
+                  <td><span class="rank-num silver">2</span></td>
+                  <td class="t-name">Sidoarjo Utara</td>
+                  <td>Sidoarjo</td>
+                  <td style="font-weight:800;color:#027A48;">90</td>
+                  <td><span class="badge green">Top</span></td>
+                </tr>
+                <tr>
+                  <td><span class="rank-num bronze">3</span></td>
+                  <td class="t-name">Karangploso</td>
+                  <td>Malang Raya</td>
+                  <td style="font-weight:800;color:#027A48;">87</td>
+                  <td><span class="badge blue">On Track</span></td>
+                </tr>
+                <tr>
+                  <td><span class="rank-num plain">4</span></td>
+                  <td class="t-name">Singosari</td>
+                  <td>Malang Raya</td>
+                  <td style="font-weight:800;color:#B54708;">83</td>
+                  <td><span class="badge blue">On Track</span></td>
+                </tr>
+                <tr>
+                  <td><span class="rank-num plain">5</span></td>
+                  <td class="t-name">Surabaya Selatan</td>
+                  <td>Surabaya Barat</td>
+                  <td style="font-weight:800;color:#B54708;">81</td>
+                  <td><span class="badge blue">On Track</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div><!-- /tab-perf -->
+
+      <!-- ══ TAB: WORKFORCE ANALYTICS ══ -->
+      <div id="tab-workforce" class="tab-panel" style="display:none;">
+        <div class="kpi-strip-3b">
+          <div class="kpi-card">
+            <div class="kpi-ico blue"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            <div><div class="kpi-val">192</div><div class="kpi-lbl">Total Headcount</div></div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-ico orange"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="18" y1="8" x2="23" y2="13"/><line x1="23" y1="8" x2="18" y2="13"/></svg></div>
+            <div><div class="kpi-val" style="color:#B54708;">3</div><div class="kpi-lbl">Turnover MTD</div></div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-ico green"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg></div>
+            <div><div class="kpi-val" style="color:#027A48;">5</div><div class="kpi-lbl">New Hire MTD</div></div>
+          </div>
+        </div>
+
+        <!-- Headcount by Region Bar Chart -->
+        <div class="w-card">
+          <div class="w-head">
+            <div class="w-title">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              Headcount by Region
+            </div>
+          </div>
+          <div class="bar-chart">
+            <div class="bar-row">
+              <div class="bar-label">Surabaya Barat</div>
+              <div class="bar-track">
+                <div class="bar-fill" style="width:100%;background:#1D6FF3;"><span>52</span></div>
+              </div>
+              <div class="bar-val">52</div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Sidoarjo</div>
+              <div class="bar-track">
+                <div class="bar-fill" style="width:92%;background:#12B76A;"><span>48</span></div>
+              </div>
+              <div class="bar-val">48</div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Malang Raya</div>
+              <div class="bar-track">
+                <div class="bar-fill" style="width:92%;background:#12B76A;"><span>48</span></div>
+              </div>
+              <div class="bar-val">48</div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Gresik-Lamongan</div>
+              <div class="bar-track">
+                <div class="bar-fill" style="width:85%;background:#F79009;"><span>44</span></div>
+              </div>
+              <div class="bar-val">44</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Turnover Trend -->
+        <div class="w-card">
+          <div class="w-head">
+            <div class="w-title">
+              <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              Turnover Trend (3 Bulan)
+            </div>
+          </div>
+          <div class="w-body">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Region</th>
+                  <th>Apr</th>
+                  <th>Mei</th>
+                  <th>Jun</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="t-name">Malang Raya</td>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>1</td>
+                  <td style="font-weight:700;">2</td>
+                </tr>
+                <tr>
+                  <td class="t-name">Surabaya Barat</td>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>0</td>
+                  <td style="font-weight:700;">1</td>
+                </tr>
+                <tr>
+                  <td class="t-name">Gresik-Lamongan</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>2</td>
+                  <td style="font-weight:700;color:#B42318;">4</td>
+                </tr>
+                <tr>
+                  <td class="t-name">Sidoarjo</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td style="font-weight:700;color:#027A48;">0</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Absenteeism -->
+        <div class="w-card">
+          <div class="w-head">
+            <div class="w-title">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              Absenteeism per Region
+            </div>
+          </div>
+          <div class="w-body">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Region</th>
+                  <th>Avg Kehadiran</th>
+                  <th>Alert</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="t-name">Malang Raya</td>
+                  <td>95%</td>
+                  <td>—</td>
+                </tr>
+                <tr>
+                  <td class="t-name">Surabaya Barat</td>
+                  <td>97%</td>
+                  <td>—</td>
+                </tr>
+                <tr class="row-warn">
+                  <td class="t-name">Gresik-Lamongan</td>
+                  <td style="color:#B54708;font-weight:700;">91%</td>
+                  <td><span class="badge orange">Perhatian</span></td>
+                </tr>
+                <tr>
+                  <td class="t-name">Sidoarjo</td>
+                  <td>96%</td>
+                  <td>—</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div><!-- /tab-workforce -->
+
+      <!-- ══ TAB: LEARNING ANALYTICS ══ -->
+      <div id="tab-learning" class="tab-panel" style="display:none;">
+        <div class="kpi-strip-4">
+          <div class="kpi-card">
+            <div class="kpi-ico blue"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+            <div><div class="kpi-val">82%</div><div class="kpi-lbl">Adaptation Success Rate</div></div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-ico green"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
+            <div><div class="kpi-val">78%</div><div class="kpi-lbl">Certification Completion</div></div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-ico orange"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+            <div><div class="kpi-val">14</div><div class="kpi-lbl">Avg Training Days</div></div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-ico red"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div>
+            <div><div class="kpi-val" style="color:#B42318;">3</div><div class="kpi-lbl">Failed Adaptation</div></div>
+          </div>
+        </div>
+
+        <!-- Per-Region Table -->
+        <div class="w-card">
+          <div class="w-head">
+            <div class="w-title">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              Learning Analytics per Region
+            </div>
+            <a class="w-link">Export ›</a>
+          </div>
+          <div class="w-body">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Region</th>
+                  <th>Adaptation Rate</th>
+                  <th>Cert Rate</th>
+                  <th>Completion</th>
+                  <th>Trend</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="t-name">Malang Raya</td>
+                  <td>85%</td>
+                  <td>72%</td>
+                  <td>78%</td>
+                  <td><span class="trend-up">↑</span></td>
+                </tr>
+                <tr>
+                  <td class="t-name">Surabaya Barat</td>
+                  <td>91%</td>
+                  <td>82%</td>
+                  <td>88%</td>
+                  <td><span class="trend-up">↑</span></td>
+                </tr>
+                <tr class="row-warn">
+                  <td class="t-name">Gresik-Lamongan</td>
+                  <td style="color:#B42318;font-weight:700;">72%</td>
+                  <td style="color:#B42318;font-weight:700;">65%</td>
+                  <td style="color:#B42318;font-weight:700;">61%</td>
+                  <td><span class="trend-down">↓</span></td>
+                </tr>
+                <tr>
+                  <td class="t-name">Sidoarjo</td>
+                  <td>88%</td>
+                  <td>79%</td>
+                  <td>85%</td>
+                  <td><span class="trend-up">↑</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div><!-- /tab-learning -->
+
+      <!-- ══ TAB: RISK ANALYTICS ══ -->
+      <div id="tab-risk" class="tab-panel" style="display:none;">
+
+        <!-- Manpower Risk -->
+        <div class="risk-section">
+          <div class="risk-section-head">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Manpower Risk
+          </div>
+          <div class="w-body">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Risk</th>
+                  <th>Region / Cabang</th>
+                  <th>Severity</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="t-name">Kekurangan 3 AE</td>
+                  <td>Gresik-Lamongan</td>
+                  <td><span class="sev-badge high">High</span></td>
+                  <td><span class="badge orange">Open</span></td>
+                  <td style="font-size:11px;color:#667085;">Rekrut / Mutasi</td>
+                </tr>
+                <tr>
+                  <td class="t-name">Kontrak Expired 2 AE</td>
+                  <td>Malang Raya</td>
+                  <td><span class="sev-badge medium">Medium</span></td>
+                  <td><span class="badge orange">Open</span></td>
+                  <td style="font-size:11px;color:#667085;">Perpanjang</td>
+                </tr>
+                <tr>
+                  <td class="t-name">Absensi Tinggi 1 AE</td>
+                  <td>Sidoarjo</td>
+                  <td><span class="sev-badge low">Low</span></td>
+                  <td><span class="badge blue">Monitor</span></td>
+                  <td style="font-size:11px;color:#667085;">—</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Operational Risk -->
+        <div class="risk-section">
+          <div class="risk-section-head">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Operational Risk
+          </div>
+          <div class="risk-list">
+            <div class="risk-card">
+              <div class="risk-card-body">
+                <div class="risk-card-title">Pipeline Overdue</div>
+                <div class="risk-card-sub">Gresik-Lamongan · 5 pending &gt;3 hari</div>
+              </div>
+              <span class="sev-badge high">High</span>
+            </div>
+            <div class="risk-card">
+              <div class="risk-card-body">
+                <div class="risk-card-title">Instalasi SLA Breach</div>
+                <div class="risk-card-sub">Surabaya Barat · 2 instalasi terlambat</div>
+              </div>
+              <span class="sev-badge medium">Medium</span>
+            </div>
+            <div class="risk-card">
+              <div class="risk-card-body">
+                <div class="risk-card-title">AE Inaktif 3+ Hari</div>
+                <div class="risk-card-sub">Malang Raya · 1 AE tanpa aktivitas</div>
+              </div>
+              <span class="sev-badge low">Low</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Learning Risk -->
+        <div class="risk-section">
+          <div class="risk-section-head">
+            <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg>
+            Learning Risk
+          </div>
+          <div class="risk-list">
+            <div class="risk-card">
+              <div class="risk-card-body">
+                <div class="risk-card-title">Adaptasi Gagal</div>
+                <div class="risk-card-sub">Gresik-Lamongan · 2 AE at risk</div>
+              </div>
+              <span class="sev-badge high">High</span>
+            </div>
+            <div class="risk-card">
+              <div class="risk-card-body">
+                <div class="risk-card-title">Sertifikasi Expired</div>
+                <div class="risk-card-sub">Malang Raya · 2 expired</div>
+              </div>
+              <span class="sev-badge medium">Medium</span>
+            </div>
+            <div class="risk-card">
+              <div class="risk-card-body">
+                <div class="risk-card-title">Completion Rendah</div>
+                <div class="risk-card-sub">Gresik-Lamongan · 61% region avg</div>
+              </div>
+              <span class="sev-badge medium">Medium</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /tab-risk -->
+
+      <!-- FOOTER -->
+      <div class="dash-foot">
+        <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        Terakhir diperbarui 2 menit yang lalu
+        <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      </div>
+
+    </div><!-- /content-area -->
+  </main>
+</div>
+
+<script>
+function togglePeople() {
+  var head = document.getElementById('people-head');
+  var sub  = document.getElementById('people-sub');
+  head.classList.toggle('open');
+  sub.classList.toggle('open');
+}
+function switchTab(id, el) {
+  document.querySelectorAll('.tab-panel').forEach(function(p){ p.style.display='none'; });
+  document.querySelectorAll('.pg-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById(id).style.display='block';
+  el.classList.add('active');
+}
+</script>
+</body>
+</html>

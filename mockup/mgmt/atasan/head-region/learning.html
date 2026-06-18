@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learning &amp; Adaptation — Region Malang Raya</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height:100%; font-family:'Inter',-apple-system,sans-serif; font-size:14px; color:#101828; background:#F5F7FA; -webkit-font-smoothing:antialiased; }
+    a { text-decoration:none; color:inherit; }
+    button { font-family:inherit; cursor:pointer; border:none; background:none; }
+
+    /* ── LAYOUT ── */
+    .mgmt-layout { display:flex; height:100vh; overflow:hidden; }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width:230px; flex-shrink:0; background:#0D1B3E;
+      height:100vh; display:flex; flex-direction:column;
+      overflow-y:auto; overflow-x:hidden;
+    }
+    .sidebar::-webkit-scrollbar { width:3px; }
+    .sidebar::-webkit-scrollbar-thumb { background:rgba(255,255,255,.1); border-radius:2px; }
+
+    .sb-logo {
+      display:flex; align-items:center; gap:10px;
+      padding:22px 18px 16px; color:white;
+      font-size:14px; font-weight:800; letter-spacing:-.3px;
+      border-bottom:1px solid rgba(255,255,255,.07);
+    }
+    .sb-logo svg { width:22px; height:22px; stroke:white; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+
+    .sb-nav { padding:10px 10px; flex:1; }
+
+    .sb-item {
+      display:flex; align-items:center; gap:10px;
+      padding:9px 10px; border-radius:8px;
+      color:rgba(255,255,255,.6); font-size:13px; font-weight:500;
+      transition:all .15s; cursor:pointer; position:relative;
+      text-decoration:none; margin-bottom:1px;
+    }
+    .sb-item:hover { background:rgba(255,255,255,.07); color:rgba(255,255,255,.9); }
+    .sb-item.active { background:rgba(29,111,243,.28); color:white; font-weight:700; }
+    .sb-item svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-badge { margin-left:auto; background:#F04438; color:white; font-size:9px; font-weight:800; min-width:17px; height:17px; border-radius:9px; display:flex; align-items:center; justify-content:center; padding:0 4px; }
+
+    /* People sub-menu */
+    .sb-group { margin-bottom:1px; }
+    .sb-group-head { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; cursor:pointer; user-select:none; transition:all .15s; }
+    .sb-group-head:hover, .sb-group-head.open { color:rgba(255,255,255,.9); background:rgba(255,255,255,.05); }
+    .sb-ico { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-chev { margin-left:auto; width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; transition:transform .2s; }
+    .sb-group-head.open .sb-chev { transform:rotate(90deg); }
+    .sb-sub { padding-left:14px; overflow:hidden; max-height:0; transition:max-height .25s ease; }
+    .sb-sub.open { max-height:200px; }
+    .sb-sub-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.45); font-size:12px; font-weight:500; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
+    .sb-sub-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.8); }
+    .sb-sub-item.active { background:rgba(29,111,243,.2); color:#60A5FA; font-weight:700; }
+    .sb-sub-dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; }
+
+    .sb-connect { padding:6px 10px 20px; border-top:1px solid rgba(255,255,255,.07); margin-top:auto; }
+    .sb-connect-label { font-size:10px; font-weight:700; color:rgba(255,255,255,.3); text-transform:uppercase; letter-spacing:.8px; padding:10px 10px 6px; }
+    .sb-connect-item {
+      display:flex; align-items:center; gap:9px;
+      padding:7px 10px; border-radius:7px;
+      color:rgba(255,255,255,.5); font-size:12px;
+      transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px;
+    }
+    .sb-connect-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.85); }
+    .sb-connect-item svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-connect-sub { font-size:10px; color:rgba(255,255,255,.25); margin-left:auto; }
+
+    /* ── MAIN ── */
+    .main-content { flex:1; height:100vh; overflow-y:auto; background:#F5F7FA; }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      background:white; height:62px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 28px; border-bottom:1px solid #EAECF0;
+      position:sticky; top:0; z-index:20;
+    }
+    .topbar-left { display:flex; align-items:center; gap:14px; }
+    .topbar-btn { width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:8px; color:#667085; }
+    .topbar-btn:hover { background:#F2F4F7; }
+    .topbar-btn svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; }
+    .page-title { font-size:16px; font-weight:700; color:#101828; line-height:1.1; }
+    .page-sub { font-size:12px; color:#667085; }
+    .topbar-right { display:flex; align-items:center; gap:14px; }
+    .topbar-date { font-size:12px; color:#667085; display:flex; align-items:center; gap:5px; }
+    .topbar-date svg { width:14px; height:14px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .topbar-notif { position:relative; width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:9px; border:1px solid #EAECF0; background:white; cursor:pointer; flex-shrink:0; }
+    .topbar-notif svg { width:17px; height:17px; stroke:#667085; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .notif-dot { position:absolute; top:6px; right:7px; width:8px; height:8px; background:#F04438; border-radius:50%; border:1.5px solid white; }
+    .topbar-notif:hover { background:#F9FAFB; }
+    .topbar-logout { display:flex; align-items:center; gap:6px; padding:7px 13px; border-radius:9px; background:#FEF3F2; border:1px solid #FECDCA; color:#B42318; font-size:12px; font-weight:700; cursor:pointer; text-decoration:none; transition:all .15s; flex-shrink:0; }
+    .topbar-logout:hover { background:#FEE4E2; }
+    .topbar-logout svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .user-chip { display:flex; align-items:center; gap:9px; padding:6px 10px; border-radius:10px; cursor:pointer; }
+    .user-chip:hover { background:#F5F7FA; }
+    .user-av { width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,#059669,#047857); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:white; flex-shrink:0; }
+    .user-name { font-size:13px; font-weight:700; color:#101828; }
+    .user-role { font-size:11px; color:#98A2B3; display:flex; align-items:center; gap:3px; }
+    .user-role svg { width:12px; height:12px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* ── CONTENT ── */
+    .content-area { padding:22px 28px 32px; }
+
+    /* ── KPI STRIP ── */
+    .kpi-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:18px; }
+    .kpi-card { background:white; border-radius:12px; padding:18px 20px; border:1px solid #EAECF0; display:flex; align-items:flex-start; gap:14px; }
+    .kpi-ico { width:42px; height:42px; border-radius:11px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .kpi-ico svg { width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .kpi-ico.blue   { background:#EFF6FF; color:#1D6FF3; }
+    .kpi-ico.green  { background:#ECFDF3; color:#027A48; }
+    .kpi-ico.orange { background:#FFFAEB; color:#B54708; }
+    .kpi-ico.red    { background:#FEF3F2; color:#B42318; }
+    .kpi-val { font-size:28px; font-weight:800; color:#101828; letter-spacing:-1.5px; line-height:1; margin-bottom:3px; }
+    .kpi-lbl { font-size:12px; color:#667085; margin-bottom:5px; }
+    .kpi-sub { font-size:11px; margin-top:3px; }
+    .kpi-sub.red { color:#B42318; font-weight:700; }
+
+    /* ── DATA TABLE ── */
+    .data-table { width:100%; border-collapse:collapse; }
+    .data-table th { font-size:11px; font-weight:700; color:#667085; text-align:left; padding:7px 10px; background:#F9FAFB; border-bottom:1px solid #EAECF0; }
+    .data-table td { font-size:12px; color:#344054; padding:10px 10px; border-bottom:1px solid #F9FAFB; vertical-align:middle; }
+    .data-table tr:last-child td { border-bottom:none; }
+    .data-table tr:hover td { background:#FAFAFA; }
+    .t-name { font-weight:600; color:#101828; }
+
+    /* ── WIDGET ── */
+    .w-card { background:white; border-radius:12px; border:1px solid #EAECF0; overflow:hidden; margin-bottom:16px; }
+    .w-head { padding:13px 18px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #F2F4F7; }
+    .w-title { font-size:13px; font-weight:700; color:#101828; display:flex; align-items:center; gap:7px; }
+    .w-title svg { width:15px; height:15px; stroke:#667085; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .w-body { padding:16px 18px; }
+
+    /* ── DASHBOARD GRID ── */
+    .dash-grid { display:grid; grid-template-columns:1fr 300px; gap:16px; margin-bottom:16px; }
+
+    /* ── BADGE ── */
+    .badge { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; }
+    .badge.green  { background:#ECFDF3; color:#027A48; }
+    .badge.red    { background:#FEF3F2; color:#B42318; }
+    .badge.orange { background:#FFFAEB; color:#B54708; }
+    .badge::before { content:''; width:5px; height:5px; border-radius:50%; background:currentColor; }
+
+    /* ── PROGRESS BAR ── */
+    .prog-wrap { height:8px; background:#F2F4F7; border-radius:4px; overflow:hidden; margin-top:4px; }
+    .prog-fill { height:100%; border-radius:4px; }
+    .prog-fill.green  { background:#12B76A; }
+    .prog-fill.orange { background:#F79009; }
+
+    /* ── HORIZONTAL BAR ROWS ── */
+    .hbar-row { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+    .hbar-row:last-child { margin-bottom:0; }
+    .hbar-label { font-size:12px; font-weight:600; color:#344054; width:100px; flex-shrink:0; }
+    .hbar-track { flex:1; height:10px; background:#F2F4F7; border-radius:5px; overflow:hidden; }
+    .hbar-fill { height:100%; border-radius:5px; }
+    .hbar-fill.green  { background:#12B76A; }
+    .hbar-fill.orange { background:#F79009; }
+    .hbar-pct { font-size:12px; font-weight:700; color:#344054; width:38px; text-align:right; flex-shrink:0; }
+
+    /* ── CERT CARDS ── */
+    .cert-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+    .cert-card { background:#F9FAFB; border:1px solid #EAECF0; border-radius:10px; padding:14px 16px; }
+    .cert-card-title { font-size:12px; font-weight:700; color:#344054; margin-bottom:10px; }
+    .cert-row { display:flex; justify-content:space-between; align-items:center; padding:5px 0; border-bottom:1px solid #F2F4F7; }
+    .cert-row:last-child { border-bottom:none; }
+    .cert-lbl { font-size:11px; color:#667085; }
+    .cert-val { font-size:13px; font-weight:800; }
+    .cert-val.green  { color:#027A48; }
+    .cert-val.orange { color:#B54708; }
+    .cert-val.red    { color:#B42318; }
+
+    /* ── ALERT CARDS ── */
+    .alert-item { border-left:4px solid; border-radius:8px; background:white; border:1px solid #EAECF0; border-left:4px solid; padding:12px 16px; margin-bottom:8px; }
+    .alert-item.red-l    { border-left-color:#F04438; }
+    .alert-item.orange-l { border-left-color:#F79009; }
+    .alert-item-title { font-size:12px; font-weight:700; color:#101828; margin-bottom:4px; }
+    .alert-item-body  { font-size:12px; color:#344054; line-height:1.7; }
+
+    /* ── REFRESH FOOTER ── */
+    .dash-foot { margin-top:20px; display:flex; align-items:center; gap:6px; font-size:12px; color:#98A2B3; }
+    .dash-foot svg { width:13px; height:13px; stroke:#98A2B3; fill:none; stroke-width:2; cursor:pointer; }
+    .dash-foot svg:hover { stroke:#1D6FF3; }
+  </style>
+</head>
+<body>
+<div class="mgmt-layout">
+
+  <!-- ══════════ SIDEBAR ══════════ -->
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+      GRIYANET
+    </div>
+    <nav class="sb-nav">
+      <a href="dashboard.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+
+      <!-- People group — closed -->
+      <div class="sb-group">
+        <div class="sb-group-head" id="people-head" onclick="togglePeople()">
+          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          People
+          <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="sb-sub" id="people-sub">
+          <a href="people.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Organization View</a>
+          <a href="people.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Workforce View</a>
+          <a href="people.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Workforce Alert</a>
+        </div>
+      </div>
+
+      <a href="approval.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Approval
+        <span class="sb-badge">8</span>
+      </a>
+      <a href="learning.html" class="sb-item active">
+        <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg>
+        Learning
+      </a>
+      <a href="laporan.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Report &amp; Analytics
+      </a>
+    </nav>
+    <div class="sb-connect">
+      <div class="sb-connect-label">Connect</div>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        CRM<span class="sb-connect-sub">Sistem CRM</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        ERP<span class="sb-connect-sub">ERP Operasional</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        NOC<span class="sb-connect-sub">Monitoring NOC</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        Ticketing<span class="sb-connect-sub">Sistem Ticket</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+        Maps<span class="sb-connect-sub">Google Maps</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ══════════ MAIN CONTENT ══════════ -->
+  <main class="main-content">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="topbar-btn">
+          <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div>
+          <div class="page-title">Learning &amp; Adaptation</div>
+          <div class="page-sub">Region Malang Raya · 3 Cabang</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-date">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Jumat, 12 Juni 2026
+        </div>
+        <button class="topbar-notif">
+          <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="notif-dot"></span>
+        </button>
+        <div class="user-chip">
+          <div class="user-av">RM</div>
+          <div>
+            <div class="user-name">Ricky Maulana</div>
+            <div class="user-role">
+              Head of Region
+              <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+        </div>
+        <a href="../../../index.html" class="topbar-logout">
+          <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Keluar
+        </a>
+      </div>
+    </header>
+
+    <!-- CONTENT AREA -->
+    <div class="content-area">
+
+      <!-- SUMMARY STRIP -->
+      <div class="kpi-strip">
+        <div class="kpi-card">
+          <div class="kpi-ico blue">
+            <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          </div>
+          <div>
+            <div class="kpi-val">4</div>
+            <div class="kpi-lbl">AE Training</div>
+            <div class="kpi-sub" style="color:#98A2B3;">Lintas cabang</div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-ico orange">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <div class="kpi-val">8</div>
+            <div class="kpi-lbl">AE Adaptasi</div>
+            <div class="kpi-sub" style="color:#98A2B3;">Dalam proses</div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-ico green">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div>
+            <div class="kpi-val">24</div>
+            <div class="kpi-lbl">AE Certified</div>
+            <div class="kpi-sub" style="color:#027A48;font-weight:700;">Aktif & siap</div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-ico red">
+            <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div>
+            <div class="kpi-val">2</div>
+            <div class="kpi-lbl">Sertifikasi Expired</div>
+            <div class="kpi-sub red">Perlu perbaruan</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADAPTASI AE PER CABANG TABLE -->
+      <div class="w-card">
+        <div class="w-head">
+          <div class="w-title">
+            <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            Adaptasi AE per Cabang
+          </div>
+        </div>
+        <div class="w-body" style="padding:0;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Cabang</th>
+                <th style="text-align:center">Training</th>
+                <th style="text-align:center">Adaptasi</th>
+                <th style="text-align:center">Certified</th>
+                <th style="text-align:center">Total AE</th>
+                <th style="text-align:center">% Certified</th>
+                <th style="width:140px">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="t-name">Karangploso</td>
+                <td style="text-align:center;color:#1D6FF3;font-weight:700;">1</td>
+                <td style="text-align:center;color:#B54708;font-weight:700;">3</td>
+                <td style="text-align:center;color:#027A48;font-weight:700;">8</td>
+                <td style="text-align:center;font-weight:600;">12</td>
+                <td style="text-align:center;font-weight:700;color:#B54708;">67%</td>
+                <td>
+                  <div class="prog-wrap"><div class="prog-fill orange" style="width:67%;"></div></div>
+                </td>
+              </tr>
+              <tr>
+                <td class="t-name">Singosari</td>
+                <td style="text-align:center;color:#1D6FF3;font-weight:700;">2</td>
+                <td style="text-align:center;color:#B54708;font-weight:700;">3</td>
+                <td style="text-align:center;color:#027A48;font-weight:700;">9</td>
+                <td style="text-align:center;font-weight:600;">14</td>
+                <td style="text-align:center;font-weight:700;color:#B54708;">64%</td>
+                <td>
+                  <div class="prog-wrap"><div class="prog-fill orange" style="width:64%;"></div></div>
+                </td>
+              </tr>
+              <tr>
+                <td class="t-name">Lawang</td>
+                <td style="text-align:center;color:#1D6FF3;font-weight:700;">1</td>
+                <td style="text-align:center;color:#B54708;font-weight:700;">2</td>
+                <td style="text-align:center;color:#027A48;font-weight:700;">7</td>
+                <td style="text-align:center;font-weight:600;">10</td>
+                <td style="text-align:center;font-weight:700;color:#027A48;">70%</td>
+                <td>
+                  <div class="prog-wrap"><div class="prog-fill green" style="width:70%;"></div></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- LEARNING COMPLETION + CERT STATUS GRID -->
+      <div class="dash-grid">
+        <!-- Learning Completion -->
+        <div class="w-card" style="margin-bottom:0;">
+          <div class="w-head">
+            <div class="w-title">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              Learning Completion per Cabang
+            </div>
+          </div>
+          <div class="w-body">
+            <div class="hbar-row">
+              <div class="hbar-label">Karangploso</div>
+              <div class="hbar-track"><div class="hbar-fill green" style="width:78%;"></div></div>
+              <div class="hbar-pct">78%</div>
+            </div>
+            <div class="hbar-row">
+              <div class="hbar-label">Singosari</div>
+              <div class="hbar-track"><div class="hbar-fill green" style="width:85%;"></div></div>
+              <div class="hbar-pct">85%</div>
+            </div>
+            <div class="hbar-row">
+              <div class="hbar-label" style="display:flex;align-items:center;gap:6px;">Lawang <span class="badge red" style="font-size:10px;padding:2px 7px;">Perlu Perhatian</span></div>
+              <div class="hbar-track"><div class="hbar-fill orange" style="width:62%;"></div></div>
+              <div class="hbar-pct">62%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Certification Status -->
+        <div class="w-card" style="margin-bottom:0;">
+          <div class="w-head">
+            <div class="w-title">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+              Certification Status
+            </div>
+          </div>
+          <div class="w-body" style="padding:14px 16px;">
+            <div class="cert-grid">
+              <div class="cert-card">
+                <div class="cert-card-title">Engineer</div>
+                <div class="cert-row"><span class="cert-lbl">Active</span><span class="cert-val green">12</span></div>
+                <div class="cert-row"><span class="cert-lbl">Akan Expired &lt;30hr</span><span class="cert-val orange">1</span></div>
+                <div class="cert-row"><span class="cert-lbl">Expired</span><span class="cert-val" style="color:#98A2B3;">0</span></div>
+              </div>
+              <div class="cert-card">
+                <div class="cert-card-title">AE</div>
+                <div class="cert-row"><span class="cert-lbl">Active</span><span class="cert-val green">24</span></div>
+                <div class="cert-row"><span class="cert-lbl">Akan Expired &lt;30hr</span><span class="cert-val orange">3</span></div>
+                <div class="cert-row"><span class="cert-lbl">Expired</span><span class="cert-val red">2</span></div>
+              </div>
+              <div class="cert-card">
+                <div class="cert-card-title">Branch Leader</div>
+                <div class="cert-row"><span class="cert-lbl">Active</span><span class="cert-val green">3</span></div>
+                <div class="cert-row"><span class="cert-lbl">Akan Expired &lt;30hr</span><span class="cert-val" style="color:#98A2B3;">0</span></div>
+                <div class="cert-row"><span class="cert-lbl">Expired</span><span class="cert-val" style="color:#98A2B3;">0</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LEARNING ALERT -->
+      <div class="w-card">
+        <div class="w-head">
+          <div class="w-title">
+            <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Learning Alert
+          </div>
+        </div>
+        <div class="w-body">
+          <div class="alert-item red-l">
+            <div class="alert-item-title" style="color:#B42318;">Adaptasi Terlambat</div>
+            <div class="alert-item-body">
+              · <strong>Rizal Pratama</strong> (Cabang Singosari) — 12 hari melewati batas<br>
+              · <strong>Bima Wicaksono</strong> (Cabang Karangploso) — 5 hari melewati batas
+            </div>
+          </div>
+          <div class="alert-item orange-l">
+            <div class="alert-item-title" style="color:#B54708;">Sertifikasi Expired</div>
+            <div class="alert-item-body">
+              · <strong>Sinta Dewi</strong> AE (Cabang Lawang) — expired 1 Jun 2026<br>
+              · <strong>Ahmad Subagyo</strong> AE (Cabang Singosari) — expired 5 Jun 2026
+            </div>
+          </div>
+          <div class="alert-item orange-l" style="margin-bottom:0;">
+            <div class="alert-item-title" style="color:#B54708;">Completion Rendah</div>
+            <div class="alert-item-body">
+              · <strong>Cabang Lawang</strong> — 62% completion, target 75%
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="dash-foot">
+        <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        Terakhir diperbarui 2 menit yang lalu
+      </div>
+
+    </div><!-- /content-area -->
+  </main>
+
+</div><!-- /mgmt-layout -->
+<script>
+  function togglePeople() {
+    var head = document.getElementById('people-head');
+    var sub  = document.getElementById('people-sub');
+    head.classList.toggle('open');
+    sub.classList.toggle('open');
+  }
+</script>
+</body>
+</html>

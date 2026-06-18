@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Regional Manager — General Regional Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height:100%; font-family:'Inter',-apple-system,sans-serif; font-size:14px; color:#101828; background:#F5F7FA; -webkit-font-smoothing:antialiased; }
+    a { text-decoration:none; color:inherit; }
+    button { font-family:inherit; cursor:pointer; border:none; background:none; }
+
+    /* ── LAYOUT ── */
+    .mgmt-layout { display:flex; height:100vh; overflow:hidden; }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width:230px; flex-shrink:0; background:#0D1B3E;
+      height:100vh; display:flex; flex-direction:column;
+      overflow-y:auto; overflow-x:hidden;
+    }
+    .sidebar::-webkit-scrollbar { width:3px; }
+    .sidebar::-webkit-scrollbar-thumb { background:rgba(255,255,255,.1); border-radius:2px; }
+
+    .sb-logo {
+      display:flex; align-items:center; gap:10px;
+      padding:22px 18px 16px; color:white;
+      font-size:14px; font-weight:800; letter-spacing:-.3px;
+      border-bottom:1px solid rgba(255,255,255,.07);
+    }
+    .sb-logo svg { width:22px; height:22px; stroke:white; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+
+    .sb-nav { padding:10px 10px; flex:1; }
+    .sb-section { font-size:10px; font-weight:700; color:rgba(255,255,255,.3); text-transform:uppercase; letter-spacing:.8px; padding:10px 10px 4px; }
+
+    .sb-item {
+      display:flex; align-items:center; gap:10px;
+      padding:9px 10px; border-radius:8px;
+      color:rgba(255,255,255,.6); font-size:13px; font-weight:500;
+      transition:all .15s; cursor:pointer; position:relative;
+      text-decoration:none; margin-bottom:1px;
+    }
+    .sb-item:hover { background:rgba(255,255,255,.07); color:rgba(255,255,255,.9); }
+    .sb-item.active { background:rgba(29,111,243,.28); color:white; font-weight:700; }
+    .sb-item svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-badge { margin-left:auto; background:#F04438; color:white; font-size:9px; font-weight:800; min-width:17px; height:17px; border-radius:9px; display:flex; align-items:center; justify-content:center; padding:0 4px; }
+
+    .sb-connect { padding:6px 10px 20px; border-top:1px solid rgba(255,255,255,.07); margin-top:auto; }
+    .sb-connect-label { font-size:10px; font-weight:700; color:rgba(255,255,255,.3); text-transform:uppercase; letter-spacing:.8px; padding:10px 10px 6px; }
+    .sb-connect-item {
+      display:flex; align-items:center; gap:9px;
+      padding:7px 10px; border-radius:7px;
+      color:rgba(255,255,255,.5); font-size:12px;
+      transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px;
+    }
+    .sb-connect-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.85); }
+    .sb-connect-item svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-connect-sub { font-size:10px; color:rgba(255,255,255,.25); margin-left:auto; }
+
+    /* ── MAIN ── */
+    .main-content { flex:1; height:100vh; overflow-y:auto; background:#F5F7FA; }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      background:white; height:62px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 28px; border-bottom:1px solid #EAECF0;
+      position:sticky; top:0; z-index:20;
+    }
+    .topbar-left { display:flex; align-items:center; gap:14px; }
+    .topbar-btn { width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:8px; color:#667085; }
+    .topbar-btn:hover { background:#F2F4F7; }
+    .topbar-btn svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; }
+    .page-title { font-size:16px; font-weight:700; color:#101828; line-height:1.1; }
+    .page-sub { font-size:12px; color:#667085; }
+    .topbar-right { display:flex; align-items:center; gap:14px; }
+    .topbar-date { font-size:12px; color:#667085; display:flex; align-items:center; gap:5px; }
+    .topbar-date svg { width:14px; height:14px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .user-chip { display:flex; align-items:center; gap:9px; padding:6px 10px; border-radius:10px; cursor:pointer; }
+    .user-chip:hover { background:#F5F7FA; }
+    .user-av { width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,#7C3AED,#5B21B6); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:white; flex-shrink:0; }
+    .user-name { font-size:13px; font-weight:700; color:#101828; }
+    .user-role { font-size:11px; color:#98A2B3; display:flex; align-items:center; gap:3px; }
+    .user-role svg { width:12px; height:12px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* ── CONTENT ── */
+    .content-area { padding:22px 28px 32px; }
+
+    /* ── KPI STRIP ── */
+    .kpi-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:18px; }
+    .kpi-card { background:white; border-radius:12px; padding:18px 20px; border:1px solid #EAECF0; display:flex; align-items:flex-start; gap:14px; }
+    .kpi-ico { width:42px; height:42px; border-radius:11px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .kpi-ico svg { width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .kpi-ico.blue   { background:#EFF6FF; color:#1D6FF3; }
+    .kpi-ico.green  { background:#ECFDF3; color:#027A48; }
+    .kpi-ico.orange { background:#FFFAEB; color:#B54708; }
+    .kpi-ico.purple { background:#F4F3FF; color:#5925DC; }
+    .kpi-ico.teal   { background:#F0FDFA; color:#0D9488; }
+    .kpi-val { font-size:28px; font-weight:800; color:#101828; letter-spacing:-1.5px; line-height:1; margin-bottom:3px; }
+    .kpi-lbl { font-size:12px; color:#667085; margin-bottom:5px; }
+    .kpi-delta { font-size:11px; font-weight:600; }
+    .kpi-delta.pos { color:#027A48; }
+    .kpi-sub { font-size:11px; color:#98A2B3; margin-top:3px; }
+
+    /* ── DASHBOARD GRID ── */
+    .dash-grid { display:grid; grid-template-columns:1fr 330px; gap:16px; }
+    .dash-left, .dash-right { display:flex; flex-direction:column; gap:16px; }
+
+    /* ── WIDGET ── */
+    .w-card { background:white; border-radius:12px; border:1px solid #EAECF0; overflow:hidden; }
+    .w-head {
+      padding:13px 18px;
+      display:flex; align-items:center; justify-content:space-between;
+      border-bottom:1px solid #F2F4F7;
+    }
+    .w-title { font-size:13px; font-weight:700; color:#101828; display:flex; align-items:center; gap:7px; }
+    .w-title svg { width:15px; height:15px; stroke:#667085; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .w-link { font-size:12px; font-weight:600; color:#1D6FF3; cursor:pointer; }
+    .w-body { padding:16px 18px; }
+
+    /* ── METRIC ── */
+    .metric-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+    .metric-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .m-box { text-align:center; padding:12px 6px; border-radius:10px; }
+    .m-box.blue   { background:#EFF6FF; }
+    .m-box.green  { background:#ECFDF3; }
+    .m-box.orange { background:#FFFAEB; }
+    .m-box.red    { background:#FEF3F2; }
+    .m-box.purple { background:#F4F3FF; }
+    .m-ico { font-size:18px; margin-bottom:4px; display:block; }
+    .m-val { font-size:22px; font-weight:800; line-height:1; margin-bottom:3px; }
+    .m-val.blue   { color:#1D6FF3; }
+    .m-val.green  { color:#027A48; }
+    .m-val.orange { color:#B54708; }
+    .m-val.red    { color:#B42318; }
+    .m-val.purple { color:#5925DC; }
+    .m-lbl { font-size:11px; color:#667085; font-weight:500; }
+
+    /* ── HEAT MAP PLACEHOLDER ── */
+    .heat-map {
+      background:linear-gradient(135deg,#F0FDF4 0%,#ECFDF3 50%,#FEF3F2 100%);
+      border-radius:10px; height:160px; position:relative;
+      display:flex; align-items:center; justify-content:center;
+      overflow:hidden; border:1px solid #E8ECF2;
+    }
+    .heat-map-label { font-size:11px; color:#98A2B3; position:absolute; bottom:10px; left:14px; }
+    .heat-dot {
+      position:absolute; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:10px; font-weight:800; color:white; cursor:pointer;
+    }
+    .heat-dot:hover { transform:scale(1.1); }
+    .hd-hi { background:#12B76A; }
+    .hd-mid { background:#F79009; }
+    .hd-lo { background:#F04438; }
+    .heat-legend { display:flex; gap:12px; align-items:center; margin-top:10px; }
+    .hl-dot { width:8px; height:8px; border-radius:50%; }
+    .hl-text { font-size:11px; color:#667085; }
+
+    /* ── TABLE ── */
+    .data-table { width:100%; border-collapse:collapse; }
+    .data-table th { font-size:11px; font-weight:700; color:#667085; text-align:left; padding:7px 10px; background:#F9FAFB; border-bottom:1px solid #EAECF0; }
+    .data-table td { font-size:12px; color:#344054; padding:9px 10px; border-bottom:1px solid #F9FAFB; vertical-align:middle; }
+    .data-table tr:last-child td { border-bottom:none; }
+    .data-table tr:hover td { background:#FAFAFA; }
+    .t-name { font-weight:600; color:#101828; }
+    .t-rank { font-size:11px; font-weight:700; width:22px; height:22px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; }
+    .t-rank.gold   { background:#FFFBEB; color:#B54708; }
+    .t-rank.silver { background:#F9FAFB; color:#667085; }
+    .t-rank.bronze { background:#FEF3F2; color:#B42318; }
+    .t-rank.lo     { background:#FEF3F2; color:#B42318; }
+    .t-score { font-size:13px; font-weight:800; }
+    .t-score.hi  { color:#027A48; }
+    .t-score.mid { color:#B54708; }
+    .t-score.lo  { color:#B42318; }
+    .score-bar { height:5px; border-radius:3px; background:#F2F4F7; margin-top:3px; overflow:hidden; }
+    .score-fill { height:100%; border-radius:3px; }
+    .score-fill.hi  { background:#12B76A; }
+    .score-fill.mid { background:#F79009; }
+    .score-fill.lo  { background:#F04438; }
+
+    /* ── RISK LIST ── */
+    .risk-item { display:flex; align-items:flex-start; gap:10px; padding:10px 0; border-bottom:1px solid #F9FAFB; cursor:pointer; }
+    .risk-item:last-child { border-bottom:none; }
+    .risk-ico { width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+    .risk-ico svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .risk-ico.orange { background:#FFFAEB; color:#B54708; }
+    .risk-ico.red    { background:#FEF3F2; color:#B42318; }
+    .risk-body { flex:1; }
+    .risk-text { font-size:12px; color:#344054; font-weight:500; line-height:1.4; }
+    .risk-sub  { font-size:11px; color:#98A2B3; margin-top:2px; }
+    .risk-count { font-size:13px; font-weight:800; flex-shrink:0; }
+    .risk-count.orange { color:#B54708; }
+    .risk-count.red    { color:#B42318; }
+    .risk-chev svg { width:13px; height:13px; stroke:#D0D5DD; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* ── QUICK CONNECT ── */
+    .qc-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .qc-btn {
+      display:flex; align-items:center; gap:9px;
+      padding:10px 12px; border-radius:9px;
+      background:#F9FAFB; border:1px solid #EAECF0;
+      cursor:pointer; transition:all .15s; text-decoration:none;
+    }
+    .qc-btn:hover { background:#EFF6FF; border-color:#1D6FF3; }
+    .qc-btn svg { width:18px; height:18px; stroke:#1D6FF3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .qc-name { font-size:12px; font-weight:700; color:#344054; }
+    .qc-sub  { font-size:10px; color:#98A2B3; }
+
+    /* ── REFRESH FOOTER ── */
+    .dash-foot { margin-top:20px; display:flex; align-items:center; gap:6px; font-size:12px; color:#98A2B3; }
+    .dash-foot svg { width:13px; height:13px; stroke:#98A2B3; fill:none; stroke-width:2; cursor:pointer; }
+    .dash-foot svg:hover { stroke:#1D6FF3; }
+  </style>
+</head>
+<body>
+<div class="mgmt-layout">
+
+  <!-- ══════════ SIDEBAR ══════════ -->
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+      GRIYANET
+    </div>
+
+    <nav class="sb-nav">
+      <a href="dashboard.html" class="sb-item active">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="#" class="sb-item">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M3 21v-1a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8v1"/></svg>
+        Region
+      </a>
+      <a href="#" class="sb-item">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Cabang
+      </a>
+      <a href="#" class="sb-item">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        People
+      </a>
+      <a href="#" class="sb-item">
+        <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Approval
+        <span class="sb-badge">5</span>
+      </a>
+      <a href="#" class="sb-item">
+        <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg>
+        Learning
+      </a>
+      <a href="#" class="sb-item">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Laporan &amp; Analitik
+      </a>
+    </nav>
+
+    <div class="sb-connect">
+      <div class="sb-connect-label">Connect</div>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        ERP
+        <span class="sb-connect-sub">ERP Operasional</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        CRM
+        <span class="sb-connect-sub">Sistem CRM</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        NOC
+        <span class="sb-connect-sub">Monitoring NOC</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        Ticketing
+        <span class="sb-connect-sub">Sistem Ticket</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+        GIS
+        <span class="sb-connect-sub">Peta Wilayah</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+        Monitoring
+        <span class="sb-connect-sub">Network</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ══════════ MAIN CONTENT ══════════ -->
+  <main class="main-content">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="topbar-btn">
+          <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div>
+          <div class="page-title">Dashboard Regional Manager</div>
+          <div class="page-sub">Regional Jawa Timur</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-date">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Jumat, 12 Juni 2026
+        </div>
+        <div class="user-chip">
+          <div class="user-av">AH</div>
+          <div>
+            <div class="user-name">Agus Hermawan</div>
+            <div class="user-role">
+              General Regional Manager
+              <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTENT AREA -->
+    <div class="content-area">
+
+      <!-- KPI STRIP -->
+      <div class="kpi-strip">
+
+        <div class="kpi-card">
+          <div class="kpi-ico blue">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div>
+            <div class="kpi-val">52.450</div>
+            <div class="kpi-lbl">Customer Aktif</div>
+            <div class="kpi-delta pos">▲ +1.120 bulan ini</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-ico purple">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M3 21v-1a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8v1"/></svg>
+          </div>
+          <div>
+            <div class="kpi-val">4</div>
+            <div class="kpi-lbl">Region</div>
+            <div class="kpi-sub">Aktif</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-ico teal">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <div>
+            <div class="kpi-val">12</div>
+            <div class="kpi-lbl">Cabang</div>
+            <div class="kpi-sub">Dalam Region</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-ico green">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>
+          </div>
+          <div>
+            <div class="kpi-val">144</div>
+            <div class="kpi-lbl">AE Aktif</div>
+            <div class="kpi-sub">128 On Field</div>
+          </div>
+        </div>
+
+      </div><!-- /kpi-strip -->
+
+      <!-- DASHBOARD GRID -->
+      <div class="dash-grid">
+
+        <!-- LEFT COLUMN -->
+        <div class="dash-left">
+
+          <!-- Instalasi Regional -->
+          <div class="w-card">
+            <div class="w-head">
+              <div class="w-title">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Instalasi Regional (Semua Region)
+              </div>
+              <a class="w-link">Lihat Semua ›</a>
+            </div>
+            <div class="w-body">
+              <div class="metric-4">
+                <div class="m-box blue">
+                  <span class="m-ico">📋</span>
+                  <div class="m-val blue">126</div>
+                  <div class="m-lbl">Terjadwal</div>
+                </div>
+                <div class="m-box orange">
+                  <span class="m-ico">⏳</span>
+                  <div class="m-val orange">16</div>
+                  <div class="m-lbl">Progress</div>
+                </div>
+                <div class="m-box red" style="position:relative;">
+                  <span class="m-ico">⚠️</span>
+                  <div class="m-val red">18</div>
+                  <div class="m-lbl">Pending</div>
+                </div>
+                <div class="m-box red">
+                  <div style="background:#B42318;color:white;font-size:9px;font-weight:800;border-radius:6px;padding:2px 6px;display:inline-block;margin-bottom:4px;">OVERDUE</div>
+                  <div class="m-val red">7</div>
+                  <div class="m-lbl">Perlu Tindakan</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Workforce Summary -->
+          <div class="w-card">
+            <div class="w-head">
+              <div class="w-title">
+                <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Workforce Summary
+              </div>
+              <a class="w-link">Lihat Detail ›</a>
+            </div>
+            <div class="w-body">
+              <div class="metric-4">
+                <div class="m-box blue">
+                  <div class="m-val blue" style="font-size:18px;">235</div>
+                  <div class="m-lbl">Total Staff</div>
+                </div>
+                <div class="m-box green">
+                  <div class="m-val green" style="font-size:18px;">221</div>
+                  <div class="m-lbl">Hadir</div>
+                </div>
+                <div class="m-box orange">
+                  <div class="m-val orange" style="font-size:18px;">9</div>
+                  <div class="m-lbl">Izin</div>
+                </div>
+                <div class="m-box red">
+                  <div class="m-val red" style="font-size:18px;">5</div>
+                  <div class="m-lbl">Alpha</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AE Lifecycle -->
+          <div class="w-card">
+            <div class="w-head">
+              <div class="w-title">
+                <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                AE Lifecycle (Semua Region)
+              </div>
+              <a class="w-link">Lihat Detail ›</a>
+            </div>
+            <div class="w-body">
+              <div class="metric-3">
+                <div class="m-box blue">
+                  <span class="m-ico">📚</span>
+                  <div class="m-val blue">18</div>
+                  <div class="m-lbl">Training</div>
+                </div>
+                <div class="m-box orange">
+                  <span class="m-ico">🔥</span>
+                  <div class="m-val orange">12</div>
+                  <div class="m-lbl">Adaptation</div>
+                </div>
+                <div class="m-box green">
+                  <span class="m-ico">🏆</span>
+                  <div class="m-val green">114</div>
+                  <div class="m-lbl">Certified</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /dash-left -->
+
+        <!-- RIGHT COLUMN -->
+        <div class="dash-right">
+
+          <!-- Regional Heat Map -->
+          <div class="w-card">
+            <div class="w-head">
+              <div class="w-title">
+                <svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+                Regional Heat Map
+              </div>
+              <a class="w-link">Lihat Peta ›</a>
+            </div>
+            <div class="w-body">
+              <div class="heat-map">
+                <div class="heat-dot hd-hi" style="width:44px;height:44px;top:30px;left:80px;font-size:10px;">92%</div>
+                <div class="heat-dot hd-hi" style="width:38px;height:38px;top:55px;left:155px;font-size:9px;">87%</div>
+                <div class="heat-dot hd-mid" style="width:36px;height:36px;top:80px;left:100px;font-size:9px;">83%</div>
+                <div class="heat-dot hd-mid" style="width:32px;height:32px;top:100px;left:200px;font-size:9px;">72%</div>
+                <div class="heat-dot hd-lo" style="width:30px;height:30px;top:110px;left:60px;font-size:9px;">61%</div>
+                <div class="heat-map-label">Jawa Timur</div>
+              </div>
+              <div class="heat-legend" style="margin-top:10px;">
+                <div class="hl-dot" style="background:#12B76A;"></div>
+                <span class="hl-text">Baik (&gt;90%)</span>
+                <div class="hl-dot" style="background:#F79009;"></div>
+                <span class="hl-text">Cukup (60–80%)</span>
+                <div class="hl-dot" style="background:#F04438;"></div>
+                <span class="hl-text">Perlu Perhatian (&lt;60%)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Risk Monitoring -->
+          <div class="w-card">
+            <div class="w-head">
+              <div class="w-title">
+                <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                Risk Monitoring
+              </div>
+              <a class="w-link">Lihat Semua ›</a>
+            </div>
+            <div class="w-body">
+              <div style="display:flex;flex-direction:column;gap:0;">
+
+                <div class="risk-item">
+                  <div class="risk-ico orange">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  </div>
+                  <div class="risk-body">
+                    <div class="risk-text">Instalasi overdue</div>
+                    <div class="risk-sub">Lintas cabang</div>
+                  </div>
+                  <div class="risk-count orange">7</div>
+                  <div class="risk-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+                </div>
+
+                <div class="risk-item">
+                  <div class="risk-ico orange">
+                    <svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/></svg>
+                  </div>
+                  <div class="risk-body">
+                    <div class="risk-text">Permit overdue</div>
+                    <div class="risk-sub">3 region terdampak</div>
+                  </div>
+                  <div class="risk-count orange">5</div>
+                  <div class="risk-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+                </div>
+
+                <div class="risk-item">
+                  <div class="risk-ico red">
+                    <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                  </div>
+                  <div class="risk-body">
+                    <div class="risk-text">Branch kekurangan engineer</div>
+                    <div class="risk-sub">Kapasitas di bawah standar</div>
+                  </div>
+                  <div class="risk-count red">4</div>
+                  <div class="risk-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+                </div>
+
+                <div class="risk-item">
+                  <div class="risk-ico red">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72"/></svg>
+                  </div>
+                  <div class="risk-body">
+                    <div class="risk-text">Branch kekurangan AE</div>
+                    <div class="risk-sub">Perlu rekrutmen segera</div>
+                  </div>
+                  <div class="risk-count red">2</div>
+                  <div class="risk-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+                </div>
+
+                <div class="risk-item">
+                  <div class="risk-ico orange">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  </div>
+                  <div class="risk-body">
+                    <div class="risk-text">Kontrak habis &lt; 30 hari</div>
+                    <div class="risk-sub">Perlu perpanjangan segera</div>
+                  </div>
+                  <div class="risk-count orange">3</div>
+                  <div class="risk-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- Top & Bottom Region -->
+          <div class="w-card">
+            <div class="w-head">
+              <div class="w-title">
+                <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                Top &amp; Bottom Region
+              </div>
+              <a class="w-link">Lihat Semua ›</a>
+            </div>
+            <div class="w-body" style="padding:0;">
+              <div style="padding:10px 14px 4px;font-size:10px;font-weight:700;color:#027A48;text-transform:uppercase;letter-spacing:.5px;">Top 3 Region</div>
+              <table class="data-table">
+                <tbody>
+                  <tr>
+                    <td><span class="t-rank gold">1</span></td>
+                    <td class="t-name">Malang Raya</td>
+                    <td><div class="t-score hi">92%</div><div class="score-bar"><div class="score-fill hi" style="width:92%"></div></div></td>
+                  </tr>
+                  <tr>
+                    <td><span class="t-rank silver">2</span></td>
+                    <td class="t-name">Kediri Raya</td>
+                    <td><div class="t-score hi">87%</div><div class="score-bar"><div class="score-fill hi" style="width:87%"></div></div></td>
+                  </tr>
+                  <tr>
+                    <td><span class="t-rank bronze">3</span></td>
+                    <td class="t-name">Jember Raya</td>
+                    <td><div class="t-score mid">83%</div><div class="score-bar"><div class="score-fill mid" style="width:83%"></div></div></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div style="padding:10px 14px 4px;font-size:10px;font-weight:700;color:#B42318;text-transform:uppercase;letter-spacing:.5px;border-top:1px solid #F9FAFB;margin-top:4px;">Bottom 2 Region</div>
+              <table class="data-table">
+                <tbody>
+                  <tr>
+                    <td><span class="t-rank lo">4</span></td>
+                    <td class="t-name">Blitar Raya</td>
+                    <td><div class="t-score mid">72%</div><div class="score-bar"><div class="score-fill mid" style="width:72%"></div></div></td>
+                  </tr>
+                  <tr>
+                    <td><span class="t-rank lo">5</span></td>
+                    <td class="t-name">Tulungagung Raya</td>
+                    <td><div class="t-score lo">61%</div><div class="score-bar"><div class="score-fill lo" style="width:61%"></div></div></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Quick Connect -->
+          <div class="w-card">
+            <div class="w-head">
+              <div class="w-title">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/></svg>
+                Quick Connect
+              </div>
+            </div>
+            <div class="w-body">
+              <div class="qc-grid">
+                <a href="#" class="qc-btn">
+                  <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                  <div><div class="qc-name">ERP</div><div class="qc-sub">ERP Operasional</div></div>
+                </a>
+                <a href="#" class="qc-btn">
+                  <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  <div><div class="qc-name">CRM</div><div class="qc-sub">Sistem CRM</div></div>
+                </a>
+                <a href="#" class="qc-btn">
+                  <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                  <div><div class="qc-name">NOC</div><div class="qc-sub">Monitoring NOC</div></div>
+                </a>
+                <a href="#" class="qc-btn">
+                  <svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                  <div><div class="qc-name">Ticketing</div><div class="qc-sub">Sistem Ticket</div></div>
+                </a>
+                <a href="#" class="qc-btn">
+                  <svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <div><div class="qc-name">GIS</div><div class="qc-sub">Peta Wilayah</div></div>
+                </a>
+                <a href="#" class="qc-btn">
+                  <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+                  <div><div class="qc-name">Monitoring</div><div class="qc-sub">Network</div></div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /dash-right -->
+      </div><!-- /dash-grid -->
+
+      <!-- FOOTER -->
+      <div class="dash-foot">
+        <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        Dashboard diperbarui 5 menit yang lalu
+        <svg viewBox="0 0 24 24" style="margin-left:4px;cursor:pointer"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      </div>
+
+    </div><!-- /content-area -->
+  </main>
+
+</div><!-- /mgmt-layout -->
+</body>
+</html>

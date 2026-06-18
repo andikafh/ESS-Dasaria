@@ -358,6 +358,21 @@
     .demo-hint { font-size: 10px; color: #94A3B8; text-align: center; margin: 0 16px 8px; }
 
     .pad-bottom { height: 20px; }
+
+    /* ── LOGOUT BUTTON ── */
+    .logout-section {
+      padding: 16px 16px 8px;
+    }
+    .logout-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 13px;
+      background: #FEF2F2; color: #DC2626;
+      border: 1.5px solid #FECACA; border-radius: 12px;
+      font-size: 14px; font-weight: 700; cursor: pointer;
+      text-decoration: none;
+    }
+    .logout-btn:active { background: #FEE2E2; }
+    .logout-btn svg { width: 17px; height: 17px; stroke: #DC2626; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
   </style>
 </head>
 <body>
@@ -858,6 +873,15 @@
 
     <div class="pad-bottom"></div>
   </div>
+
+  <!-- LOGOUT -->
+  <div class="logout-section">
+    <a href="../login-kontrak.html" class="logout-btn">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Keluar
+    </a>
+  </div>
+  <div style="height:16px;"></div>
 
 </div><!-- /page -->
 </div><!-- /app -->

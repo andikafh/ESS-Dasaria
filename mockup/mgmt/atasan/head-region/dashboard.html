@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Cabang — Branch Leader</title>
+  <title>Dashboard Region — Head of Region</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -72,7 +72,6 @@
     .topbar-btn { width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:8px; color:#667085; }
     .topbar-btn:hover { background:#F2F4F7; }
     .topbar-btn svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; }
-    .topbar-titles {}
     .page-title { font-size:16px; font-weight:700; color:#101828; line-height:1.1; }
     .page-sub { font-size:12px; color:#667085; }
     .topbar-right { display:flex; align-items:center; gap:14px; }
@@ -80,7 +79,7 @@
     .topbar-date svg { width:14px; height:14px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
     .user-chip { display:flex; align-items:center; gap:9px; padding:6px 10px; border-radius:10px; cursor:pointer; }
     .user-chip:hover { background:#F5F7FA; }
-    .user-av { width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,#1D6FF3,#1558C8); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:white; flex-shrink:0; }
+    .user-av { width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,#059669,#047857); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:white; flex-shrink:0; }
     .user-name { font-size:13px; font-weight:700; color:#101828; }
     .user-role { font-size:11px; color:#98A2B3; display:flex; align-items:center; gap:3px; }
     .user-role svg { width:12px; height:12px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
@@ -97,19 +96,16 @@
     .kpi-ico.green  { background:#ECFDF3; color:#027A48; }
     .kpi-ico.orange { background:#FFFAEB; color:#B54708; }
     .kpi-ico.purple { background:#F4F3FF; color:#5925DC; }
-    .kpi-ico.red    { background:#FEF3F2; color:#B42318; }
-    .kpi-body {}
+    .kpi-ico.teal   { background:#F0FDFA; color:#0D9488; }
     .kpi-val { font-size:28px; font-weight:800; color:#101828; letter-spacing:-1.5px; line-height:1; margin-bottom:3px; }
     .kpi-lbl { font-size:12px; color:#667085; margin-bottom:5px; }
     .kpi-delta { font-size:11px; font-weight:600; }
     .kpi-delta.pos { color:#027A48; }
     .kpi-delta.neu { color:#667085; }
     .kpi-sub { font-size:11px; color:#98A2B3; margin-top:3px; }
-    .kpi-badge { display:inline-flex; align-items:center; gap:4px; background:#ECFDF3; color:#027A48; border:1px solid #A9EFC5; padding:2px 9px; border-radius:20px; font-size:11px; font-weight:600; }
-    .kpi-badge::before { content:''; width:6px; height:6px; border-radius:50%; background:#12B76A; }
 
     /* ── DASHBOARD GRID ── */
-    .dash-grid { display:grid; grid-template-columns:1fr 310px; gap:16px; }
+    .dash-grid { display:grid; grid-template-columns:1fr 320px; gap:16px; }
     .dash-left, .dash-right { display:flex; flex-direction:column; gap:16px; }
 
     /* ── WIDGET ── */
@@ -123,6 +119,23 @@
     .w-title svg { width:15px; height:15px; stroke:#667085; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
     .w-link { font-size:12px; font-weight:600; color:#1D6FF3; cursor:pointer; }
     .w-body { padding:16px 18px; }
+
+    /* ── TABLE ── */
+    .data-table { width:100%; border-collapse:collapse; }
+    .data-table th { font-size:11px; font-weight:700; color:#667085; text-align:left; padding:7px 10px; background:#F9FAFB; border-bottom:1px solid #EAECF0; }
+    .data-table td { font-size:12px; color:#344054; padding:10px 10px; border-bottom:1px solid #F9FAFB; vertical-align:middle; }
+    .data-table tr:last-child td { border-bottom:none; }
+    .data-table tr:hover td { background:#FAFAFA; }
+    .t-name { font-weight:600; color:#101828; }
+    .t-score { font-size:13px; font-weight:800; }
+    .t-score.hi { color:#027A48; }
+    .t-score.mid { color:#B54708; }
+    .t-score.lo { color:#B42318; }
+    .score-bar { height:5px; border-radius:3px; background:#F2F4F7; margin-top:3px; overflow:hidden; }
+    .score-fill { height:100%; border-radius:3px; }
+    .score-fill.hi { background:#12B76A; }
+    .score-fill.mid { background:#F79009; }
+    .score-fill.lo { background:#F04438; }
 
     /* ── METRIC 4-COL ── */
     .metric-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
@@ -139,38 +152,37 @@
     .m-val.red    { color:#B42318; }
     .m-lbl { font-size:11px; color:#667085; font-weight:500; }
 
-    /* ── PIPELINE ── */
-    .pipeline-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
-    .pl-box { padding:13px 8px; border-radius:10px; text-align:center; }
-    .pl-count { font-size:30px; font-weight:800; letter-spacing:-1px; line-height:1; margin-bottom:3px; }
-    .pl-type  { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.4px; }
-    .pl-desc  { font-size:10px; color:#98A2B3; margin-top:3px; }
-    .pl-box.cp { background:#EFF6FF; }
-    .pl-box.cp .pl-count, .pl-box.cp .pl-type { color:#1D6FF3; }
-    .pl-box.wp { background:#FFFAEB; }
-    .pl-box.wp .pl-count, .pl-box.wp .pl-type { color:#B54708; }
-    .pl-box.hp { background:#FEF3F2; }
-    .pl-box.hp .pl-count, .pl-box.hp .pl-type { color:#B42318; }
-    .pl-box.cl { background:#ECFDF3; }
-    .pl-box.cl .pl-count, .pl-box.cl .pl-type { color:#027A48; }
+    /* ── ALERT LIST ── */
+    .alert-list { display:flex; flex-direction:column; gap:0; }
+    .al-item { display:flex; align-items:flex-start; gap:10px; padding:10px 0; border-bottom:1px solid #F9FAFB; cursor:pointer; }
+    .al-item:last-child { border-bottom:none; }
+    .al-ico { width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+    .al-ico svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .al-ico.orange { background:#FFFAEB; color:#B54708; }
+    .al-ico.red    { background:#FEF3F2; color:#B42318; }
+    .al-ico.blue   { background:#EFF6FF; color:#1D6FF3; }
+    .al-body { flex:1; }
+    .al-text { font-size:12px; color:#344054; font-weight:500; line-height:1.4; }
+    .al-sub  { font-size:11px; color:#98A2B3; margin-top:2px; }
+    .al-count { font-size:13px; font-weight:800; flex-shrink:0; }
+    .al-count.orange { color:#B54708; }
+    .al-count.red    { color:#B42318; }
+    .al-count.blue   { color:#1D6FF3; }
+    .al-chev svg { width:13px; height:13px; stroke:#D0D5DD; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
 
-    /* ── PENDING ACTION ── */
-    .pending-list { display:flex; flex-direction:column; gap:0; }
-    .p-item { display:flex; align-items:center; gap:11px; padding:10px 0; border-bottom:1px solid #F9FAFB; cursor:pointer; }
-    .p-item:last-child { border-bottom:none; }
-    .p-item:hover .p-text { color:#1D6FF3; }
-    .p-ico { width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-    .p-ico svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-    .p-ico.orange { background:#FFFAEB; color:#B54708; }
-    .p-ico.red    { background:#FEF3F2; color:#B42318; }
-    .p-ico.blue   { background:#EFF6FF; color:#1D6FF3; }
-    .p-ico.green  { background:#ECFDF3; color:#027A48; }
-    .p-text { font-size:12px; color:#344054; flex:1; font-weight:500; line-height:1.4; }
-    .p-num { font-size:13px; font-weight:800; }
-    .p-num.orange { color:#B54708; }
-    .p-num.red    { color:#B42318; }
-    .p-num.blue   { color:#1D6FF3; }
-    .p-chev svg { width:13px; height:13px; stroke:#D0D5DD; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    /* ── APPROVAL QUEUE ── */
+    .aq-item { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid #F9FAFB; cursor:pointer; }
+    .aq-item:last-child { border-bottom:none; }
+    .aq-ico { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .aq-ico svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .aq-ico.orange { background:#FFFAEB; color:#B54708; }
+    .aq-ico.blue   { background:#EFF6FF; color:#1D6FF3; }
+    .aq-ico.purple { background:#F4F3FF; color:#5925DC; }
+    .aq-body { flex:1; }
+    .aq-label { font-size:12px; font-weight:600; color:#101828; }
+    .aq-sub   { font-size:11px; color:#98A2B3; margin-top:1px; }
+    .aq-count { font-size:13px; font-weight:800; color:#B54708; }
+    .aq-chev svg { width:13px; height:13px; stroke:#D0D5DD; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
 
     /* ── QUICK CONNECT ── */
     .qc-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
@@ -182,7 +194,6 @@
     }
     .qc-btn:hover { background:#EFF6FF; border-color:#1D6FF3; }
     .qc-btn svg { width:18px; height:18px; stroke:#1D6FF3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
-    .qc-info {}
     .qc-name { font-size:12px; font-weight:700; color:#344054; }
     .qc-sub  { font-size:10px; color:#98A2B3; }
 
@@ -190,51 +201,6 @@
     .dash-foot { margin-top:20px; display:flex; align-items:center; gap:6px; font-size:12px; color:#98A2B3; }
     .dash-foot svg { width:13px; height:13px; stroke:#98A2B3; fill:none; stroke-width:2; cursor:pointer; }
     .dash-foot svg:hover { stroke:#1D6FF3; }
-
-    /* ── PEOPLE SUB-MENU ── */
-    .sb-group { margin-bottom:1px; }
-    .sb-group-head {
-      display:flex; align-items:center; gap:10px;
-      padding:9px 10px; border-radius:8px;
-      color:rgba(255,255,255,.6); font-size:13px; font-weight:500;
-      cursor:pointer; user-select:none; transition:all .15s;
-    }
-    .sb-group-head:hover { background:rgba(255,255,255,.07); color:rgba(255,255,255,.9); }
-    .sb-group-head.open { color:rgba(255,255,255,.9); background:rgba(255,255,255,.05); }
-    .sb-group-head svg.sb-ico { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
-    .sb-chev { margin-left:auto; width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; transition:transform .2s; }
-    .sb-group-head.open .sb-chev { transform:rotate(90deg); }
-    .sb-sub { padding-left:14px; overflow:hidden; max-height:0; transition:max-height .25s ease; }
-    .sb-sub.open { max-height:200px; }
-    .sb-sub-item {
-      display:flex; align-items:center; gap:9px;
-      padding:7px 10px; border-radius:7px;
-      color:rgba(255,255,255,.45); font-size:12px; font-weight:500;
-      transition:all .15s; text-decoration:none; margin-bottom:1px;
-    }
-    .sb-sub-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.8); }
-    .sb-sub-item.active { background:rgba(29,111,243,.2); color:#60A5FA; font-weight:700; }
-    .sb-sub-dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; opacity:.7; }
-    .sb-sub-item.active .sb-sub-dot { opacity:1; }
-
-    /* ── TOPBAR ACTION BUTTONS ── */
-    .topbar-notif {
-      position:relative; width:36px; height:36px;
-      display:flex; align-items:center; justify-content:center;
-      border-radius:9px; color:#667085; cursor:pointer; border:1px solid #EAECF0; background:white;
-    }
-    .topbar-notif:hover { background:#F9FAFB; }
-    .topbar-notif svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-    .notif-dot { position:absolute; top:6px; right:7px; width:8px; height:8px; background:#F04438; border-radius:50%; border:1.5px solid white; }
-    .topbar-logout {
-      display:flex; align-items:center; gap:6px;
-      padding:7px 13px; border-radius:9px;
-      background:#FEF3F2; border:1px solid #FECDCA; color:#B42318;
-      font-size:12px; font-weight:700; cursor:pointer; text-decoration:none;
-      transition:all .15s;
-    }
-    .topbar-logout:hover { background:#FEE4E2; }
-    .topbar-logout svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
   </style>
 </head>
 <body>
@@ -252,42 +218,26 @@
         <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
         Dashboard
       </a>
-
-      <!-- People -->
-      <div class="sb-group">
-        <div class="sb-group-head" id="people-head" onclick="togglePeople()">
-          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          People
-          <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-        </div>
-        <div class="sb-sub" id="people-sub">
-          <a href="tim.html" class="sb-sub-item">
-            <span class="sb-sub-dot"></span>Team
-          </a>
-          <a href="#" class="sb-sub-item">
-            <span class="sb-sub-dot"></span>Attendance
-          </a>
-          <a href="#" class="sb-sub-item">
-            <span class="sb-sub-dot"></span>Hiring Request
-          </a>
-          <a href="#" class="sb-sub-item">
-            <span class="sb-sub-dot"></span>Reviews
-          </a>
-        </div>
-      </div>
-
-      <a href="approval.html" class="sb-item">
+      <a href="#" class="sb-item">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Cabang
+      </a>
+      <a href="#" class="sb-item">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Tim Region
+      </a>
+      <a href="#" class="sb-item">
         <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
         Approval
-        <span class="sb-badge">2</span>
+        <span class="sb-badge">3</span>
       </a>
-      <a href="learning.html" class="sb-item">
+      <a href="#" class="sb-item">
         <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg>
         Learning
       </a>
-      <a href="laporan.html" class="sb-item">
+      <a href="#" class="sb-item">
         <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        Report &amp; Analytics
+        Laporan &amp; Analitik
       </a>
     </nav>
 
@@ -330,9 +280,9 @@
         <button class="topbar-btn">
           <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
-        <div class="topbar-titles">
-          <div class="page-title">Dashboard Cabang</div>
-          <div class="page-sub">Cabang Karangploso</div>
+        <div>
+          <div class="page-title">Dashboard Region</div>
+          <div class="page-sub">Region Malang Raya</div>
         </div>
       </div>
       <div class="topbar-right">
@@ -340,24 +290,16 @@
           <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
           Jumat, 12 Juni 2026
         </div>
-        <button class="topbar-notif" title="Notifikasi">
-          <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          <span class="notif-dot"></span>
-        </button>
         <div class="user-chip">
-          <div class="user-av">BS</div>
+          <div class="user-av">RM</div>
           <div>
-            <div class="user-name">Budi Santoso</div>
+            <div class="user-name">Ricky Maulana</div>
             <div class="user-role">
-              Branch Leader
+              Head of Region
               <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
             </div>
           </div>
         </div>
-        <a href="../../../index.html" class="topbar-logout" title="Keluar">
-          <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          Keluar
-        </a>
       </div>
     </header>
 
@@ -371,10 +313,21 @@
           <div class="kpi-ico blue">
             <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           </div>
-          <div class="kpi-body">
-            <div class="kpi-val">4.285</div>
+          <div>
+            <div class="kpi-val">12.450</div>
             <div class="kpi-lbl">Customer Aktif</div>
-            <div class="kpi-delta pos">▲ +85 bulan ini</div>
+            <div class="kpi-delta pos">▲ +210 bulan ini</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-ico teal">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <div>
+            <div class="kpi-val">3</div>
+            <div class="kpi-lbl">Cabang</div>
+            <div class="kpi-sub">Dalam Region</div>
           </div>
         </div>
 
@@ -382,10 +335,10 @@
           <div class="kpi-ico green">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>
           </div>
-          <div class="kpi-body">
-            <div class="kpi-val">12</div>
+          <div>
+            <div class="kpi-val">36</div>
             <div class="kpi-lbl">AE Aktif</div>
-            <div class="kpi-sub">10 On Field</div>
+            <div class="kpi-sub">32 On Field</div>
           </div>
         </div>
 
@@ -393,21 +346,10 @@
           <div class="kpi-ico orange">
             <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
           </div>
-          <div class="kpi-body">
-            <div class="kpi-val">4</div>
+          <div>
+            <div class="kpi-val">12</div>
             <div class="kpi-lbl">Engineer Aktif</div>
-            <div class="kpi-sub">3 On Field</div>
-          </div>
-        </div>
-
-        <div class="kpi-card">
-          <div class="kpi-ico purple">
-            <svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="2"/></svg>
-          </div>
-          <div class="kpi-body">
-            <div class="kpi-val">1</div>
-            <div class="kpi-lbl">Permit</div>
-            <div class="kpi-badge">Aktif</div>
+            <div class="kpi-sub">9 On Field</div>
           </div>
         </div>
 
@@ -419,12 +361,72 @@
         <!-- LEFT COLUMN -->
         <div class="dash-left">
 
-          <!-- Aktivitas Hari Ini -->
+          <!-- Performa Cabang -->
+          <div class="w-card">
+            <div class="w-head">
+              <div class="w-title">
+                <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                Performa Cabang
+              </div>
+              <a class="w-link">Lihat Semua ›</a>
+            </div>
+            <div class="w-body" style="padding:0;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Cabang</th>
+                    <th>Customer Aktif</th>
+                    <th style="text-align:center">Install Today</th>
+                    <th style="text-align:center">Progress</th>
+                    <th style="text-align:center">Pending</th>
+                    <th>Score</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="t-name">Karangploso</td>
+                    <td>4.285</td>
+                    <td style="text-align:center">12</td>
+                    <td style="text-align:center">3</td>
+                    <td style="text-align:center">2</td>
+                    <td>
+                      <div class="t-score hi">92%</div>
+                      <div class="score-bar"><div class="score-fill hi" style="width:92%"></div></div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="t-name">Dau</td>
+                    <td>4.105</td>
+                    <td style="text-align:center">8</td>
+                    <td style="text-align:center">6</td>
+                    <td style="text-align:center">5</td>
+                    <td>
+                      <div class="t-score mid">78%</div>
+                      <div class="score-bar"><div class="score-fill mid" style="width:78%"></div></div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="t-name">Singosari</td>
+                    <td>4.060</td>
+                    <td style="text-align:center">10</td>
+                    <td style="text-align:center">7</td>
+                    <td style="text-align:center">1</td>
+                    <td>
+                      <div class="t-score hi">85%</div>
+                      <div class="score-bar"><div class="score-fill hi" style="width:85%"></div></div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Instalasi Region Hari Ini -->
           <div class="w-card">
             <div class="w-head">
               <div class="w-title">
                 <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                Aktivitas Hari Ini
+                Instalasi Region Hari Ini
               </div>
               <a class="w-link">Lihat Detail ›</a>
             </div>
@@ -432,128 +434,72 @@
               <div class="metric-4">
                 <div class="m-box blue">
                   <span class="m-ico">📋</span>
-                  <div class="m-val blue">12</div>
-                  <div class="m-lbl">Pemasangan Hari Ini</div>
-                </div>
-                <div class="m-box green">
-                  <span class="m-ico">✅</span>
-                  <div class="m-val green">7</div>
-                  <div class="m-lbl">Selesai</div>
+                  <div class="m-val blue">42</div>
+                  <div class="m-lbl">Terjadwal</div>
                 </div>
                 <div class="m-box orange">
                   <span class="m-ico">⏳</span>
-                  <div class="m-val orange">3</div>
+                  <div class="m-val orange">16</div>
                   <div class="m-lbl">Progress</div>
                 </div>
                 <div class="m-box red">
                   <span class="m-ico">⚠️</span>
-                  <div class="m-val red">2</div>
+                  <div class="m-val red">8</div>
                   <div class="m-lbl">Pending</div>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Sales Pipeline -->
-          <div class="w-card">
-            <div class="w-head">
-              <div class="w-title">
-                <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                Sales Pipeline Bulan Ini
-              </div>
-              <a class="w-link">Lihat Pipeline ›</a>
-            </div>
-            <div class="w-body">
-              <div class="pipeline-4">
-                <div class="pl-box cp">
-                  <div class="pl-count">124</div>
-                  <div class="pl-type">CP</div>
-                  <div class="pl-desc">Calon Prospect</div>
-                </div>
-                <div class="pl-box wp">
-                  <div class="pl-count">48</div>
-                  <div class="pl-type">WP</div>
-                  <div class="pl-desc">Warm Prospect</div>
-                </div>
-                <div class="pl-box hp">
-                  <div class="pl-count">17</div>
-                  <div class="pl-type">HP</div>
-                  <div class="pl-desc">Hot Prospect</div>
-                </div>
-                <div class="pl-box cl">
-                  <div class="pl-count">9</div>
-                  <div class="pl-type">Closing</div>
-                  <div class="pl-desc">Bulan Ini</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Workforce Health -->
-          <div class="w-card">
-            <div class="w-head">
-              <div class="w-title">
-                <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                Workforce Health
-              </div>
-              <a class="w-link">Lihat Kehadiran ›</a>
-            </div>
-            <div class="w-body">
-              <div class="metric-4">
                 <div class="m-box green">
-                  <span class="m-ico">🟢</span>
-                  <div class="m-val green">16</div>
-                  <div class="m-lbl">Hadir</div>
-                </div>
-                <div class="m-box orange">
-                  <span class="m-ico">📅</span>
-                  <div class="m-val orange">1</div>
-                  <div class="m-lbl">Izin</div>
-                </div>
-                <div class="m-box blue">
-                  <span class="m-ico">🏥</span>
-                  <div class="m-val blue">0</div>
-                  <div class="m-lbl">Sakit</div>
-                </div>
-                <div class="m-box red">
-                  <span class="m-ico">⚠️</span>
-                  <div class="m-val red">2</div>
-                  <div class="m-lbl">Belum Check In</div>
+                  <span class="m-ico">✅</span>
+                  <div class="m-val green">18</div>
+                  <div class="m-lbl">Selesai</div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Adaptasi AE -->
+          <!-- Adaptasi AE per Cabang -->
           <div class="w-card">
             <div class="w-head">
               <div class="w-title">
                 <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-                Adaptasi AE
+                Adaptasi AE per Cabang
               </div>
-              <a class="w-link">Lihat Adaptasi ›</a>
+              <a class="w-link">Lihat Detail ›</a>
             </div>
-            <div class="w-body">
-              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
-                <div class="m-box blue">
-                  <span class="m-ico">📚</span>
-                  <div class="m-val blue">4</div>
-                  <div class="m-lbl">Training</div>
-                  <div style="font-size:10px;color:#98A2B3;margin-top:2px;">Dalam Training</div>
-                </div>
-                <div class="m-box orange">
-                  <span class="m-ico">🔥</span>
-                  <div class="m-val orange">2</div>
-                  <div class="m-lbl">Adaptation</div>
-                  <div style="font-size:10px;color:#98A2B3;margin-top:2px;">Adaptasi</div>
-                </div>
-                <div class="m-box green">
-                  <span class="m-ico">🏆</span>
-                  <div class="m-val green">8</div>
-                  <div class="m-lbl">Certified</div>
-                  <div style="font-size:10px;color:#98A2B3;margin-top:2px;">Lulus & Sertifikasi</div>
-                </div>
-              </div>
+            <div class="w-body" style="padding:0;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Cabang</th>
+                    <th style="text-align:center">Training</th>
+                    <th style="text-align:center">Adaptation</th>
+                    <th style="text-align:center">Certified</th>
+                    <th style="text-align:center">Total AE</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="t-name">Karangploso</td>
+                    <td style="text-align:center;color:#1D6FF3;font-weight:700">4</td>
+                    <td style="text-align:center;color:#B54708;font-weight:700">2</td>
+                    <td style="text-align:center;color:#027A48;font-weight:700">8</td>
+                    <td style="text-align:center;font-weight:600">14</td>
+                  </tr>
+                  <tr>
+                    <td class="t-name">Dau</td>
+                    <td style="text-align:center;color:#1D6FF3;font-weight:700">3</td>
+                    <td style="text-align:center;color:#B54708;font-weight:700">1</td>
+                    <td style="text-align:center;color:#027A48;font-weight:700">8</td>
+                    <td style="text-align:center;font-weight:600">12</td>
+                  </tr>
+                  <tr>
+                    <td class="t-name">Singosari</td>
+                    <td style="text-align:center;color:#1D6FF3;font-weight:700">2</td>
+                    <td style="text-align:center;color:#B54708;font-weight:700">2</td>
+                    <td style="text-align:center;color:#027A48;font-weight:700">8</td>
+                    <td style="text-align:center;font-weight:600">10</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
 
@@ -562,52 +508,116 @@
         <!-- RIGHT COLUMN -->
         <div class="dash-right">
 
-          <!-- Pending Action -->
+          <!-- Workforce Alert -->
           <div class="w-card">
             <div class="w-head">
               <div class="w-title">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                Pending Action
+                <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                Workforce Alert
               </div>
               <a class="w-link">Lihat Semua ›</a>
             </div>
             <div class="w-body">
-              <div class="pending-list">
+              <div class="alert-list">
 
-                <div class="p-item">
-                  <div class="p-ico orange">
-                    <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <div class="al-item">
+                  <div class="al-ico orange">
+                    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                   </div>
-                  <div class="p-text">Prospect Hot belum Follow Up</div>
-                  <div class="p-num orange">3</div>
-                  <div class="p-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+                  <div class="al-body">
+                    <div class="al-text">Karyawan belum check in</div>
+                    <div class="al-sub">Lintas cabang</div>
+                  </div>
+                  <div class="al-count orange">5</div>
+                  <div class="al-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
                 </div>
 
-                <div class="p-item">
-                  <div class="p-ico blue">
+                <div class="al-item">
+                  <div class="al-ico blue">
                     <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                   </div>
-                  <div class="p-text">Survey belum dijadwalkan</div>
-                  <div class="p-num blue">2</div>
-                  <div class="p-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+                  <div class="al-body">
+                    <div class="al-text">Izin sakit</div>
+                    <div class="al-sub">Perlu validasi atasan</div>
+                  </div>
+                  <div class="al-count blue">3</div>
+                  <div class="al-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
                 </div>
 
-                <div class="p-item">
-                  <div class="p-ico red">
+                <div class="al-item">
+                  <div class="al-ico red">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  </div>
+                  <div class="al-body">
+                    <div class="al-text">Kontrak berakhir &lt; 30 hari</div>
+                    <div class="al-sub">Perlu tindakan segera</div>
+                  </div>
+                  <div class="al-count red">1</div>
+                  <div class="al-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+                </div>
+
+                <div class="al-item">
+                  <div class="al-ico orange">
                     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                   </div>
-                  <div class="p-text">Permit overdue</div>
-                  <div class="p-num red">1</div>
-                  <div class="p-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+                  <div class="al-body">
+                    <div class="al-text">Permit overdue</div>
+                    <div class="al-sub">2 cabang terdampak</div>
+                  </div>
+                  <div class="al-count orange">2</div>
+                  <div class="al-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
                 </div>
 
-                <div class="p-item">
-                  <div class="p-ico orange">
-                    <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Regional Approval Queue -->
+          <div class="w-card">
+            <div class="w-head">
+              <div class="w-title">
+                <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                Regional Approval Queue
+              </div>
+              <a class="w-link">Lihat Semua ›</a>
+            </div>
+            <div class="w-body">
+              <div style="display:flex;flex-direction:column;gap:0;">
+
+                <div class="aq-item">
+                  <div class="aq-ico orange">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                   </div>
-                  <div class="p-text">Approval menunggu</div>
-                  <div class="p-num orange">2</div>
-                  <div class="p-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+                  <div class="aq-body">
+                    <div class="aq-label">Approval Pending</div>
+                    <div class="aq-sub">Dari Branch Leader</div>
+                  </div>
+                  <div class="aq-count">5</div>
+                  <div class="aq-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+                </div>
+
+                <div class="aq-item">
+                  <div class="aq-ico blue">
+                    <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                  </div>
+                  <div class="aq-body">
+                    <div class="aq-label">Loan Recommendation</div>
+                    <div class="aq-sub">Perlu persetujuan HoR</div>
+                  </div>
+                  <div class="aq-count" style="color:#1D6FF3">2</div>
+                  <div class="aq-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+                </div>
+
+                <div class="aq-item">
+                  <div class="aq-ico purple">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  </div>
+                  <div class="aq-body">
+                    <div class="aq-label">Jadwal Kerja</div>
+                    <div class="aq-sub">Perubahan shift</div>
+                  </div>
+                  <div class="aq-count" style="color:#5925DC">3</div>
+                  <div class="aq-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
                 </div>
 
               </div>
@@ -626,38 +636,23 @@
               <div class="qc-grid">
                 <a href="#" class="qc-btn">
                   <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                  <div class="qc-info">
-                    <div class="qc-name">CRM</div>
-                    <div class="qc-sub">Sistem CRM</div>
-                  </div>
+                  <div><div class="qc-name">CRM</div><div class="qc-sub">Sistem CRM</div></div>
                 </a>
                 <a href="#" class="qc-btn">
                   <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
-                  <div class="qc-info">
-                    <div class="qc-name">ERP</div>
-                    <div class="qc-sub">ERP Operasional</div>
-                  </div>
+                  <div><div class="qc-name">ERP</div><div class="qc-sub">ERP Operasional</div></div>
                 </a>
                 <a href="#" class="qc-btn">
                   <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                  <div class="qc-info">
-                    <div class="qc-name">NOC</div>
-                    <div class="qc-sub">Monitoring NOC</div>
-                  </div>
+                  <div><div class="qc-name">NOC</div><div class="qc-sub">Monitoring NOC</div></div>
                 </a>
                 <a href="#" class="qc-btn">
                   <svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-                  <div class="qc-info">
-                    <div class="qc-name">Ticketing</div>
-                    <div class="qc-sub">Sistem Ticket</div>
-                  </div>
+                  <div><div class="qc-name">Ticketing</div><div class="qc-sub">Sistem Ticket</div></div>
                 </a>
                 <a href="#" class="qc-btn" style="grid-column:span 2;">
                   <svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
-                  <div class="qc-info">
-                    <div class="qc-name">Maps</div>
-                    <div class="qc-sub">Google Maps</div>
-                  </div>
+                  <div><div class="qc-name">Maps</div><div class="qc-sub">Google Maps</div></div>
                 </a>
               </div>
             </div>
@@ -669,19 +664,13 @@
       <!-- FOOTER -->
       <div class="dash-foot">
         <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-        Dashboard diperbarui 2 menit yang lalu
+        Dashboard diperbarui 3 menit yang lalu
+        <svg viewBox="0 0 24 24" style="margin-left:4px;cursor:pointer"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
       </div>
 
     </div><!-- /content-area -->
   </main>
-</div>
-<script>
-function togglePeople() {
-  var head = document.getElementById('people-head');
-  var sub  = document.getElementById('people-sub');
-  head.classList.toggle('open');
-  sub.classList.toggle('open');
-}
-</script>
+
+</div><!-- /mgmt-layout -->
 </body>
 </html>

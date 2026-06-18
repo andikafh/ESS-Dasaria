@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
@@ -231,10 +231,18 @@
         Approval
         <span class="sb-badge">8</span>
       </a>
-      <a href="learning.html" class="sb-item">
-        <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg>
-        Learning
-      </a>
+      <div class="sb-group">
+        <div class="sb-group-head" id="learning-head" onclick="toggleLearning()">
+          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg>
+          Learning
+          <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="sb-sub" id="learning-sub">
+          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>My Learning Progress</a>
+          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Learning Library</a>
+          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Team Learning Progress</a>
+        </div>
+      </div>
       <a href="laporan.html" class="sb-item">
         <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
         Report &amp; Analytics
@@ -594,7 +602,13 @@
 
 </div><!-- /mgmt-layout -->
 <script>
-  function togglePeople() {
+  function toggleLearning() {
+  var head = document.getElementById('learning-head');
+  var sub  = document.getElementById('learning-sub');
+  head.classList.toggle('open');
+  sub.classList.toggle('open');
+}
+function togglePeople() {
     var head = document.getElementById('people-head');
     var sub  = document.getElementById('people-sub');
     head.classList.toggle('open');

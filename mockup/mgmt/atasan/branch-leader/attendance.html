@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>People — Attendance & Schedule · Branch Leader</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height:100%; font-family:'Inter',-apple-system,sans-serif; font-size:14px; color:#101828; background:#F5F7FA; -webkit-font-smoothing:antialiased; }
+    a { text-decoration:none; color:inherit; }
+    button { font-family:inherit; cursor:pointer; border:none; background:none; }
+
+    /* ── LAYOUT ── */
+    .mgmt-layout { display:flex; height:100vh; overflow:hidden; }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width:230px; flex-shrink:0; background:#0D1B3E;
+      height:100vh; display:flex; flex-direction:column;
+      overflow-y:auto; overflow-x:hidden;
+    }
+    .sidebar::-webkit-scrollbar { width:3px; }
+    .sidebar::-webkit-scrollbar-thumb { background:rgba(255,255,255,.1); border-radius:2px; }
+
+    .sb-logo {
+      display:flex; align-items:center; gap:10px;
+      padding:22px 18px 16px; color:white;
+      font-size:14px; font-weight:800; letter-spacing:-.3px;
+      border-bottom:1px solid rgba(255,255,255,.07);
+    }
+    .sb-logo svg { width:22px; height:22px; stroke:white; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+
+    .sb-nav { padding:10px 10px; flex:1; }
+    .sb-section { font-size:10px; font-weight:700; color:rgba(255,255,255,.3); text-transform:uppercase; letter-spacing:.8px; padding:10px 10px 4px; }
+
+    .sb-item {
+      display:flex; align-items:center; gap:10px;
+      padding:9px 10px; border-radius:8px;
+      color:rgba(255,255,255,.6); font-size:13px; font-weight:500;
+      transition:all .15s; cursor:pointer; position:relative;
+      text-decoration:none; margin-bottom:1px;
+    }
+    .sb-item:hover { background:rgba(255,255,255,.07); color:rgba(255,255,255,.9); }
+    .sb-item.active { background:rgba(29,111,243,.28); color:white; font-weight:700; }
+    .sb-item svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-badge { margin-left:auto; background:#F04438; color:white; font-size:9px; font-weight:800; min-width:17px; height:17px; border-radius:9px; display:flex; align-items:center; justify-content:center; padding:0 4px; }
+
+    .sb-connect { padding:6px 10px 20px; border-top:1px solid rgba(255,255,255,.07); margin-top:auto; }
+    .sb-connect-label { font-size:10px; font-weight:700; color:rgba(255,255,255,.3); text-transform:uppercase; letter-spacing:.8px; padding:10px 10px 6px; }
+    .sb-connect-item {
+      display:flex; align-items:center; gap:9px;
+      padding:7px 10px; border-radius:7px;
+      color:rgba(255,255,255,.5); font-size:12px;
+      transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px;
+    }
+    .sb-connect-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.85); }
+    .sb-connect-item svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-connect-sub { font-size:10px; color:rgba(255,255,255,.25); margin-left:auto; }
+
+    /* ── MAIN ── */
+    .main-content { flex:1; height:100vh; overflow-y:auto; background:#F5F7FA; }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      background:white; height:62px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 28px; border-bottom:1px solid #EAECF0;
+      position:sticky; top:0; z-index:20;
+    }
+    .topbar-left { display:flex; align-items:center; gap:14px; }
+    .topbar-btn { width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:8px; color:#667085; }
+    .topbar-btn:hover { background:#F2F4F7; }
+    .topbar-btn svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; }
+    .topbar-titles {}
+    .page-title { font-size:16px; font-weight:700; color:#101828; line-height:1.1; }
+    .page-sub { font-size:12px; color:#667085; }
+    .topbar-right { display:flex; align-items:center; gap:14px; }
+    .topbar-date { font-size:12px; color:#667085; display:flex; align-items:center; gap:5px; }
+    .topbar-date svg { width:14px; height:14px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .user-chip { display:flex; align-items:center; gap:9px; padding:6px 10px; border-radius:10px; cursor:pointer; }
+    .user-chip:hover { background:#F5F7FA; }
+    .user-av { width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,#1D6FF3,#1558C8); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:white; flex-shrink:0; }
+    .user-name { font-size:13px; font-weight:700; color:#101828; }
+    .user-role { font-size:11px; color:#98A2B3; display:flex; align-items:center; gap:3px; }
+    .user-role svg { width:12px; height:12px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* ── CONTENT ── */
+    .content-area { padding:22px 28px 32px; }
+
+    /* ── KPI STRIP ── */
+    .kpi-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:18px; }
+    .kpi-card { background:white; border-radius:12px; padding:18px 20px; border:1px solid #EAECF0; display:flex; align-items:flex-start; gap:14px; }
+    .kpi-ico { width:42px; height:42px; border-radius:11px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .kpi-ico svg { width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .kpi-ico.blue   { background:#EFF6FF; color:#1D6FF3; }
+    .kpi-ico.green  { background:#ECFDF3; color:#027A48; }
+    .kpi-ico.orange { background:#FFFAEB; color:#B54708; }
+    .kpi-ico.purple { background:#F4F3FF; color:#5925DC; }
+    .kpi-ico.red    { background:#FEF3F2; color:#B42318; }
+    .kpi-body {}
+    .kpi-val { font-size:28px; font-weight:800; color:#101828; letter-spacing:-1.5px; line-height:1; margin-bottom:3px; }
+    .kpi-lbl { font-size:12px; color:#667085; margin-bottom:5px; }
+    .kpi-delta { font-size:11px; font-weight:600; }
+    .kpi-delta.pos { color:#027A48; }
+    .kpi-delta.neu { color:#667085; }
+    .kpi-sub { font-size:11px; color:#98A2B3; margin-top:3px; }
+
+    /* ── WIDGET ── */
+    .w-card { background:white; border-radius:12px; border:1px solid #EAECF0; overflow:hidden; }
+    .w-head {
+      padding:13px 18px;
+      display:flex; align-items:center; justify-content:space-between;
+      border-bottom:1px solid #F2F4F7;
+    }
+    .w-title { font-size:13px; font-weight:700; color:#101828; display:flex; align-items:center; gap:7px; }
+    .w-title svg { width:15px; height:15px; stroke:#667085; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .w-link { font-size:12px; font-weight:600; color:#1D6FF3; cursor:pointer; }
+    .w-body { padding:16px 18px; }
+
+    /* ── PEOPLE SUB-MENU ── */
+    .sb-group { margin-bottom:1px; }
+    .sb-group-head {
+      display:flex; align-items:center; gap:10px;
+      padding:9px 10px; border-radius:8px;
+      color:rgba(255,255,255,.6); font-size:13px; font-weight:500;
+      cursor:pointer; user-select:none; transition:all .15s;
+    }
+    .sb-group-head:hover { background:rgba(255,255,255,.07); color:rgba(255,255,255,.9); }
+    .sb-group-head.open { color:rgba(255,255,255,.9); background:rgba(255,255,255,.05); }
+    .sb-group-head svg.sb-ico { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-chev { margin-left:auto; width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; transition:transform .2s; }
+    .sb-group-head.open .sb-chev { transform:rotate(90deg); }
+    .sb-sub { padding-left:14px; overflow:hidden; max-height:0; transition:max-height .25s ease; }
+    .sb-sub.open { max-height:200px; }
+    .sb-sub-item {
+      display:flex; align-items:center; gap:9px;
+      padding:7px 10px; border-radius:7px;
+      color:rgba(255,255,255,.45); font-size:12px; font-weight:500;
+      transition:all .15s; text-decoration:none; margin-bottom:1px;
+    }
+    .sb-sub-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.8); }
+    .sb-sub-item.active { background:rgba(29,111,243,.2); color:#60A5FA; font-weight:700; }
+    .sb-sub-dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; opacity:.7; }
+    .sb-sub-item.active .sb-sub-dot { opacity:1; }
+
+    /* ── TOPBAR ACTION BUTTONS ── */
+    .topbar-notif {
+      position:relative; width:36px; height:36px;
+      display:flex; align-items:center; justify-content:center;
+      border-radius:9px; color:#667085; cursor:pointer; border:1px solid #EAECF0; background:white;
+    }
+    .topbar-notif:hover { background:#F9FAFB; }
+    .topbar-notif svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .notif-dot { position:absolute; top:6px; right:7px; width:8px; height:8px; background:#F04438; border-radius:50%; border:1.5px solid white; }
+    .topbar-logout {
+      display:flex; align-items:center; gap:6px;
+      padding:7px 13px; border-radius:9px;
+      background:#FEF3F2; border:1px solid #FECDCA; color:#B42318;
+      font-size:12px; font-weight:700; cursor:pointer; text-decoration:none;
+      transition:all .15s;
+    }
+    .topbar-logout:hover { background:#FEE4E2; }
+    .topbar-logout svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* ── PAGE TABS ── */
+    .pg-tabs { display:flex; gap:6px; margin-bottom:18px; background:white; padding:5px; border-radius:10px; border:1px solid #EAECF0; width:fit-content; }
+    .pg-tab {
+      padding:7px 18px; border-radius:7px; font-size:13px; font-weight:600; color:#667085;
+      cursor:pointer; transition:all .15s; border:none; background:none;
+    }
+    .pg-tab:hover { color:#344054; background:#F9FAFB; }
+    .pg-tab.active { background:#1D6FF3; color:white; box-shadow:0 1px 4px rgba(29,111,243,.25); }
+
+    /* ── WEEK PICKER ── */
+    .week-picker {
+      display:flex; align-items:center; gap:10px; margin-bottom:16px;
+    }
+    .week-label {
+      font-size:14px; font-weight:700; color:#101828;
+      background:white; border:1px solid #EAECF0; border-radius:9px;
+      padding:8px 18px; min-width:260px; text-align:center;
+    }
+    .week-arrow {
+      width:34px; height:34px; border-radius:8px;
+      border:1px solid #EAECF0; background:white;
+      display:flex; align-items:center; justify-content:center;
+      color:#667085; cursor:pointer; transition:all .15s;
+    }
+    .week-arrow:hover { background:#F2F4F7; border-color:#D0D5DD; }
+    .week-arrow svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* ── CALENDAR TABLE ── */
+    .cal-wrap { background:white; border-radius:12px; border:1px solid #EAECF0; overflow:hidden; margin-bottom:14px; }
+    .cal-table { width:100%; border-collapse:collapse; table-layout:fixed; }
+    .cal-table th {
+      padding:10px 8px; font-size:11px; font-weight:700; color:#667085;
+      background:#F9FAFB; border-bottom:1px solid #EAECF0; text-align:left;
+      text-transform:uppercase; letter-spacing:.4px;
+    }
+    .cal-table th:first-child { width:140px; }
+    .cal-table th:nth-child(2) { width:82px; }
+    .cal-table th:nth-child(3) { width:80px; }
+    .cal-table td {
+      padding:10px 8px; font-size:12px; color:#344054;
+      border-bottom:1px solid #F2F4F7; vertical-align:middle;
+    }
+    .cal-table tr:last-child td { border-bottom:none; }
+    .cal-table tr:hover td { background:#FAFBFF; }
+
+    .name-cell { font-weight:600; color:#101828; font-size:12px; }
+
+    /* Role badges */
+    .role-ae { display:inline-block; background:#EFF6FF; color:#1D6FF3; font-size:10px; font-weight:700; padding:2px 7px; border-radius:4px; }
+    .role-eng { display:inline-block; background:#FFFAEB; color:#B54708; font-size:10px; font-weight:700; padding:2px 7px; border-radius:4px; }
+
+    /* Status */
+    .status-cell { font-size:11px; color:#667085; }
+
+    /* Shift pills */
+    .pill-regular { display:inline-block; background:#EFF6FF; color:#1558C8; font-size:11px; font-weight:600; padding:3px 8px; border-radius:4px; white-space:nowrap; }
+    .pill-projecta { display:inline-block; background:#F4F3FF; color:#5925DC; font-size:11px; font-weight:600; padding:3px 8px; border-radius:4px; white-space:nowrap; max-width:90px; overflow:hidden; text-overflow:ellipsis; }
+    .pill-fiber { display:inline-block; background:#FFFAEB; color:#B54708; font-size:11px; font-weight:600; padding:3px 8px; border-radius:4px; white-space:nowrap; max-width:90px; overflow:hidden; text-overflow:ellipsis; }
+    .pill-libur { display:inline-block; background:#F9FAFB; color:#98A2B3; font-size:10px; font-weight:500; padding:3px 8px; border-radius:4px; }
+
+    /* ── UNSCHEDULED WARNING ── */
+    .unscheduled-card {
+      background:#FFFAEB; border:1px solid #FEF0C7; border-radius:10px;
+      padding:14px 18px; display:flex; align-items:flex-start; gap:12px;
+    }
+    .unscheduled-icon { flex-shrink:0; margin-top:1px; }
+    .unscheduled-icon svg { width:18px; height:18px; stroke:#B54708; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .unscheduled-label { font-size:13px; font-weight:700; color:#B54708; margin-bottom:8px; }
+    .unscheduled-list { display:flex; flex-direction:column; gap:6px; }
+    .unscheduled-row { display:flex; align-items:center; gap:10px; }
+    .unscheduled-name { font-size:12px; font-weight:600; color:#344054; flex:1; }
+    .btn-atur {
+      padding:5px 13px; border-radius:7px; font-size:12px; font-weight:700;
+      background:#1D6FF3; color:white; border:none; cursor:pointer; transition:all .15s;
+    }
+    .btn-atur:hover { background:#1558C8; }
+
+    /* ── DAFTAR JADWAL TAB ── */
+    .filter-bar { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+    .filter-search {
+      flex:1; max-width:280px; height:36px; padding:0 12px 0 36px;
+      border:1px solid #EAECF0; border-radius:8px; font-size:13px; color:#101828;
+      background:white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2398A2B3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 12px center;
+      outline:none;
+    }
+    .filter-search:focus { border-color:#1D6FF3; }
+    .filter-select {
+      height:36px; padding:0 12px; border:1px solid #EAECF0; border-radius:8px;
+      font-size:13px; color:#344054; background:white; cursor:pointer; outline:none;
+    }
+    .filter-select:focus { border-color:#1D6FF3; }
+
+    .jadwal-section { display:flex; flex-direction:column; gap:14px; }
+
+    /* Regular card */
+    .reg-card { background:white; border-radius:12px; border:1px solid #EAECF0; overflow:hidden; }
+    .reg-head { padding:14px 18px; display:flex; align-items:center; gap:10px; border-bottom:1px solid #F2F4F7; }
+    .reg-title { font-size:14px; font-weight:700; color:#101828; flex:1; }
+    .badge-count { background:#EFF6FF; color:#1D6FF3; font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; }
+    .btn-edit { padding:6px 14px; border-radius:8px; font-size:12px; font-weight:700; border:1px solid #EAECF0; color:#344054; background:white; cursor:pointer; transition:all .15s; }
+    .btn-edit:hover { background:#F9FAFB; border-color:#D0D5DD; }
+    .reg-body { padding:16px 18px; }
+    .reg-schedule { font-size:13px; color:#344054; margin-bottom:14px; display:flex; gap:20px; }
+    .reg-sch-item { display:flex; align-items:center; gap:6px; }
+    .reg-sch-item svg { width:14px; height:14px; stroke:#667085; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .member-grid { display:grid; grid-template-columns:1fr 1fr; gap:4px 16px; }
+    .member-row { display:flex; align-items:center; gap:7px; padding:5px 0; }
+    .member-av { width:26px; height:26px; border-radius:7px; background:linear-gradient(135deg,#1D6FF3,#1558C8); display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:800; color:white; flex-shrink:0; }
+    .member-av.eng { background:linear-gradient(135deg,#F79009,#B54708); }
+    .member-nm { font-size:12px; font-weight:600; color:#344054; flex:1; }
+
+    /* Project cards */
+    .proj-card { background:white; border-radius:12px; border:1px solid #EAECF0; overflow:hidden; }
+    .proj-head { padding:14px 18px; display:flex; align-items:center; gap:10px; border-bottom:1px solid #F2F4F7; }
+    .proj-title { font-size:14px; font-weight:700; color:#101828; flex:1; }
+    .badge-active { background:#ECFDF3; color:#027A48; border:1px solid #A9EFC5; font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; display:inline-flex; align-items:center; gap:4px; }
+    .badge-active::before { content:''; width:6px; height:6px; border-radius:50%; background:#12B76A; }
+    .badge-draft { background:#FFFAEB; color:#B54708; border:1px solid #FEF0C7; font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; display:inline-flex; align-items:center; gap:4px; }
+    .badge-draft::before { content:''; width:6px; height:6px; border-radius:50%; background:#F79009; }
+    .proj-body { padding:16px 18px; }
+    .proj-meta { display:flex; flex-wrap:wrap; gap:16px; margin-bottom:12px; }
+    .proj-meta-item { display:flex; align-items:center; gap:5px; font-size:12px; color:#667085; }
+    .proj-meta-item svg { width:13px; height:13px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .proj-meta-item strong { color:#344054; font-weight:600; }
+    .proj-sch { font-size:12px; color:#344054; margin-bottom:12px; background:#F9FAFB; border-radius:7px; padding:8px 12px; }
+    .proj-sch span { font-weight:600; }
+    .proj-members { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
+    .proj-member-chip { display:flex; align-items:center; gap:5px; background:#F9FAFB; border:1px solid #EAECF0; border-radius:20px; padding:3px 10px; font-size:11px; font-weight:600; color:#344054; }
+    .proj-actions { display:flex; gap:8px; }
+    .btn-lihat { padding:7px 14px; border-radius:8px; font-size:12px; font-weight:700; border:1px solid #EAECF0; color:#344054; background:white; cursor:pointer; transition:all .15s; }
+    .btn-lihat:hover { background:#F9FAFB; }
+    .btn-publish { padding:7px 14px; border-radius:8px; font-size:12px; font-weight:700; background:#1D6FF3; color:white; border:none; cursor:pointer; transition:all .15s; }
+    .btn-publish:hover { background:#1558C8; }
+
+    /* ── BUAT JADWAL TAB ── */
+    .buat-section { display:flex; flex-direction:column; gap:20px; }
+    .buat-step-label { font-size:13px; font-weight:800; color:#101828; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+    .step-num { width:22px; height:22px; border-radius:50%; background:#1D6FF3; color:white; font-size:11px; font-weight:800; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
+
+    /* Scheme option cards */
+    .scheme-cards { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:0; }
+    .scheme-card {
+      border:2px solid #EAECF0; border-radius:12px; padding:20px;
+      cursor:pointer; transition:all .18s; background:white;
+    }
+    .scheme-card:hover { border-color:#1D6FF3; box-shadow:0 0 0 3px rgba(29,111,243,.07); }
+    .scheme-card.selected { border-color:#1D6FF3; background:#EFF6FF; }
+    .scheme-icon { width:44px; height:44px; border-radius:11px; background:#EFF6FF; display:flex; align-items:center; justify-content:center; margin-bottom:12px; }
+    .scheme-icon svg { width:22px; height:22px; stroke:#1D6FF3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .scheme-name { font-size:14px; font-weight:800; color:#101828; margin-bottom:6px; }
+    .scheme-desc { font-size:12px; color:#667085; margin-bottom:12px; line-height:1.5; }
+    .scheme-features { list-style:none; display:flex; flex-direction:column; gap:4px; margin-bottom:14px; }
+    .scheme-features li { font-size:11px; color:#344054; display:flex; align-items:center; gap:6px; }
+    .scheme-features li::before { content:''; width:5px; height:5px; border-radius:50%; background:#12B76A; flex-shrink:0; }
+    .btn-scheme { width:100%; padding:9px; border-radius:8px; font-size:13px; font-weight:700; border:2px solid #1D6FF3; color:#1D6FF3; background:white; cursor:pointer; transition:all .15s; }
+    .btn-scheme:hover { background:#EFF6FF; }
+
+    /* Form */
+    .form-card { background:white; border-radius:12px; border:1px solid #EAECF0; padding:20px; }
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .form-field { display:flex; flex-direction:column; gap:5px; }
+    .form-field.full { grid-column:1/-1; }
+    .form-label { font-size:12px; font-weight:700; color:#344054; }
+    .form-input {
+      height:38px; padding:0 12px; border:1px solid #EAECF0; border-radius:8px;
+      font-size:13px; color:#101828; font-family:inherit; background:white; outline:none;
+      transition:border-color .15s;
+    }
+    .form-input:focus { border-color:#1D6FF3; box-shadow:0 0 0 3px rgba(29,111,243,.07); }
+    .form-radio-group { display:flex; gap:16px; align-items:center; height:38px; }
+    .form-radio-label { display:flex; align-items:center; gap:6px; font-size:13px; color:#344054; cursor:pointer; font-weight:500; }
+    .form-radio-label input { accent-color:#1D6FF3; width:15px; height:15px; cursor:pointer; }
+    .form-check-group { display:flex; flex-wrap:wrap; gap:8px; }
+    .day-check { display:flex; align-items:center; gap:4px; }
+    .day-check input { accent-color:#1D6FF3; width:14px; height:14px; cursor:pointer; }
+    .day-check label { font-size:12px; font-weight:600; color:#344054; cursor:pointer; }
+
+    /* Pilih anggota */
+    .anggota-card { background:white; border-radius:12px; border:1px solid #EAECF0; padding:20px; }
+    .all-toggle { display:flex; align-items:center; gap:8px; margin-bottom:14px; font-size:13px; font-weight:700; color:#344054; }
+    .all-toggle input { accent-color:#1D6FF3; width:16px; height:16px; cursor:pointer; }
+    .member-check-list { display:flex; flex-direction:column; gap:4px; }
+    .member-check-row { display:flex; align-items:center; gap:10px; padding:7px 8px; border-radius:8px; transition:background .12s; cursor:pointer; }
+    .member-check-row:hover { background:#F9FAFB; }
+    .member-check-row input { accent-color:#1D6FF3; width:15px; height:15px; cursor:pointer; flex-shrink:0; }
+    .mc-av { width:28px; height:28px; border-radius:7px; background:linear-gradient(135deg,#1D6FF3,#1558C8); display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:800; color:white; flex-shrink:0; }
+    .mc-av.eng { background:linear-gradient(135deg,#F79009,#B54708); }
+    .mc-name { font-size:12px; font-weight:600; color:#344054; flex:1; }
+    .see-all-link { font-size:12px; font-weight:700; color:#1D6FF3; cursor:pointer; margin-top:8px; display:inline-block; }
+    .see-all-link:hover { text-decoration:underline; }
+
+    /* Submit bar */
+    .submit-bar { display:flex; align-items:center; gap:10px; padding-top:4px; }
+    .btn-primary { padding:10px 22px; border-radius:9px; font-size:13px; font-weight:700; background:#1D6FF3; color:white; border:none; cursor:pointer; transition:all .15s; }
+    .btn-primary:hover { background:#1558C8; }
+    .btn-outline { padding:10px 22px; border-radius:9px; font-size:13px; font-weight:700; border:1px solid #D0D5DD; color:#344054; background:white; cursor:pointer; transition:all .15s; }
+    .btn-outline:hover { background:#F9FAFB; }
+
+    /* ── PAGE FOOTER ── */
+    .page-foot { margin-top:24px; display:flex; align-items:center; gap:6px; font-size:12px; color:#98A2B3; }
+    .page-foot svg { width:13px; height:13px; stroke:#98A2B3; fill:none; stroke-width:2; }
+  </style>
+</head>
+<body>
+<div class="mgmt-layout">
+
+  <!-- ══════════ SIDEBAR ══════════ -->
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+      GRIYANET
+    </div>
+
+    <nav class="sb-nav">
+      <a href="dashboard.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+
+      <!-- People (open) -->
+      <div class="sb-group">
+        <div class="sb-group-head open" id="people-head" onclick="togglePeople()">
+          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          People
+          <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="sb-sub open" id="people-sub">
+          <a href="tim.html" class="sb-sub-item">
+            <span class="sb-sub-dot"></span>Team
+          </a>
+          <a href="attendance.html" class="sb-sub-item active">
+            <span class="sb-sub-dot"></span>Attendance
+          </a>
+          <a href="#" class="sb-sub-item">
+            <span class="sb-sub-dot"></span>Hiring Request
+          </a>
+          <a href="#" class="sb-sub-item">
+            <span class="sb-sub-dot"></span>Reviews
+          </a>
+        </div>
+      </div>
+
+      <a href="approval.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Approval
+        <span class="sb-badge">2</span>
+      </a>
+
+      <!-- Learning (closed) -->
+      <div class="sb-group">
+        <div class="sb-group-head" id="learning-head" onclick="toggleLearning()">
+          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg>
+          Learning
+          <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="sb-sub" id="learning-sub">
+          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>My Learning Progress</a>
+          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Learning Library</a>
+          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Team Learning Progress</a>
+        </div>
+      </div>
+
+      <a href="laporan.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Report &amp; Analytics
+      </a>
+    </nav>
+
+    <div class="sb-connect">
+      <div class="sb-connect-label">Connect</div>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        CRM
+        <span class="sb-connect-sub">Sistem CRM</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        ERP
+        <span class="sb-connect-sub">ERP Operasional</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        NOC
+        <span class="sb-connect-sub">Monitoring NOC</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        Ticketing
+        <span class="sb-connect-sub">Sistem Ticket</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+        Maps
+        <span class="sb-connect-sub">Google Maps</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ══════════ MAIN CONTENT ══════════ -->
+  <main class="main-content">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="topbar-btn">
+          <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div class="topbar-titles">
+          <div class="page-title">People — Attendance &amp; Schedule</div>
+          <div class="page-sub">Cabang Karangploso &middot; Jadwal Kerja Tim</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-date">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Kamis, 18 Juni 2026
+        </div>
+        <button class="topbar-notif" title="Notifikasi">
+          <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="notif-dot"></span>
+        </button>
+        <div class="user-chip">
+          <div class="user-av">BS</div>
+          <div>
+            <div class="user-name">Budi Santoso</div>
+            <div class="user-role">
+              Branch Leader
+              <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+        </div>
+        <a href="../../../index.html" class="topbar-logout" title="Keluar">
+          <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Keluar
+        </a>
+      </div>
+    </header>
+
+    <!-- CONTENT AREA -->
+    <div class="content-area">
+
+      <!-- KPI STRIP -->
+      <div class="kpi-strip">
+        <div class="kpi-card">
+          <div class="kpi-ico blue">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-val">16</div>
+            <div class="kpi-lbl">Total Tim</div>
+            <div class="kpi-sub">AE &amp; Engineer aktif</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-ico green">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-val" style="color:#027A48;">14</div>
+            <div class="kpi-lbl">Terjadwal</div>
+            <div class="kpi-sub">87,5% dari total tim</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-ico orange">
+            <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-val" style="color:#B54708;">2</div>
+            <div class="kpi-lbl">Belum Terjadwal</div>
+            <div class="kpi-sub">Perlu perhatian segera</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-ico purple">
+            <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-val" style="color:#5925DC;">3</div>
+            <div class="kpi-lbl">Jadwal Project Aktif</div>
+            <div class="kpi-sub">Minggu ini berjalan</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW TABS -->
+      <div class="pg-tabs">
+        <button class="pg-tab active" onclick="switchTab('tab-kalender', this)">Kalender Mingguan</button>
+        <button class="pg-tab" onclick="switchTab('tab-daftar', this)">Daftar Jadwal</button>
+        <button class="pg-tab" onclick="switchTab('tab-buat', this)">Buat Jadwal</button>
+      </div>
+
+      <!-- ═══ TAB: KALENDER MINGGUAN ═══ -->
+      <div id="tab-kalender" class="tab-panel">
+
+        <!-- Week picker -->
+        <div class="week-picker">
+          <button class="week-arrow">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <div class="week-label">Sen 16 Jun &ndash; Ming 22 Jun 2026</div>
+          <button class="week-arrow">
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+
+        <!-- Calendar table -->
+        <div class="cal-wrap">
+          <table class="cal-table">
+            <thead>
+              <tr>
+                <th>Nama</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Senin</th>
+                <th>Selasa</th>
+                <th>Rabu</th>
+                <th>Kamis</th>
+                <th>Jumat</th>
+                <th>Sabtu</th>
+                <th>Minggu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="name-cell">Andi Ramadan</td>
+                <td><span class="role-ae">AE</span></td>
+                <td class="status-cell">On Field</td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-libur">Libur</span></td>
+                <td><span class="pill-libur">Libur</span></td>
+              </tr>
+              <tr>
+                <td class="name-cell">Dian Safira</td>
+                <td><span class="role-ae">AE</span></td>
+                <td class="status-cell">On Field</td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-libur">Libur</span></td>
+                <td><span class="pill-libur">Libur</span></td>
+              </tr>
+              <tr>
+                <td class="name-cell">Rizal Pratama</td>
+                <td><span class="role-ae">AE</span></td>
+                <td class="status-cell">Kantor</td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-libur">Libur</span></td>
+                <td><span class="pill-libur">Libur</span></td>
+              </tr>
+              <tr>
+                <td class="name-cell">Bima Wicaksono</td>
+                <td><span class="role-ae">AE</span></td>
+                <td class="status-cell">Training</td>
+                <td><span class="pill-projecta">Project A</span></td>
+                <td><span class="pill-projecta">Project A</span></td>
+                <td><span class="pill-projecta">Project A</span></td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-libur">Libur</span></td>
+                <td><span class="pill-libur">Libur</span></td>
+              </tr>
+              <tr>
+                <td class="name-cell">Budi Hartono</td>
+                <td><span class="role-eng">Eng</span></td>
+                <td class="status-cell">On Field</td>
+                <td><span class="pill-fiber">Pasang Fiber</span></td>
+                <td><span class="pill-fiber">Pasang Fiber</span></td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-fiber">Pasang Fiber</span></td>
+                <td><span class="pill-fiber">Pasang Fiber</span></td>
+                <td><span class="pill-fiber">Pasang Fiber</span></td>
+                <td><span class="pill-libur">Libur</span></td>
+              </tr>
+              <tr>
+                <td class="name-cell">Ahmad Subagyo</td>
+                <td><span class="role-ae">AE</span></td>
+                <td class="status-cell">On Field</td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-libur">Libur</span></td>
+                <td><span class="pill-libur">Libur</span></td>
+              </tr>
+              <tr>
+                <td class="name-cell">Siti Rahayu</td>
+                <td><span class="role-ae">AE</span></td>
+                <td class="status-cell">On Field</td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-libur">Libur</span></td>
+                <td><span class="pill-libur">Libur</span></td>
+              </tr>
+              <tr>
+                <td class="name-cell">Eko Prasetyo</td>
+                <td><span class="role-eng">Eng</span></td>
+                <td class="status-cell">On Field</td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-fiber">Pasang Fiber</span></td>
+                <td><span class="pill-fiber">Pasang Fiber</span></td>
+                <td><span class="pill-regular">08:00&ndash;17:00</span></td>
+                <td><span class="pill-libur">Libur</span></td>
+                <td><span class="pill-libur">Libur</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Unscheduled warning -->
+        <div class="unscheduled-card">
+          <div class="unscheduled-icon">
+            <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div class="unscheduled-label">Tidak Terjadwal (2 anggota)</div>
+            <div class="unscheduled-list">
+              <div class="unscheduled-row">
+                <span class="role-ae">AE</span>
+                <span class="unscheduled-name">Nova Fitriani</span>
+                <button class="btn-atur">Atur Jadwal</button>
+              </div>
+              <div class="unscheduled-row">
+                <span class="role-ae">AE</span>
+                <span class="unscheduled-name">Sinta Dewi</span>
+                <button class="btn-atur">Atur Jadwal</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /tab-kalender -->
+
+      <!-- ═══ TAB: DAFTAR JADWAL ═══ -->
+      <div id="tab-daftar" class="tab-panel" style="display:none;">
+
+        <!-- Filter bar -->
+        <div class="filter-bar">
+          <input type="text" class="filter-search" placeholder="Cari anggota atau jadwal...">
+          <select class="filter-select">
+            <option>Semua Skema</option>
+            <option>Regular</option>
+            <option>Project</option>
+          </select>
+        </div>
+
+        <div class="jadwal-section">
+
+          <!-- Jadwal Regular -->
+          <div class="reg-card">
+            <div class="reg-head">
+              <div class="reg-title">Jadwal Regular</div>
+              <span class="badge-count">11 Anggota</span>
+              <button class="btn-edit">Edit Jadwal</button>
+            </div>
+            <div class="reg-body">
+              <div class="reg-schedule">
+                <div class="reg-sch-item">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  <span><strong>Senin–Jumat</strong> &nbsp;08:00–17:00</span>
+                </div>
+                <div class="reg-sch-item">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  <span><strong>Sabtu–Minggu</strong> &nbsp;Libur</span>
+                </div>
+              </div>
+              <div class="member-grid">
+                <div class="member-row"><div class="member-av">AR</div><span class="member-nm">Andi Ramadan</span><span class="role-ae">AE</span></div>
+                <div class="member-row"><div class="member-av">DS</div><span class="member-nm">Dian Safira</span><span class="role-ae">AE</span></div>
+                <div class="member-row"><div class="member-av">RP</div><span class="member-nm">Rizal Pratama</span><span class="role-ae">AE</span></div>
+                <div class="member-row"><div class="member-av">AS</div><span class="member-nm">Ahmad Subagyo</span><span class="role-ae">AE</span></div>
+                <div class="member-row"><div class="member-av">SR</div><span class="member-nm">Siti Rahayu</span><span class="role-ae">AE</span></div>
+                <div class="member-row"><div class="member-av">HW</div><span class="member-nm">Hendra Wijaya</span><span class="role-ae">AE</span></div>
+                <div class="member-row"><div class="member-av">LM</div><span class="member-nm">Lisa Maharani</span><span class="role-ae">AE</span></div>
+                <div class="member-row"><div class="member-av">FN</div><span class="member-nm">Fajar Nugroho</span><span class="role-ae">AE</span></div>
+                <div class="member-row"><div class="member-av eng">EP</div><span class="member-nm">Eko Prasetyo</span><span class="role-eng">Eng</span></div>
+                <div class="member-row"><div class="member-av eng">RH</div><span class="member-nm">Rudi Hermawan</span><span class="role-eng">Eng</span></div>
+                <div class="member-row"><div class="member-av eng">YP</div><span class="member-nm">Yusuf Prabowo</span><span class="role-eng">Eng</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project A -->
+          <div class="proj-card">
+            <div class="proj-head">
+              <div class="proj-title">Project A: Training Batch Juni</div>
+              <span class="badge-active">Aktif</span>
+            </div>
+            <div class="proj-body">
+              <div class="proj-meta">
+                <div class="proj-meta-item">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  <strong>16–22 Jun 2026</strong>
+                </div>
+                <div class="proj-meta-item">
+                  <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  <strong>3 Anggota</strong>
+                </div>
+              </div>
+              <div class="proj-sch">
+                <span>Senin–Rabu</span> 08:00–20:00 &nbsp;&nbsp;|&nbsp;&nbsp; <span>Kamis–Jumat</span> 08:00–17:00
+              </div>
+              <div class="proj-members">
+                <div class="proj-member-chip"><span class="role-ae">AE</span> Bima Wicaksono</div>
+                <div class="proj-member-chip"><span class="role-ae">AE</span> Citra Larasati</div>
+                <div class="proj-member-chip"><span class="role-ae">AE</span> Danu Prakasa</div>
+              </div>
+              <div class="proj-actions">
+                <button class="btn-lihat">Lihat Detail</button>
+                <button class="btn-edit">Edit</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pasang Fiber -->
+          <div class="proj-card">
+            <div class="proj-head">
+              <div class="proj-title">Pasang Fiber: Perumahan Griya Asri</div>
+              <span class="badge-active">Aktif</span>
+            </div>
+            <div class="proj-body">
+              <div class="proj-meta">
+                <div class="proj-meta-item">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  <strong>14–22 Jun 2026</strong>
+                </div>
+                <div class="proj-meta-item">
+                  <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  <strong>3 Engineer</strong>
+                </div>
+              </div>
+              <div class="proj-sch">
+                <span>Senin–Sabtu</span> 07:00–17:00
+              </div>
+              <div class="proj-members">
+                <div class="proj-member-chip"><span class="role-eng">Eng</span> Budi Hartono</div>
+                <div class="proj-member-chip"><span class="role-eng">Eng</span> Galih Santosa</div>
+                <div class="proj-member-chip"><span class="role-eng">Eng</span> Irwan Maulana</div>
+              </div>
+              <div class="proj-actions">
+                <button class="btn-lihat">Lihat Detail</button>
+                <button class="btn-edit">Edit</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Survey Jaringan Q2 (Draft) -->
+          <div class="proj-card">
+            <div class="proj-head">
+              <div class="proj-title">Survey Jaringan Q2</div>
+              <span class="badge-draft">Draft</span>
+            </div>
+            <div class="proj-body">
+              <div class="proj-meta">
+                <div class="proj-meta-item">
+                  <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  <strong>2 AE ditugaskan</strong>
+                </div>
+              </div>
+              <div class="proj-sch" style="color:#98A2B3;">
+                Jadwal belum dipublikasikan
+              </div>
+              <div class="proj-members">
+                <div class="proj-member-chip"><span class="role-ae">AE</span> Viko Andrianto</div>
+                <div class="proj-member-chip"><span class="role-ae">AE</span> Wulan Permata</div>
+              </div>
+              <div class="proj-actions">
+                <button class="btn-publish">Publikasi</button>
+                <button class="btn-edit">Edit</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /tab-daftar -->
+
+      <!-- ═══ TAB: BUAT JADWAL ═══ -->
+      <div id="tab-buat" class="tab-panel" style="display:none;">
+        <div class="buat-section">
+
+          <!-- Step 1: Pilih Skema -->
+          <div>
+            <div class="buat-step-label">
+              <span class="step-num">1</span>
+              Pilih Skema Jadwal
+            </div>
+            <div class="scheme-cards">
+              <!-- Regular -->
+              <div class="scheme-card" id="card-regular" onclick="selectScheme('regular')">
+                <div class="scheme-icon">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg>
+                </div>
+                <div class="scheme-name">Jadwal Regular</div>
+                <div class="scheme-desc">Jadwal kerja standar mingguan. Cocok untuk AE dan staf kantor.</div>
+                <ul class="scheme-features">
+                  <li>Senin–Jumat 08:00–17:00</li>
+                  <li>Sabtu–Minggu libur</li>
+                  <li>Berulang otomatis</li>
+                </ul>
+                <button class="btn-scheme">Pilih Regular</button>
+              </div>
+              <!-- Project -->
+              <div class="scheme-card" id="card-project" onclick="selectScheme('project')">
+                <div class="scheme-icon" style="background:#F4F3FF;">
+                  <svg viewBox="0 0 24 24" style="stroke:#5925DC;"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+                </div>
+                <div class="scheme-name">Jadwal Project</div>
+                <div class="scheme-desc">Jadwal khusus untuk proyek lapangan. Cocok untuk Engineer dan AE project.</div>
+                <ul class="scheme-features">
+                  <li>Tanggal mulai &amp; selesai custom</li>
+                  <li>Jam kerja fleksibel</li>
+                  <li>Bisa kerja weekend</li>
+                </ul>
+                <button class="btn-scheme">Pilih Project</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Detail Jadwal -->
+          <div>
+            <div class="buat-step-label">
+              <span class="step-num">2</span>
+              Detail Jadwal
+            </div>
+            <div class="form-card">
+              <div class="form-grid">
+                <div class="form-field full">
+                  <label class="form-label">Nama Jadwal</label>
+                  <input type="text" class="form-input" placeholder="e.g. Jadwal Regular Juni atau Project Pasang Fiber Griya">
+                </div>
+                <div class="form-field full">
+                  <label class="form-label">Skema</label>
+                  <div class="form-radio-group">
+                    <label class="form-radio-label">
+                      <input type="radio" name="skema" value="regular" checked> Regular
+                    </label>
+                    <label class="form-radio-label">
+                      <input type="radio" name="skema" value="project"> Project
+                    </label>
+                  </div>
+                </div>
+                <!-- Project fields (shown when project selected) -->
+                <div class="form-field" id="field-mulai" style="display:none;">
+                  <label class="form-label">Tanggal Mulai</label>
+                  <input type="date" class="form-input" value="2026-06-18">
+                </div>
+                <div class="form-field" id="field-selesai" style="display:none;">
+                  <label class="form-label">Tanggal Selesai</label>
+                  <input type="date" class="form-input" value="2026-06-30">
+                </div>
+                <div class="form-field full" id="field-namaproject" style="display:none;">
+                  <label class="form-label">Nama Project</label>
+                  <input type="text" class="form-input" placeholder="e.g. Pasang Fiber Perumahan Griya">
+                </div>
+                <div class="form-field">
+                  <label class="form-label">Jam Masuk</label>
+                  <input type="time" class="form-input" value="08:00">
+                </div>
+                <div class="form-field">
+                  <label class="form-label">Jam Selesai</label>
+                  <input type="time" class="form-input" value="17:00">
+                </div>
+                <div class="form-field full">
+                  <label class="form-label">Hari Kerja</label>
+                  <div class="form-check-group">
+                    <div class="day-check"><input type="checkbox" id="sen" checked><label for="sen">Senin</label></div>
+                    <div class="day-check"><input type="checkbox" id="sel" checked><label for="sel">Selasa</label></div>
+                    <div class="day-check"><input type="checkbox" id="rab" checked><label for="rab">Rabu</label></div>
+                    <div class="day-check"><input type="checkbox" id="kam" checked><label for="kam">Kamis</label></div>
+                    <div class="day-check"><input type="checkbox" id="jum" checked><label for="jum">Jumat</label></div>
+                    <div class="day-check"><input type="checkbox" id="sab"><label for="sab">Sabtu</label></div>
+                    <div class="day-check"><input type="checkbox" id="ming"><label for="ming">Minggu</label></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Pilih Anggota -->
+          <div>
+            <div class="buat-step-label">
+              <span class="step-num">3</span>
+              Pilih Anggota Tim
+            </div>
+            <div class="anggota-card">
+              <div class="all-toggle">
+                <input type="checkbox" id="toggle-all">
+                <label for="toggle-all">Semua Tim (16 anggota)</label>
+              </div>
+              <div class="member-check-list">
+                <label class="member-check-row"><input type="checkbox"><div class="mc-av">AR</div><span class="mc-name">Andi Ramadan</span><span class="role-ae">AE</span></label>
+                <label class="member-check-row"><input type="checkbox"><div class="mc-av">DS</div><span class="mc-name">Dian Safira</span><span class="role-ae">AE</span></label>
+                <label class="member-check-row"><input type="checkbox"><div class="mc-av">RP</div><span class="mc-name">Rizal Pratama</span><span class="role-ae">AE</span></label>
+                <label class="member-check-row"><input type="checkbox"><div class="mc-av">BW</div><span class="mc-name">Bima Wicaksono</span><span class="role-ae">AE</span></label>
+                <label class="member-check-row"><input type="checkbox"><div class="mc-av">AS</div><span class="mc-name">Ahmad Subagyo</span><span class="role-ae">AE</span></label>
+                <label class="member-check-row"><input type="checkbox"><div class="mc-av eng">BH</div><span class="mc-name">Budi Hartono</span><span class="role-eng">Eng</span></label>
+              </div>
+              <a class="see-all-link" href="#">Lihat semua (16)</a>
+            </div>
+          </div>
+
+          <!-- Submit bar -->
+          <div class="submit-bar">
+            <button class="btn-primary">Simpan &amp; Publikasikan</button>
+            <button class="btn-outline">Simpan Draft</button>
+          </div>
+
+        </div>
+      </div><!-- /tab-buat -->
+
+      <!-- PAGE FOOTER -->
+      <div class="page-foot">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Terakhir diperbarui 2 menit yang lalu
+      </div>
+
+    </div><!-- /content-area -->
+  </main>
+
+</div><!-- /mgmt-layout -->
+
+<script>
+  function togglePeople() {
+    var h = document.getElementById('people-head');
+    var s = document.getElementById('people-sub');
+    h.classList.toggle('open');
+    s.classList.toggle('open');
+  }
+
+  function toggleLearning() {
+    var h = document.getElementById('learning-head');
+    var s = document.getElementById('learning-sub');
+    h.classList.toggle('open');
+    s.classList.toggle('open');
+  }
+
+  function switchTab(id, el) {
+    document.querySelectorAll('.tab-panel').forEach(function(p) { p.style.display = 'none'; });
+    document.querySelectorAll('.pg-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.getElementById(id).style.display = 'block';
+    el.classList.add('active');
+  }
+
+  function selectScheme(type) {
+    document.getElementById('card-regular').classList.remove('selected');
+    document.getElementById('card-project').classList.remove('selected');
+    document.getElementById('card-' + type).classList.add('selected');
+
+    var isProject = (type === 'project');
+    document.getElementById('field-mulai').style.display = isProject ? '' : 'none';
+    document.getElementById('field-selesai').style.display = isProject ? '' : 'none';
+    document.getElementById('field-namaproject').style.display = isProject ? '' : 'none';
+
+    // Sync radio buttons
+    document.querySelectorAll('input[name="skema"]').forEach(function(r) {
+      r.checked = (r.value === type);
+    });
+  }
+
+  // Radio change also updates form fields
+  document.querySelectorAll('input[name="skema"]').forEach(function(r) {
+    r.addEventListener('change', function() {
+      selectScheme(this.value);
+    });
+  });
+
+  // "Semua Tim" toggle
+  document.getElementById('toggle-all').addEventListener('change', function() {
+    document.querySelectorAll('.member-check-list input[type="checkbox"]').forEach(function(cb) {
+      cb.checked = document.getElementById('toggle-all').checked;
+    });
+  });
+</script>
+</body>
+</html>

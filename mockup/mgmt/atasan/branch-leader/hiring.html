@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>People — Hiring Request · Branch Leader</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height:100%; font-family:'Inter',-apple-system,sans-serif; font-size:14px; color:#101828; background:#F5F7FA; -webkit-font-smoothing:antialiased; }
+    a { text-decoration:none; color:inherit; }
+    button { font-family:inherit; cursor:pointer; border:none; background:none; }
+    .mgmt-layout { display:flex; height:100vh; overflow:hidden; }
+    .sidebar { width:230px; flex-shrink:0; background:#0D1B3E; height:100vh; display:flex; flex-direction:column; overflow-y:auto; }
+    .sidebar::-webkit-scrollbar { width:3px; }
+    .sidebar::-webkit-scrollbar-thumb { background:rgba(255,255,255,.1); border-radius:2px; }
+    .sb-logo { display:flex; align-items:center; gap:10px; padding:22px 18px 16px; color:white; font-size:14px; font-weight:800; letter-spacing:-.3px; border-bottom:1px solid rgba(255,255,255,.07); }
+    .sb-logo svg { width:22px; height:22px; stroke:white; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-nav { padding:10px; flex:1; }
+    .sb-item { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
+    .sb-item:hover { background:rgba(255,255,255,.07); color:rgba(255,255,255,.9); }
+    .sb-item.active { background:rgba(29,111,243,.28); color:white; font-weight:700; }
+    .sb-item svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-badge { margin-left:auto; background:#F04438; color:white; font-size:9px; font-weight:800; min-width:17px; height:17px; border-radius:9px; display:flex; align-items:center; justify-content:center; padding:0 4px; }
+    .sb-group { margin-bottom:1px; }
+    .sb-group-head { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; cursor:pointer; user-select:none; transition:all .15s; }
+    .sb-group-head:hover, .sb-group-head.open { color:rgba(255,255,255,.9); background:rgba(255,255,255,.05); }
+    .sb-ico { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-chev { margin-left:auto; width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; transition:transform .2s; }
+    .sb-group-head.open .sb-chev { transform:rotate(90deg); }
+    .sb-sub { padding-left:14px; overflow:hidden; max-height:0; transition:max-height .25s ease; }
+    .sb-sub.open { max-height:200px; }
+    .sb-sub-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.45); font-size:12px; font-weight:500; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
+    .sb-sub-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.8); }
+    .sb-sub-item.active { background:rgba(29,111,243,.2); color:#60A5FA; font-weight:700; }
+    .sb-sub-dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; }
+    .sb-connect { padding:6px 10px 20px; border-top:1px solid rgba(255,255,255,.07); margin-top:auto; }
+    .sb-connect-label { font-size:10px; font-weight:700; color:rgba(255,255,255,.3); text-transform:uppercase; letter-spacing:.8px; padding:10px 10px 6px; }
+    .sb-connect-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.5); font-size:12px; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
+    .sb-connect-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.85); }
+    .sb-connect-item svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-connect-sub { font-size:10px; color:rgba(255,255,255,.25); margin-left:auto; }
+    /* MAIN */
+    .main-content { flex:1; height:100vh; overflow-y:auto; background:#F5F7FA; }
+    .topbar { background:white; height:62px; display:flex; align-items:center; justify-content:space-between; padding:0 28px; border-bottom:1px solid #EAECF0; position:sticky; top:0; z-index:20; }
+    .topbar-left { display:flex; align-items:center; gap:14px; }
+    .page-title { font-size:16px; font-weight:700; color:#101828; line-height:1.1; }
+    .page-sub { font-size:12px; color:#667085; }
+    .topbar-right { display:flex; align-items:center; gap:14px; }
+    .topbar-date { font-size:12px; color:#667085; display:flex; align-items:center; gap:5px; }
+    .topbar-date svg { width:14px; height:14px; stroke:#98A2B3; fill:none; stroke-width:2; }
+    .user-chip { display:flex; align-items:center; gap:9px; padding:6px 10px; border-radius:10px; cursor:pointer; }
+    .user-chip:hover { background:#F5F7FA; }
+    .user-av { width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,#1D6FF3,#1558C8); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:white; flex-shrink:0; }
+    .user-name { font-size:13px; font-weight:700; color:#101828; }
+    .user-role { font-size:11px; color:#98A2B3; }
+    .topbar-notif { position:relative; width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:9px; border:1px solid #EAECF0; background:white; cursor:pointer; flex-shrink:0; }
+    .topbar-notif svg { width:17px; height:17px; stroke:#667085; fill:none; stroke-width:2; }
+    .notif-dot { position:absolute; top:6px; right:7px; width:8px; height:8px; background:#F04438; border-radius:50%; border:1.5px solid white; }
+    .topbar-logout { display:flex; align-items:center; gap:6px; padding:7px 13px; border-radius:9px; background:#FEF3F2; border:1px solid #FECDCA; color:#B42318; font-size:12px; font-weight:700; cursor:pointer; text-decoration:none; transition:all .15s; flex-shrink:0; }
+    .topbar-logout:hover { background:#FEE4E2; }
+    .topbar-logout svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; }
+    .content-area { padding:22px 28px 32px; }
+    /* KPI */
+    .kpi-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:13px; margin-bottom:20px; }
+    .kpi-card { background:white; border-radius:12px; padding:15px 18px; border:1px solid #EAECF0; display:flex; align-items:flex-start; gap:12px; }
+    .kpi-ico { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .kpi-ico svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; }
+    .kpi-ico.blue { background:#EFF6FF; color:#1D6FF3; }
+    .kpi-ico.amber { background:#FFFAEB; color:#B54708; }
+    .kpi-ico.green { background:#ECFDF3; color:#027A48; }
+    .kpi-ico.red { background:#FEF3F2; color:#B42318; }
+    .kpi-val { font-size:24px; font-weight:800; color:#101828; letter-spacing:-1px; line-height:1; margin-bottom:2px; }
+    .kpi-lbl { font-size:11px; color:#667085; }
+    /* TABS */
+    .tab-bar { display:flex; gap:0; border-bottom:2px solid #EAECF0; margin-bottom:18px; }
+    .tab-btn { padding:9px 18px; font-size:13px; font-weight:600; color:#667085; cursor:pointer; border:none; background:none; font-family:inherit; border-bottom:2px solid transparent; margin-bottom:-2px; transition:all .15s; }
+    .tab-btn.active { color:#1D6FF3; border-bottom-color:#1D6FF3; }
+    .tab-btn:hover:not(.active) { color:#344054; }
+    .tab-panel { display:none; }
+    .tab-panel.active { display:block; }
+    /* TABLE */
+    .data-table { width:100%; border-collapse:collapse; background:white; border:1px solid #EAECF0; border-radius:12px; overflow:hidden; }
+    .data-table th { font-size:11px; font-weight:700; color:#667085; text-align:left; padding:10px 13px; background:#F9FAFB; border-bottom:1px solid #EAECF0; white-space:nowrap; }
+    .data-table td { font-size:12px; color:#344054; padding:11px 13px; border-bottom:1px solid #F9FAFB; vertical-align:middle; }
+    .data-table tr:last-child td { border-bottom:none; }
+    .data-table tr:hover td { background:#FAFBFF; }
+    /* BADGE */
+    .badge { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:20px; font-size:11px; font-weight:700; white-space:nowrap; }
+    .badge-dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; }
+    .badge.green { background:#ECFDF3; color:#027A48; }
+    .badge.orange { background:#FFFAEB; color:#B54708; }
+    .badge.amber { background:#FFF5E1; color:#B54708; }
+    .badge.red { background:#FEF3F2; color:#B42318; }
+    .badge.blue { background:#EFF6FF; color:#1D6FF3; }
+    .badge.gray { background:#F2F4F7; color:#667085; }
+    /* Buttons */
+    .btn-sm { padding:4px 11px; border-radius:7px; font-size:11px; font-weight:700; font-family:inherit; cursor:pointer; border:1px solid #EAECF0; background:white; color:#344054; transition:all .15s; display:inline-flex; align-items:center; gap:3px; }
+    .btn-sm:hover { background:#F9FAFB; }
+    .btn-sm.blue-outline { border-color:#B2DDFF; color:#1D6FF3; background:#EFF6FF; }
+    .btn-sm.red-outline { border-color:#FECDCA; color:#B42318; background:#FEF3F2; }
+    .btn-primary { display:inline-flex; align-items:center; gap:6px; padding:8px 16px; border-radius:9px; background:#1D6FF3; color:white; font-size:12px; font-weight:700; font-family:inherit; cursor:pointer; border:none; text-decoration:none; transition:all .15s; }
+    .btn-primary:hover { background:#1558C0; }
+    .btn-primary svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2.5; }
+    /* Panel header */
+    .panel-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+    .panel-sub { font-size:12px; color:#667085; }
+    /* AV */
+    .av { width:28px; height:28px; border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:800; color:white; flex-shrink:0; }
+    .av.blue { background:linear-gradient(135deg,#1D6FF3,#1558C8); }
+    .av.green { background:linear-gradient(135deg,#12B76A,#059669); }
+    .av.amber { background:linear-gradient(135deg,#F79009,#D97706); }
+    .av.purple { background:linear-gradient(135deg,#7C3AED,#6D28D9); }
+    .av.red { background:linear-gradient(135deg,#F04438,#D92D20); }
+    .av.gray { background:linear-gradient(135deg,#667085,#344054); }
+    .av.teal { background:linear-gradient(135deg,#0E9F93,#0D7A73); }
+    .av.pink { background:linear-gradient(135deg,#EC4899,#DB2777); }
+    .member-cell { display:flex; align-items:center; gap:8px; }
+    .member-name { font-size:12px; font-weight:700; color:#101828; }
+    /* MINI STEP TRACKER */
+    .step-track { display:flex; align-items:center; gap:2px; }
+    .step-circle { width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:8px; font-weight:800; flex-shrink:0; }
+    .step-circle.done { background:#1D6FF3; color:white; }
+    .step-circle.active { background:#1D6FF3; color:white; box-shadow:0 0 0 2px #BFDBFE; }
+    .step-circle.pending { background:white; border:2px solid #EAECF0; color:#98A2B3; }
+    .step-line { width:10px; height:2px; flex-shrink:0; }
+    .step-line.done { background:#1D6FF3; }
+    .step-line.pending { background:#EAECF0; }
+    /* CANDIDATE REVIEW CARDS */
+    .candidate-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .candidate-card { background:white; border:1px solid #EAECF0; border-radius:12px; overflow:hidden; }
+    .candidate-card-head { padding:14px 16px; border-bottom:1px solid #EAECF0; display:flex; align-items:center; gap:10px; background:#F9FAFB; }
+    .candidate-av { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:white; flex-shrink:0; }
+    .candidate-av.blue { background:linear-gradient(135deg,#1D6FF3,#1558C8); }
+    .candidate-av.green { background:linear-gradient(135deg,#12B76A,#059669); }
+    .candidate-av.amber { background:linear-gradient(135deg,#F79009,#D97706); }
+    .candidate-name { font-size:13px; font-weight:800; color:#101828; }
+    .candidate-sub { font-size:11px; color:#667085; }
+    .candidate-body { padding:14px 16px; }
+    .candidate-section { margin-bottom:12px; }
+    .candidate-section-title { font-size:10px; font-weight:800; color:#667085; text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; }
+    .candidate-row { display:flex; align-items:center; gap:6px; font-size:11px; color:#344054; margin-bottom:3px; }
+    .candidate-row-label { color:#98A2B3; width:80px; flex-shrink:0; }
+    .candidate-note { font-size:11px; color:#667085; font-style:italic; line-height:1.4; background:#F9FAFB; border-radius:7px; padding:8px 10px; border-left:3px solid #EAECF0; }
+    .candidate-score { display:flex; align-items:center; justify-content:space-between; margin-top:6px; }
+    .candidate-score-label { font-size:11px; color:#344054; font-weight:600; }
+    .candidate-score-val { font-size:16px; font-weight:800; }
+    .assess-row { display:flex; align-items:center; gap:8px; font-size:11px; color:#344054; margin-bottom:5px; }
+    .assess-label { width:90px; flex-shrink:0; }
+    .assess-stars { color:#F79009; letter-spacing:1px; }
+    .rec-options { display:flex; flex-direction:column; gap:5px; margin-bottom:8px; }
+    .rec-option { display:flex; align-items:center; gap:7px; font-size:12px; color:#344054; cursor:pointer; }
+    .rec-option input[type=radio] { accent-color:#1D6FF3; }
+    .rec-textarea { width:100%; border:1px solid #EAECF0; border-radius:7px; padding:7px 10px; font-size:11px; font-family:inherit; resize:none; color:#344054; outline:none; }
+    .rec-textarea:focus { border-color:#1D6FF3; }
+    .save-btn { width:100%; padding:8px; border-radius:8px; background:#1D6FF3; color:white; font-size:12px; font-weight:700; font-family:inherit; border:none; cursor:pointer; margin-top:8px; }
+    .save-btn:hover { background:#1558C0; }
+  </style>
+</head>
+<body>
+<div class="mgmt-layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+      GRIYANET
+    </div>
+    <nav class="sb-nav">
+      <a href="dashboard.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+        Dashboard
+      </a>
+      <div class="sb-group">
+        <div class="sb-group-head open" id="people-head" onclick="togglePeople()">
+          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          People
+          <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="sb-sub open" id="people-sub">
+          <a href="tim.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Team</a>
+          <a href="attendance.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Attendance</a>
+          <a href="hiring.html" class="sb-sub-item active"><span class="sb-sub-dot"></span>Hiring Request</a>
+          <a href="reviews.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Reviews</a>
+        </div>
+      </div>
+      <div class="sb-group">
+        <div class="sb-group-head" id="requests-head" onclick="toggleRequests()">
+          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Requests
+          <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="sb-sub" id="requests-sub">
+          <a href="requests.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Overview</a>
+          <a href="requests.html" class="sb-sub-item"><span class="sb-sub-dot"></span>My Requests</a>
+          <a href="request-create.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Create Request</a>
+        </div>
+      </div>
+      <a href="approval.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Approval
+        <span class="sb-badge">2</span>
+      </a>
+      <div class="sb-group">
+        <div class="sb-group-head" id="learning-head" onclick="toggleLearning()">
+          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg>
+          Learning
+          <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="sb-sub" id="learning-sub">
+          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>My Learning Progress</a>
+          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Learning Library</a>
+          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Team Learning Progress</a>
+        </div>
+      </div>
+      <a href="laporan.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Report &amp; Analytics
+      </a>
+    </nav>
+    <div class="sb-connect">
+      <div class="sb-connect-label">Connect</div>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>CRM<span class="sb-connect-sub">Sistem CRM</span></a>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>ERP<span class="sb-connect-sub">ERP Operasional</span></a>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>NOC<span class="sb-connect-sub">Monitoring NOC</span></a>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Ticketing<span class="sb-connect-sub">Sistem Ticket</span></a>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>Maps<span class="sb-connect-sub">Google Maps</span></a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <div>
+          <div class="page-title">People — Hiring Request</div>
+          <div class="page-sub">Cabang Karangploso &middot; Manajemen Kebutuhan Manpower</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-date">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Jumat, 19 Juni 2026
+        </div>
+        <button class="topbar-notif">
+          <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="notif-dot"></span>
+        </button>
+        <div class="user-chip">
+          <div class="user-av">BS</div>
+          <div>
+            <div class="user-name">Budi Santoso</div>
+            <div class="user-role">Branch Leader</div>
+          </div>
+        </div>
+        <a href="../../../index.html" class="topbar-logout">
+          <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Keluar
+        </a>
+      </div>
+    </header>
+
+    <div class="content-area">
+      <!-- KPI STRIP (4) -->
+      <div class="kpi-strip">
+        <div class="kpi-card">
+          <div class="kpi-ico blue"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <div><div class="kpi-val">5</div><div class="kpi-lbl">Open Request</div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-ico amber"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div><div class="kpi-val">12</div><div class="kpi-lbl">Kandidat Proses</div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-ico green"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+          <div><div class="kpi-val">8</div><div class="kpi-lbl">Target Join Bulan Ini</div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-ico red"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+          <div><div class="kpi-val">3</div><div class="kpi-lbl">Vacancy Open</div></div>
+        </div>
+      </div>
+
+      <!-- TABS -->
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('mrf',this)">Manpower Request</button>
+        <button class="tab-btn" onclick="switchTab('progress',this)">Recruitment Progress</button>
+        <button class="tab-btn" onclick="switchTab('review',this)">Candidate Review</button>
+      </div>
+
+      <!-- TAB 1: MRF -->
+      <div id="tab-mrf" class="tab-panel active">
+        <div class="panel-head">
+          <span class="panel-sub">Permintaan kebutuhan sumber daya manusia ke HC</span>
+          <button class="btn-primary">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Buat MRF
+          </button>
+        </div>
+        <table class="data-table" style="table-layout:fixed;width:100%;">
+          <colgroup><col style="width:190px"><col style="width:55px"><col style="width:90px"><col style="width:110px"><col style="width:110px"><col style="width:140px"><col style="width:130px"></colgroup>
+          <thead><tr><th>Posisi</th><th>Qty</th><th>Tipe</th><th>Target Join</th><th>Submitted</th><th>Status</th><th>Aksi</th></tr></thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:700;color:#101828;">Account Executive</td>
+              <td style="text-align:center;font-weight:700;">2</td>
+              <td><span class="badge blue" style="font-size:10px;">AE</span></td>
+              <td style="font-size:11px;color:#667085;">1 Jul 2026</td>
+              <td style="font-size:11px;color:#667085;">2 Jun 2026</td>
+              <td><span class="badge blue"><span class="badge-dot"></span>Proses HC</span></td>
+              <td><button class="btn-sm" style="margin-right:4px;">Detail</button><button class="btn-sm blue-outline">Track</button></td>
+            </tr>
+            <tr>
+              <td style="font-weight:700;color:#101828;">Teknisi FTTX</td>
+              <td style="text-align:center;font-weight:700;">1</td>
+              <td><span class="badge gray" style="font-size:10px;">Engineer</span></td>
+              <td style="font-size:11px;color:#667085;">15 Jun 2026</td>
+              <td style="font-size:11px;color:#667085;">28 Mei 2026</td>
+              <td><span class="badge amber"><span class="badge-dot"></span>Kandidat Diajukan</span></td>
+              <td><button class="btn-sm" style="margin-right:4px;">Detail</button><button class="btn-sm blue-outline">Track</button></td>
+            </tr>
+            <tr>
+              <td style="font-weight:700;color:#101828;">Account Executive</td>
+              <td style="text-align:center;font-weight:700;">1</td>
+              <td><span class="badge blue" style="font-size:10px;">AE</span></td>
+              <td style="font-size:11px;color:#667085;">15 Jul 2026</td>
+              <td style="font-size:11px;color:#667085;">5 Jun 2026</td>
+              <td><span class="badge gray">Draft</span></td>
+              <td><button class="btn-sm" style="margin-right:4px;">Detail</button><button class="btn-sm" style="margin-right:4px;">Edit</button><button class="btn-sm red-outline">Hapus</button></td>
+            </tr>
+            <tr>
+              <td style="font-weight:700;color:#101828;">Teknisi Maintenance</td>
+              <td style="text-align:center;font-weight:700;">2</td>
+              <td><span class="badge gray" style="font-size:10px;">Engineer</span></td>
+              <td style="font-size:11px;color:#667085;">1 Agu 2026</td>
+              <td style="font-size:11px;color:#667085;">10 Jun 2026</td>
+              <td><span class="badge green"><span class="badge-dot"></span>Disetujui</span></td>
+              <td><button class="btn-sm" style="margin-right:4px;">Detail</button><button class="btn-sm blue-outline">Track</button></td>
+            </tr>
+            <tr>
+              <td style="font-weight:700;color:#101828;">Account Executive</td>
+              <td style="text-align:center;font-weight:700;">1</td>
+              <td><span class="badge blue" style="font-size:10px;">AE</span></td>
+              <td style="font-size:11px;color:#667085;">30 Jun 2026</td>
+              <td style="font-size:11px;color:#667085;">12 Jun 2026</td>
+              <td><span class="badge amber"><span class="badge-dot"></span>Menunggu Approval</span></td>
+              <td><button class="btn-sm">Detail</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- TAB 2: RECRUITMENT PROGRESS -->
+      <div id="tab-progress" class="tab-panel">
+        <div class="panel-head">
+          <span class="panel-sub">Monitoring proses rekrutmen kandidat oleh tim HC</span>
+        </div>
+        <table class="data-table" style="table-layout:fixed;width:100%;">
+          <colgroup><col style="width:150px"><col style="width:110px"><col style="width:240px"><col style="width:120px"><col style="width:110px"><col style="width:70px"></colgroup>
+          <thead><tr><th>Kandidat</th><th>Posisi</th><th>Tahap Rekrutmen</th><th>Recruiter</th><th>Status</th><th>Aksi</th></tr></thead>
+          <tbody>
+            <!-- Ahmad Fauzi: step 3 active -->
+            <tr>
+              <td><div class="member-cell"><div class="av blue">AF</div><span class="member-name">Ahmad Fauzi</span></div></td>
+              <td><span class="badge blue" style="font-size:10px;">AE</span></td>
+              <td>
+                <div class="step-track">
+                  <div class="step-circle done">&#10003;</div><div class="step-line done"></div>
+                  <div class="step-circle done">&#10003;</div><div class="step-line done"></div>
+                  <div class="step-circle active">3</div><div class="step-line pending"></div>
+                  <div class="step-circle pending">4</div><div class="step-line pending"></div>
+                  <div class="step-circle pending">5</div>
+                </div>
+                <div style="font-size:9px;color:#667085;margin-top:3px;">Interview User</div>
+              </td>
+              <td style="font-size:11px;color:#667085;">Rina Susanti</td>
+              <td><span class="badge green"><span class="badge-dot"></span>Aktif</span></td>
+              <td><button class="btn-sm">Detail</button></td>
+            </tr>
+            <!-- Siti Aminah: step 2 active -->
+            <tr>
+              <td><div class="member-cell"><div class="av green">SA</div><span class="member-name">Siti Aminah</span></div></td>
+              <td><span class="badge blue" style="font-size:10px;">AE</span></td>
+              <td>
+                <div class="step-track">
+                  <div class="step-circle done">&#10003;</div><div class="step-line done"></div>
+                  <div class="step-circle active">2</div><div class="step-line pending"></div>
+                  <div class="step-circle pending">3</div><div class="step-line pending"></div>
+                  <div class="step-circle pending">4</div><div class="step-line pending"></div>
+                  <div class="step-circle pending">5</div>
+                </div>
+                <div style="font-size:9px;color:#667085;margin-top:3px;">Interview HC</div>
+              </td>
+              <td style="font-size:11px;color:#667085;">Rina Susanti</td>
+              <td><span class="badge green"><span class="badge-dot"></span>Aktif</span></td>
+              <td><button class="btn-sm">Detail</button></td>
+            </tr>
+            <!-- Bambang Tri: step 4 active -->
+            <tr>
+              <td><div class="member-cell"><div class="av amber">BT</div><span class="member-name">Bambang Tri</span></div></td>
+              <td><span class="badge gray" style="font-size:10px;">Teknisi</span></td>
+              <td>
+                <div class="step-track">
+                  <div class="step-circle done">&#10003;</div><div class="step-line done"></div>
+                  <div class="step-circle done">&#10003;</div><div class="step-line done"></div>
+                  <div class="step-circle done">&#10003;</div><div class="step-line done"></div>
+                  <div class="step-circle active">4</div><div class="step-line pending"></div>
+                  <div class="step-circle pending">5</div>
+                </div>
+                <div style="font-size:9px;color:#667085;margin-top:3px;">Offering</div>
+              </td>
+              <td style="font-size:11px;color:#667085;">Dewa Putra</td>
+              <td><span class="badge green"><span class="badge-dot"></span>Aktif</span></td>
+              <td><button class="btn-sm">Detail</button></td>
+            </tr>
+            <!-- Cahya Dewi: all done (step 5 hired) -->
+            <tr>
+              <td><div class="member-cell"><div class="av purple">CD</div><span class="member-name">Cahya Dewi</span></div></td>
+              <td><span class="badge blue" style="font-size:10px;">AE</span></td>
+              <td>
+                <div class="step-track">
+                  <div class="step-circle done">&#10003;</div><div class="step-line done"></div>
+                  <div class="step-circle done">&#10003;</div><div class="step-line done"></div>
+                  <div class="step-circle done">&#10003;</div><div class="step-line done"></div>
+                  <div class="step-circle done">&#10003;</div><div class="step-line done"></div>
+                  <div class="step-circle done">&#10003;</div>
+                </div>
+                <div style="font-size:9px;color:#027A48;margin-top:3px;font-weight:700;">Hired</div>
+              </td>
+              <td style="font-size:11px;color:#667085;">Rina Susanti</td>
+              <td><span class="badge blue"><span class="badge-dot"></span>Hired</span></td>
+              <td><button class="btn-sm">Detail</button></td>
+            </tr>
+            <!-- Dani Kusuma: step 1 active -->
+            <tr>
+              <td><div class="member-cell"><div class="av red">DK</div><span class="member-name">Dani Kusuma</span></div></td>
+              <td><span class="badge gray" style="font-size:10px;">Teknisi</span></td>
+              <td>
+                <div class="step-track">
+                  <div class="step-circle active">1</div><div class="step-line pending"></div>
+                  <div class="step-circle pending">2</div><div class="step-line pending"></div>
+                  <div class="step-circle pending">3</div><div class="step-line pending"></div>
+                  <div class="step-circle pending">4</div><div class="step-line pending"></div>
+                  <div class="step-circle pending">5</div>
+                </div>
+                <div style="font-size:9px;color:#667085;margin-top:3px;">Screening</div>
+              </td>
+              <td style="font-size:11px;color:#667085;">Dewa Putra</td>
+              <td><span class="badge green"><span class="badge-dot"></span>Aktif</span></td>
+              <td><button class="btn-sm">Detail</button></td>
+            </tr>
+            <!-- Eka Pratiwi: step 3 active -->
+            <tr>
+              <td><div class="member-cell"><div class="av teal">EP</div><span class="member-name">Eka Pratiwi</span></div></td>
+              <td><span class="badge blue" style="font-size:10px;">AE</span></td>
+              <td>
+                <div class="step-track">
+                  <div class="step-circle done">&#10003;</div><div class="step-line done"></div>
+                  <div class="step-circle done">&#10003;</div><div class="step-line done"></div>
+                  <div class="step-circle active">3</div><div class="step-line pending"></div>
+                  <div class="step-circle pending">4</div><div class="step-line pending"></div>
+                  <div class="step-circle pending">5</div>
+                </div>
+                <div style="font-size:9px;color:#667085;margin-top:3px;">Interview User</div>
+              </td>
+              <td style="font-size:11px;color:#667085;">Rina Susanti</td>
+              <td><span class="badge green"><span class="badge-dot"></span>Aktif</span></td>
+              <td><button class="btn-sm">Detail</button></td>
+            </tr>
+            <!-- Fajar Rahman: step 2 active -->
+            <tr>
+              <td><div class="member-cell"><div class="av pink">FR</div><span class="member-name">Fajar Rahman</span></div></td>
+              <td><span class="badge gray" style="font-size:10px;">Teknisi</span></td>
+              <td>
+                <div class="step-track">
+                  <div class="step-circle done">&#10003;</div><div class="step-line done"></div>
+                  <div class="step-circle active">2</div><div class="step-line pending"></div>
+                  <div class="step-circle pending">3</div><div class="step-line pending"></div>
+                  <div class="step-circle pending">4</div><div class="step-line pending"></div>
+                  <div class="step-circle pending">5</div>
+                </div>
+                <div style="font-size:9px;color:#667085;margin-top:3px;">Interview HC</div>
+              </td>
+              <td style="font-size:11px;color:#667085;">Dewa Putra</td>
+              <td><span class="badge green"><span class="badge-dot"></span>Aktif</span></td>
+              <td><button class="btn-sm">Detail</button></td>
+            </tr>
+            <!-- Gilang Prayoga: step 1 active -->
+            <tr>
+              <td><div class="member-cell"><div class="av gray">GP</div><span class="member-name">Gilang Prayoga</span></div></td>
+              <td><span class="badge blue" style="font-size:10px;">AE</span></td>
+              <td>
+                <div class="step-track">
+                  <div class="step-circle active">1</div><div class="step-line pending"></div>
+                  <div class="step-circle pending">2</div><div class="step-line pending"></div>
+                  <div class="step-circle pending">3</div><div class="step-line pending"></div>
+                  <div class="step-circle pending">4</div><div class="step-line pending"></div>
+                  <div class="step-circle pending">5</div>
+                </div>
+                <div style="font-size:9px;color:#B54708;margin-top:3px;font-weight:700;">Screening</div>
+              </td>
+              <td style="font-size:11px;color:#667085;">Rina Susanti</td>
+              <td><span class="badge amber"><span class="badge-dot"></span>Screening</span></td>
+              <td><button class="btn-sm">Detail</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="display:flex;gap:14px;margin-top:12px;font-size:10px;color:#667085;">
+          <span>Tahap: <b>1</b> Screening &nbsp;·&nbsp; <b>2</b> Interview HC &nbsp;·&nbsp; <b>3</b> Interview User &nbsp;·&nbsp; <b>4</b> Offering &nbsp;·&nbsp; <b>5</b> Hired</span>
+        </div>
+      </div>
+
+      <!-- TAB 3: CANDIDATE REVIEW -->
+      <div id="tab-review" class="tab-panel">
+        <div class="panel-head">
+          <span class="panel-sub">Penilaian dan rekomendasi kandidat sebelum keputusan akhir</span>
+        </div>
+        <div class="candidate-grid">
+          <!-- Card 1: Ahmad Fauzi -->
+          <div class="candidate-card">
+            <div class="candidate-card-head">
+              <div class="candidate-av blue">AF</div>
+              <div>
+                <div class="candidate-name">Ahmad Fauzi</div>
+                <div class="candidate-sub">Kandidat AE &middot; Interview User</div>
+              </div>
+            </div>
+            <div class="candidate-body">
+              <div class="candidate-section">
+                <div class="candidate-section-title">Resume &amp; Background</div>
+                <div class="candidate-row"><span class="candidate-row-label">Pengalaman:</span>3 tahun sales B2C</div>
+                <div class="candidate-row"><span class="candidate-row-label">Pendidikan:</span>S1 Manajemen</div>
+                <div class="candidate-row"><span class="candidate-row-label">Domisili:</span>Kota Malang</div>
+              </div>
+              <div class="candidate-section">
+                <div class="candidate-section-title">Catatan Interview HC</div>
+                <div class="candidate-note">"Komunikasi baik, energik, perlu diperkuat product knowledge"</div>
+                <div class="candidate-score"><span class="candidate-score-label">Nilai HC:</span><span class="candidate-score-val" style="color:#027A48;">78<span style="font-size:11px;color:#667085;">/100</span></span></div>
+              </div>
+              <div class="candidate-section">
+                <div class="candidate-section-title">Assessment</div>
+                <div class="assess-row"><span class="assess-label">Kepribadian</span><span class="assess-stars">&#9679;&#9679;&#9679;&#9679;&#9675;</span><span style="margin-left:4px;font-size:10px;color:#667085;">4/5</span></div>
+                <div class="assess-row"><span class="assess-label">Numerik</span><span class="assess-stars">&#9679;&#9679;&#9679;&#9675;&#9675;</span><span style="margin-left:4px;font-size:10px;color:#667085;">3/5</span></div>
+                <div class="assess-row"><span class="assess-label">Komunikasi</span><span class="assess-stars">&#9679;&#9679;&#9679;&#9679;&#9675;</span><span style="margin-left:4px;font-size:10px;color:#667085;">4/5</span></div>
+              </div>
+              <div class="candidate-section">
+                <div class="candidate-section-title">Rekomendasi User</div>
+                <div class="rec-options">
+                  <label class="rec-option"><input type="radio" name="rec1"> Rekomendasikan</label>
+                  <label class="rec-option"><input type="radio" name="rec1"> Tunda</label>
+                  <label class="rec-option"><input type="radio" name="rec1"> Tidak Cocok</label>
+                </div>
+                <textarea class="rec-textarea" rows="2" placeholder="Catatan tambahan..."></textarea>
+                <button class="save-btn">Simpan Penilaian</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Siti Aminah -->
+          <div class="candidate-card">
+            <div class="candidate-card-head">
+              <div class="candidate-av green">SA</div>
+              <div>
+                <div class="candidate-name">Siti Aminah</div>
+                <div class="candidate-sub">Kandidat AE &middot; Interview HC</div>
+              </div>
+            </div>
+            <div class="candidate-body">
+              <div class="candidate-section">
+                <div class="candidate-section-title">Resume &amp; Background</div>
+                <div class="candidate-row"><span class="candidate-row-label">Pengalaman:</span>2 tahun telemarketing</div>
+                <div class="candidate-row"><span class="candidate-row-label">Pendidikan:</span>D3 Pemasaran</div>
+                <div class="candidate-row"><span class="candidate-row-label">Domisili:</span>Kab. Malang</div>
+              </div>
+              <div class="candidate-section">
+                <div class="candidate-section-title">Catatan Interview HC</div>
+                <div class="candidate-note">"Antusias tinggi, pengalaman masih minim tapi growth mindset kuat"</div>
+                <div class="candidate-score"><span class="candidate-score-label">Nilai HC:</span><span class="candidate-score-val" style="color:#B54708;">65<span style="font-size:11px;color:#667085;">/100</span></span></div>
+              </div>
+              <div class="candidate-section">
+                <div class="candidate-section-title">Assessment</div>
+                <div class="assess-row"><span class="assess-label">Kepribadian</span><span class="assess-stars">&#9679;&#9679;&#9679;&#9679;&#9675;</span><span style="margin-left:4px;font-size:10px;color:#667085;">4/5</span></div>
+                <div class="assess-row"><span class="assess-label">Numerik</span><span class="assess-stars">&#9679;&#9679;&#9675;&#9675;&#9675;</span><span style="margin-left:4px;font-size:10px;color:#667085;">2/5</span></div>
+                <div class="assess-row"><span class="assess-label">Komunikasi</span><span class="assess-stars">&#9679;&#9679;&#9679;&#9675;&#9675;</span><span style="margin-left:4px;font-size:10px;color:#667085;">3/5</span></div>
+              </div>
+              <div class="candidate-section">
+                <div class="candidate-section-title">Rekomendasi User</div>
+                <div class="rec-options">
+                  <label class="rec-option"><input type="radio" name="rec2"> Rekomendasikan</label>
+                  <label class="rec-option"><input type="radio" name="rec2"> Tunda</label>
+                  <label class="rec-option"><input type="radio" name="rec2"> Tidak Cocok</label>
+                </div>
+                <textarea class="rec-textarea" rows="2" placeholder="Catatan tambahan..."></textarea>
+                <button class="save-btn">Simpan Penilaian</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Bambang Tri -->
+          <div class="candidate-card">
+            <div class="candidate-card-head">
+              <div class="candidate-av amber">BT</div>
+              <div>
+                <div class="candidate-name">Bambang Tri</div>
+                <div class="candidate-sub">Kandidat Teknisi &middot; Offering</div>
+              </div>
+            </div>
+            <div class="candidate-body">
+              <div class="candidate-section">
+                <div class="candidate-section-title">Resume &amp; Background</div>
+                <div class="candidate-row"><span class="candidate-row-label">Pengalaman:</span>5 tahun teknisi FTTX</div>
+                <div class="candidate-row"><span class="candidate-row-label">Pendidikan:</span>STM Elektronika</div>
+                <div class="candidate-row"><span class="candidate-row-label">Domisili:</span>Kota Malang</div>
+              </div>
+              <div class="candidate-section">
+                <div class="candidate-section-title">Catatan Interview HC</div>
+                <div class="candidate-note">"Sangat kompeten secara teknis, pengalaman lapangan solid, attitude profesional"</div>
+                <div class="candidate-score"><span class="candidate-score-label">Nilai HC:</span><span class="candidate-score-val" style="color:#027A48;">85<span style="font-size:11px;color:#667085;">/100</span></span></div>
+              </div>
+              <div class="candidate-section">
+                <div class="candidate-section-title">Assessment</div>
+                <div class="assess-row"><span class="assess-label">Kepribadian</span><span class="assess-stars">&#9679;&#9679;&#9679;&#9679;&#9675;</span><span style="margin-left:4px;font-size:10px;color:#667085;">4/5</span></div>
+                <div class="assess-row"><span class="assess-label">Teknis</span><span class="assess-stars">&#9679;&#9679;&#9679;&#9679;&#9679;</span><span style="margin-left:4px;font-size:10px;color:#667085;">5/5</span></div>
+                <div class="assess-row"><span class="assess-label">Problem Solving</span><span class="assess-stars">&#9679;&#9679;&#9679;&#9679;&#9675;</span><span style="margin-left:4px;font-size:10px;color:#667085;">4/5</span></div>
+              </div>
+              <div class="candidate-section">
+                <div class="candidate-section-title">Rekomendasi User</div>
+                <div class="rec-options">
+                  <label class="rec-option"><input type="radio" name="rec3" checked> Rekomendasikan</label>
+                  <label class="rec-option"><input type="radio" name="rec3"> Tunda</label>
+                  <label class="rec-option"><input type="radio" name="rec3"> Tidak Cocok</label>
+                </div>
+                <textarea class="rec-textarea" rows="2" placeholder="Catatan tambahan...">Sangat direkomendasikan. Kandidat terkuat dari seluruh proses.</textarea>
+                <button class="save-btn">Simpan Penilaian</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+function switchTab(id,btn){document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});document.getElementById('tab-'+id).classList.add('active');btn.classList.add('active');}
+function togglePeople(){var h=document.getElementById('people-head'),s=document.getElementById('people-sub');h.classList.toggle('open');s.classList.toggle('open');}
+function toggleRequests(){var h=document.getElementById('requests-head'),s=document.getElementById('requests-sub');h.classList.toggle('open');s.classList.toggle('open');}
+function toggleLearning(){var h=document.getElementById('learning-head'),s=document.getElementById('learning-sub');h.classList.toggle('open');s.classList.toggle('open');}
+</script>
+</body>
+</html>

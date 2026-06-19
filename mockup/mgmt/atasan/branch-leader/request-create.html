@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Request — Branch Leader</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height:100%; font-family:Inter,-apple-system,sans-serif; font-size:14px; color:#101828; background:#F5F7FA; -webkit-font-smoothing:antialiased; }
+    a { text-decoration:none; color:inherit; }
+    button { font-family:inherit; cursor:pointer; border:none; background:none; }
+    .mgmt-layout { display:flex; height:100vh; overflow:hidden; }
+    .sidebar { width:230px; flex-shrink:0; background:#0D1B3E; height:100vh; display:flex; flex-direction:column; overflow-y:auto; }
+    .sidebar::-webkit-scrollbar { width:3px; }
+    .sidebar::-webkit-scrollbar-thumb { background:rgba(255,255,255,.1); border-radius:2px; }
+    .sb-logo { display:flex; align-items:center; gap:10px; padding:22px 18px 16px; color:white; font-size:14px; font-weight:800; letter-spacing:-.3px; border-bottom:1px solid rgba(255,255,255,.07); }
+    .sb-logo svg { width:22px; height:22px; stroke:white; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-nav { padding:10px 10px; flex:1; }
+    .sb-item { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
+    .sb-item:hover { background:rgba(255,255,255,.07); color:rgba(255,255,255,.9); }
+    .sb-item.active { background:rgba(29,111,243,.28); color:white; font-weight:700; }
+    .sb-item svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-badge { margin-left:auto; background:#F04438; color:white; font-size:9px; font-weight:800; min-width:17px; height:17px; border-radius:9px; display:flex; align-items:center; justify-content:center; padding:0 4px; }
+    .sb-connect { padding:6px 10px 20px; border-top:1px solid rgba(255,255,255,.07); margin-top:auto; }
+    .sb-connect-label { font-size:10px; font-weight:700; color:rgba(255,255,255,.3); text-transform:uppercase; letter-spacing:.8px; padding:10px 10px 6px; }
+    .sb-connect-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.5); font-size:12px; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
+    .sb-connect-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.85); }
+    .sb-connect-item svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-connect-sub { font-size:10px; color:rgba(255,255,255,.25); margin-left:auto; }
+    .sb-group { margin-bottom:1px; }
+    .sb-group-head { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; cursor:pointer; user-select:none; transition:all .15s; }
+    .sb-group-head:hover, .sb-group-head.open { color:rgba(255,255,255,.9); background:rgba(255,255,255,.05); }
+    .sb-ico { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-chev { margin-left:auto; width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; transition:transform .2s; }
+    .sb-group-head.open .sb-chev { transform:rotate(90deg); }
+    .sb-sub { padding-left:14px; overflow:hidden; max-height:0; transition:max-height .25s ease; }
+    .sb-sub.open { max-height:200px; }
+    .sb-sub-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.45); font-size:12px; font-weight:500; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
+    .sb-sub-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.8); }
+    .sb-sub-item.active { background:rgba(29,111,243,.2); color:#60A5FA; font-weight:700; }
+    .sb-sub-dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; }
+    .main-content { flex:1; height:100vh; overflow-y:auto; background:#F5F7FA; }
+    .topbar { background:white; height:62px; display:flex; align-items:center; justify-content:space-between; padding:0 28px; border-bottom:1px solid #EAECF0; position:sticky; top:0; z-index:20; }
+    .topbar-left { display:flex; align-items:center; gap:14px; }
+    .topbar-btn { width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:8px; color:#667085; }
+    .topbar-btn svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; }
+    .page-title { font-size:16px; font-weight:700; color:#101828; line-height:1.1; }
+    .page-sub { font-size:12px; color:#667085; }
+    .topbar-right { display:flex; align-items:center; gap:14px; }
+    .topbar-date { font-size:12px; color:#667085; display:flex; align-items:center; gap:5px; }
+    .topbar-date svg { width:14px; height:14px; stroke:#98A2B3; fill:none; stroke-width:2; }
+    .user-chip { display:flex; align-items:center; gap:9px; padding:6px 10px; border-radius:10px; cursor:pointer; }
+    .user-chip:hover { background:#F5F7FA; }
+    .user-av { width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,#1D6FF3,#0E4FC4); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:white; flex-shrink:0; }
+    .user-name { font-size:13px; font-weight:700; color:#101828; }
+    .user-role { font-size:11px; color:#98A2B3; display:flex; align-items:center; gap:3px; }
+    .user-role svg { width:12px; height:12px; stroke:#98A2B3; fill:none; stroke-width:2; }
+    .topbar-notif { position:relative; width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:9px; border:1px solid #EAECF0; background:white; cursor:pointer; flex-shrink:0; }
+    .topbar-notif svg { width:17px; height:17px; stroke:#667085; fill:none; stroke-width:2; }
+    .notif-dot { position:absolute; top:6px; right:7px; width:8px; height:8px; background:#F04438; border-radius:50%; border:1.5px solid white; }
+    .topbar-notif:hover { background:#F9FAFB; }
+    .topbar-logout { display:flex; align-items:center; gap:6px; padding:7px 13px; border-radius:9px; background:#FEF3F2; border:1px solid #FECDCA; color:#B42318; font-size:12px; font-weight:700; cursor:pointer; text-decoration:none; transition:all .15s; flex-shrink:0; }
+    .topbar-logout:hover { background:#FEE4E2; }
+    .topbar-logout svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; }
+    .content-area { padding:22px 28px 40px; max-width:900px; }
+    .breadcrumb { display:flex; align-items:center; gap:6px; font-size:12px; color:#98A2B3; margin-bottom:16px; }
+    .breadcrumb a { color:#667085; text-decoration:none; }
+    .breadcrumb a:hover { color:#1D6FF3; }
+    .breadcrumb svg { width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2; }
+    .form-card { background:white; border:1px solid #EAECF0; border-radius:14px; margin-bottom:16px; overflow:hidden; }
+    .form-card-head { padding:16px 20px; border-bottom:1px solid #F2F4F7; display:flex; align-items:center; gap:10px; }
+    .form-card-num { width:24px; height:24px; border-radius:50%; background:#1D6FF3; color:white; font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .form-card-title { font-size:13px; font-weight:700; color:#101828; }
+    .form-card-desc { font-size:11px; color:#98A2B3; margin-top:1px; }
+    .form-card-body { padding:18px 20px; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+    .form-row.full { grid-template-columns:1fr; }
+    .form-row.three { grid-template-columns:1fr 1fr 1fr; }
+    .form-group { display:flex; flex-direction:column; gap:5px; }
+    .form-label { font-size:12px; font-weight:600; color:#344054; }
+    .form-label .req { color:#F04438; }
+    .form-input { padding:9px 12px; border:1px solid #D0D5DD; border-radius:8px; font-size:13px; font-family:inherit; color:#101828; outline:none; transition:border .15s; background:white; }
+    .form-input:focus { border-color:#1D6FF3; box-shadow:0 0 0 3px rgba(29,111,243,.1); }
+    .form-select { padding:9px 12px; border:1px solid #D0D5DD; border-radius:8px; font-size:13px; font-family:inherit; color:#101828; outline:none; cursor:pointer; background:white; }
+    .form-select:focus { border-color:#1D6FF3; }
+    .form-textarea { padding:9px 12px; border:1px solid #D0D5DD; border-radius:8px; font-size:13px; font-family:inherit; color:#101828; outline:none; resize:vertical; min-height:80px; transition:border .15s; }
+    .form-textarea:focus { border-color:#1D6FF3; box-shadow:0 0 0 3px rgba(29,111,243,.1); }
+    .form-hint { font-size:11px; color:#98A2B3; }
+    .type-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+    .type-option { border:1.5px solid #EAECF0; border-radius:10px; padding:12px; cursor:pointer; transition:all .15s; }
+    .type-option:hover { border-color:#1D6FF3; background:#FAFBFF; }
+    .type-option.selected { border-color:#1D6FF3; background:#EFF6FF; }
+    .type-option-ico { width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:7px; }
+    .type-option-ico svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; }
+    .type-option-name { font-size:12px; font-weight:700; color:#101828; }
+    .type-option-desc { font-size:11px; color:#98A2B3; margin-top:2px; }
+    .workflow-steps { display:flex; align-items:center; gap:0; padding:14px 16px; background:#F9FAFB; border-radius:10px; }
+    .wf-step { display:flex; align-items:center; gap:6px; font-size:11px; }
+    .wf-dot { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:800; flex-shrink:0; }
+    .wf-dot.done { background:#ECFDF3; color:#027A48; border:1.5px solid #A9EFC5; }
+    .wf-dot.current { background:#1D6FF3; color:white; }
+    .wf-dot.pending { background:#F2F4F7; color:#98A2B3; border:1.5px solid #EAECF0; }
+    .wf-label { font-weight:600; color:#344054; }
+    .wf-sublabel { color:#98A2B3; font-size:10px; }
+    .wf-arrow { width:30px; height:1px; background:#D0D5DD; margin:0 4px; flex-shrink:0; }
+    .upload-area { border:1.5px dashed #D0D5DD; border-radius:10px; padding:20px; text-align:center; cursor:pointer; transition:all .15s; }
+    .upload-area:hover { border-color:#1D6FF3; background:#FAFBFF; }
+    .upload-ico { width:40px; height:40px; border-radius:10px; background:#F2F4F7; display:flex; align-items:center; justify-content:center; margin:0 auto 8px; }
+    .upload-ico svg { width:18px; height:18px; stroke:#98A2B3; fill:none; stroke-width:2; }
+    .upload-text { font-size:12px; color:#667085; }
+    .upload-text strong { color:#1D6FF3; }
+    .upload-hint { font-size:11px; color:#98A2B3; margin-top:3px; }
+    .dynamic-fields { padding:14px 16px; background:#F9FAFB; border-radius:10px; margin-top:4px; }
+    .dynamic-fields-title { font-size:11px; font-weight:700; color:#667085; text-transform:uppercase; letter-spacing:.5px; margin-bottom:10px; }
+    .form-actions { display:flex; align-items:center; justify-content:flex-end; gap:10px; padding-top:4px; }
+    .btn-secondary { padding:9px 18px; border-radius:9px; border:1px solid #D0D5DD; background:white; color:#344054; font-size:13px; font-weight:600; font-family:inherit; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:6px; }
+    .btn-secondary:hover { background:#F9FAFB; }
+    .btn-primary { padding:9px 18px; border-radius:9px; background:#1D6FF3; color:white; font-size:13px; font-weight:700; font-family:inherit; cursor:pointer; border:none; display:inline-flex; align-items:center; gap:6px; }
+    .btn-primary:hover { background:#1558C0; }
+    .btn-primary svg, .btn-secondary svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; }
+    .info-banner { background:#EFF6FF; border:1px solid #BFDBFE; border-radius:10px; padding:12px 14px; display:flex; align-items:flex-start; gap:10px; margin-bottom:14px; }
+    .info-banner svg { width:16px; height:16px; stroke:#1D6FF3; fill:none; stroke-width:2; flex-shrink:0; margin-top:1px; }
+    .info-banner-text { font-size:12px; color:#1E40AF; line-height:1.5; }
+  </style>
+</head>
+<body>
+<div class="mgmt-layout">
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+      GRIYANET
+    </div>
+    <nav class="sb-nav">
+      <a href="dashboard.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="attendance.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Attendance &amp; Schedule
+      </a>
+      <div class="sb-group">
+        <div class="sb-group-head open" id="requests-head" onclick="toggleRequests()">
+          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          Requests
+          <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="sb-sub open" id="requests-sub">
+          <a href="requests.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Overview</a>
+          <a href="requests.html" class="sb-sub-item"><span class="sb-sub-dot"></span>My Requests</a>
+          <a href="request-create.html" class="sb-sub-item active"><span class="sb-sub-dot"></span>Create Request</a>
+        </div>
+      </div>
+      <a href="approval.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Approval
+        <span class="sb-badge">8</span>
+      </a>
+      <div class="sb-group">
+        <div class="sb-group-head" id="learning-head" onclick="toggleLearning()">
+          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg>
+          Learning
+          <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="sb-sub" id="learning-sub">
+          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>My Learning Progress</a>
+          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Learning Library</a>
+          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Team Learning Progress</a>
+        </div>
+      </div>
+      <a href="tim.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Tim Saya
+      </a>
+      <a href="laporan.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Report &amp; Analytics
+      </a>
+    </nav>
+    <div class="sb-connect">
+      <div class="sb-connect-label">Connect</div>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>CRM<span class="sb-connect-sub">Sistem CRM</span></a>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>ERP<span class="sb-connect-sub">ERP Operasional</span></a>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>NOC<span class="sb-connect-sub">Monitoring NOC</span></a>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>GIS<span class="sb-connect-sub">Peta Wilayah</span></a>
+    </div>
+  </aside>
+  <main class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="topbar-btn"><svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <div>
+          <div class="page-title">Buat Pengajuan</div>
+          <div class="page-sub">Branch Leader &middot; Branch Singosari</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-date">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Jumat, 19 Juni 2026
+        </div>
+        <button class="topbar-notif">
+          <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="notif-dot"></span>
+        </button>
+        <div class="user-chip">
+          <div class="user-av">AS</div>
+          <div>
+            <div class="user-name">Ahmad Subagyo</div>
+            <div class="user-role">Branch Leader <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+        </div>
+        <a href="../../../index.html" class="topbar-logout">
+          <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Keluar
+        </a>
+      </div>
+    </header>
+    <div class="content-area">
+      <div class="breadcrumb">
+        <a href="requests.html">My Requests</a>
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        <span style="color:#101828;font-weight:600;">Buat Pengajuan Baru</span>
+      </div>
+
+      <!-- Section 1: Category -->
+      <div class="form-card">
+        <div class="form-card-head">
+          <div class="form-card-num">1</div>
+          <div>
+            <div class="form-card-title">Kategori Pengajuan</div>
+            <div class="form-card-desc">Pilih kategori yang sesuai dengan kebutuhan Anda</div>
+          </div>
+        </div>
+        <div class="form-card-body">
+          <div class="type-grid">
+            <div class="type-option selected" onclick="selectCategory(this,'attendance')" id="cat-attendance">
+              <div class="type-option-ico" style="background:#EFF6FF;color:#1D6FF3;"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+              <div class="type-option-name">Attendance</div>
+              <div class="type-option-desc">Izin, Cuti, Sakit, Dinas, Shift</div>
+            </div>
+            <div class="type-option" onclick="selectCategory(this,'learning')" id="cat-learning">
+              <div class="type-option-ico" style="background:#F4F3FF;color:#7C3AED;"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg></div>
+              <div class="type-option-name">Learning</div>
+              <div class="type-option-desc">Training, Sertifikasi</div>
+            </div>
+            <div class="type-option" onclick="selectCategory(this,'financial')" id="cat-financial">
+              <div class="type-option-ico" style="background:#FFFAEB;color:#B54708;"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+              <div class="type-option-name">Financial</div>
+              <div class="type-option-desc">Reimbursement, Cash Advance</div>
+            </div>
+            <div class="type-option" onclick="selectCategory(this,'people')" id="cat-people">
+              <div class="type-option-ico" style="background:#ECFDF3;color:#027A48;"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+              <div class="type-option-name">People Movement</div>
+              <div class="type-option-desc">Rekrut, Mutasi, Adaptasi</div>
+            </div>
+            <div class="type-option" onclick="selectCategory(this,'other')" id="cat-other">
+              <div class="type-option-ico" style="background:#F9FAFB;color:#667085;"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+              <div class="type-option-name">Lain-lain</div>
+              <div class="type-option-desc">Surat keterangan, dll</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Request Type -->
+      <div class="form-card">
+        <div class="form-card-head">
+          <div class="form-card-num">2</div>
+          <div>
+            <div class="form-card-title">Jenis Pengajuan</div>
+            <div class="form-card-desc">Pilih jenis spesifik pengajuan Anda</div>
+          </div>
+        </div>
+        <div class="form-card-body">
+          <div class="form-row full">
+            <div class="form-group">
+              <label class="form-label">Jenis Pengajuan <span class="req">*</span></label>
+              <select class="form-select" id="request-type" onchange="updateDynamicFields()">
+                <option value="">-- Pilih Jenis --</option>
+                <option value="izin">Izin (Tidak Masuk)</option>
+                <option value="cuti">Cuti Tahunan</option>
+                <option value="sakit">Sakit</option>
+                <option value="dinas">Dinas Luar</option>
+                <option value="shift">Pergantian Shift</option>
+              </select>
+            </div>
+          </div>
+          <div class="dynamic-fields" id="dynamic-fields">
+            <div class="dynamic-fields-title">Detail Attendance</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Tanggal Mulai <span class="req">*</span></label>
+                <input type="date" class="form-input" value="2026-06-22">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Tanggal Selesai <span class="req">*</span></label>
+                <input type="date" class="form-input" value="2026-06-22">
+              </div>
+            </div>
+            <div class="form-row full">
+              <div class="form-group">
+                <label class="form-label">Alasan <span class="req">*</span></label>
+                <select class="form-select">
+                  <option>Keperluan Keluarga</option>
+                  <option>Keperluan Pribadi</option>
+                  <option>Acara Pernikahan</option>
+                  <option>Lainnya</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Detail -->
+      <div class="form-card">
+        <div class="form-card-head">
+          <div class="form-card-num">3</div>
+          <div>
+            <div class="form-card-title">Informasi Tambahan</div>
+            <div class="form-card-desc">Lengkapi informasi pendukung pengajuan</div>
+          </div>
+        </div>
+        <div class="form-card-body">
+          <div class="form-row full" style="margin-bottom:14px;">
+            <div class="form-group">
+              <label class="form-label">Deskripsi / Keterangan</label>
+              <textarea class="form-textarea" placeholder="Jelaskan secara singkat alasan dan kebutuhan pengajuan Anda..."></textarea>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Prioritas</label>
+              <select class="form-select">
+                <option>Normal</option>
+                <option>Mendesak</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Dibutuhkan Sebelum</label>
+              <input type="date" class="form-input" value="2026-06-21">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4: Attachments -->
+      <div class="form-card">
+        <div class="form-card-head">
+          <div class="form-card-num">4</div>
+          <div>
+            <div class="form-card-title">Lampiran Dokumen</div>
+            <div class="form-card-desc">Unggah dokumen pendukung jika diperlukan</div>
+          </div>
+        </div>
+        <div class="form-card-body">
+          <div class="upload-area" onclick="document.getElementById('file-upload').click()">
+            <div class="upload-ico"><svg viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg></div>
+            <div class="upload-text"><strong>Klik untuk upload</strong> atau drag &amp; drop</div>
+            <div class="upload-hint">PDF, JPG, PNG &mdash; Maks 5MB per file</div>
+            <input type="file" id="file-upload" style="display:none;" multiple accept=".pdf,.jpg,.jpeg,.png">
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 5: Workflow & Submit -->
+      <div class="form-card">
+        <div class="form-card-head">
+          <div class="form-card-num">5</div>
+          <div>
+            <div class="form-card-title">Alur Approval</div>
+            <div class="form-card-desc">Pengajuan akan diproses melalui tahapan berikut</div>
+          </div>
+        </div>
+        <div class="form-card-body">
+          <div class="info-banner">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <div class="info-banner-text">Pengajuan <strong>Attendance</strong> akan langsung diteruskan ke Head of Region dan HC setelah Anda submit. Pastikan semua informasi sudah benar sebelum mengirim.</div>
+          </div>
+          <div class="workflow-steps">
+            <div class="wf-step">
+              <div class="wf-dot done">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div>
+                <div class="wf-label" style="font-size:11px;">Submitted</div>
+                <div class="wf-sublabel">Kamu</div>
+              </div>
+            </div>
+            <div class="wf-arrow"></div>
+            <div class="wf-step">
+              <div class="wf-dot current" style="font-size:9px;">HoR</div>
+              <div>
+                <div class="wf-label" style="font-size:11px;">Head of Region</div>
+                <div class="wf-sublabel">Ricky Maulana</div>
+              </div>
+            </div>
+            <div class="wf-arrow"></div>
+            <div class="wf-step">
+              <div class="wf-dot pending" style="font-size:9px;">HC</div>
+              <div>
+                <div class="wf-label" style="font-size:11px;">HC</div>
+                <div class="wf-sublabel">Tim HC</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-actions" style="margin-top:16px;">
+            <a href="requests.html" class="btn-secondary">
+              <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+              Batal
+            </a>
+            <button class="btn-secondary" onclick="saveDraft()">
+              <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              Simpan Draft
+            </button>
+            <button class="btn-primary" onclick="submitRequest()">
+              <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              Kirim Pengajuan
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script>
+var currentCategory = 'attendance';
+
+function toggleRequests(){var h=document.getElementById('requests-head'),s=document.getElementById('requests-sub');h.classList.toggle('open');s.classList.toggle('open');}
+function toggleLearning(){var h=document.getElementById('learning-head'),s=document.getElementById('learning-sub');h.classList.toggle('open');s.classList.toggle('open');}
+
+function selectCategory(el, cat) {
+  document.querySelectorAll('.type-option').forEach(function(o){o.classList.remove('selected');});
+  el.classList.add('selected');
+  currentCategory = cat;
+  var sel = document.getElementById('request-type');
+  sel.innerHTML = '<option value="">-- Pilih Jenis --</option>';
+  var opts = {
+    attendance: [['izin','Izin (Tidak Masuk)'],['cuti','Cuti Tahunan'],['sakit','Sakit'],['dinas','Dinas Luar'],['shift','Pergantian Shift']],
+    learning:   [['training','Training Internal'],['external','External Training'],['sertifikasi','Sertifikasi Profesi'],['study','Study Leave']],
+    financial:  [['reimburse','Reimbursement'],['cash','Cash Advance'],['overtime','Overtime Claim']],
+    people:     [['rekrut','Pengajuan Rekrutmen'],['mutasi','Mutasi / Rotasi'],['adaptasi','Adaptasi AE Baru'],['resign','Proses Resign']],
+    other:      [['surat','Surat Keterangan Kerja'],['khusus','Pengajuan Khusus']]
+  };
+  (opts[cat]||[]).forEach(function(o){var opt=document.createElement('option');opt.value=o[0];opt.textContent=o[1];sel.appendChild(opt);});
+  updateDynamicFields();
+}
+
+function updateDynamicFields() {
+  var sel = document.getElementById('request-type');
+  var val = sel.value;
+  var df = document.getElementById('dynamic-fields');
+  var wfInfo = document.querySelector('.info-banner-text');
+
+  var fieldsets = {
+    izin: '<div class="dynamic-fields-title">Detail Izin</div><div class="form-row"><div class="form-group"><label class="form-label">Tanggal Mulai <span class="req">*</span></label><input type="date" class="form-input" value="2026-06-22"></div><div class="form-group"><label class="form-label">Tanggal Selesai <span class="req">*</span></label><input type="date" class="form-input" value="2026-06-22"></div></div><div class="form-row full"><div class="form-group"><label class="form-label">Alasan <span class="req">*</span></label><select class="form-select"><option>Keperluan Keluarga</option><option>Keperluan Pribadi</option><option>Acara Pernikahan</option><option>Lainnya</option></select></div></div>',
+    cuti: '<div class="dynamic-fields-title">Detail Cuti Tahunan</div><div class="form-row"><div class="form-group"><label class="form-label">Tanggal Mulai <span class="req">*</span></label><input type="date" class="form-input" value="2026-06-22"></div><div class="form-group"><label class="form-label">Tanggal Selesai <span class="req">*</span></label><input type="date" class="form-input" value="2026-06-26"></div></div><div class="form-row"><div class="form-group"><label class="form-label">Sisa Cuti</label><input type="text" class="form-input" value="8 hari" readonly style="background:#F9FAFB;color:#667085;"></div><div class="form-group"><label class="form-label">Jumlah Hari Diajukan</label><input type="number" class="form-input" value="5" min="1"></div></div>',
+    sakit: '<div class="dynamic-fields-title">Detail Izin Sakit</div><div class="form-row"><div class="form-group"><label class="form-label">Tanggal Mulai <span class="req">*</span></label><input type="date" class="form-input" value="2026-06-19"></div><div class="form-group"><label class="form-label">Perkiraan Tanggal Selesai <span class="req">*</span></label><input type="date" class="form-input" value="2026-06-20"></div></div><div class="form-row full"><div class="form-group"><label class="form-label">Surat Dokter Tersedia?</label><select class="form-select"><option>Ya, akan dilampirkan</option><option>Tidak ada surat dokter</option></select></div></div>',
+    dinas: '<div class="dynamic-fields-title">Detail Dinas Luar</div><div class="form-row"><div class="form-group"><label class="form-label">Tanggal Berangkat <span class="req">*</span></label><input type="date" class="form-input" value="2026-06-22"></div><div class="form-group"><label class="form-label">Tanggal Kembali <span class="req">*</span></label><input type="date" class="form-input" value="2026-06-22"></div></div><div class="form-row"><div class="form-group"><label class="form-label">Lokasi Tujuan <span class="req">*</span></label><input type="text" class="form-input" placeholder="Contoh: Surabaya"></div><div class="form-group"><label class="form-label">Tujuan Perjalanan <span class="req">*</span></label><input type="text" class="form-input" placeholder="Meeting, survei lokasi, dll"></div></div>',
+    shift: '<div class="dynamic-fields-title">Detail Pergantian Shift</div><div class="form-row"><div class="form-group"><label class="form-label">Tanggal Pergantian <span class="req">*</span></label><input type="date" class="form-input" value="2026-06-22"></div><div class="form-group"><label class="form-label">Shift Yang Diinginkan <span class="req">*</span></label><select class="form-select"><option>Pagi (07.00 - 15.00)</option><option>Siang (15.00 - 23.00)</option><option>Malam (23.00 - 07.00)</option></select></div></div><div class="form-row full"><div class="form-group"><label class="form-label">Nama Rekan Pengganti <span class="req">*</span></label><input type="text" class="form-input" placeholder="Masukkan nama rekan yang menggantikan"></div></div>',
+    training: '<div class="dynamic-fields-title">Detail Training Internal</div><div class="form-row"><div class="form-group"><label class="form-label">Nama Training <span class="req">*</span></label><input type="text" class="form-input" placeholder="Nama program training"></div><div class="form-group"><label class="form-label">Penyelenggara</label><input type="text" class="form-input" placeholder="Departemen / Vendor"></div></div><div class="form-row"><div class="form-group"><label class="form-label">Tanggal Mulai <span class="req">*</span></label><input type="date" class="form-input" value="2026-07-01"></div><div class="form-group"><label class="form-label">Durasi</label><input type="text" class="form-input" placeholder="Contoh: 3 hari, 2 minggu"></div></div>',
+    external: '<div class="dynamic-fields-title">Detail External Training</div><div class="form-row"><div class="form-group"><label class="form-label">Nama Training <span class="req">*</span></label><input type="text" class="form-input" placeholder="Nama program training eksternal"></div><div class="form-group"><label class="form-label">Vendor / Lembaga <span class="req">*</span></label><input type="text" class="form-input" placeholder="Nama lembaga pelatihan"></div></div><div class="form-row three"><div class="form-group"><label class="form-label">Tanggal Mulai <span class="req">*</span></label><input type="date" class="form-input" value="2026-07-05"></div><div class="form-group"><label class="form-label">Durasi</label><input type="text" class="form-input" placeholder="3 hari"></div><div class="form-group"><label class="form-label">Estimasi Biaya</label><input type="text" class="form-input" placeholder="Rp 0"></div></div>',
+    reimburse: '<div class="dynamic-fields-title">Detail Reimbursement</div><div class="form-row"><div class="form-group"><label class="form-label">Jenis Biaya <span class="req">*</span></label><select class="form-select"><option>Transportasi</option><option>Akomodasi</option><option>Konsumsi</option><option>Perlengkapan Operasional</option><option>Lainnya</option></select></div><div class="form-group"><label class="form-label">Total Biaya (Rp) <span class="req">*</span></label><input type="number" class="form-input" placeholder="0"></div></div><div class="form-row"><div class="form-group"><label class="form-label">Tanggal Pengeluaran <span class="req">*</span></label><input type="date" class="form-input" value="2026-06-19"></div><div class="form-group"><label class="form-label">Bukti Pengeluaran</label><span style="font-size:11px;color:#98A2B3;padding-top:4px;">Lampirkan di bagian dokumen</span></div></div>',
+    cash: '<div class="dynamic-fields-title">Detail Cash Advance</div><div class="form-row"><div class="form-group"><label class="form-label">Keperluaan <span class="req">*</span></label><input type="text" class="form-input" placeholder="Tujuan penggunaan dana"></div><div class="form-group"><label class="form-label">Jumlah Diajukan (Rp) <span class="req">*</span></label><input type="number" class="form-input" placeholder="0"></div></div><div class="form-row"><div class="form-group"><label class="form-label">Tanggal Diperlukan <span class="req">*</span></label><input type="date" class="form-input" value="2026-06-21"></div><div class="form-group"><label class="form-label">Tanggal Pelaporan</label><input type="date" class="form-input" value="2026-06-28"></div></div>',
+    rekrut: '<div class="dynamic-fields-title">Detail Pengajuan Rekrutmen</div><div class="form-row"><div class="form-group"><label class="form-label">Posisi Yang Dibutuhkan <span class="req">*</span></label><input type="text" class="form-input" placeholder="Contoh: Teknisi Lapangan"></div><div class="form-group"><label class="form-label">Jumlah Headcount <span class="req">*</span></label><input type="number" class="form-input" value="1" min="1"></div></div><div class="form-row"><div class="form-group"><label class="form-label">Alasan Kebutuhan <span class="req">*</span></label><select class="form-select"><option>Pengganti Resign</option><option>Penambahan Tim</option><option>Ekspansi Area</option></select></div><div class="form-group"><label class="form-label">Target Join Date</label><input type="date" class="form-input" value="2026-08-01"></div></div>'
+  };
+  df.innerHTML = fieldsets[val] || '<div style="font-size:12px;color:#98A2B3;padding:4px 0;">Pilih jenis pengajuan untuk melihat field yang perlu diisi.</div>';
+
+  var wfTexts = {
+    reimburse: 'Pengajuan <strong>Reimbursement</strong> memerlukan approval <strong>Head of Region</strong> dan <strong>FAT</strong> sebelum diproses.',
+    cash: 'Pengajuan <strong>Cash Advance</strong> memerlukan approval <strong>Head of Region</strong>, <strong>Direktur</strong>, dan <strong>FAT</strong>.',
+    rekrut: 'Pengajuan <strong>Rekrutmen</strong> memerlukan approval <strong>Head of Region</strong>, <strong>GRM</strong>, dan <strong>HC</strong>.',
+    external: 'Pengajuan <strong>External Training</strong> memerlukan approval <strong>Head of Region</strong>, <strong>GRM</strong>, dan <strong>HC</strong>.'
+  };
+  if (wfInfo) wfInfo.innerHTML = wfTexts[val] || 'Pengajuan <strong>Attendance</strong> akan langsung diteruskan ke Head of Region dan HC setelah Anda submit. Pastikan semua informasi sudah benar sebelum mengirim.';
+}
+
+function saveDraft() {
+  alert('Draft berhasil disimpan. Anda dapat melanjutkan pengisian kapan saja.');
+}
+
+function submitRequest() {
+  var type = document.getElementById('request-type').value;
+  if (!type) { alert('Harap pilih jenis pengajuan terlebih dahulu.'); return; }
+  if (confirm('Kirim pengajuan ini ke Head of Region untuk disetujui?')) {
+    window.location.href = 'requests.html';
+  }
+}
+</script>
+</body>
+</html>

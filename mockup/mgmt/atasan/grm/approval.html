@@ -10,11 +10,7 @@
     html, body { height:100%; font-family:'Inter',-apple-system,sans-serif; font-size:14px; color:#101828; background:#F5F7FA; -webkit-font-smoothing:antialiased; }
     a { text-decoration:none; color:inherit; }
     button { font-family:inherit; cursor:pointer; border:none; background:none; }
-
-    /* ── LAYOUT ── */
     .mgmt-layout { display:flex; height:100vh; overflow:hidden; }
-
-    /* ── SIDEBAR ── */
     .sidebar { width:230px; flex-shrink:0; background:#0D1B3E; height:100vh; display:flex; flex-direction:column; overflow-y:auto; overflow-x:hidden; }
     .sidebar::-webkit-scrollbar { width:3px; }
     .sidebar::-webkit-scrollbar-thumb { background:rgba(255,255,255,.1); border-radius:2px; }
@@ -44,11 +40,7 @@
     .sb-connect-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.85); }
     .sb-connect-item svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
     .sb-connect-sub { font-size:10px; color:rgba(255,255,255,.25); margin-left:auto; }
-
-    /* ── MAIN ── */
     .main-content { flex:1; height:100vh; overflow-y:auto; background:#F5F7FA; }
-
-    /* ── TOPBAR ── */
     .topbar { background:white; height:62px; flex-shrink:0; display:flex; align-items:center; justify-content:space-between; padding:0 28px; border-bottom:1px solid #EAECF0; position:sticky; top:0; z-index:20; }
     .topbar-left { display:flex; align-items:center; gap:14px; }
     .topbar-btn { width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:8px; color:#667085; }
@@ -72,34 +64,26 @@
     .user-name { font-size:13px; font-weight:700; color:#101828; }
     .user-role { font-size:11px; color:#98A2B3; display:flex; align-items:center; gap:3px; }
     .user-role svg { width:12px; height:12px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-
-    /* ── CONTENT ── */
     .content-area { padding:22px 28px 32px; }
-
-    /* ── SUMMARY STRIP ── */
     .sum-strip-5 { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:18px; }
     .sum-card { background:white; border:1px solid #EAECF0; border-radius:12px; padding:14px 16px; display:flex; align-items:center; gap:11px; }
     .sum-ico { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
     .sum-ico svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-    .sum-ico.blue   { background:#EFF6FF; color:#1D6FF3; }
-    .sum-ico.green  { background:#ECFDF3; color:#027A48; }
+    .sum-ico.blue { background:#EFF6FF; color:#1D6FF3; }
+    .sum-ico.green { background:#ECFDF3; color:#027A48; }
     .sum-ico.orange { background:#FFFAEB; color:#B54708; }
-    .sum-ico.red    { background:#FEF3F2; color:#B42318; }
-    .sum-ico.gray   { background:#F2F4F7; color:#667085; }
+    .sum-ico.red { background:#FEF3F2; color:#B42318; }
+    .sum-ico.gray { background:#F2F4F7; color:#667085; }
     .sum-val { font-size:22px; font-weight:800; color:#101828; }
-    .sum-val.red   { color:#B42318; }
+    .sum-val.red { color:#B42318; }
     .sum-val.green { color:#027A48; }
     .sum-lbl { font-size:11px; color:#667085; }
-
-    /* ── WIDGET ── */
     .w-card { background:white; border-radius:12px; border:1px solid #EAECF0; overflow:hidden; margin-bottom:16px; }
     .w-head { padding:13px 18px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #F2F4F7; }
     .w-title { font-size:13px; font-weight:700; color:#101828; display:flex; align-items:center; gap:7px; }
     .w-title svg { width:15px; height:15px; stroke:#667085; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
     .w-link { font-size:12px; font-weight:600; color:#1D6FF3; cursor:pointer; }
     .w-body { padding:0; }
-
-    /* ── DATA TABLE ── */
     .data-table { width:100%; border-collapse:collapse; }
     .data-table th { font-size:11px; font-weight:700; color:#667085; text-align:left; padding:9px 14px; background:#F9FAFB; border-bottom:1px solid #EAECF0; }
     .data-table td { font-size:12px; color:#344054; padding:10px 14px; border-bottom:1px solid #F9FAFB; vertical-align:middle; }
@@ -108,19 +92,16 @@
     .t-name { font-weight:600; color:#101828; }
     .row-warn td { background:#FFFCF5 !important; }
     .badge { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; }
-    .badge.green  { background:#ECFDF3; color:#027A48; }
+    .badge.green { background:#ECFDF3; color:#027A48; }
     .badge.orange { background:#FFFAEB; color:#B54708; }
-    .badge.red    { background:#FEF3F2; color:#B42318; }
-    .badge.blue   { background:#EFF6FF; color:#1558C8; }
-    .badge.gray   { background:#F2F4F7; color:#667085; }
-
-    /* ── APPROVAL TYPE MINI GRID ── */
+    .badge.red { background:#FEF3F2; color:#B42318; }
+    .badge.blue { background:#EFF6FF; color:#1558C8; }
+    .badge.gray { background:#F2F4F7; color:#667085; }
+    .badge::before { content:''; width:5px; height:5px; border-radius:50%; background:currentColor; }
     .appr-type-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:16px; }
     .appr-type-card { border:1px solid #EAECF0; border-radius:10px; padding:13px 14px; }
     .appr-type-val { font-size:24px; font-weight:800; color:#101828; line-height:1; margin-bottom:3px; }
     .appr-type-lbl { font-size:11px; color:#667085; }
-
-    /* ── OVERDUE SECTION ── */
     .overdue-section { border:1.5px solid #FDE68A; border-radius:12px; background:#FFFBEB; padding:16px; margin-bottom:16px; }
     .overdue-section-title { font-size:13px; font-weight:700; color:#92400E; margin-bottom:12px; display:flex; align-items:center; gap:7px; }
     .overdue-section-title svg { width:15px; height:15px; stroke:#B54708; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
@@ -134,18 +115,16 @@
     .overdue-card-actions { display:flex; gap:8px; }
     .btn-approve { padding:5px 14px; border-radius:7px; background:#ECFDF3; color:#027A48; font-size:12px; font-weight:700; border:none; cursor:pointer; }
     .btn-approve:hover { background:#D1FAE5; }
-    .btn-reject  { padding:5px 14px; border-radius:7px; background:#FEF3F2; color:#B42318; font-size:12px; font-weight:700; border:none; cursor:pointer; }
+    .btn-reject { padding:5px 14px; border-radius:7px; background:#FEF3F2; color:#B42318; font-size:12px; font-weight:700; border:none; cursor:pointer; }
     .btn-reject:hover { background:#FEE4E2; }
     .btn-delegate { padding:5px 14px; border-radius:7px; background:#F2F4F7; color:#344054; font-size:12px; font-weight:700; border:none; cursor:pointer; }
     .btn-delegate:hover { background:#E4E7EC; }
-
-    /* ── QUEUE TABS ── */
     .queue-tabs { display:flex; gap:4px; background:#F9FAFB; padding:4px; border-radius:8px; margin:14px 14px 0; width:fit-content; }
     .queue-tab { padding:5px 14px; border-radius:6px; font-size:12px; font-weight:600; color:#667085; cursor:pointer; transition:all .15s; }
     .queue-tab.active { background:white; color:#1D6FF3; box-shadow:0 1px 3px rgba(0,0,0,.08); }
     .queue-tab:not(.active):hover { color:#344054; }
-
-    /* ── DASH FOOT ── */
+    .btn-new-req { display:flex; align-items:center; gap:7px; padding:8px 16px; background:#1D6FF3; color:white; border-radius:9px; font-size:13px; font-weight:700; cursor:pointer; border:none; font-family:inherit; transition:all .15s; }
+    .btn-new-req:hover { background:#1558C8; }
     .dash-foot { margin-top:20px; display:flex; align-items:center; gap:6px; font-size:12px; color:#98A2B3; }
     .dash-foot svg { width:13px; height:13px; stroke:#98A2B3; fill:none; stroke-width:2; cursor:pointer; }
     .dash-foot svg:hover { stroke:#1D6FF3; }
@@ -154,7 +133,6 @@
 <body>
 <div class="mgmt-layout">
 
-  <!-- ══════════ SIDEBAR ══════════ -->
   <aside class="sidebar">
     <div class="sb-logo">
       <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
@@ -177,7 +155,19 @@
           <a href="people.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Succession View</a>
         </div>
       </div>
-      <a href="approval.html" class="sb-item active">
+      <!-- Requests -->
+      <div class="sb-group">
+        <div class="sb-group-head" id="requests-head" onclick="toggleRequests()">
+          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          Requests
+          <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="sb-sub" id="requests-sub">
+          <a href="requests.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Overview</a>
+          <a href="requests.html" class="sb-sub-item"><span class="sb-sub-dot"></span>My Requests</a>
+          <a href="request-create.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Create Request</a>
+        </div>
+      </div>      <a href="approval.html" class="sb-item active">
         <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
         Approval
         <span class="sb-badge">14</span>
@@ -199,37 +189,15 @@
         Report &amp; Analytics
       </a>
     </nav>
-
     <div class="sb-connect">
       <div class="sb-connect-label">Connect</div>
-      <a href="#" class="sb-connect-item">
-        <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
-        ERP <span class="sb-connect-sub">ERP Operasional</span>
-      </a>
-      <a href="#" class="sb-connect-item">
-        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        CRM <span class="sb-connect-sub">Sistem CRM</span>
-      </a>
-      <a href="#" class="sb-connect-item">
-        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        NOC <span class="sb-connect-sub">Monitoring NOC</span>
-      </a>
-      <a href="#" class="sb-connect-item">
-        <svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-        Ticketing <span class="sb-connect-sub">Sistem Ticket</span>
-      </a>
-      <a href="#" class="sb-connect-item">
-        <svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
-        GIS <span class="sb-connect-sub">Peta Wilayah</span>
-      </a>
-      <a href="#" class="sb-connect-item">
-        <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
-        Monitoring <span class="sb-connect-sub">Network</span>
-      </a>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>ERP <span class="sb-connect-sub">ERP Operasional</span></a>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>CRM <span class="sb-connect-sub">Sistem CRM</span></a>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>NOC <span class="sb-connect-sub">Monitoring NOC</span></a>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>GIS <span class="sb-connect-sub">Peta Wilayah</span></a>
     </div>
   </aside>
 
-  <!-- ══════════ MAIN CONTENT ══════════ -->
   <main class="main-content">
     <header class="topbar">
       <div class="topbar-left">
@@ -242,7 +210,7 @@
       <div class="topbar-right">
         <div class="topbar-date">
           <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          Jumat, 12 Juni 2026
+          Jumat, 19 Juni 2026
         </div>
         <button class="topbar-notif">
           <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
@@ -264,89 +232,109 @@
 
     <div class="content-area">
 
-      <!-- Summary Strip 5 cards -->
+      <!-- Summary Strip -->
       <div class="sum-strip-5">
-        <div class="sum-card">
-          <div class="sum-ico blue"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-          <div><div class="sum-val">14</div><div class="sum-lbl">Waiting</div></div>
+        <div class="sum-card"><div class="sum-ico blue"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div class="sum-val">14</div><div class="sum-lbl">Waiting</div></div></div>
+        <div class="sum-card"><div class="sum-ico green"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div><div class="sum-val">67</div><div class="sum-lbl">Approved MTD</div></div></div>
+        <div class="sum-card"><div class="sum-ico orange"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div><div><div class="sum-val">3</div><div class="sum-lbl">Rejected</div></div></div>
+        <div class="sum-card"><div class="sum-ico red"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div><div class="sum-val red">2</div><div class="sum-lbl">Overdue</div></div></div>
+        <div class="sum-card"><div class="sum-ico green"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div class="sum-val green">18 jam</div><div class="sum-lbl">Avg SLA</div></div></div>
+      </div>
+
+      <!-- PENGAJUAN SAYA GRM (sebagai section card baru) -->
+      <div class="w-card" style="margin-bottom:16px;">
+        <div class="w-head">
+          <div class="w-title">
+            <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Pengajuan Saya
+          </div>
+          <button class="btn-new-req" onclick="openModal()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Buat Pengajuan
+          </button>
         </div>
-        <div class="sum-card">
-          <div class="sum-ico green"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
-          <div><div class="sum-val">67</div><div class="sum-lbl">Approved MTD</div></div>
-        </div>
-        <div class="sum-card">
-          <div class="sum-ico orange"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div>
-          <div><div class="sum-val">3</div><div class="sum-lbl">Rejected</div></div>
-        </div>
-        <div class="sum-card">
-          <div class="sum-ico red"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-          <div><div class="sum-val red">2</div><div class="sum-lbl">Overdue</div></div>
-        </div>
-        <div class="sum-card">
-          <div class="sum-ico green"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-          <div><div class="sum-val green">18 jam</div><div class="sum-lbl">Avg SLA</div></div>
+        <div style="padding:16px; display:flex; flex-direction:column; gap:10px;">
+
+          <!-- Card 1: Mutasi Antar Region — Waiting Dir. Commercial -->
+          <div style="background:#F9FAFB; border:1px solid #EAECF0; border-radius:10px; padding:14px 16px;">
+            <div style="display:flex; align-items:start; justify-content:space-between; margin-bottom:10px;">
+              <div>
+                <div style="font-size:13px; font-weight:700; color:#101828; margin-bottom:2px;">Mutasi Antar Region — Siti Rahayu</div>
+                <div style="font-size:11px; color:#667085;">Diajukan: 10 Jun 2026 · 09:30 WIB</div>
+              </div>
+              <span style="background:#F4F3FF; color:#5925DC; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700;">Menunggu Dir. Commercial</span>
+            </div>
+            <div style="font-size:12px; color:#344054; line-height:1.6; margin-bottom:10px;">
+              <strong>Asal:</strong> Region Malang Raya &rarr; <strong>Tujuan:</strong> Region Sidoarjo · Efektif 1 Jul 2026
+            </div>
+            <div style="display:flex; align-items:center; gap:0;">
+              <div style="display:flex; align-items:center; gap:5px;"><div style="width:20px; height:20px; border-radius:50%; background:#1D6FF3; display:flex; align-items:center; justify-content:center;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><span style="font-size:10px; font-weight:700; color:#1D6FF3;">Submit</span></div>
+              <div style="height:2px; width:24px; background:#E4E7EC; margin:0 3px;"></div>
+              <div style="display:flex; align-items:center; gap:5px;"><div style="width:20px; height:20px; border-radius:50%; background:#F79009; display:flex; align-items:center; justify-content:center;"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><span style="font-size:10px; font-weight:700; color:#B54708;">Dir. Commercial</span></div>
+              <div style="height:2px; width:24px; background:#E4E7EC; margin:0 3px;"></div>
+              <div style="display:flex; align-items:center; gap:5px;"><div style="width:20px; height:20px; border-radius:50%; background:#E4E7EC; display:flex; align-items:center; justify-content:center;"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#98A2B3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg></div><span style="font-size:10px; color:#98A2B3;">HC/FAT</span></div>
+            </div>
+          </div>
+
+          <!-- Card 2: Promosi BL→HoR — Waiting Dir. Commercial -->
+          <div style="background:#F9FAFB; border:1px solid #EAECF0; border-radius:10px; padding:14px 16px;">
+            <div style="display:flex; align-items:start; justify-content:space-between; margin-bottom:10px;">
+              <div>
+                <div style="font-size:13px; font-weight:700; color:#101828; margin-bottom:2px;">Promosi BL &rarr; HoR — Dewi Rahayu</div>
+                <div style="font-size:11px; color:#667085;">Diajukan: 8 Jun 2026 · 14:00 WIB</div>
+              </div>
+              <span style="background:#F4F3FF; color:#5925DC; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700;">Menunggu Dir. Commercial</span>
+            </div>
+            <div style="font-size:12px; color:#344054; line-height:1.6; margin-bottom:10px;">
+              <strong>Branch Leader Cabang Lawang</strong> &rarr; Head of Region Malang Raya
+            </div>
+            <div style="display:flex; align-items:center; gap:0;">
+              <div style="display:flex; align-items:center; gap:5px;"><div style="width:20px; height:20px; border-radius:50%; background:#1D6FF3; display:flex; align-items:center; justify-content:center;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><span style="font-size:10px; font-weight:700; color:#1D6FF3;">Submit</span></div>
+              <div style="height:2px; width:24px; background:#E4E7EC; margin:0 3px;"></div>
+              <div style="display:flex; align-items:center; gap:5px;"><div style="width:20px; height:20px; border-radius:50%; background:#F79009; display:flex; align-items:center; justify-content:center;"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><span style="font-size:10px; font-weight:700; color:#B54708;">Dir. Commercial</span></div>
+              <div style="height:2px; width:24px; background:#E4E7EC; margin:0 3px;"></div>
+              <div style="display:flex; align-items:center; gap:5px;"><div style="width:20px; height:20px; border-radius:50%; background:#E4E7EC; display:flex; align-items:center; justify-content:center;"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#98A2B3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg></div><span style="font-size:10px; color:#98A2B3;">HC</span></div>
+            </div>
+          </div>
+
+          <!-- Card 3: Penambahan Headcount — HC Processing -->
+          <div style="background:#F9FAFB; border:1px solid #EAECF0; border-radius:10px; padding:14px 16px;">
+            <div style="display:flex; align-items:start; justify-content:space-between; margin-bottom:10px;">
+              <div>
+                <div style="font-size:13px; font-weight:700; color:#101828; margin-bottom:2px;">Penambahan Headcount — 2 AE Cabang Gresik Kota</div>
+                <div style="font-size:11px; color:#667085;">Diajukan: 1 Jun 2026 · 10:00 WIB</div>
+              </div>
+              <span style="background:#ECFDF3; color:#027A48; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; display:inline-flex; align-items:center; gap:4px;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>HC Processing</span>
+            </div>
+            <div style="font-size:12px; color:#344054; line-height:1.6; margin-bottom:10px;">
+              <strong>Tipe:</strong> Account Executive · Target: Agustus 2026 · Justifikasi: Ekspansi area Gresik Utara
+            </div>
+            <div style="display:flex; align-items:center; gap:0;">
+              <div style="display:flex; align-items:center; gap:5px;"><div style="width:20px; height:20px; border-radius:50%; background:#1D6FF3; display:flex; align-items:center; justify-content:center;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><span style="font-size:10px; font-weight:700; color:#1D6FF3;">Submit</span></div>
+              <div style="height:2px; width:24px; background:#12B76A; margin:0 3px;"></div>
+              <div style="display:flex; align-items:center; gap:5px;"><div style="width:20px; height:20px; border-radius:50%; background:#12B76A; display:flex; align-items:center; justify-content:center;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><span style="font-size:10px; font-weight:700; color:#027A48;">Dir.</span></div>
+              <div style="height:2px; width:24px; background:#12B76A; margin:0 3px;"></div>
+              <div style="display:flex; align-items:center; gap:5px;"><div style="width:20px; height:20px; border-radius:50%; background:#F79009; display:flex; align-items:center; justify-content:center;"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><span style="font-size:10px; font-weight:700; color:#B54708;">HC</span></div>
+            </div>
+          </div>
+
         </div>
       </div>
 
       <!-- Regional Approval Monitoring -->
       <div class="w-card">
         <div class="w-head">
-          <div class="w-title">
-            <svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
-            Regional Approval Monitoring
-          </div>
+          <div class="w-title"><svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>Regional Approval Monitoring</div>
           <a class="w-link">Export ›</a>
         </div>
         <div class="w-body">
           <table class="data-table">
-            <thead>
-              <tr>
-                <th>Region</th>
-                <th>Head of Region</th>
-                <th>Waiting</th>
-                <th>Approved</th>
-                <th>Rejected</th>
-                <th>Overdue</th>
-                <th>Avg SLA</th>
-              </tr>
-            </thead>
+            <thead><tr><th>Region</th><th>Head of Region</th><th>Waiting</th><th>Approved</th><th>Rejected</th><th>Overdue</th><th>Avg SLA</th></tr></thead>
             <tbody>
-              <tr>
-                <td class="t-name">Malang Raya</td>
-                <td>Ricky M</td>
-                <td>3</td>
-                <td style="color:#027A48;font-weight:700;">18</td>
-                <td>1</td>
-                <td>0</td>
-                <td>14 jam</td>
-              </tr>
-              <tr>
-                <td class="t-name">Surabaya Barat</td>
-                <td>Indah P</td>
-                <td>4</td>
-                <td style="color:#027A48;font-weight:700;">21</td>
-                <td>1</td>
-                <td>0</td>
-                <td>16 jam</td>
-              </tr>
-              <tr class="row-warn">
-                <td class="t-name">Gresik-Lamongan</td>
-                <td>Wahyu A</td>
-                <td>5</td>
-                <td style="color:#027A48;font-weight:700;">19</td>
-                <td>1</td>
-                <td style="color:#B42318;font-weight:800;">2</td>
-                <td style="color:#B42318;font-weight:700;">28 jam</td>
-              </tr>
-              <tr>
-                <td class="t-name">Sidoarjo</td>
-                <td>Rina K</td>
-                <td>2</td>
-                <td style="color:#027A48;font-weight:700;">9</td>
-                <td>0</td>
-                <td>0</td>
-                <td>11 jam</td>
-              </tr>
+              <tr><td class="t-name">Malang Raya</td><td>Ricky M</td><td>3</td><td style="color:#027A48;font-weight:700;">18</td><td>1</td><td>0</td><td>14 jam</td></tr>
+              <tr><td class="t-name">Surabaya Barat</td><td>Indah P</td><td>4</td><td style="color:#027A48;font-weight:700;">21</td><td>1</td><td>0</td><td>16 jam</td></tr>
+              <tr class="row-warn"><td class="t-name">Gresik-Lamongan</td><td>Wahyu A</td><td>5</td><td style="color:#027A48;font-weight:700;">19</td><td>1</td><td style="color:#B42318;font-weight:800;">2</td><td style="color:#B42318;font-weight:700;">28 jam</td></tr>
+              <tr><td class="t-name">Sidoarjo</td><td>Rina K</td><td>2</td><td style="color:#027A48;font-weight:700;">9</td><td>0</td><td>0</td><td>11 jam</td></tr>
             </tbody>
           </table>
         </div>
@@ -354,75 +342,35 @@
 
       <!-- Approval by Type -->
       <div class="w-card">
-        <div class="w-head">
-          <div class="w-title">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="12" y1="8" x2="12" y2="16"/></svg>
-            Approval by Type
-          </div>
-        </div>
+        <div class="w-head"><div class="w-title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="12" y1="8" x2="12" y2="16"/></svg>Approval by Type</div></div>
         <div class="appr-type-grid">
-          <div class="appr-type-card">
-            <div class="appr-type-val" style="color:#1D6FF3;">5</div>
-            <div class="appr-type-lbl">Mutasi Antar Cabang</div>
-          </div>
-          <div class="appr-type-card">
-            <div class="appr-type-val" style="color:#5925DC;">2</div>
-            <div class="appr-type-lbl">Mutasi Antar Region</div>
-          </div>
-          <div class="appr-type-card">
-            <div class="appr-type-val" style="color:#B54708;">4</div>
-            <div class="appr-type-lbl">Penambahan Manpower</div>
-          </div>
-          <div class="appr-type-card">
-            <div class="appr-type-val" style="color:#B42318;">3</div>
-            <div class="appr-type-lbl">Eskalasi Strategis</div>
-          </div>
+          <div class="appr-type-card"><div class="appr-type-val" style="color:#1D6FF3;">5</div><div class="appr-type-lbl">Mutasi Antar Cabang</div></div>
+          <div class="appr-type-card"><div class="appr-type-val" style="color:#5925DC;">2</div><div class="appr-type-lbl">Mutasi Antar Region</div></div>
+          <div class="appr-type-card"><div class="appr-type-val" style="color:#B54708;">4</div><div class="appr-type-lbl">Penambahan Manpower</div></div>
+          <div class="appr-type-card"><div class="appr-type-val" style="color:#B42318;">3</div><div class="appr-type-lbl">Eskalasi Strategis</div></div>
         </div>
       </div>
 
       <!-- Overdue Items -->
       <div class="overdue-section">
-        <div class="overdue-section-title">
-          <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          Overdue Items (2)
-        </div>
+        <div class="overdue-section-title"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Overdue Items (2)</div>
         <div class="overdue-card">
-          <div class="overdue-card-header">
-            <span class="overdue-card-type">Mutasi AE</span>
-            <span class="overdue-card-age">3 hari lalu</span>
-          </div>
+          <div class="overdue-card-header"><span class="overdue-card-type">Mutasi AE</span><span class="overdue-card-age">3 hari lalu</span></div>
           <div class="overdue-card-title">Pemindahan Andi Setiawan → Cabang Gresik Kota</div>
           <div class="overdue-card-sub">HoR: Wahyu Adi · Region Gresik-Lamongan</div>
-          <div class="overdue-card-actions">
-            <button class="btn-approve">Setujui</button>
-            <button class="btn-reject">Tolak</button>
-            <button class="btn-delegate">Delegasi</button>
-          </div>
+          <div class="overdue-card-actions"><button class="btn-approve">Setujui</button><button class="btn-reject">Tolak</button><button class="btn-delegate">Delegasi</button></div>
         </div>
         <div class="overdue-card">
-          <div class="overdue-card-header">
-            <span class="overdue-card-type">Penambahan Manpower</span>
-            <span class="overdue-card-age">2 hari lalu</span>
-          </div>
+          <div class="overdue-card-header"><span class="overdue-card-type">Penambahan Manpower</span><span class="overdue-card-age">2 hari lalu</span></div>
           <div class="overdue-card-title">Permintaan 2 AE Cabang Gresik-Lamongan</div>
           <div class="overdue-card-sub">HoR: Wahyu Adi · Region Gresik-Lamongan</div>
-          <div class="overdue-card-actions">
-            <button class="btn-approve">Setujui</button>
-            <button class="btn-reject">Tolak</button>
-            <button class="btn-delegate">Delegasi</button>
-          </div>
+          <div class="overdue-card-actions"><button class="btn-approve">Setujui</button><button class="btn-reject">Tolak</button><button class="btn-delegate">Delegasi</button></div>
         </div>
       </div>
 
       <!-- Full Queue -->
       <div class="w-card">
-        <div class="w-head">
-          <div class="w-title">
-            <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-            Full Queue
-          </div>
-          <a class="w-link">Filter ›</a>
-        </div>
+        <div class="w-head"><div class="w-title"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>Full Queue</div><a class="w-link">Filter ›</a></div>
         <div class="queue-tabs">
           <div class="queue-tab active" onclick="switchQueueTab('q-all',this)">Semua</div>
           <div class="queue-tab" onclick="switchQueueTab('q-wait',this)">Waiting</div>
@@ -431,81 +379,16 @@
         </div>
         <div id="q-all" class="queue-panel" style="padding-bottom:4px;">
           <table class="data-table" style="margin-top:8px;">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Jenis</th>
-                <th>Keterangan</th>
-                <th>Region</th>
-                <th>Diajukan</th>
-                <th>Status</th>
-              </tr>
-            </thead>
+            <thead><tr><th>#</th><th>Jenis</th><th>Keterangan</th><th>Region</th><th>Diajukan</th><th>Status</th></tr></thead>
             <tbody>
-              <tr>
-                <td style="color:#98A2B3;font-size:11px;">001</td>
-                <td>Mutasi AE</td>
-                <td>Andi Setiawan → Gresik Kota</td>
-                <td>Gresik-Lamongan</td>
-                <td>3 hari lalu</td>
-                <td><span class="badge red">Overdue</span></td>
-              </tr>
-              <tr>
-                <td style="color:#98A2B3;font-size:11px;">002</td>
-                <td>Penambahan Manpower</td>
-                <td>Permintaan 2 AE baru</td>
-                <td>Gresik-Lamongan</td>
-                <td>2 hari lalu</td>
-                <td><span class="badge red">Overdue</span></td>
-              </tr>
-              <tr>
-                <td style="color:#98A2B3;font-size:11px;">003</td>
-                <td>Mutasi AE</td>
-                <td>Budi Cahya → Surabaya Pusat</td>
-                <td>Surabaya Barat</td>
-                <td>1 hari lalu</td>
-                <td><span class="badge orange">Waiting</span></td>
-              </tr>
-              <tr>
-                <td style="color:#98A2B3;font-size:11px;">004</td>
-                <td>Eskalasi Strategis</td>
-                <td>Evaluasi kinerja Region Q2</td>
-                <td>Semua Region</td>
-                <td>1 hari lalu</td>
-                <td><span class="badge orange">Waiting</span></td>
-              </tr>
-              <tr>
-                <td style="color:#98A2B3;font-size:11px;">005</td>
-                <td>Mutasi Antar Region</td>
-                <td>Siti Rahayu → Region Sidoarjo</td>
-                <td>Malang Raya</td>
-                <td>2 hari lalu</td>
-                <td><span class="badge orange">Waiting</span></td>
-              </tr>
-              <tr>
-                <td style="color:#98A2B3;font-size:11px;">006</td>
-                <td>Penambahan Manpower</td>
-                <td>1 AE Cabang Singosari</td>
-                <td>Malang Raya</td>
-                <td>4 hari lalu</td>
-                <td><span class="badge green">Approved</span></td>
-              </tr>
-              <tr>
-                <td style="color:#98A2B3;font-size:11px;">007</td>
-                <td>Mutasi AE</td>
-                <td>Reza Firmansyah → Sidoarjo Selatan</td>
-                <td>Sidoarjo</td>
-                <td>5 hari lalu</td>
-                <td><span class="badge green">Approved</span></td>
-              </tr>
-              <tr>
-                <td style="color:#98A2B3;font-size:11px;">008</td>
-                <td>Eskalasi Strategis</td>
-                <td>Permintaan anggaran Q3 2026</td>
-                <td>Surabaya Barat</td>
-                <td>6 hari lalu</td>
-                <td><span class="badge gray">Rejected</span></td>
-              </tr>
+              <tr><td style="color:#98A2B3;font-size:11px;">001</td><td>Mutasi AE</td><td>Andi Setiawan → Gresik Kota</td><td>Gresik-Lamongan</td><td>3 hari lalu</td><td><span class="badge red">Overdue</span></td></tr>
+              <tr><td style="color:#98A2B3;font-size:11px;">002</td><td>Penambahan Manpower</td><td>Permintaan 2 AE baru</td><td>Gresik-Lamongan</td><td>2 hari lalu</td><td><span class="badge red">Overdue</span></td></tr>
+              <tr><td style="color:#98A2B3;font-size:11px;">003</td><td>Mutasi AE</td><td>Budi Cahya → Surabaya Pusat</td><td>Surabaya Barat</td><td>1 hari lalu</td><td><span class="badge orange">Waiting</span></td></tr>
+              <tr><td style="color:#98A2B3;font-size:11px;">004</td><td>Eskalasi Strategis</td><td>Evaluasi kinerja Region Q2</td><td>Semua Region</td><td>1 hari lalu</td><td><span class="badge orange">Waiting</span></td></tr>
+              <tr><td style="color:#98A2B3;font-size:11px;">005</td><td>Mutasi Antar Region</td><td>Siti Rahayu → Region Sidoarjo</td><td>Malang Raya</td><td>2 hari lalu</td><td><span class="badge orange">Waiting</span></td></tr>
+              <tr><td style="color:#98A2B3;font-size:11px;">006</td><td>Penambahan Manpower</td><td>1 AE Cabang Singosari</td><td>Malang Raya</td><td>4 hari lalu</td><td><span class="badge green">Approved</span></td></tr>
+              <tr><td style="color:#98A2B3;font-size:11px;">007</td><td>Mutasi AE</td><td>Reza Firmansyah → Sidoarjo Selatan</td><td>Sidoarjo</td><td>5 hari lalu</td><td><span class="badge green">Approved</span></td></tr>
+              <tr><td style="color:#98A2B3;font-size:11px;">008</td><td>Eskalasi Strategis</td><td>Permintaan anggaran Q3 2026</td><td>Surabaya Barat</td><td>6 hari lalu</td><td><span class="badge gray">Rejected</span></td></tr>
             </tbody>
           </table>
         </div>
@@ -514,15 +397,79 @@
         <div id="q-rej" class="queue-panel" style="display:none;padding:16px;color:#667085;font-size:13px;">Menampilkan 3 item Rejected.</div>
       </div>
 
-      <!-- FOOTER -->
       <div class="dash-foot">
         <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
         Terakhir diperbarui 2 menit yang lalu
-        <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
       </div>
 
-    </div><!-- /content-area -->
+    </div>
   </main>
+</div>
+
+<!-- MODAL BUAT PENGAJUAN GRM -->
+<div id="modal-req" style="display:none; position:fixed; inset:0; background:rgba(16,24,40,.5); z-index:100; align-items:center; justify-content:center;">
+  <div style="background:white; border-radius:16px; width:580px; max-height:85vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,.15);">
+    <div style="padding:22px 24px 18px; border-bottom:1px solid #EAECF0; display:flex; align-items:center; justify-content:space-between;">
+      <div>
+        <div style="font-size:16px; font-weight:700; color:#101828;">Buat Pengajuan Baru</div>
+        <div style="font-size:12px; color:#667085; margin-top:2px;">General Regional Manager · Agus Hermawan</div>
+      </div>
+      <button onclick="closeModal()" style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid #EAECF0;background:white;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div style="padding:22px 24px;">
+      <div style="margin-bottom:18px;">
+        <label style="font-size:12px;font-weight:700;color:#344054;display:block;margin-bottom:6px;">Tipe Pengajuan</label>
+        <select id="req-type" onchange="switchReqForm(this.value)" style="width:100%;padding:10px 12px;border:1px solid #D0D5DD;border-radius:9px;font-size:13px;font-family:inherit;color:#101828;background:white;cursor:pointer;outline:none;">
+          <option value="">— Pilih Tipe —</option>
+          <option value="mutasi-region">Mutasi Antar Region</option>
+          <option value="promosi-hor">Promosi BL &rarr; HoR</option>
+          <option value="headcount">Penambahan Headcount</option>
+        </select>
+      </div>
+
+      <div id="form-mutasi-region" style="display:none;">
+        <div style="margin-bottom:14px;"><label style="font-size:12px;font-weight:700;color:#344054;display:block;margin-bottom:5px;">Nama Karyawan</label><input type="text" placeholder="Nama lengkap" style="width:100%;padding:9px 12px;border:1px solid #D0D5DD;border-radius:8px;font-size:13px;font-family:inherit;outline:none;"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+          <div><label style="font-size:12px;font-weight:700;color:#344054;display:block;margin-bottom:5px;">Region Asal</label><input type="text" placeholder="Region saat ini" style="width:100%;padding:9px 12px;border:1px solid #D0D5DD;border-radius:8px;font-size:13px;font-family:inherit;outline:none;"></div>
+          <div><label style="font-size:12px;font-weight:700;color:#344054;display:block;margin-bottom:5px;">Region Tujuan</label><input type="text" placeholder="Region tujuan" style="width:100%;padding:9px 12px;border:1px solid #D0D5DD;border-radius:8px;font-size:13px;font-family:inherit;outline:none;"></div>
+        </div>
+        <div style="margin-bottom:14px;"><label style="font-size:12px;font-weight:700;color:#344054;display:block;margin-bottom:5px;">Tanggal Efektif</label><input type="date" style="width:100%;padding:9px 12px;border:1px solid #D0D5DD;border-radius:8px;font-size:13px;font-family:inherit;outline:none;"></div>
+      </div>
+
+      <div id="form-promosi-hor" style="display:none;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+          <div><label style="font-size:12px;font-weight:700;color:#344054;display:block;margin-bottom:5px;">Nama Branch Leader</label><input type="text" placeholder="Nama lengkap" style="width:100%;padding:9px 12px;border:1px solid #D0D5DD;border-radius:8px;font-size:13px;font-family:inherit;outline:none;"></div>
+          <div><label style="font-size:12px;font-weight:700;color:#344054;display:block;margin-bottom:5px;">Cabang Saat Ini</label><input type="text" placeholder="Nama cabang" style="width:100%;padding:9px 12px;border:1px solid #D0D5DD;border-radius:8px;font-size:13px;font-family:inherit;outline:none;"></div>
+        </div>
+        <div style="margin-bottom:14px;"><label style="font-size:12px;font-weight:700;color:#344054;display:block;margin-bottom:5px;">Target Posisi HoR</label><input type="text" placeholder="Misal: HoR Region Malang Raya" style="width:100%;padding:9px 12px;border:1px solid #D0D5DD;border-radius:8px;font-size:13px;font-family:inherit;outline:none;"></div>
+        <div style="margin-bottom:14px;"><label style="font-size:12px;font-weight:700;color:#344054;display:block;margin-bottom:5px;">Justifikasi Promosi</label><textarea rows="2" placeholder="Alasan promosi berdasarkan kinerja..." style="width:100%;padding:9px 12px;border:1px solid #D0D5DD;border-radius:8px;font-size:13px;font-family:inherit;resize:none;outline:none;"></textarea></div>
+      </div>
+
+      <div id="form-headcount" style="display:none;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+          <div><label style="font-size:12px;font-weight:700;color:#344054;display:block;margin-bottom:5px;">Tipe</label>
+            <select style="width:100%;padding:9px 12px;border:1px solid #D0D5DD;border-radius:8px;font-size:13px;font-family:inherit;background:white;outline:none;"><option>Account Executive</option><option>Teknisi</option><option>Tim Support</option></select>
+          </div>
+          <div><label style="font-size:12px;font-weight:700;color:#344054;display:block;margin-bottom:5px;">Jumlah</label><input type="number" placeholder="0 orang" style="width:100%;padding:9px 12px;border:1px solid #D0D5DD;border-radius:8px;font-size:13px;font-family:inherit;outline:none;"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+          <div><label style="font-size:12px;font-weight:700;color:#344054;display:block;margin-bottom:5px;">Cabang Target</label><input type="text" placeholder="Nama cabang" style="width:100%;padding:9px 12px;border:1px solid #D0D5DD;border-radius:8px;font-size:13px;font-family:inherit;outline:none;"></div>
+          <div><label style="font-size:12px;font-weight:700;color:#344054;display:block;margin-bottom:5px;">Timeline</label><input type="text" placeholder="Misal: Agustus 2026" style="width:100%;padding:9px 12px;border:1px solid #D0D5DD;border-radius:8px;font-size:13px;font-family:inherit;outline:none;"></div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:14px;">
+        <label style="font-size:12px;font-weight:700;color:#344054;display:block;margin-bottom:5px;">Alasan / Justifikasi</label>
+        <textarea rows="3" placeholder="Jelaskan alasan pengajuan..." style="width:100%;padding:9px 12px;border:1px solid #D0D5DD;border-radius:8px;font-size:13px;font-family:inherit;resize:vertical;outline:none;"></textarea>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;">
+        <button onclick="closeModal()" style="padding:10px 20px;border-radius:9px;border:1px solid #D0D5DD;background:white;font-size:13px;font-weight:600;color:#344054;cursor:pointer;font-family:inherit;">Batal</button>
+        <button style="padding:10px 22px;border-radius:9px;background:#1D6FF3;color:white;font-size:13px;font-weight:700;cursor:pointer;border:none;font-family:inherit;">Ajukan Sekarang</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -538,17 +485,28 @@ function togglePeople() {
   head.classList.toggle('open');
   sub.classList.toggle('open');
 }
-function switchTab(id, el) {
-  document.querySelectorAll('.tab-panel').forEach(function(p){ p.style.display='none'; });
-  document.querySelectorAll('.pg-tab').forEach(function(t){ t.classList.remove('active'); });
-  document.getElementById(id).style.display='block';
-  el.classList.add('active');
-}
 function switchQueueTab(id, el) {
   document.querySelectorAll('.queue-panel').forEach(function(p){ p.style.display='none'; });
   document.querySelectorAll('.queue-tab').forEach(function(t){ t.classList.remove('active'); });
   document.getElementById(id).style.display='block';
   el.classList.add('active');
+}
+function openModal() {
+  document.getElementById('modal-req').style.display = 'flex';
+}
+function closeModal() {
+  document.getElementById('modal-req').style.display = 'none';
+}
+function switchReqForm(val) {
+  ['mutasi-region','promosi-hor','headcount'].forEach(function(f) {
+    document.getElementById('form-' + f).style.display = (f === val) ? 'block' : 'none';
+  });
+}
+function toggleRequests() {
+  var head = document.getElementById('requests-head');
+  var sub  = document.getElementById('requests-sub');
+  head.classList.toggle('open');
+  sub.classList.toggle('open');
 }
 </script>
 </body>

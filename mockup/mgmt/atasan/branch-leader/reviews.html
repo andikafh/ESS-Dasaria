@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>People — Reviews · Branch Leader</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height:100%; font-family:'Inter',-apple-system,sans-serif; font-size:14px; color:#101828; background:#F5F7FA; -webkit-font-smoothing:antialiased; }
+    a { text-decoration:none; color:inherit; }
+    button { font-family:inherit; cursor:pointer; border:none; background:none; }
+    .mgmt-layout { display:flex; height:100vh; overflow:hidden; }
+    .sidebar { width:230px; flex-shrink:0; background:#0D1B3E; height:100vh; display:flex; flex-direction:column; overflow-y:auto; }
+    .sidebar::-webkit-scrollbar { width:3px; }
+    .sidebar::-webkit-scrollbar-thumb { background:rgba(255,255,255,.1); border-radius:2px; }
+    .sb-logo { display:flex; align-items:center; gap:10px; padding:22px 18px 16px; color:white; font-size:14px; font-weight:800; letter-spacing:-.3px; border-bottom:1px solid rgba(255,255,255,.07); }
+    .sb-logo svg { width:22px; height:22px; stroke:white; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-nav { padding:10px; flex:1; }
+    .sb-item { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
+    .sb-item:hover { background:rgba(255,255,255,.07); color:rgba(255,255,255,.9); }
+    .sb-item.active { background:rgba(29,111,243,.28); color:white; font-weight:700; }
+    .sb-item svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-badge { margin-left:auto; background:#F04438; color:white; font-size:9px; font-weight:800; min-width:17px; height:17px; border-radius:9px; display:flex; align-items:center; justify-content:center; padding:0 4px; }
+    .sb-group { margin-bottom:1px; }
+    .sb-group-head { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; cursor:pointer; user-select:none; transition:all .15s; }
+    .sb-group-head:hover, .sb-group-head.open { color:rgba(255,255,255,.9); background:rgba(255,255,255,.05); }
+    .sb-ico { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-chev { margin-left:auto; width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; transition:transform .2s; }
+    .sb-group-head.open .sb-chev { transform:rotate(90deg); }
+    .sb-sub { padding-left:14px; overflow:hidden; max-height:0; transition:max-height .25s ease; }
+    .sb-sub.open { max-height:200px; }
+    .sb-sub-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.45); font-size:12px; font-weight:500; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
+    .sb-sub-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.8); }
+    .sb-sub-item.active { background:rgba(29,111,243,.2); color:#60A5FA; font-weight:700; }
+    .sb-sub-dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; }
+    .sb-connect { padding:6px 10px 20px; border-top:1px solid rgba(255,255,255,.07); margin-top:auto; }
+    .sb-connect-label { font-size:10px; font-weight:700; color:rgba(255,255,255,.3); text-transform:uppercase; letter-spacing:.8px; padding:10px 10px 6px; }
+    .sb-connect-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.5); font-size:12px; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
+    .sb-connect-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.85); }
+    .sb-connect-item svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-connect-sub { font-size:10px; color:rgba(255,255,255,.25); margin-left:auto; }
+    /* MAIN */
+    .main-content { flex:1; height:100vh; overflow-y:auto; background:#F5F7FA; }
+    .topbar { background:white; height:62px; display:flex; align-items:center; justify-content:space-between; padding:0 28px; border-bottom:1px solid #EAECF0; position:sticky; top:0; z-index:20; }
+    .topbar-left { display:flex; align-items:center; gap:14px; }
+    .page-title { font-size:16px; font-weight:700; color:#101828; line-height:1.1; }
+    .page-sub { font-size:12px; color:#667085; }
+    .topbar-right { display:flex; align-items:center; gap:14px; }
+    .topbar-date { font-size:12px; color:#667085; display:flex; align-items:center; gap:5px; }
+    .topbar-date svg { width:14px; height:14px; stroke:#98A2B3; fill:none; stroke-width:2; }
+    .user-chip { display:flex; align-items:center; gap:9px; padding:6px 10px; border-radius:10px; cursor:pointer; }
+    .user-chip:hover { background:#F5F7FA; }
+    .user-av { width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,#1D6FF3,#1558C8); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:white; flex-shrink:0; }
+    .user-name { font-size:13px; font-weight:700; color:#101828; }
+    .user-role { font-size:11px; color:#98A2B3; }
+    .topbar-notif { position:relative; width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:9px; border:1px solid #EAECF0; background:white; cursor:pointer; flex-shrink:0; }
+    .topbar-notif svg { width:17px; height:17px; stroke:#667085; fill:none; stroke-width:2; }
+    .notif-dot { position:absolute; top:6px; right:7px; width:8px; height:8px; background:#F04438; border-radius:50%; border:1.5px solid white; }
+    .topbar-logout { display:flex; align-items:center; gap:6px; padding:7px 13px; border-radius:9px; background:#FEF3F2; border:1px solid #FECDCA; color:#B42318; font-size:12px; font-weight:700; cursor:pointer; text-decoration:none; transition:all .15s; flex-shrink:0; }
+    .topbar-logout:hover { background:#FEE4E2; }
+    .topbar-logout svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; }
+    .content-area { padding:22px 28px 32px; }
+    /* KPI */
+    .kpi-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:13px; margin-bottom:20px; }
+    .kpi-card { background:white; border-radius:12px; padding:15px 18px; border:1px solid #EAECF0; display:flex; align-items:flex-start; gap:12px; }
+    .kpi-ico { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .kpi-ico svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; }
+    .kpi-ico.blue { background:#EFF6FF; color:#1D6FF3; }
+    .kpi-ico.green { background:#ECFDF3; color:#027A48; }
+    .kpi-ico.amber { background:#FFFAEB; color:#B54708; }
+    .kpi-ico.red { background:#FEF3F2; color:#B42318; }
+    .kpi-val { font-size:22px; font-weight:800; color:#101828; letter-spacing:-1px; line-height:1; margin-bottom:2px; }
+    .kpi-lbl { font-size:11px; color:#667085; }
+    /* TABS */
+    .tab-bar { display:flex; gap:0; border-bottom:2px solid #EAECF0; margin-bottom:18px; }
+    .tab-btn { padding:9px 18px; font-size:13px; font-weight:600; color:#667085; cursor:pointer; border:none; background:none; font-family:inherit; border-bottom:2px solid transparent; margin-bottom:-2px; transition:all .15s; }
+    .tab-btn.active { color:#1D6FF3; border-bottom-color:#1D6FF3; }
+    .tab-btn:hover:not(.active) { color:#344054; }
+    .tab-panel { display:none; }
+    .tab-panel.active { display:block; }
+    /* TABLE */
+    .data-table { width:100%; border-collapse:collapse; background:white; border:1px solid #EAECF0; border-radius:12px; overflow:hidden; }
+    .data-table th { font-size:11px; font-weight:700; color:#667085; text-align:left; padding:10px 13px; background:#F9FAFB; border-bottom:1px solid #EAECF0; white-space:nowrap; }
+    .data-table td { font-size:12px; color:#344054; padding:10px 13px; border-bottom:1px solid #F9FAFB; vertical-align:middle; }
+    .data-table tr:last-child td { border-bottom:none; }
+    .data-table tr:hover td { background:#FAFBFF; }
+    /* badges */
+    .badge { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:20px; font-size:11px; font-weight:700; white-space:nowrap; }
+    .badge-dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; }
+    .badge.green { background:#ECFDF3; color:#027A48; }
+    .badge.orange { background:#FFFAEB; color:#B54708; }
+    .badge.amber { background:#FFF5E1; color:#B54708; }
+    .badge.red { background:#FEF3F2; color:#B42318; }
+    .badge.blue { background:#EFF6FF; color:#1D6FF3; }
+    .badge.gray { background:#F2F4F7; color:#667085; }
+    /* score badge */
+    .score-badge { display:inline-block; padding:3px 9px; border-radius:20px; font-size:11px; font-weight:800; }
+    .score-badge.green { background:#ECFDF3; color:#027A48; }
+    .score-badge.orange { background:#FFFAEB; color:#B54708; }
+    .score-badge.red { background:#FEF3F2; color:#B42318; }
+    /* AV */
+    .av { width:28px; height:28px; border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:800; color:white; flex-shrink:0; }
+    .av.blue { background:linear-gradient(135deg,#1D6FF3,#1558C8); }
+    .av.green { background:linear-gradient(135deg,#12B76A,#059669); }
+    .av.amber { background:linear-gradient(135deg,#F79009,#D97706); }
+    .av.purple { background:linear-gradient(135deg,#7C3AED,#6D28D9); }
+    .av.red { background:linear-gradient(135deg,#F04438,#D92D20); }
+    .av.gray { background:linear-gradient(135deg,#667085,#344054); }
+    .av.teal { background:linear-gradient(135deg,#0E9F93,#0D7A73); }
+    .av.pink { background:linear-gradient(135deg,#EC4899,#DB2777); }
+    .av.orange { background:linear-gradient(135deg,#F97316,#EA580C); }
+    .member-cell { display:flex; align-items:center; gap:8px; }
+    .member-name { font-size:12px; font-weight:700; color:#101828; }
+    /* Buttons */
+    .btn-sm { padding:4px 11px; border-radius:7px; font-size:11px; font-weight:700; font-family:inherit; cursor:pointer; border:1px solid #EAECF0; background:white; color:#344054; transition:all .15s; display:inline-flex; align-items:center; }
+    .btn-sm:hover { background:#F9FAFB; }
+    .btn-sm.blue-sm { background:#1D6FF3; color:white; border-color:#1D6FF3; }
+    .btn-primary { display:inline-flex; align-items:center; gap:6px; padding:8px 16px; border-radius:9px; background:#1D6FF3; color:white; font-size:12px; font-weight:700; font-family:inherit; cursor:pointer; border:none; transition:all .15s; }
+    .btn-primary:hover { background:#1558C0; }
+    /* Stars */
+    .stars { color:#F79009; letter-spacing:1px; font-size:13px; }
+    /* Performance toggle */
+    .perf-toggle { display:flex; gap:6px; margin-bottom:14px; }
+    .perf-toggle-btn { padding:6px 16px; border-radius:8px; font-size:12px; font-weight:700; border:1px solid #EAECF0; background:white; color:#667085; cursor:pointer; font-family:inherit; transition:all .15s; }
+    .perf-toggle-btn.active { background:#1D6FF3; color:white; border-color:#1D6FF3; }
+    .perf-sub-panel { display:none; }
+    .perf-sub-panel.active { display:block; }
+    /* Talent buckets */
+    .talent-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .talent-bucket { background:white; border:1px solid #EAECF0; border-radius:12px; overflow:hidden; }
+    .talent-bucket-head { padding:12px 16px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #EAECF0; }
+    .talent-bucket-title { font-size:13px; font-weight:800; }
+    .talent-bucket-sub { font-size:11px; color:#667085; margin-top:1px; }
+    .talent-bucket-add { font-size:11px; font-weight:700; padding:3px 10px; border-radius:7px; border:1px solid #EAECF0; background:white; cursor:pointer; font-family:inherit; color:#344054; }
+    .talent-bucket-body { padding:12px 16px; }
+    .talent-chip { display:inline-flex; align-items:center; gap:6px; padding:5px 10px; border-radius:20px; background:#F2F4F7; font-size:12px; font-weight:600; margin:3px; }
+    .talent-chip-av { width:18px; height:18px; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:8px; font-weight:800; color:white; flex-shrink:0; }
+    /* Recognition sections */
+    .recog-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .recog-section { background:white; border:1px solid #EAECF0; border-radius:12px; overflow:hidden; }
+    .recog-section-head { padding:12px 16px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #EAECF0; }
+    .recog-section-title { font-size:13px; font-weight:800; }
+    .recog-add-btn { font-size:11px; font-weight:700; padding:3px 10px; border-radius:7px; border:1px solid #EAECF0; background:white; cursor:pointer; font-family:inherit; color:#344054; }
+    .recog-body { padding:10px 14px; }
+    .recog-card { padding:10px 12px; border-radius:9px; border-left:3px solid; margin-bottom:8px; background:#F9FAFB; position:relative; }
+    .recog-card:last-child { margin-bottom:0; }
+    .recog-card-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; }
+    .recog-card-name { font-size:12px; font-weight:800; color:#101828; }
+    .recog-card-date { font-size:10px; color:#98A2B3; }
+    .recog-card-desc { font-size:11px; color:#344054; margin-bottom:4px; line-height:1.4; }
+    .recog-card-meta { font-size:10px; color:#667085; font-style:italic; }
+    .recog-badge-tag { display:inline-block; padding:1px 7px; border-radius:9px; font-size:10px; font-weight:700; }
+    /* Coaching status */
+    .status-terbuka { background:#FFFAEB; color:#B54708; }
+    .status-selesai { background:#ECFDF3; color:#027A48; }
+    /* filter bar */
+    .filter-bar { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+    .filter-select { padding:7px 12px; border-radius:8px; border:1px solid #EAECF0; background:white; font-size:12px; font-family:inherit; color:#344054; cursor:pointer; }
+    .filter-input { padding:7px 12px; border-radius:8px; border:1px solid #EAECF0; background:white; font-size:12px; font-family:inherit; color:#344054; outline:none; width:160px; }
+    .filter-input:focus { border-color:#1D6FF3; }
+  </style>
+</head>
+<body>
+<div class="mgmt-layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+      GRIYANET
+    </div>
+    <nav class="sb-nav">
+      <a href="dashboard.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+        Dashboard
+      </a>
+      <div class="sb-group">
+        <div class="sb-group-head open" id="people-head" onclick="togglePeople()">
+          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          People
+          <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="sb-sub open" id="people-sub">
+          <a href="tim.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Team</a>
+          <a href="attendance.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Attendance</a>
+          <a href="hiring.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Hiring Request</a>
+          <a href="reviews.html" class="sb-sub-item active"><span class="sb-sub-dot"></span>Reviews</a>
+        </div>
+      </div>
+      <div class="sb-group">
+        <div class="sb-group-head" id="requests-head" onclick="toggleRequests()">
+          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Requests
+          <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="sb-sub" id="requests-sub">
+          <a href="requests.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Overview</a>
+          <a href="requests.html" class="sb-sub-item"><span class="sb-sub-dot"></span>My Requests</a>
+          <a href="request-create.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Create Request</a>
+        </div>
+      </div>
+      <a href="approval.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Approval
+        <span class="sb-badge">2</span>
+      </a>
+      <div class="sb-group">
+        <div class="sb-group-head" id="learning-head" onclick="toggleLearning()">
+          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg>
+          Learning
+          <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="sb-sub" id="learning-sub">
+          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>My Learning Progress</a>
+          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Learning Library</a>
+          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Team Learning Progress</a>
+        </div>
+      </div>
+      <a href="laporan.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Report &amp; Analytics
+      </a>
+    </nav>
+    <div class="sb-connect">
+      <div class="sb-connect-label">Connect</div>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>CRM<span class="sb-connect-sub">Sistem CRM</span></a>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>ERP<span class="sb-connect-sub">ERP Operasional</span></a>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>NOC<span class="sb-connect-sub">Monitoring NOC</span></a>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Ticketing<span class="sb-connect-sub">Sistem Ticket</span></a>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>Maps<span class="sb-connect-sub">Google Maps</span></a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <div>
+          <div class="page-title">People — Reviews</div>
+          <div class="page-sub">Cabang Karangploso &middot; Coaching, Evaluasi &amp; Pengembangan Tim</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-date">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Jumat, 19 Juni 2026
+        </div>
+        <button class="topbar-notif">
+          <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="notif-dot"></span>
+        </button>
+        <div class="user-chip">
+          <div class="user-av">BS</div>
+          <div>
+            <div class="user-name">Budi Santoso</div>
+            <div class="user-role">Branch Leader</div>
+          </div>
+        </div>
+        <a href="../../../index.html" class="topbar-logout">
+          <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Keluar
+        </a>
+      </div>
+    </header>
+
+    <div class="content-area">
+      <!-- KPI STRIP (4) -->
+      <div class="kpi-strip">
+        <div class="kpi-card">
+          <div class="kpi-ico blue"><svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>
+          <div><div class="kpi-val">28</div><div class="kpi-lbl">Sesi Coaching Bulan Ini</div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-ico green"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+          <div><div class="kpi-val" style="font-size:18px;">4.1<span style="font-size:12px;font-weight:600;color:#667085;">/5</span></div><div class="kpi-lbl">Avg Performance Score</div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-ico amber"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+          <div><div class="kpi-val">3</div><div class="kpi-lbl">High Potential</div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-ico red"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+          <div><div class="kpi-val">2</div><div class="kpi-lbl">Butuh Perhatian</div></div>
+        </div>
+      </div>
+
+      <!-- TABS -->
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('coaching',this)">Coaching Log</button>
+        <button class="tab-btn" onclick="switchTab('perf',this)">Performance Review</button>
+        <button class="tab-btn" onclick="switchTab('talent',this)">Talent Review</button>
+        <button class="tab-btn" onclick="switchTab('recog',this)">Recognition &amp; Concern</button>
+      </div>
+
+      <!-- TAB 1: COACHING LOG -->
+      <div id="tab-coaching" class="tab-panel active">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <div class="filter-bar" style="margin-bottom:0;">
+            <select class="filter-select"><option>Juni 2026</option><option>Mei 2026</option></select>
+            <input class="filter-input" type="text" placeholder="Cari nama...">
+          </div>
+          <button class="btn-primary">+ Tambah Sesi Coaching</button>
+        </div>
+        <table class="data-table" style="table-layout:fixed;width:100%;">
+          <colgroup><col style="width:80px"><col style="width:160px"><col style="width:200px"><col style="width:175px"><col style="width:90px"><col style="width:130px"></colgroup>
+          <thead><tr><th>Tanggal</th><th>Karyawan</th><th>Topik Coaching</th><th>Tindak Lanjut</th><th>Status</th><th>Aksi</th></tr></thead>
+          <tbody>
+            <tr>
+              <td style="font-size:11px;color:#667085;">17 Jun</td>
+              <td><div class="member-cell"><div class="av amber">RP</div><span class="member-name">Rizal Pratama</span></div></td>
+              <td style="font-size:12px;">Target harian tidak tercapai</td>
+              <td style="font-size:11px;color:#667085;">Follow-up minggu depan</td>
+              <td><span class="badge amber status-terbuka" style="font-size:10px;">Terbuka</span></td>
+              <td><button class="btn-sm" style="margin-right:4px;">Edit</button><button class="btn-sm">Lihat</button></td>
+            </tr>
+            <tr>
+              <td style="font-size:11px;color:#667085;">16 Jun</td>
+              <td><div class="member-cell"><div class="av pink">PL</div><span class="member-name">Putri Lestari</span></div></td>
+              <td style="font-size:12px;">Pipeline warm prospect rendah</td>
+              <td style="font-size:11px;color:#667085;">Pendampingan canvasing</td>
+              <td><span class="badge amber status-terbuka" style="font-size:10px;">Terbuka</span></td>
+              <td><button class="btn-sm" style="margin-right:4px;">Edit</button><button class="btn-sm">Lihat</button></td>
+            </tr>
+            <tr>
+              <td style="font-size:11px;color:#667085;">15 Jun</td>
+              <td><div class="member-cell"><div class="av red">BW</div><span class="member-name">Bima Wicaksono</span></div></td>
+              <td style="font-size:12px;">Keterlambatan berulang</td>
+              <td style="font-size:11px;color:#667085;">Perjanjian komitmen</td>
+              <td><span class="badge green" style="font-size:10px;">Selesai</span></td>
+              <td><button class="btn-sm">Lihat</button></td>
+            </tr>
+            <tr>
+              <td style="font-size:11px;color:#667085;">14 Jun</td>
+              <td><div class="member-cell"><div class="av gray">JP</div><span class="member-name">Joni Prasetyo</span></div></td>
+              <td style="font-size:12px;">WO overdue tinggi</td>
+              <td style="font-size:11px;color:#667085;">Pelatihan prioritisasi</td>
+              <td><span class="badge amber status-terbuka" style="font-size:10px;">Terbuka</span></td>
+              <td><button class="btn-sm" style="margin-right:4px;">Edit</button><button class="btn-sm">Lihat</button></td>
+            </tr>
+            <tr>
+              <td style="font-size:11px;color:#667085;">12 Jun</td>
+              <td><div class="member-cell"><div class="av blue">AR</div><span class="member-name">Andi Ramadan</span></div></td>
+              <td style="font-size:12px;">Review pencapaian Q2</td>
+              <td style="font-size:11px;color:#98A2B3;">—</td>
+              <td><span class="badge green" style="font-size:10px;">Selesai</span></td>
+              <td><button class="btn-sm">Lihat</button></td>
+            </tr>
+            <tr>
+              <td style="font-size:11px;color:#667085;">10 Jun</td>
+              <td><div class="member-cell"><div class="av purple">DS</div><span class="member-name">Dian Safira</span></div></td>
+              <td style="font-size:12px;">Strategi closing HP</td>
+              <td style="font-size:11px;color:#667085;">Roleplay teknik closing</td>
+              <td><span class="badge green" style="font-size:10px;">Selesai</span></td>
+              <td><button class="btn-sm">Lihat</button></td>
+            </tr>
+            <tr>
+              <td style="font-size:11px;color:#667085;">8 Jun</td>
+              <td><div class="member-cell"><div class="av pink">MS</div><span class="member-name">Manda Sari</span></div></td>
+              <td style="font-size:12px;">Kehadiran &amp; konsistensi</td>
+              <td style="font-size:11px;color:#667085;">Monitoring 2 minggu</td>
+              <td><span class="badge amber status-terbuka" style="font-size:10px;">Terbuka</span></td>
+              <td><button class="btn-sm" style="margin-right:4px;">Edit</button><button class="btn-sm">Lihat</button></td>
+            </tr>
+            <tr>
+              <td style="font-size:11px;color:#667085;">5 Jun</td>
+              <td><div class="member-cell"><div class="av teal">LA</div><span class="member-name">Lutfi Anwar</span></div></td>
+              <td style="font-size:12px;">Beban WO berlebih</td>
+              <td style="font-size:11px;color:#667085;">Koordinasi dengan BL</td>
+              <td><span class="badge amber status-terbuka" style="font-size:10px;">Terbuka</span></td>
+              <td><button class="btn-sm" style="margin-right:4px;">Edit</button><button class="btn-sm">Lihat</button></td>
+            </tr>
+            <tr>
+              <td style="font-size:11px;color:#667085;">3 Jun</td>
+              <td><div class="member-cell"><div class="av purple">IM</div><span class="member-name">Irfan Maulana</span></div></td>
+              <td style="font-size:12px;">Pengembangan skill ODP</td>
+              <td style="font-size:11px;color:#667085;">Rekomendasi training</td>
+              <td><span class="badge green" style="font-size:10px;">Selesai</span></td>
+              <td><button class="btn-sm">Lihat</button></td>
+            </tr>
+            <tr>
+              <td style="font-size:11px;color:#667085;">1 Jun</td>
+              <td><div class="member-cell"><div class="av blue">AS</div><span class="member-name">Agus Subagyo</span></div></td>
+              <td style="font-size:12px;">Target achievement Q2</td>
+              <td style="font-size:11px;color:#98A2B3;">—</td>
+              <td><span class="badge green" style="font-size:10px;">Selesai</span></td>
+              <td><button class="btn-sm">Lihat</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- TAB 2: PERFORMANCE REVIEW -->
+      <div id="tab-perf" class="tab-panel">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <div class="perf-toggle">
+            <button class="perf-toggle-btn active" onclick="switchPerf('ae',this)">AE</button>
+            <button class="perf-toggle-btn" onclick="switchPerf('eng',this)">Engineer</button>
+          </div>
+          <span style="font-size:12px;color:#667085;font-weight:600;">Periode: Q2 2026 (Apr–Jun)</span>
+        </div>
+
+        <!-- AE Performance -->
+        <div id="perf-ae" class="perf-sub-panel active">
+          <table class="data-table" style="table-layout:fixed;width:100%;">
+            <colgroup><col style="width:165px"><col style="width:75px"><col style="width:75px"><col style="width:85px"><col style="width:110px"><col style="width:90px"><col style="width:90px"></colgroup>
+            <thead><tr><th>Nama</th><th>Disiplin</th><th>Aktivitas</th><th>Pipeline</th><th>Closing Quality</th><th>Attitude</th><th>Total Score</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><div class="member-cell"><div class="av blue">AR</div><span class="member-name">Andi Ramadan</span></div></td>
+                <td><span style="color:#027A48;font-weight:700;">95%</span></td>
+                <td style="font-weight:700;">42</td>
+                <td style="font-size:11px;">18 WP</td>
+                <td style="font-weight:700;color:#027A48;">78%</td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span></td>
+                <td><span class="score-badge green">87</span></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av purple">DS</div><span class="member-name">Dian Safira</span></div></td>
+                <td><span style="color:#027A48;font-weight:700;">98%</span></td>
+                <td style="font-weight:700;">48</td>
+                <td style="font-size:11px;">22 WP</td>
+                <td style="font-weight:700;color:#027A48;">82%</td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td>
+                <td><span class="score-badge green">92</span></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av amber">RP</div><span class="member-name">Rizal Pratama</span></div></td>
+                <td><span style="color:#B42318;font-weight:700;">72%</span></td>
+                <td style="font-weight:700;">18</td>
+                <td style="font-size:11px;">6 WP</td>
+                <td style="font-weight:700;color:#B54708;">45%</td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span></td>
+                <td><span class="score-badge red">54</span></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av green">NF</div><span class="member-name">Nova Fitriani</span></div></td>
+                <td><span style="color:#027A48;font-weight:700;">91%</span></td>
+                <td style="font-weight:700;">35</td>
+                <td style="font-size:11px;">11 WP</td>
+                <td style="font-weight:700;color:#027A48;">71%</td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span></td>
+                <td><span class="score-badge green">75</span></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av red">BW</div><span class="member-name">Bima Wicaksono</span></div></td>
+                <td><span style="color:#B54708;font-weight:700;">68%</span></td>
+                <td style="font-weight:700;">12</td>
+                <td style="font-size:11px;color:#98A2B3;">0 WP</td>
+                <td style="color:#98A2B3;">—</td>
+                <td><span class="stars">&#9733;&#9733;&#9734;&#9734;&#9734;</span></td>
+                <td><span class="score-badge red">32</span></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av gray">SR</div><span class="member-name">Siti Rahayu</span></div></td>
+                <td><span style="color:#027A48;font-weight:700;">89%</span></td>
+                <td style="font-weight:700;">31</td>
+                <td style="font-size:11px;">14 WP</td>
+                <td style="font-weight:700;color:#027A48;">68%</td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span></td>
+                <td><span class="score-badge green">71</span></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av teal">HW</div><span class="member-name">Hendra Wijaya</span></div></td>
+                <td><span style="color:#027A48;font-weight:700;">85%</span></td>
+                <td style="font-weight:700;">28</td>
+                <td style="font-size:11px;">9 WP</td>
+                <td style="font-weight:700;color:#027A48;">65%</td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span></td>
+                <td><span class="score-badge green">68</span></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av pink">PL</div><span class="member-name">Putri Lestari</span></div></td>
+                <td><span style="color:#B54708;font-weight:700;">79%</span></td>
+                <td style="font-weight:700;">22</td>
+                <td style="font-size:11px;">7 WP</td>
+                <td style="font-weight:700;color:#B54708;">52%</td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span></td>
+                <td><span class="score-badge orange">61</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Engineer Performance -->
+        <div id="perf-eng" class="perf-sub-panel">
+          <table class="data-table" style="table-layout:fixed;width:100%;">
+            <colgroup><col style="width:165px"><col style="width:75px"><col style="width:100px"><col style="width:120px"><col style="width:120px"><col style="width:90px"><col style="width:90px"></colgroup>
+            <thead><tr><th>Nama</th><th>Disiplin</th><th>SLA Achievement</th><th>Kualitas Pekerjaan</th><th>Problem Solving</th><th>Attitude</th><th>Total Score</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><div class="member-cell"><div class="av blue">AS</div><span class="member-name">Agus Subagyo</span></div></td>
+                <td style="font-weight:700;color:#027A48;">96%</td>
+                <td style="font-weight:700;color:#027A48;">95%</td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span></td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span></td>
+                <td><span class="score-badge green">88</span></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av green">FN</div><span class="member-name">Faisal Nugroho</span></div></td>
+                <td style="font-weight:700;color:#027A48;">92%</td>
+                <td style="font-weight:700;color:#B54708;">78%</td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span></td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span></td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span></td>
+                <td><span class="score-badge green">75</span></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av orange">HK</div><span class="member-name">Hendri Kurniawan</span></div></td>
+                <td style="font-weight:700;color:#027A48;">94%</td>
+                <td style="font-weight:700;color:#027A48;">92%</td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span></td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span></td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td>
+                <td><span class="score-badge green">84</span></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av purple">IM</div><span class="member-name">Irfan Maulana</span></div></td>
+                <td style="font-weight:700;color:#027A48;">90%</td>
+                <td style="font-weight:700;color:#027A48;">88%</td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span></td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span></td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span></td>
+                <td><span class="score-badge green">80</span></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av gray">JP</div><span class="member-name">Joni Prasetyo</span></div></td>
+                <td style="font-weight:700;color:#B42318;">71%</td>
+                <td style="font-weight:700;color:#B42318;">62%</td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span></td>
+                <td><span class="stars">&#9733;&#9733;&#9734;&#9734;&#9734;</span></td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span></td>
+                <td><span class="score-badge red">55</span></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av amber">KR</div><span class="member-name">Kurniadi</span></div></td>
+                <td style="font-weight:700;color:#027A48;">97%</td>
+                <td style="font-weight:700;color:#027A48;">96%</td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td>
+                <td><span class="score-badge green">92</span></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av teal">LA</div><span class="member-name">Lutfi Anwar</span></div></td>
+                <td style="font-weight:700;color:#027A48;">88%</td>
+                <td style="font-weight:700;color:#B54708;">71%</td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span></td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span></td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span></td>
+                <td><span class="score-badge orange">68</span></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av pink">MS</div><span class="member-name">Manda Sari</span></div></td>
+                <td style="font-weight:700;color:#B54708;">75%</td>
+                <td style="font-weight:700;color:#027A48;">80%</td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span></td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span></td>
+                <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span></td>
+                <td><span class="score-badge orange">72</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 3: TALENT REVIEW -->
+      <div id="tab-talent" class="tab-panel">
+        <div class="talent-grid">
+          <!-- High Potential -->
+          <div class="talent-bucket" style="border-left:3px solid #F59E0B;">
+            <div class="talent-bucket-head">
+              <div>
+                <div class="talent-bucket-title" style="color:#B45309;">&#11088; High Potential</div>
+                <div class="talent-bucket-sub">Potensi Tinggi</div>
+              </div>
+              <button class="talent-bucket-add">+ Tambah</button>
+            </div>
+            <div class="talent-bucket-body">
+              <span class="talent-chip"><span class="talent-chip-av" style="background:linear-gradient(135deg,#7C3AED,#6D28D9);">DS</span>Dian Safira</span>
+              <span class="talent-chip"><span class="talent-chip-av" style="background:linear-gradient(135deg,#F79009,#D97706);">KR</span>Kurniadi</span>
+              <span class="talent-chip"><span class="talent-chip-av" style="background:linear-gradient(135deg,#1D6FF3,#1558C8);">AS</span>Agus Subagyo</span>
+            </div>
+          </div>
+          <!-- Ready Next Role -->
+          <div class="talent-bucket" style="border-left:3px solid #12B76A;">
+            <div class="talent-bucket-head">
+              <div>
+                <div class="talent-bucket-title" style="color:#027A48;">&#9989; Ready Next Role</div>
+                <div class="talent-bucket-sub">Siap Naik Level</div>
+              </div>
+              <button class="talent-bucket-add">+ Tambah</button>
+            </div>
+            <div class="talent-bucket-body">
+              <span class="talent-chip"><span class="talent-chip-av" style="background:linear-gradient(135deg,#1D6FF3,#1558C8);">AR</span>Andi Ramadan</span>
+              <span class="talent-chip"><span class="talent-chip-av" style="background:linear-gradient(135deg,#1D6FF3,#1558C8);">AS</span>Agus Subagyo</span>
+            </div>
+          </div>
+          <!-- Need Development -->
+          <div class="talent-bucket" style="border-left:3px solid #1D6FF3;">
+            <div class="talent-bucket-head">
+              <div>
+                <div class="talent-bucket-title" style="color:#1D6FF3;">&#128200; Need Development</div>
+                <div class="talent-bucket-sub">Perlu Pembinaan</div>
+              </div>
+              <button class="talent-bucket-add">+ Tambah</button>
+            </div>
+            <div class="talent-bucket-body">
+              <span class="talent-chip"><span class="talent-chip-av" style="background:linear-gradient(135deg,#12B76A,#059669);">NF</span>Nova Fitriani</span>
+              <span class="talent-chip"><span class="talent-chip-av" style="background:linear-gradient(135deg,#F97316,#EA580C);">HK</span>Hendri Kurniawan</span>
+              <span class="talent-chip"><span class="talent-chip-av" style="background:linear-gradient(135deg,#667085,#344054);">SR</span>Siti Rahayu</span>
+              <span class="talent-chip"><span class="talent-chip-av" style="background:linear-gradient(135deg,#7C3AED,#6D28D9);">IM</span>Irfan Maulana</span>
+            </div>
+          </div>
+          <!-- At Risk -->
+          <div class="talent-bucket" style="border-left:3px solid #F04438;">
+            <div class="talent-bucket-head">
+              <div>
+                <div class="talent-bucket-title" style="color:#B42318;">&#9888;&#65039; At Risk</div>
+                <div class="talent-bucket-sub">Perlu Perhatian</div>
+              </div>
+              <button class="talent-bucket-add">+ Tambah</button>
+            </div>
+            <div class="talent-bucket-body">
+              <span class="talent-chip"><span class="talent-chip-av" style="background:linear-gradient(135deg,#F79009,#D97706);">RP</span>Rizal Pratama</span>
+              <span class="talent-chip"><span class="talent-chip-av" style="background:linear-gradient(135deg,#F04438,#D92D20);">BW</span>Bima Wicaksono</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: RECOGNITION & CONCERN -->
+      <div id="tab-recog" class="tab-panel">
+        <div class="recog-grid">
+          <!-- Apresiasi -->
+          <div class="recog-section">
+            <div class="recog-section-head">
+              <div class="recog-section-title" style="color:#B45309;">&#128079; Apresiasi</div>
+              <button class="recog-add-btn">+ Tambah</button>
+            </div>
+            <div class="recog-body">
+              <div class="recog-card" style="border-left-color:#F59E0B;">
+                <div class="recog-card-header"><span class="recog-card-name">Dian Safira</span><span class="recog-card-date">10 Jun 2026</span></div>
+                <div class="recog-card-desc">Top performer Q2 — 48 aktivitas tertinggi di cabang</div>
+                <span class="recog-badge-tag" style="background:#FFFAEB;color:#B45309;">AE Terbaik</span>
+              </div>
+              <div class="recog-card" style="border-left-color:#F59E0B;">
+                <div class="recog-card-header"><span class="recog-card-name">Kurniadi</span><span class="recog-card-date">5 Jun 2026</span></div>
+                <div class="recog-card-desc">Zero-overdue selama 3 bulan berturut-turut</div>
+                <span class="recog-badge-tag" style="background:#FFFAEB;color:#B45309;">Konsistensi</span>
+              </div>
+              <div class="recog-card" style="border-left-color:#F59E0B;">
+                <div class="recog-card-header"><span class="recog-card-name">Andi Ramadan</span><span class="recog-card-date">1 Jun 2026</span></div>
+                <div class="recog-card-desc">Closing rate tertinggi bulan ini — konversi HP 71%</div>
+                <span class="recog-badge-tag" style="background:#FFFAEB;color:#B45309;">Sales Champion</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Achievement -->
+          <div class="recog-section">
+            <div class="recog-section-head">
+              <div class="recog-section-title" style="color:#1D6FF3;">&#127942; Achievement</div>
+              <button class="recog-add-btn">+ Tambah</button>
+            </div>
+            <div class="recog-body">
+              <div class="recog-card" style="border-left-color:#1D6FF3;">
+                <div class="recog-card-header"><span class="recog-card-name">Dian Safira</span><span class="recog-card-date">Jun 2026</span></div>
+                <div class="recog-card-desc">Mencapai target 120% di Q2 2026</div>
+                <span class="recog-badge-tag" style="background:#EFF6FF;color:#1D6FF3;">Over-achiever</span>
+              </div>
+              <div class="recog-card" style="border-left-color:#1D6FF3;">
+                <div class="recog-card-header"><span class="recog-card-name">Agus Subagyo</span><span class="recog-card-date">Mei 2026</span></div>
+                <div class="recog-card-desc">100% SLA achievement seluruh bulan Mei 2026</div>
+                <span class="recog-badge-tag" style="background:#EFF6FF;color:#1D6FF3;">Quality Champion</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Warning -->
+          <div class="recog-section">
+            <div class="recog-section-head">
+              <div class="recog-section-title" style="color:#B54708;">&#9888;&#65039; Warning</div>
+              <button class="recog-add-btn">+ Tambah</button>
+            </div>
+            <div class="recog-body">
+              <div class="recog-card" style="border-left-color:#F79009;">
+                <div class="recog-card-header"><span class="recog-card-name">Rizal Pratama</span><span class="recog-card-date">12 Jun 2026</span></div>
+                <div class="recog-card-desc">Target tidak tercapai 3 bulan berturut (di bawah 60%)</div>
+                <div class="recog-card-meta">Aksi: Coaching sudah dilakukan</div>
+              </div>
+              <div class="recog-card" style="border-left-color:#F79009;">
+                <div class="recog-card-header"><span class="recog-card-name">Manda Sari</span><span class="recog-card-date">10 Jun 2026</span></div>
+                <div class="recog-card-desc">Keterlambatan check-in berulang (&gt;5x bulan ini)</div>
+                <div class="recog-card-meta">Aksi: Perlu monitoring ketat</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Concern -->
+          <div class="recog-section">
+            <div class="recog-section-head">
+              <div class="recog-section-title" style="color:#B42318;">&#128308; Concern</div>
+              <button class="recog-add-btn">+ Tambah</button>
+            </div>
+            <div class="recog-body">
+              <div class="recog-card" style="border-left-color:#F04438;">
+                <div class="recog-card-header"><span class="recog-card-name">Bima Wicaksono</span><span class="recog-card-date">15 Jun 2026</span></div>
+                <div class="recog-card-desc">Tidak menunjukkan progress setelah training dasar selesai</div>
+                <div class="recog-card-meta">Tindak lanjut: Coaching intensif + pertimbangkan evaluasi lanjut</div>
+              </div>
+              <div class="recog-card" style="border-left-color:#F04438;">
+                <div class="recog-card-header"><span class="recog-card-name">Joni Prasetyo</span><span class="recog-card-date">8 Jun 2026</span></div>
+                <div class="recog-card-desc">WO overdue terus meningkat, diduga ada masalah teknis skill</div>
+                <div class="recog-card-meta">Tindak lanjut: Perlu reassessment kompetensi teknis</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+function switchTab(id,btn){document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});document.getElementById('tab-'+id).classList.add('active');btn.classList.add('active');}
+function switchPerf(id,btn){document.querySelectorAll('.perf-sub-panel').forEach(function(p){p.classList.remove('active');});document.querySelectorAll('.perf-toggle-btn').forEach(function(b){b.classList.remove('active');});document.getElementById('perf-'+id).classList.add('active');btn.classList.add('active');}
+function togglePeople(){var h=document.getElementById('people-head'),s=document.getElementById('people-sub');h.classList.toggle('open');s.classList.toggle('open');}
+function toggleRequests(){var h=document.getElementById('requests-head'),s=document.getElementById('requests-sub');h.classList.toggle('open');s.classList.toggle('open');}
+function toggleLearning(){var h=document.getElementById('learning-head'),s=document.getElementById('learning-sub');h.classList.toggle('open');s.classList.toggle('open');}
+</script>
+</body>
+</html>

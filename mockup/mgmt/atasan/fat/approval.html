@@ -1,0 +1,378 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Approval Keuangan — FAT</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height:100%; font-family:'Inter',-apple-system,sans-serif; font-size:14px; color:#101828; background:#F5F7FA; -webkit-font-smoothing:antialiased; }
+    a { text-decoration:none; color:inherit; }
+    button { font-family:inherit; cursor:pointer; border:none; background:none; }
+    .mgmt-layout { display:flex; height:100vh; overflow:hidden; }
+    .sidebar { width:230px; flex-shrink:0; background:#0D1B3E; height:100vh; display:flex; flex-direction:column; overflow-y:auto; overflow-x:hidden; }
+    .sidebar::-webkit-scrollbar { width:3px; }
+    .sidebar::-webkit-scrollbar-thumb { background:rgba(255,255,255,.1); border-radius:2px; }
+    .sb-logo { display:flex; align-items:center; gap:10px; padding:22px 18px 16px; color:white; font-size:14px; font-weight:800; letter-spacing:-.3px; border-bottom:1px solid rgba(255,255,255,.07); }
+    .sb-logo svg { width:22px; height:22px; stroke:white; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-nav { padding:10px 10px; flex:1; }
+    .sb-item { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
+    .sb-item:hover { background:rgba(255,255,255,.07); color:rgba(255,255,255,.9); }
+    .sb-item.active { background:rgba(29,111,243,.28); color:white; font-weight:700; }
+    .sb-item svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-badge { margin-left:auto; background:#F04438; color:white; font-size:9px; font-weight:800; min-width:17px; height:17px; border-radius:9px; display:flex; align-items:center; justify-content:center; padding:0 4px; }
+    .sb-group { margin-bottom:1px; }
+    .sb-group-head { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; cursor:pointer; user-select:none; transition:all .15s; }
+    .sb-group-head:hover, .sb-group-head.open { color:rgba(255,255,255,.9); background:rgba(255,255,255,.05); }
+    .sb-ico { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-chev { margin-left:auto; width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; transition:transform .2s; }
+    .sb-group-head.open .sb-chev { transform:rotate(90deg); }
+    .sb-sub { padding-left:14px; overflow:hidden; max-height:0; transition:max-height .25s ease; }
+    .sb-sub.open { max-height:200px; }
+    .sb-sub-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.45); font-size:12px; font-weight:500; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
+    .sb-sub-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.8); }
+    .sb-sub-item.active { background:rgba(29,111,243,.2); color:#60A5FA; font-weight:700; }
+    .sb-sub-dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; }
+    .sb-connect { padding:6px 10px 20px; border-top:1px solid rgba(255,255,255,.07); margin-top:auto; }
+    .sb-connect-label { font-size:10px; font-weight:700; color:rgba(255,255,255,.3); text-transform:uppercase; letter-spacing:.8px; padding:10px 10px 6px; }
+    .sb-connect-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.5); font-size:12px; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
+    .sb-connect-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.85); }
+    .sb-connect-item svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-connect-sub { font-size:10px; color:rgba(255,255,255,.25); margin-left:auto; }
+    .main-content { flex:1; height:100vh; overflow-y:auto; background:#F5F7FA; }
+    .topbar { background:white; height:62px; display:flex; align-items:center; justify-content:space-between; padding:0 28px; border-bottom:1px solid #EAECF0; position:sticky; top:0; z-index:20; }
+    .topbar-left { display:flex; align-items:center; gap:14px; }
+    .topbar-btn { width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:8px; color:#667085; }
+    .topbar-btn svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; }
+    .page-title { font-size:16px; font-weight:700; color:#101828; line-height:1.1; }
+    .page-sub { font-size:12px; color:#667085; }
+    .topbar-right { display:flex; align-items:center; gap:14px; }
+    .topbar-date { font-size:12px; color:#667085; display:flex; align-items:center; gap:5px; }
+    .topbar-date svg { width:14px; height:14px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .topbar-notif { position:relative; width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:9px; border:1px solid #EAECF0; background:white; cursor:pointer; flex-shrink:0; }
+    .topbar-notif svg { width:17px; height:17px; stroke:#667085; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .notif-dot { position:absolute; top:6px; right:7px; width:8px; height:8px; background:#F04438; border-radius:50%; border:1.5px solid white; }
+    .topbar-notif:hover { background:#F9FAFB; }
+    .topbar-logout { display:flex; align-items:center; gap:6px; padding:7px 13px; border-radius:9px; background:#FEF3F2; border:1px solid #FECDCA; color:#B42318; font-size:12px; font-weight:700; cursor:pointer; text-decoration:none; transition:all .15s; flex-shrink:0; }
+    .topbar-logout:hover { background:#FEE4E2; }
+    .topbar-logout svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .user-chip { display:flex; align-items:center; gap:9px; padding:6px 10px; border-radius:10px; cursor:pointer; }
+    .user-chip:hover { background:#F5F7FA; }
+    .user-av { width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,#0891B2,#0E7490); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:white; flex-shrink:0; }
+    .user-name { font-size:13px; font-weight:700; color:#101828; }
+    .user-role { font-size:11px; color:#98A2B3; display:flex; align-items:center; gap:3px; }
+    .user-role svg { width:12px; height:12px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .content-area { padding:22px 28px 32px; }
+    .pg-tabs { display:flex; gap:4px; background:white; border:1px solid #EAECF0; padding:4px; border-radius:10px; margin-bottom:18px; width:fit-content; }
+    .pg-tab { padding:7px 18px; border-radius:8px; font-size:13px; font-weight:600; color:#667085; cursor:pointer; transition:all .15s; }
+    .pg-tab.active { background:#0891B2; color:white; }
+    .pg-tab:not(.active):hover { background:#F9FAFB; color:#344054; }
+    .tab-panel { display:none; }
+    .badge { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; }
+    .badge.orange { background:#FFFAEB; color:#B54708; }
+    .badge.green { background:#ECFDF3; color:#027A48; }
+    .badge.gray { background:#F2F4F7; color:#667085; }
+    .badge.blue { background:#EFF6FF; color:#1558C8; }
+    .badge::before { content:''; width:5px; height:5px; border-radius:50%; background:currentColor; }
+    .proc-card { background:white; border:1px solid #EAECF0; border-radius:12px; padding:18px 20px; margin-bottom:10px; }
+    .proc-card-top { display:flex; align-items:start; justify-content:space-between; margin-bottom:10px; }
+    .proc-title { font-size:13px; font-weight:700; color:#101828; margin-bottom:4px; }
+    .proc-detail { font-size:12px; color:#344054; line-height:1.7; margin-bottom:12px; }
+    .chain-row { display:flex; align-items:center; gap:4px; margin-bottom:14px; flex-wrap:wrap; }
+    .chain-done { display:flex; align-items:center; gap:5px; font-size:11px; font-weight:700; color:#027A48; }
+    .chain-dot-done { width:18px; height:18px; border-radius:50%; background:#12B76A; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .chain-dot-done svg { width:9px; height:9px; stroke:white; fill:none; stroke-width:3; stroke-linecap:round; stroke-linejoin:round; }
+    .chain-line { width:20px; height:2px; background:#12B76A; flex-shrink:0; }
+    .proc-actions { display:flex; gap:8px; }
+    .btn-proses { padding:7px 18px; border-radius:8px; background:#0891B2; color:white; font-size:12px; font-weight:700; border:none; cursor:pointer; font-family:inherit; }
+    .btn-proses:hover { background:#0E7490; }
+    .btn-doc { padding:7px 16px; border-radius:8px; background:white; border:1px solid #D0D5DD; color:#344054; font-size:12px; font-weight:600; cursor:pointer; font-family:inherit; }
+    .btn-doc:hover { background:#F9FAFB; }
+    .type-chip { padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; }
+    .chip-orange { background:#FFFAEB; color:#B54708; }
+    .chip-blue { background:#EFF6FF; color:#1558C8; }
+    .data-table { width:100%; border-collapse:collapse; }
+    .data-table th { font-size:11px; font-weight:700; color:#667085; text-align:left; padding:9px 14px; background:#F9FAFB; border-bottom:1px solid #EAECF0; }
+    .data-table td { font-size:12px; color:#344054; padding:10px 14px; border-bottom:1px solid #F9FAFB; vertical-align:middle; }
+    .data-table tr:last-child td { border-bottom:none; }
+  </style>
+</head>
+<body>
+<div class="mgmt-layout">
+
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+      GRIYANET
+    </div>
+    <nav class="sb-nav">
+      <a href="dashboard.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <!-- Requests -->
+      <div class="sb-group">
+        <div class="sb-group-head" id="requests-head" onclick="toggleRequests()">
+          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          Requests
+          <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="sb-sub" id="requests-sub">
+          <a href="requests.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Overview</a>
+          <a href="requests.html" class="sb-sub-item"><span class="sb-sub-dot"></span>My Requests</a>
+          <a href="request-create.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Create Request</a>
+        </div>
+      </div>      <div class="sb-group">
+        <div class="sb-group-head open" id="approval-head" onclick="toggleApproval()">
+          <svg class="sb-ico" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Approval Keuangan
+          <span class="sb-badge">7</span>
+          <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="sb-sub open" id="approval-sub">
+          <a href="approval.html" class="sb-sub-item active"><span class="sb-sub-dot"></span>Reimbursement</a>
+          <a href="approval.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Loan</a>
+        </div>
+      </div>
+      <a href="#" class="sb-item">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Laporan
+      </a>
+    </nav>
+    <div class="sb-connect">
+      <div class="sb-connect-label">Connect</div>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>ERP<span class="sb-connect-sub">ERP Operasional</span></a>
+      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Finance System<span class="sb-connect-sub">Akuntansi</span></a>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="topbar-btn"><svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <div>
+          <div class="page-title">Approval Keuangan — FAT</div>
+          <div class="page-sub">Proses Reimbursement &amp; Loan</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-date">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Kamis, 19 Juni 2026
+        </div>
+        <button class="topbar-notif">
+          <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="notif-dot"></span>
+        </button>
+        <div class="user-chip">
+          <div class="user-av">DK</div>
+          <div>
+            <div class="user-name">Dewi Kusuma</div>
+            <div class="user-role">Kepala FAT <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+        </div>
+        <a href="../../../index.html" class="topbar-logout">
+          <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Keluar
+        </a>
+      </div>
+    </header>
+
+    <div class="content-area">
+
+      <div class="pg-tabs">
+        <div class="pg-tab active" onclick="switchTab('tab-ready',this)">Ready to Process</div>
+        <div class="pg-tab" onclick="switchTab('tab-waiting',this)">Menunggu Approval</div>
+        <div class="pg-tab" onclick="switchTab('tab-selesai',this)">Selesai</div>
+      </div>
+
+      <!-- TAB: READY TO PROCESS -->
+      <div id="tab-ready" style="display:block;">
+
+        <div class="proc-card">
+          <div class="proc-card-top">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;"><span class="type-chip chip-blue">Loan</span><span class="badge green">Approved</span></div>
+              <div class="proc-title">Bima Wicaksono — Rp 15.000.000</div>
+            </div>
+            <span style="font-size:11px;color:#98A2B3;">Approved Dir.: 17 Jun 2026</span>
+          </div>
+          <div class="proc-detail">
+            <strong>Inisiator:</strong> HoR Ricky Maulana · Region Malang Raya<br>
+            <strong>Tenor:</strong> 12 bulan · <strong>Tujuan:</strong> Biaya pendidikan anak
+          </div>
+          <div class="chain-row">
+            <div class="chain-done"><div class="chain-dot-done"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>HoR ✓</div>
+            <div class="chain-line"></div>
+            <div class="chain-done"><div class="chain-dot-done"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Dir. Commercial ✓</div>
+            <div class="chain-line"></div>
+            <div style="font-size:11px;font-weight:700;color:#0891B2;display:flex;align-items:center;gap:5px;"><div style="width:18px;height:18px;border-radius:50%;background:#0891B2;display:flex;align-items:center;justify-content:center;"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>FAT (proses)</div>
+          </div>
+          <div class="proc-actions"><button class="btn-proses">Proses</button><button class="btn-doc">Request Dokumen</button></div>
+        </div>
+
+        <div class="proc-card">
+          <div class="proc-card-top">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;"><span class="type-chip chip-blue">Loan</span><span class="badge green">Approved</span></div>
+              <div class="proc-title">Indra Setiawan — Rp 8.500.000</div>
+            </div>
+            <span style="font-size:11px;color:#98A2B3;">Approved Dir.: 16 Jun 2026</span>
+          </div>
+          <div class="proc-detail">
+            <strong>Inisiator:</strong> HoR Indah Pratiwi · Region Surabaya Barat<br>
+            <strong>Tenor:</strong> 6 bulan · <strong>Tujuan:</strong> Renovasi rumah
+          </div>
+          <div class="chain-row">
+            <div class="chain-done"><div class="chain-dot-done"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>HoR ✓</div>
+            <div class="chain-line"></div>
+            <div class="chain-done"><div class="chain-dot-done"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Dir. Commercial ✓</div>
+            <div class="chain-line"></div>
+            <div style="font-size:11px;font-weight:700;color:#0891B2;display:flex;align-items:center;gap:5px;"><div style="width:18px;height:18px;border-radius:50%;background:#0891B2;display:flex;align-items:center;justify-content:center;"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>FAT (proses)</div>
+          </div>
+          <div class="proc-actions"><button class="btn-proses">Proses</button><button class="btn-doc">Request Dokumen</button></div>
+        </div>
+
+        <div class="proc-card">
+          <div class="proc-card-top">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;"><span class="type-chip chip-orange">Reimbursement</span><span class="badge green">Approved</span></div>
+              <div class="proc-title">Andi Ramadan — Transport — Rp 450.000</div>
+            </div>
+            <span style="font-size:11px;color:#98A2B3;">Approved Dir.: 18 Jun 2026</span>
+          </div>
+          <div class="proc-detail">
+            <strong>Inisiator:</strong> BL Budi Santoso · Cabang Karangploso<br>
+            <strong>Tanggal:</strong> 15 Jun 2026 · <strong>Kategori:</strong> Transport
+          </div>
+          <div class="chain-row">
+            <div class="chain-done"><div class="chain-dot-done"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>BL ✓</div>
+            <div class="chain-line"></div>
+            <div class="chain-done"><div class="chain-dot-done"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Dir. ✓</div>
+            <div class="chain-line"></div>
+            <div style="font-size:11px;font-weight:700;color:#0891B2;display:flex;align-items:center;gap:5px;"><div style="width:18px;height:18px;border-radius:50%;background:#0891B2;display:flex;align-items:center;justify-content:center;"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>FAT (proses)</div>
+          </div>
+          <div class="proc-actions"><button class="btn-proses">Proses</button><button class="btn-doc">Request Dokumen</button></div>
+        </div>
+
+        <div class="proc-card">
+          <div class="proc-card-top">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;"><span class="type-chip chip-orange">Reimbursement</span><span class="badge green">Approved</span></div>
+              <div class="proc-title">Nova Fitriani — Akomodasi — Rp 1.200.000</div>
+            </div>
+            <span style="font-size:11px;color:#98A2B3;">Approved Dir.: 17 Jun 2026</span>
+          </div>
+          <div class="proc-detail">
+            <strong>Inisiator:</strong> BL Dewi Rahayu · Cabang Lawang<br>
+            <strong>Tanggal:</strong> 12 Jun 2026 · <strong>Kategori:</strong> Akomodasi
+          </div>
+          <div class="chain-row">
+            <div class="chain-done"><div class="chain-dot-done"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>BL ✓</div>
+            <div class="chain-line"></div>
+            <div class="chain-done"><div class="chain-dot-done"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Dir. ✓</div>
+            <div class="chain-line"></div>
+            <div style="font-size:11px;font-weight:700;color:#0891B2;display:flex;align-items:center;gap:5px;"><div style="width:18px;height:18px;border-radius:50%;background:#0891B2;display:flex;align-items:center;justify-content:center;"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>FAT (proses)</div>
+          </div>
+          <div class="proc-actions"><button class="btn-proses">Proses</button><button class="btn-doc">Request Dokumen</button></div>
+        </div>
+
+      </div>
+
+      <!-- TAB: MENUNGGU APPROVAL -->
+      <div id="tab-waiting" class="tab-panel">
+
+        <div style="background:#FFF8F0; border:1px solid #FDE68A; border-radius:10px; padding:12px 16px; margin-bottom:14px; font-size:12px; color:#92400E; display:flex; align-items:center; gap:8px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B54708" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          3 item menunggu approval Direktur Commercial — FAT akan otomatis menerima notifikasi saat approved.
+        </div>
+
+        <div class="proc-card" style="opacity:0.55;">
+          <div class="proc-card-top">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;"><span class="type-chip chip-blue">Loan</span><span class="badge gray">Menunggu Dir. Commercial</span></div>
+              <div class="proc-title">Rizal Pratama — Rp 12.000.000</div>
+            </div>
+            <span style="font-size:11px;color:#98A2B3;">Diajukan: 18 Jun 2026</span>
+          </div>
+          <div class="proc-detail"><strong>Tenor:</strong> 10 bulan · <strong>Tujuan:</strong> Modal usaha keluarga</div>
+          <div class="proc-actions"><button style="padding:7px 18px;border-radius:8px;background:#E4E7EC;color:#98A2B3;font-size:12px;font-weight:700;border:none;cursor:not-allowed;font-family:inherit;">Standby</button></div>
+        </div>
+
+        <div class="proc-card" style="opacity:0.55;">
+          <div class="proc-card-top">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;"><span class="type-chip chip-orange">Reimbursement</span><span class="badge gray">Menunggu Dir. Commercial</span></div>
+              <div class="proc-title">Maria Tanjung — Makan — Rp 185.000</div>
+            </div>
+            <span style="font-size:11px;color:#98A2B3;">Diajukan: 19 Jun 2026</span>
+          </div>
+          <div class="proc-detail"><strong>Kategori:</strong> Makan · Cabang Karangploso</div>
+          <div class="proc-actions"><button style="padding:7px 18px;border-radius:8px;background:#E4E7EC;color:#98A2B3;font-size:12px;font-weight:700;border:none;cursor:not-allowed;font-family:inherit;">Standby</button></div>
+        </div>
+
+        <div class="proc-card" style="opacity:0.55;">
+          <div class="proc-card-top">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;"><span class="type-chip chip-orange">Reimbursement</span><span class="badge gray">Menunggu Dir. Commercial</span></div>
+              <div class="proc-title">Ahmad Subagyo — Transport — Rp 320.000</div>
+            </div>
+            <span style="font-size:11px;color:#98A2B3;">Diajukan: 18 Jun 2026</span>
+          </div>
+          <div class="proc-detail"><strong>Kategori:</strong> Transport · Cabang Singosari</div>
+          <div class="proc-actions"><button style="padding:7px 18px;border-radius:8px;background:#E4E7EC;color:#98A2B3;font-size:12px;font-weight:700;border:none;cursor:not-allowed;font-family:inherit;">Standby</button></div>
+        </div>
+
+      </div>
+
+      <!-- TAB: SELESAI -->
+      <div id="tab-selesai" class="tab-panel">
+        <div style="background:white; border-radius:12px; border:1px solid #EAECF0; overflow:hidden;">
+          <table class="data-table">
+            <thead><tr><th>Tipe</th><th>Nama</th><th>Nominal</th><th>Inisiator</th><th>Diproses</th><th>Eksekutor</th></tr></thead>
+            <tbody>
+              <tr><td><span class="type-chip chip-blue" style="font-size:10px;">Loan</span></td><td style="font-weight:600;color:#101828;">Siti Wahyuni</td><td>Rp 10.000.000</td><td>HoR Malang Raya</td><td>15 Jun 2026</td><td>Dewi Kusuma</td></tr>
+              <tr><td><span class="type-chip chip-orange" style="font-size:10px;">Reimburse</span></td><td style="font-weight:600;color:#101828;">Budi Setiawan</td><td>Rp 650.000</td><td>BL Singosari</td><td>14 Jun 2026</td><td>Dewi Kusuma</td></tr>
+              <tr><td><span class="type-chip chip-blue" style="font-size:10px;">Loan</span></td><td style="font-weight:600;color:#101828;">Rina Kartika</td><td>Rp 5.000.000</td><td>HoR Surabaya Barat</td><td>12 Jun 2026</td><td>Dewi Kusuma</td></tr>
+              <tr><td><span class="type-chip chip-orange" style="font-size:10px;">Reimburse</span></td><td style="font-weight:600;color:#101828;">Wahyu Prasetyo</td><td>Rp 480.000</td><td>BL Lawang</td><td>10 Jun 2026</td><td>Dewi Kusuma</td></tr>
+              <tr><td><span class="type-chip chip-orange" style="font-size:10px;">Reimburse</span></td><td style="font-weight:600;color:#101828;">Dian Safira</td><td>Rp 210.000</td><td>BL Karangploso</td><td>9 Jun 2026</td><td>Dewi Kusuma</td></tr>
+              <tr><td><span class="type-chip chip-blue" style="font-size:10px;">Loan</span></td><td style="font-weight:600;color:#101828;">Heri Susanto</td><td>Rp 20.000.000</td><td>HoR Sidoarjo</td><td>8 Jun 2026</td><td>Dewi Kusuma</td></tr>
+              <tr><td><span class="type-chip chip-orange" style="font-size:10px;">Reimburse</span></td><td style="font-weight:600;color:#101828;">Lina Amalia</td><td>Rp 375.000</td><td>BL Gresik Kota</td><td>7 Jun 2026</td><td>Dewi Kusuma</td></tr>
+              <tr><td><span class="type-chip chip-blue" style="font-size:10px;">Loan</span></td><td style="font-weight:600;color:#101828;">Agus Fadli</td><td>Rp 7.500.000</td><td>HoR Malang Raya</td><td>6 Jun 2026</td><td>Dewi Kusuma</td></tr>
+              <tr><td><span class="type-chip chip-orange" style="font-size:10px;">Reimburse</span></td><td style="font-weight:600;color:#101828;">Tini Rahayu</td><td>Rp 290.000</td><td>BL Batu</td><td>5 Jun 2026</td><td>Dewi Kusuma</td></tr>
+              <tr><td><span class="type-chip chip-orange" style="font-size:10px;">Reimburse</span></td><td style="font-weight:600;color:#101828;">Rudi Hartono</td><td>Rp 520.000</td><td>BL Singosari</td><td>3 Jun 2026</td><td>Dewi Kusuma</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+<script>
+function toggleApproval() {
+  var head = document.getElementById('approval-head');
+  var sub  = document.getElementById('approval-sub');
+  head.classList.toggle('open');
+  sub.classList.toggle('open');
+}
+function togglePeople() { }
+function toggleLearning() { }
+function switchTab(id, el) {
+  document.querySelectorAll('.tab-panel').forEach(function(p){ p.style.display='none'; });
+  document.getElementById('tab-ready').style.display='none';
+  document.querySelectorAll('.pg-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById(id).style.display='block';
+  el.classList.add('active');
+}
+document.getElementById('tab-ready').style.display = 'block';
+function toggleRequests() {
+  var head = document.getElementById('requests-head');
+  var sub  = document.getElementById('requests-sub');
+  head.classList.toggle('open');
+  sub.classList.toggle('open');
+}
+</script>
+</body>
+</html>

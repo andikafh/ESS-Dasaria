@@ -112,14 +112,76 @@
     .cat-tab.active .cat-count { background:rgba(255,255,255,.25); }
     .cat-tab:not(.active) .cat-count { background:#F2F4F7; color:#344054; }
 
+    /* FILTER ROW */
+    .filter-row { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
+    .filter-dd { display:flex; align-items:center; gap:6px; padding:6px 11px; background:white; border:1px solid #EAECF0; border-radius:8px; font-size:12px; font-weight:600; color:#344054; cursor:pointer; white-space:nowrap; }
+    .filter-dd svg { width:12px; height:12px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .search-mini { display:flex; align-items:center; gap:6px; padding:6px 11px; background:white; border:1px solid #EAECF0; border-radius:8px; flex:1; max-width:240px; }
+    .search-mini svg { width:13px; height:13px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .search-mini input { border:none; outline:none; font-size:12px; font-family:inherit; color:#344054; background:none; width:100%; }
+    .search-mini input::placeholder { color:#98A2B3; }
+    .btn-export { display:flex; align-items:center; gap:5px; padding:6px 11px; background:white; border:1px solid #EAECF0; border-radius:8px; font-size:12px; font-weight:700; color:#344054; cursor:pointer; margin-left:auto; font-family:inherit; }
+    .btn-export svg { width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
     /* TABLE */
-    .appr-table { width:100%; border-collapse:collapse; background:white; border:1px solid #EAECF0; border-radius:12px; overflow:hidden; }
-    .appr-table th { font-size:11px; font-weight:700; color:#667085; text-align:left; padding:10px 14px; background:#F9FAFB; border-bottom:1px solid #EAECF0; white-space:nowrap; }
-    .appr-table td { font-size:12px; color:#344054; padding:12px 14px; border-bottom:1px solid #F9FAFB; vertical-align:middle; }
+    .table-wrap { background:white; border:1px solid #EAECF0; border-radius:12px; overflow:hidden; }
+    .appr-table { width:100%; border-collapse:collapse; }
+    .appr-table th { font-size:10.5px; font-weight:700; color:#667085; text-transform:uppercase; letter-spacing:.3px; text-align:left; padding:9px 14px; background:#F9FAFB; border-bottom:1px solid #EAECF0; white-space:nowrap; }
+    .appr-table td { font-size:12px; color:#344054; padding:11px 14px; border-bottom:1px solid #F9FAFB; vertical-align:middle; }
     .appr-table tr:last-child td { border-bottom:none; }
     .appr-table tr:hover td { background:#FAFBFF; cursor:pointer; }
     .appr-table tr.overdue td { background:#FFFCF5; }
     .appr-table tr.overdue { border-left:3px solid #F04438; }
+
+    /* APPROVAL STAGE PILL */
+    .wf-stage { display:inline-flex; align-items:center; gap:3px; white-space:nowrap; }
+    .wf-pill { padding:2px 8px; border-radius:10px; font-size:10px; font-weight:700; }
+    .wf-pill.done { background:#ECFDF3; color:#027A48; }
+    .wf-pill.current { background:#1D6FF3; color:white; }
+    .wf-pill.next { background:#F2F4F7; color:#98A2B3; }
+    .wf-arr { color:#D0D5DD; font-size:10px; margin:0 1px; }
+
+    /* BADGE */
+    .appr-badge { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:20px; font-size:11px; font-weight:700; white-space:nowrap; }
+    .appr-badge-dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; }
+    .appr-badge.waiting { background:#FFFAEB; color:#B54708; }
+    .appr-badge.overdue { background:#FEF3F2; color:#B42318; }
+
+    /* REQUEST ICON */
+    .req-ico { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .req-ico svg { width:15px; height:15px; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .req-ico.attendance { background:#EFF6FF; color:#1D6FF3; }
+    .req-ico.learning { background:#F4F3FF; color:#7C3AED; }
+    .req-ico.people { background:#ECFDF3; color:#027A48; }
+    .req-ico.financial { background:#FFFAEB; color:#B54708; }
+
+    /* SLA CELL */
+    .sla-cell { display:flex; align-items:center; gap:5px; }
+    .sla-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+    .sla-dot.ok { background:#12B76A; }
+    .sla-dot.warn { background:#F79009; }
+    .sla-dot.late { background:#F04438; }
+    .sla-time { font-size:11px; font-weight:600; }
+    .sla-time.ok { color:#027A48; }
+    .sla-time.warn { color:#B54708; }
+    .sla-time.late { color:#B42318; }
+    .sla-range { font-size:10px; color:#98A2B3; }
+
+    /* ACTION BUTTONS */
+    .acts-cell { display:flex; align-items:center; gap:6px; }
+    .btn-act { width:30px; height:30px; border-radius:7px; cursor:pointer; display:flex; align-items:center; justify-content:center; border:none; }
+    .btn-act svg { width:13px; height:13px; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .btn-view-act { border:1px solid #EAECF0; background:white; }
+    .btn-view-act svg { stroke:#667085; stroke-width:2; }
+    .btn-approve-act { border:1px solid #A9EFC5; background:#ECFDF3; }
+    .btn-approve-act svg { stroke:#027A48; stroke-width:2.5; }
+    .btn-reject-act { border:1px solid #FECDCA; background:#FEF3F2; }
+    .btn-reject-act svg { stroke:#B42318; stroke-width:2.5; }
+
+    /* MEMBER CELL */
+    .member-cell { display:flex; align-items:center; gap:8px; }
+    .member-name { font-size:12px; font-weight:700; color:#101828; line-height:1.1; }
+    .member-role { font-size:10.5px; color:#98A2B3; }
   </style>
 </head>
 <body>
@@ -152,19 +214,11 @@
         </div>
       </div>
 
-      <!-- Requests -->
-      <div class="sb-group">
-        <div class="sb-group-head" id="requests-head" onclick="toggleRequests()">
-          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-          Requests
-          <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-        </div>
-        <div class="sb-sub" id="requests-sub">
-          <a href="requests.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Overview</a>
-          <a href="requests.html" class="sb-sub-item"><span class="sb-sub-dot"></span>My Requests</a>
-          <a href="request-create.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Create Request</a>
-        </div>
-      </div>
+      <a href="requests.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Requests
+        <span class="sb-badge">3</span>
+      </a>
 
       <a href="approval.html" class="sb-item active">
         <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
@@ -299,388 +353,121 @@
           <!-- Category Filter Tabs -->
           <div class="cat-tabs">
             <button class="cat-tab active" onclick="filterCat('all',this)">Semua <span class="cat-count">8</span></button>
-            <button class="cat-tab" onclick="filterCat('attendance',this)">Attendance <span class="cat-count">5</span></button>
-            <button class="cat-tab" onclick="filterCat('learning',this)">Learning <span class="cat-count">1</span></button>
-            <button class="cat-tab" onclick="filterCat('financial',this)">Financial <span class="cat-count">0</span></button>
-            <button class="cat-tab" onclick="filterCat('people',this)">People Movement <span class="cat-count">2</span></button>
+            <button class="cat-tab" onclick="filterCat('attendance',this)">Kehadiran <span class="cat-count">5</span></button>
+            <button class="cat-tab" onclick="filterCat('learning',this)">Pengembangan <span class="cat-count">1</span></button>
+            <button class="cat-tab" onclick="filterCat('financial',this)">Finansial <span class="cat-count">0</span></button>
+            <button class="cat-tab" onclick="filterCat('people',this)">Perpindahan <span class="cat-count">2</span></button>
+          </div>
+
+          <!-- Filter Row -->
+          <div class="filter-row">
+            <div class="filter-dd">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              1 Jun – 20 Jun 2026 &nbsp;<svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="filter-dd">
+              Semua Status &nbsp;<svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="search-mini">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" placeholder="Cari pengajuan...">
+            </div>
+            <button class="btn-export">
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export
+            </button>
           </div>
 
           <!-- Data Table -->
+          <div class="table-wrap">
           <table class="appr-table">
             <thead>
               <tr>
-                <th>Request</th>
-                <th>Requestor</th>
-                <th>Submitted</th>
+                <th>Pengajuan</th>
+                <th>Pengaju</th>
+                <th>Diajukan</th>
                 <th>SLA</th>
-                <th>Workflow Position</th>
+                <th>Proses Approval</th>
                 <th>Status</th>
-                <th>Action</th>
+                <th>Aksi</th>
               </tr>
             </thead>
             <tbody>
-              <!-- Row 1 -->
               <tr data-cat="attendance">
-                <td>
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <div style="width:32px;height:32px;border-radius:8px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1D6FF3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    </div>
-                    <div>
-                      <div style="font-size:12px;font-weight:700;color:#101828;">Izin Pribadi</div>
-                      <div style="font-size:11px;color:#98A2B3;">Attendance</div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div style="font-size:12px;font-weight:600;color:#101828;">Ahmad Subagyo</div>
-                  <div style="font-size:11px;color:#98A2B3;">Account Executive</div>
-                </td>
-                <td style="font-size:11px;color:#667085;white-space:nowrap;">19 Jun 09:15</td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:5px;">
-                    <span style="width:7px;height:7px;border-radius:50%;background:#12B76A;flex-shrink:0;"></span>
-                    <div>
-                      <div style="font-size:11px;font-weight:600;color:#027A48;">2 jam lagi</div>
-                      <div style="font-size:10px;color:#98A2B3;">&lt;24 Jam</div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:3px;white-space:nowrap;">
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">Submitted</span>
-                    <span style="color:#D0D5DD;font-size:10px;">→</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#1D6FF3;color:white;">Branch Leader</span>
-                    <span style="color:#D0D5DD;font-size:10px;">→</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#F2F4F7;color:#98A2B3;">HC</span>
-                  </div>
-                </td>
-                <td><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;background:#FFFAEB;color:#B54708;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>Waiting</span></td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:6px;">
-                    <button style="width:30px;height:30px;border-radius:7px;border:1px solid #EAECF0;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Lihat Detail"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-                    <button style="width:30px;height:30px;border-radius:7px;border:1px solid #A9EFC5;background:#ECFDF3;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Setujui"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#027A48" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-                    <button style="width:30px;height:30px;border-radius:7px;border:1px solid #FECDCA;background:#FEF3F2;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Tolak"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#B42318" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-                  </div>
-                </td>
+                <td><div style="display:flex;align-items:center;gap:10px;"><div class="req-ico attendance"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div><div class="member-name">Izin Pribadi</div><div class="member-role">Kehadiran</div></div></div></td>
+                <td><div class="member-cell"><div><div class="member-name">Ahmad Subagyo</div><div class="member-role">Account Executive</div></div></div></td>
+                <td style="font-size:11.5px;color:#667085;white-space:nowrap;">19 Jun 09:15</td>
+                <td><div class="sla-cell"><span class="sla-dot ok"></span><div><div class="sla-time ok">2 jam lagi</div><div class="sla-range">&lt;24 Jam</div></div></div></td>
+                <td><div class="wf-stage"><span class="wf-pill done">Diajukan</span><span class="wf-arr">›</span><span class="wf-pill current">Branch Leader</span><span class="wf-arr">›</span><span class="wf-pill next">HC</span></div></td>
+                <td><span class="appr-badge waiting"><span class="appr-badge-dot"></span>Menunggu</span></td>
+                <td><div class="acts-cell"><button class="btn-act btn-view-act" title="Detail"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button><button class="btn-act btn-approve-act" title="Setujui"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></button><button class="btn-act btn-reject-act" title="Tolak"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div></td>
               </tr>
-              <!-- Row 2 -->
               <tr data-cat="attendance">
-                <td>
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <div style="width:32px;height:32px;border-radius:8px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1D6FF3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    </div>
-                    <div>
-                      <div style="font-size:12px;font-weight:700;color:#101828;">Cuti Tahunan</div>
-                      <div style="font-size:11px;color:#98A2B3;">Attendance</div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div style="font-size:12px;font-weight:600;color:#101828;">Maria Tanjung</div>
-                  <div style="font-size:11px;color:#98A2B3;">Account Executive</div>
-                </td>
-                <td style="font-size:11px;color:#667085;white-space:nowrap;">18 Jun 14:30</td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:5px;">
-                    <span style="width:7px;height:7px;border-radius:50%;background:#12B76A;flex-shrink:0;"></span>
-                    <div>
-                      <div style="font-size:11px;font-weight:600;color:#027A48;">5 jam lagi</div>
-                      <div style="font-size:10px;color:#98A2B3;">&lt;24 Jam</div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:3px;white-space:nowrap;">
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">Submitted</span>
-                    <span style="color:#D0D5DD;font-size:10px;">→</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#1D6FF3;color:white;">Branch Leader</span>
-                    <span style="color:#D0D5DD;font-size:10px;">→</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#F2F4F7;color:#98A2B3;">HC</span>
-                  </div>
-                </td>
-                <td><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;background:#FFFAEB;color:#B54708;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>Waiting</span></td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:6px;">
-                    <button style="width:30px;height:30px;border-radius:7px;border:1px solid #EAECF0;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Lihat Detail"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-                    <button style="width:30px;height:30px;border-radius:7px;border:1px solid #A9EFC5;background:#ECFDF3;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Setujui"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#027A48" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-                    <button style="width:30px;height:30px;border-radius:7px;border:1px solid #FECDCA;background:#FEF3F2;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Tolak"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#B42318" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-                  </div>
-                </td>
+                <td><div style="display:flex;align-items:center;gap:10px;"><div class="req-ico attendance"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div><div class="member-name">Cuti Tahunan</div><div class="member-role">Kehadiran</div></div></div></td>
+                <td><div class="member-cell"><div><div class="member-name">Maria Tanjung</div><div class="member-role">Account Executive</div></div></div></td>
+                <td style="font-size:11.5px;color:#667085;white-space:nowrap;">18 Jun 14:30</td>
+                <td><div class="sla-cell"><span class="sla-dot ok"></span><div><div class="sla-time ok">5 jam lagi</div><div class="sla-range">&lt;24 Jam</div></div></div></td>
+                <td><div class="wf-stage"><span class="wf-pill done">Diajukan</span><span class="wf-arr">›</span><span class="wf-pill current">Branch Leader</span><span class="wf-arr">›</span><span class="wf-pill next">HC</span></div></td>
+                <td><span class="appr-badge waiting"><span class="appr-badge-dot"></span>Menunggu</span></td>
+                <td><div class="acts-cell"><button class="btn-act btn-view-act" title="Detail"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button><button class="btn-act btn-approve-act" title="Setujui"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></button><button class="btn-act btn-reject-act" title="Tolak"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div></td>
               </tr>
-              <!-- Row 3 -->
               <tr data-cat="attendance">
-                <td>
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <div style="width:32px;height:32px;border-radius:8px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1D6FF3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    </div>
-                    <div>
-                      <div style="font-size:12px;font-weight:700;color:#101828;">Sakit</div>
-                      <div style="font-size:11px;color:#98A2B3;">Attendance</div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div style="font-size:12px;font-weight:600;color:#101828;">Rizky Adi</div>
-                  <div style="font-size:11px;color:#98A2B3;">Teknisi</div>
-                </td>
-                <td style="font-size:11px;color:#667085;white-space:nowrap;">18 Jun 08:45</td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:5px;">
-                    <span style="width:7px;height:7px;border-radius:50%;background:#F79009;flex-shrink:0;"></span>
-                    <div>
-                      <div style="font-size:11px;font-weight:600;color:#B54708;">26 jam lagi</div>
-                      <div style="font-size:10px;color:#98A2B3;">24–48 Jam</div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:3px;white-space:nowrap;">
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">Submitted</span>
-                    <span style="color:#D0D5DD;font-size:10px;">→</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#1D6FF3;color:white;">Branch Leader</span>
-                    <span style="color:#D0D5DD;font-size:10px;">→</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#F2F4F7;color:#98A2B3;">HC</span>
-                  </div>
-                </td>
-                <td><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;background:#FFFAEB;color:#B54708;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>Waiting</span></td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:6px;">
-                    <button style="width:30px;height:30px;border-radius:7px;border:1px solid #EAECF0;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Lihat Detail"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-                    <button style="width:30px;height:30px;border-radius:7px;border:1px solid #A9EFC5;background:#ECFDF3;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Setujui"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#027A48" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-                    <button style="width:30px;height:30px;border-radius:7px;border:1px solid #FECDCA;background:#FEF3F2;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Tolak"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#B42318" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-                  </div>
-                </td>
+                <td><div style="display:flex;align-items:center;gap:10px;"><div class="req-ico attendance"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div><div class="member-name">Sakit</div><div class="member-role">Kehadiran</div></div></div></td>
+                <td><div class="member-cell"><div><div class="member-name">Rizky Adi</div><div class="member-role">Teknisi</div></div></div></td>
+                <td style="font-size:11.5px;color:#667085;white-space:nowrap;">18 Jun 08:45</td>
+                <td><div class="sla-cell"><span class="sla-dot warn"></span><div><div class="sla-time warn">26 jam lagi</div><div class="sla-range">24–48 Jam</div></div></div></td>
+                <td><div class="wf-stage"><span class="wf-pill done">Diajukan</span><span class="wf-arr">›</span><span class="wf-pill current">Branch Leader</span><span class="wf-arr">›</span><span class="wf-pill next">HC</span></div></td>
+                <td><span class="appr-badge waiting"><span class="appr-badge-dot"></span>Menunggu</span></td>
+                <td><div class="acts-cell"><button class="btn-act btn-view-act" title="Detail"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button><button class="btn-act btn-approve-act" title="Setujui"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></button><button class="btn-act btn-reject-act" title="Tolak"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div></td>
               </tr>
-              <!-- Row 4 -->
               <tr data-cat="attendance">
-                <td>
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <div style="width:32px;height:32px;border-radius:8px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1D6FF3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    </div>
-                    <div>
-                      <div style="font-size:12px;font-weight:700;color:#101828;">Dinas Luar / Project</div>
-                      <div style="font-size:11px;color:#98A2B3;">Attendance</div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div style="font-size:12px;font-weight:600;color:#101828;">Fajar Maulana</div>
-                  <div style="font-size:11px;color:#98A2B3;">Teknisi</div>
-                </td>
-                <td style="font-size:11px;color:#667085;white-space:nowrap;">17 Jun 16:20</td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:5px;">
-                    <span style="width:7px;height:7px;border-radius:50%;background:#F79009;flex-shrink:0;"></span>
-                    <div>
-                      <div style="font-size:11px;font-weight:600;color:#B54708;">30 jam lagi</div>
-                      <div style="font-size:10px;color:#98A2B3;">24–48 Jam</div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:3px;white-space:nowrap;">
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">Submitted</span>
-                    <span style="color:#D0D5DD;font-size:10px;">→</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#1D6FF3;color:white;">Branch Leader</span>
-                    <span style="color:#D0D5DD;font-size:10px;">→</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#F2F4F7;color:#98A2B3;">HC</span>
-                  </div>
-                </td>
-                <td><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;background:#FFFAEB;color:#B54708;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>Waiting</span></td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:6px;">
-                    <button style="width:30px;height:30px;border-radius:7px;border:1px solid #EAECF0;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Lihat Detail"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-                    <button style="width:30px;height:30px;border-radius:7px;border:1px solid #A9EFC5;background:#ECFDF3;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Setujui"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#027A48" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-                    <button style="width:30px;height:30px;border-radius:7px;border:1px solid #FECDCA;background:#FEF3F2;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Tolak"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#B42318" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-                  </div>
-                </td>
+                <td><div style="display:flex;align-items:center;gap:10px;"><div class="req-ico attendance"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div><div class="member-name">Dinas Luar / Project</div><div class="member-role">Kehadiran</div></div></div></td>
+                <td><div class="member-cell"><div><div class="member-name">Fajar Maulana</div><div class="member-role">Teknisi</div></div></div></td>
+                <td style="font-size:11.5px;color:#667085;white-space:nowrap;">17 Jun 16:20</td>
+                <td><div class="sla-cell"><span class="sla-dot warn"></span><div><div class="sla-time warn">30 jam lagi</div><div class="sla-range">24–48 Jam</div></div></div></td>
+                <td><div class="wf-stage"><span class="wf-pill done">Diajukan</span><span class="wf-arr">›</span><span class="wf-pill current">Branch Leader</span><span class="wf-arr">›</span><span class="wf-pill next">HC</span></div></td>
+                <td><span class="appr-badge waiting"><span class="appr-badge-dot"></span>Menunggu</span></td>
+                <td><div class="acts-cell"><button class="btn-act btn-view-act" title="Detail"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button><button class="btn-act btn-approve-act" title="Setujui"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></button><button class="btn-act btn-reject-act" title="Tolak"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div></td>
               </tr>
-              <!-- Row 5 -->
-              <tr data-cat="attendance">
-                <td>
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <div style="width:32px;height:32px;border-radius:8px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1D6FF3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    </div>
-                    <div>
-                      <div style="font-size:12px;font-weight:700;color:#101828;">Pergantian Shift</div>
-                      <div style="font-size:11px;color:#98A2B3;">Attendance</div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div style="font-size:12px;font-weight:600;color:#101828;">Bagas Pratama</div>
-                  <div style="font-size:11px;color:#98A2B3;">Teknisi</div>
-                </td>
-                <td style="font-size:11px;color:#667085;white-space:nowrap;">17 Jun 10:10</td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:5px;">
-                    <span style="width:7px;height:7px;border-radius:50%;background:#F79009;flex-shrink:0;"></span>
-                    <div>
-                      <div style="font-size:11px;font-weight:600;color:#B54708;">30 jam lagi</div>
-                      <div style="font-size:10px;color:#98A2B3;">24–48 Jam</div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:3px;white-space:nowrap;">
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">Submitted</span>
-                    <span style="color:#D0D5DD;font-size:10px;">→</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#1D6FF3;color:white;">Branch Leader</span>
-                    <span style="color:#D0D5DD;font-size:10px;">→</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#F2F4F7;color:#98A2B3;">HC</span>
-                  </div>
-                </td>
-                <td><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;background:#FFFAEB;color:#B54708;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>Waiting</span></td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:6px;">
-                    <button style="width:30px;height:30px;border-radius:7px;border:1px solid #EAECF0;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Lihat Detail"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-                    <button style="width:30px;height:30px;border-radius:7px;border:1px solid #A9EFC5;background:#ECFDF3;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Setujui"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#027A48" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-                    <button style="width:30px;height:30px;border-radius:7px;border:1px solid #FECDCA;background:#FEF3F2;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Tolak"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#B42318" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-                  </div>
-                </td>
+              <tr data-cat="learning">
+                <td><div style="display:flex;align-items:center;gap:10px;"><div class="req-ico learning"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg></div><div><div class="member-name">Training Eksternal</div><div class="member-role">Pengembangan</div></div></div></td>
+                <td><div class="member-cell"><div><div class="member-name">Bagas Pratama</div><div class="member-role">Teknisi</div></div></div></td>
+                <td style="font-size:11.5px;color:#667085;white-space:nowrap;">17 Jun 10:10</td>
+                <td><div class="sla-cell"><span class="sla-dot warn"></span><div><div class="sla-time warn">30 jam lagi</div><div class="sla-range">24–48 Jam</div></div></div></td>
+                <td><div class="wf-stage"><span class="wf-pill done">Diajukan</span><span class="wf-arr">›</span><span class="wf-pill current">Branch Leader</span><span class="wf-arr">›</span><span class="wf-pill next">HC</span></div></td>
+                <td><span class="appr-badge waiting"><span class="appr-badge-dot"></span>Menunggu</span></td>
+                <td><div class="acts-cell"><button class="btn-act btn-view-act" title="Detail"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button><button class="btn-act btn-approve-act" title="Setujui"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></button><button class="btn-act btn-reject-act" title="Tolak"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div></td>
               </tr>
-              <!-- Row 6 OVERDUE -->
               <tr data-cat="people" class="overdue" style="border-left:3px solid #F04438;">
-                <td>
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <div style="width:32px;height:32px;border-radius:8px;background:#ECFDF3;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#027A48" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                    </div>
-                    <div>
-                      <div style="font-size:12px;font-weight:700;color:#101828;">Adaptasi AE</div>
-                      <div style="font-size:11px;color:#98A2B3;">People Movement</div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div style="font-size:12px;font-weight:600;color:#101828;">Dewi Astuti</div>
-                  <div style="font-size:11px;color:#98A2B3;">Account Executive</div>
-                </td>
-                <td style="font-size:11px;color:#667085;white-space:nowrap;">16 Jun 11:05</td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:5px;">
-                    <span style="width:7px;height:7px;border-radius:50%;background:#F04438;flex-shrink:0;"></span>
-                    <div>
-                      <div style="font-size:11px;font-weight:600;color:#B42318;">2 jam terlambat</div>
-                      <div style="font-size:10px;color:#98A2B3;">&gt;48 Jam</div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:3px;white-space:nowrap;">
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">Submitted</span>
-                    <span style="color:#D0D5DD;font-size:10px;">→</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#1D6FF3;color:white;">Branch Leader</span>
-                    <span style="color:#D0D5DD;font-size:10px;">→</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#F2F4F7;color:#98A2B3;">HC</span>
-                  </div>
-                </td>
-                <td><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;background:#FEF3F2;color:#B42318;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>Overdue</span></td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:6px;">
-                    <button style="width:30px;height:30px;border-radius:7px;border:1px solid #EAECF0;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Lihat Detail"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-                    <button style="width:30px;height:30px;border-radius:7px;border:1px solid #A9EFC5;background:#ECFDF3;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Setujui"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#027A48" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-                    <button style="width:30px;height:30px;border-radius:7px;border:1px solid #FECDCA;background:#FEF3F2;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Tolak"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#B42318" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-                  </div>
-                </td>
+                <td><div style="display:flex;align-items:center;gap:10px;"><div class="req-ico people"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><div class="member-name">Adaptasi AE</div><div class="member-role">Perpindahan</div></div></div></td>
+                <td><div class="member-cell"><div><div class="member-name">Dewi Astuti</div><div class="member-role">Account Executive</div></div></div></td>
+                <td style="font-size:11.5px;color:#667085;white-space:nowrap;">16 Jun 11:05</td>
+                <td><div class="sla-cell"><span class="sla-dot late"></span><div><div class="sla-time late">2 jam terlambat</div><div class="sla-range">&gt;48 Jam</div></div></div></td>
+                <td><div class="wf-stage"><span class="wf-pill done">Diajukan</span><span class="wf-arr">›</span><span class="wf-pill current">Branch Leader</span><span class="wf-arr">›</span><span class="wf-pill next">HC</span></div></td>
+                <td><span class="appr-badge overdue"><span class="appr-badge-dot"></span>Terlambat</span></td>
+                <td><div class="acts-cell"><button class="btn-act btn-view-act" title="Detail"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button><button class="btn-act btn-approve-act" title="Setujui"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></button><button class="btn-act btn-reject-act" title="Tolak"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div></td>
               </tr>
-              <!-- Row 7 OVERDUE -->
               <tr data-cat="attendance" class="overdue" style="border-left:3px solid #F04438;">
-                <td>
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <div style="width:32px;height:32px;border-radius:8px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1D6FF3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    </div>
-                    <div>
-                      <div style="font-size:12px;font-weight:700;color:#101828;">Sakit</div>
-                      <div style="font-size:11px;color:#98A2B3;">Attendance</div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div style="font-size:12px;font-weight:600;color:#101828;">Andi Setiawan</div>
-                  <div style="font-size:11px;color:#98A2B3;">Teknisi</div>
-                </td>
-                <td style="font-size:11px;color:#667085;white-space:nowrap;">16 Jun 08:30</td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:5px;">
-                    <span style="width:7px;height:7px;border-radius:50%;background:#F04438;flex-shrink:0;"></span>
-                    <div>
-                      <div style="font-size:11px;font-weight:600;color:#B42318;">4 jam terlambat</div>
-                      <div style="font-size:10px;color:#98A2B3;">&gt;48 Jam</div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:3px;white-space:nowrap;">
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">Submitted</span>
-                    <span style="color:#D0D5DD;font-size:10px;">→</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#1D6FF3;color:white;">Branch Leader</span>
-                    <span style="color:#D0D5DD;font-size:10px;">→</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#F2F4F7;color:#98A2B3;">HC</span>
-                  </div>
-                </td>
-                <td><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;background:#FEF3F2;color:#B42318;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>Overdue</span></td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:6px;">
-                    <button style="width:30px;height:30px;border-radius:7px;border:1px solid #EAECF0;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Lihat Detail"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-                    <button style="width:30px;height:30px;border-radius:7px;border:1px solid #A9EFC5;background:#ECFDF3;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Setujui"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#027A48" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-                    <button style="width:30px;height:30px;border-radius:7px;border:1px solid #FECDCA;background:#FEF3F2;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Tolak"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#B42318" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-                  </div>
-                </td>
+                <td><div style="display:flex;align-items:center;gap:10px;"><div class="req-ico attendance"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div><div class="member-name">Sakit</div><div class="member-role">Kehadiran</div></div></div></td>
+                <td><div class="member-cell"><div><div class="member-name">Andi Setiawan</div><div class="member-role">Teknisi</div></div></div></td>
+                <td style="font-size:11.5px;color:#667085;white-space:nowrap;">16 Jun 08:30</td>
+                <td><div class="sla-cell"><span class="sla-dot late"></span><div><div class="sla-time late">4 jam terlambat</div><div class="sla-range">&gt;48 Jam</div></div></div></td>
+                <td><div class="wf-stage"><span class="wf-pill done">Diajukan</span><span class="wf-arr">›</span><span class="wf-pill current">Branch Leader</span><span class="wf-arr">›</span><span class="wf-pill next">HC</span></div></td>
+                <td><span class="appr-badge overdue"><span class="appr-badge-dot"></span>Terlambat</span></td>
+                <td><div class="acts-cell"><button class="btn-act btn-view-act" title="Detail"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button><button class="btn-act btn-approve-act" title="Setujui"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></button><button class="btn-act btn-reject-act" title="Tolak"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div></td>
               </tr>
-              <!-- Row 8 OVERDUE -->
               <tr data-cat="people" class="overdue" style="border-left:3px solid #F04438;">
-                <td>
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <div style="width:32px;height:32px;border-radius:8px;background:#ECFDF3;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#027A48" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                    </div>
-                    <div>
-                      <div style="font-size:12px;font-weight:700;color:#101828;">Izin Keluarga</div>
-                      <div style="font-size:11px;color:#98A2B3;">Attendance</div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div style="font-size:12px;font-weight:600;color:#101828;">Lutfi Hakim</div>
-                  <div style="font-size:11px;color:#98A2B3;">Account Executive</div>
-                </td>
-                <td style="font-size:11px;color:#667085;white-space:nowrap;">15 Jun 17:45</td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:5px;">
-                    <span style="width:7px;height:7px;border-radius:50%;background:#F04438;flex-shrink:0;"></span>
-                    <div>
-                      <div style="font-size:11px;font-weight:600;color:#B42318;">10 jam terlambat</div>
-                      <div style="font-size:10px;color:#98A2B3;">&gt;48 Jam</div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:3px;white-space:nowrap;">
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">Submitted</span>
-                    <span style="color:#D0D5DD;font-size:10px;">→</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#1D6FF3;color:white;">Branch Leader</span>
-                    <span style="color:#D0D5DD;font-size:10px;">→</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#F2F4F7;color:#98A2B3;">HC</span>
-                  </div>
-                </td>
-                <td><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;background:#FEF3F2;color:#B42318;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>Overdue</span></td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:6px;">
-                    <button style="width:30px;height:30px;border-radius:7px;border:1px solid #EAECF0;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Lihat Detail"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-                    <button style="width:30px;height:30px;border-radius:7px;border:1px solid #A9EFC5;background:#ECFDF3;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Setujui"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#027A48" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-                    <button style="width:30px;height:30px;border-radius:7px;border:1px solid #FECDCA;background:#FEF3F2;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Tolak"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#B42318" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-                  </div>
-                </td>
+                <td><div style="display:flex;align-items:center;gap:10px;"><div class="req-ico people"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><div class="member-name">Mutasi Cabang Batu</div><div class="member-role">Perpindahan</div></div></div></td>
+                <td><div class="member-cell"><div><div class="member-name">Lutfi Hakim</div><div class="member-role">Account Executive</div></div></div></td>
+                <td style="font-size:11.5px;color:#667085;white-space:nowrap;">15 Jun 17:45</td>
+                <td><div class="sla-cell"><span class="sla-dot late"></span><div><div class="sla-time late">10 jam terlambat</div><div class="sla-range">&gt;48 Jam</div></div></div></td>
+                <td><div class="wf-stage"><span class="wf-pill done">Diajukan</span><span class="wf-arr">›</span><span class="wf-pill current">Branch Leader</span><span class="wf-arr">›</span><span class="wf-pill next">HC</span></div></td>
+                <td><span class="appr-badge overdue"><span class="appr-badge-dot"></span>Terlambat</span></td>
+                <td><div class="acts-cell"><button class="btn-act btn-view-act" title="Detail"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button><button class="btn-act btn-approve-act" title="Setujui"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></button><button class="btn-act btn-reject-act" title="Tolak"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div></td>
               </tr>
             </tbody>
           </table>
+          </div><!-- /table-wrap -->
 
         </div><!-- /approval-main -->
 
@@ -754,12 +541,6 @@
 function togglePeople() {
   var head = document.getElementById('people-head');
   var sub  = document.getElementById('people-sub');
-  head.classList.toggle('open');
-  sub.classList.toggle('open');
-}
-function toggleRequests() {
-  var head = document.getElementById('requests-head');
-  var sub  = document.getElementById('requests-sub');
   head.classList.toggle('open');
   sub.classList.toggle('open');
 }

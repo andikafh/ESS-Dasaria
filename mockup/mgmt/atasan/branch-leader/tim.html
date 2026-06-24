@@ -11,11 +11,12 @@
     a { text-decoration:none; color:inherit; }
     button { font-family:inherit; cursor:pointer; border:none; background:none; }
     .mgmt-layout { display:flex; height:100vh; overflow:hidden; }
-    /* SIDEBAR */
-    .sidebar { width:230px; flex-shrink:0; background:#0D1B3E; height:100vh; display:flex; flex-direction:column; overflow-y:auto; }
+
+    /* ── SIDEBAR ── */
+    .sidebar { width:230px; flex-shrink:0; background:#0D1B3E; height:100vh; display:flex; flex-direction:column; overflow-y:auto; overflow-x:hidden; }
     .sidebar::-webkit-scrollbar { width:3px; }
     .sidebar::-webkit-scrollbar-thumb { background:rgba(255,255,255,.1); border-radius:2px; }
-    .sb-logo { display:flex; align-items:center; gap:10px; padding:22px 18px 16px; color:white; font-size:14px; font-weight:800; letter-spacing:-.3px; border-bottom:1px solid rgba(255,255,255,.07); }
+    .sb-logo { display:flex; align-items:center; gap:10px; padding:22px 18px 16px; color:white; font-size:14px; font-weight:800; letter-spacing:-.3px; border-bottom:1px solid rgba(255,255,255,.07); flex-shrink:0; }
     .sb-logo svg { width:22px; height:22px; stroke:white; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
     .sb-nav { padding:10px; flex:1; }
     .sb-item { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
@@ -25,109 +26,164 @@
     .sb-badge { margin-left:auto; background:#F04438; color:white; font-size:9px; font-weight:800; min-width:17px; height:17px; border-radius:9px; display:flex; align-items:center; justify-content:center; padding:0 4px; }
     .sb-group { margin-bottom:1px; }
     .sb-group-head { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; cursor:pointer; user-select:none; transition:all .15s; }
-    .sb-group-head:hover, .sb-group-head.open { color:rgba(255,255,255,.9); background:rgba(255,255,255,.05); }
-    .sb-ico { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
-    .sb-chev { margin-left:auto; width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; transition:transform .2s; }
+    .sb-group-head:hover { background:rgba(255,255,255,.07); color:rgba(255,255,255,.9); }
+    .sb-group-head.open { color:rgba(255,255,255,.9); background:rgba(255,255,255,.05); }
+    .sb-group-head svg.sb-ico { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-chev { margin-left:auto; width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; transition:transform .2s; }
     .sb-group-head.open .sb-chev { transform:rotate(90deg); }
     .sb-sub { padding-left:14px; overflow:hidden; max-height:0; transition:max-height .25s ease; }
     .sb-sub.open { max-height:200px; }
-    .sb-sub-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.45); font-size:12px; font-weight:500; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
+    .sb-sub-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.45); font-size:12px; font-weight:500; transition:all .15s; text-decoration:none; margin-bottom:1px; }
     .sb-sub-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.8); }
     .sb-sub-item.active { background:rgba(29,111,243,.2); color:#60A5FA; font-weight:700; }
-    .sb-sub-dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; }
-    .sb-connect { padding:6px 10px 20px; border-top:1px solid rgba(255,255,255,.07); margin-top:auto; }
+    .sb-sub-dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; opacity:.7; }
+    .sb-connect { padding:6px 10px 10px; border-top:1px solid rgba(255,255,255,.07); }
     .sb-connect-label { font-size:10px; font-weight:700; color:rgba(255,255,255,.3); text-transform:uppercase; letter-spacing:.8px; padding:10px 10px 6px; }
     .sb-connect-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.5); font-size:12px; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
     .sb-connect-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.85); }
     .sb-connect-item svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
     .sb-connect-sub { font-size:10px; color:rgba(255,255,255,.25); margin-left:auto; }
-    /* MAIN */
-    .main-content { flex:1; height:100vh; overflow-y:auto; background:#F5F7FA; }
-    .topbar { background:white; height:62px; display:flex; align-items:center; justify-content:space-between; padding:0 28px; border-bottom:1px solid #EAECF0; position:sticky; top:0; z-index:20; }
+    .sb-support { margin:8px 10px 14px; padding:10px 12px; background:rgba(255,255,255,.05); border-radius:10px; display:flex; align-items:center; gap:10px; cursor:pointer; }
+    .sb-support:hover { background:rgba(255,255,255,.09); }
+    .sb-support-ico { width:32px; height:32px; border-radius:8px; background:rgba(29,111,243,.3); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .sb-support-ico svg { width:16px; height:16px; stroke:#60A5FA; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .sb-support-text { font-size:11.5px; font-weight:700; color:rgba(255,255,255,.75); line-height:1.2; }
+    .sb-support-sub { font-size:10px; color:rgba(255,255,255,.35); }
+
+    /* ── MAIN ── */
+    .main-content { flex:1; height:100vh; display:flex; flex-direction:column; overflow:hidden; min-width:0; }
+
+    /* ── TOPBAR ── */
+    .topbar { background:white; height:62px; flex-shrink:0; display:flex; align-items:center; justify-content:space-between; padding:0 24px; border-bottom:1px solid #EAECF0; z-index:20; }
     .topbar-left { display:flex; align-items:center; gap:14px; }
     .page-title { font-size:16px; font-weight:700; color:#101828; line-height:1.1; }
     .page-sub { font-size:12px; color:#667085; }
-    .topbar-right { display:flex; align-items:center; gap:14px; }
+    .topbar-right { display:flex; align-items:center; gap:12px; }
     .topbar-date { font-size:12px; color:#667085; display:flex; align-items:center; gap:5px; }
-    .topbar-date svg { width:14px; height:14px; stroke:#98A2B3; fill:none; stroke-width:2; }
+    .topbar-date svg { width:14px; height:14px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .topbar-notif { position:relative; width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:9px; color:#667085; cursor:pointer; border:1px solid #EAECF0; background:white; }
+    .topbar-notif svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .notif-badge { position:absolute; top:4px; right:4px; min-width:16px; height:16px; background:#F04438; border-radius:8px; border:1.5px solid white; font-size:9px; font-weight:800; color:white; display:flex; align-items:center; justify-content:center; padding:0 3px; }
     .user-chip { display:flex; align-items:center; gap:9px; padding:6px 10px; border-radius:10px; cursor:pointer; }
     .user-chip:hover { background:#F5F7FA; }
     .user-av { width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,#1D6FF3,#1558C8); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:white; flex-shrink:0; }
     .user-name { font-size:13px; font-weight:700; color:#101828; }
-    .user-role { font-size:11px; color:#98A2B3; }
-    .topbar-notif { position:relative; width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:9px; border:1px solid #EAECF0; background:white; cursor:pointer; flex-shrink:0; }
-    .topbar-notif svg { width:17px; height:17px; stroke:#667085; fill:none; stroke-width:2; }
-    .notif-dot { position:absolute; top:6px; right:7px; width:8px; height:8px; background:#F04438; border-radius:50%; border:1.5px solid white; }
-    .topbar-notif:hover { background:#F9FAFB; }
-    .topbar-logout { display:flex; align-items:center; gap:6px; padding:7px 13px; border-radius:9px; background:#FEF3F2; border:1px solid #FECDCA; color:#B42318; font-size:12px; font-weight:700; cursor:pointer; text-decoration:none; transition:all .15s; flex-shrink:0; }
+    .user-role { font-size:11px; color:#98A2B3; display:flex; align-items:center; gap:3px; }
+    .user-role svg { width:12px; height:12px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .topbar-logout { display:flex; align-items:center; gap:6px; padding:7px 13px; border-radius:9px; background:#FEF3F2; border:1px solid #FECDCA; color:#B42318; font-size:12px; font-weight:700; cursor:pointer; text-decoration:none; transition:all .15s; }
     .topbar-logout:hover { background:#FEE4E2; }
-    .topbar-logout svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; }
-    .content-area { padding:22px 28px 32px; }
-    /* KPI */
-    .kpi-strip { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:20px; }
-    .kpi-card { background:white; border-radius:12px; padding:14px 16px; border:1px solid #EAECF0; display:flex; align-items:flex-start; gap:11px; }
-    .kpi-ico { width:36px; height:36px; border-radius:9px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-    .kpi-ico svg { width:17px; height:17px; stroke:currentColor; fill:none; stroke-width:2; }
-    .kpi-ico.blue { background:#EFF6FF; color:#1D6FF3; }
-    .kpi-ico.green { background:#ECFDF3; color:#027A48; }
-    .kpi-ico.orange { background:#FFFAEB; color:#B54708; }
-    .kpi-ico.purple { background:#F4F3FF; color:#7C3AED; }
-    .kpi-ico.red { background:#FEF3F2; color:#B42318; }
-    .kpi-val { font-size:22px; font-weight:800; color:#101828; letter-spacing:-1px; line-height:1; margin-bottom:2px; }
-    .kpi-lbl { font-size:11px; color:#667085; }
-    /* TABS */
-    .tab-bar { display:flex; gap:0; border-bottom:2px solid #EAECF0; margin-bottom:18px; }
-    .tab-btn { padding:9px 18px; font-size:13px; font-weight:600; color:#667085; cursor:pointer; border:none; background:none; font-family:inherit; border-bottom:2px solid transparent; margin-bottom:-2px; transition:all .15s; }
+    .topbar-logout svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* ── CONTENT ── */
+    .content-area { flex:1; overflow-y:auto; padding:20px 24px 28px; }
+    .content-area::-webkit-scrollbar { width:4px; }
+    .content-area::-webkit-scrollbar-thumb { background:#D1D5DB; border-radius:2px; }
+
+    /* ── SUMMARY STRIP ── */
+    .summary-strip { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:20px; }
+    .sum-card { background:white; border-radius:12px; border:1px solid #EAECF0; padding:16px 18px; }
+    .sum-top { display:flex; align-items:center; gap:12px; margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid #F2F4F7; }
+    .sum-ico { width:42px; height:42px; border-radius:11px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .sum-ico svg { width:19px; height:19px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .sum-ico.blue { background:#EFF6FF; color:#1D6FF3; }
+    .sum-ico.green { background:#ECFDF3; color:#027A48; }
+    .sum-ico.orange { background:#FFFAEB; color:#B54708; }
+    .sum-center { flex:1; min-width:0; }
+    .sum-num { font-size:32px; font-weight:800; color:#101828; letter-spacing:-1.5px; line-height:1; }
+    .sum-lbl { font-size:12px; font-weight:600; color:#667085; margin-top:3px; }
+    .sum-pct { font-size:11px; color:#9CA3AF; margin-left:auto; flex-shrink:0; text-align:right; white-space:nowrap; }
+    .sum-pct strong { color:#027A48; font-weight:700; }
+    .sum-rows { display:flex; flex-direction:column; gap:6px; }
+    .sum-row { display:flex; align-items:center; gap:8px; }
+    .sum-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+    .sum-row-label { font-size:11px; color:#667085; flex:1; }
+    .sum-row-val { font-size:11px; font-weight:700; color:#101828; }
+    .sum-row-bar-bg { width:48px; height:4px; background:#F2F4F7; border-radius:2px; overflow:hidden; flex-shrink:0; }
+    .sum-row-bar-fill { height:100%; border-radius:2px; }
+
+    /* ── TABS ── */
+    .tab-bar { display:flex; gap:0; border-bottom:2px solid #EAECF0; margin-bottom:16px; }
+    .tab-btn { padding:9px 18px; font-size:13px; font-weight:600; color:#667085; cursor:pointer; border:none; background:none; font-family:inherit; border-bottom:2.5px solid transparent; margin-bottom:-2px; transition:all .15s; white-space:nowrap; }
     .tab-btn.active { color:#1D6FF3; border-bottom-color:#1D6FF3; }
     .tab-btn:hover:not(.active) { color:#344054; }
     .tab-panel { display:none; }
     .tab-panel.active { display:block; }
-    /* TABLE */
+
+    /* ── SEARCH / FILTER ROW ── */
+    .search-row { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+    .search-wrap { position:relative; flex:1; }
+    .search-wrap svg { position:absolute; left:11px; top:50%; transform:translateY(-50%); width:15px; height:15px; stroke:#9CA3AF; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; pointer-events:none; }
+    .search-inp { width:100%; height:36px; border:1px solid #EAECF0; border-radius:8px; padding:0 12px 0 35px; font-size:13px; font-family:inherit; color:#344054; background:white; outline:none; transition:border-color .15s; }
+    .search-inp:focus { border-color:#1D6FF3; box-shadow:0 0 0 3px rgba(29,111,243,.08); }
+    .filter-btn { display:inline-flex; align-items:center; gap:6px; padding:0 14px; height:36px; border:1px solid #EAECF0; border-radius:8px; font-size:13px; font-weight:600; color:#344054; background:white; cursor:pointer; font-family:inherit; white-space:nowrap; }
+    .filter-btn svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .filter-btn:hover { background:#F9FAFB; border-color:#D0D5DD; }
+
+    /* ── TABLE ── */
     .data-table { width:100%; border-collapse:collapse; background:white; border:1px solid #EAECF0; border-radius:12px; overflow:hidden; }
-    .data-table th { font-size:11px; font-weight:700; color:#667085; text-align:left; padding:10px 12px; background:#F9FAFB; border-bottom:1px solid #EAECF0; white-space:nowrap; }
-    .data-table td { font-size:12px; color:#344054; padding:11px 12px; border-bottom:1px solid #F9FAFB; vertical-align:middle; }
+    .data-table th { font-size:10.5px; font-weight:700; color:#667085; text-align:left; padding:9px 12px; background:#F9FAFB; border-bottom:1px solid #EAECF0; white-space:nowrap; text-transform:uppercase; letter-spacing:.3px; }
+    .data-table td { font-size:12px; color:#344054; padding:10px 12px; border-bottom:1px solid #F9FAFB; vertical-align:middle; }
     .data-table tr:last-child td { border-bottom:none; }
     .data-table tr:hover td { background:#FAFBFF; }
+
     /* AVATAR */
-    .av { width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:800; color:white; flex-shrink:0; }
-    .av.blue { background:linear-gradient(135deg,#1D6FF3,#1558C8); }
-    .av.green { background:linear-gradient(135deg,#12B76A,#059669); }
-    .av.amber { background:linear-gradient(135deg,#F79009,#D97706); }
+    .av { width:32px; height:32px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:800; color:white; flex-shrink:0; }
+    .av.blue   { background:linear-gradient(135deg,#1D6FF3,#1558C8); }
+    .av.green  { background:linear-gradient(135deg,#12B76A,#059669); }
+    .av.amber  { background:linear-gradient(135deg,#F79009,#D97706); }
     .av.purple { background:linear-gradient(135deg,#7C3AED,#6D28D9); }
-    .av.red { background:linear-gradient(135deg,#F04438,#D92D20); }
-    .av.gray { background:linear-gradient(135deg,#667085,#344054); }
-    .av.teal { background:linear-gradient(135deg,#0E9F93,#0D7A73); }
-    .av.pink { background:linear-gradient(135deg,#EC4899,#DB2777); }
+    .av.red    { background:linear-gradient(135deg,#F04438,#D92D20); }
+    .av.gray   { background:linear-gradient(135deg,#667085,#344054); }
+    .av.teal   { background:linear-gradient(135deg,#0E9F93,#0D7A73); }
+    .av.pink   { background:linear-gradient(135deg,#EC4899,#DB2777); }
     .av.orange { background:linear-gradient(135deg,#F97316,#EA580C); }
     .member-cell { display:flex; align-items:center; gap:9px; }
-    .member-name { font-size:12px; font-weight:700; color:#101828; }
+    .member-name { font-size:12px; font-weight:700; color:#101828; line-height:1.2; }
+    .member-sub  { font-size:10px; color:#9CA3AF; font-weight:400; }
+
     /* BADGES */
     .badge { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:20px; font-size:11px; font-weight:700; white-space:nowrap; }
     .badge-dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; }
-    .badge.green { background:#ECFDF3; color:#027A48; }
+    .badge.green  { background:#ECFDF3; color:#027A48; }
     .badge.orange { background:#FFFAEB; color:#B54708; }
-    .badge.red { background:#FEF3F2; color:#B42318; }
-    .badge.blue { background:#EFF6FF; color:#1D6FF3; }
+    .badge.red    { background:#FEF3F2; color:#B42318; }
+    .badge.blue   { background:#EFF6FF; color:#1D6FF3; }
     .badge.purple { background:#F4F3FF; color:#7C3AED; }
-    .badge.gray { background:#F2F4F7; color:#667085; }
-    .alert-chip { font-size:11px; color:#B54708; background:#FFFAEB; padding:2px 8px; border-radius:20px; white-space:nowrap; }
+    .badge.gray   { background:#F2F4F7; color:#667085; }
+    .badge.yellow { background:#FFFAEB; color:#92400E; }
+
     /* QP SCORE */
-    .qp-wrap { display:flex; align-items:center; gap:6px; }
-    .qp-num { font-size:12px; font-weight:700; min-width:24px; }
-    .qp-bar-bg { width:36px; height:5px; background:#F2F4F7; border-radius:3px; flex-shrink:0; }
-    .qp-bar { height:5px; border-radius:3px; }
-    /* ACTION BUTTONS */
+    .qp-cell { display:flex; flex-direction:column; gap:3px; }
+    .qp-num { font-size:13px; font-weight:800; }
+    .qp-bar-bg { width:52px; height:4px; background:#F2F4F7; border-radius:2px; overflow:hidden; }
+    .qp-bar-fill { height:100%; border-radius:2px; }
+
+    /* PIPELINE */
+    .pipeline-cell { display:flex; flex-direction:column; gap:2px; font-size:11px; }
+    .pipe-cp  { color:#667085; }
+    .pipe-cp span { font-weight:700; color:#1D6FF3; }
+    .pipe-wp span { font-weight:700; color:#D97706; }
+    .pipe-hp span { font-weight:700; color:#027A48; }
+
+    /* SP CODE */
+    .sp-link { font-size:11px; font-weight:700; color:#1D6FF3; text-decoration:none; }
+    .sp-link:hover { text-decoration:underline; }
+
+    /* LAMA PAKET */
+    .lama-cell { font-size:11px; font-weight:600; color:#344054; }
+    .lama-sub  { font-size:10px; color:#9CA3AF; }
+
+    /* ACTION */
     .btn-sm { padding:4px 12px; border-radius:7px; font-size:11px; font-weight:700; font-family:inherit; cursor:pointer; border:1px solid #EAECF0; background:white; color:#344054; transition:all .15s; text-decoration:none; display:inline-flex; align-items:center; }
     .btn-sm:hover { background:#F9FAFB; border-color:#D0D5DD; }
-    .btn-sm.primary { background:#1D6FF3; color:white; border-color:#1D6FF3; }
-    .btn-sm.primary:hover { background:#1558C0; }
-    /* schedule badge */
-    .sch-badge { padding:2px 9px; border-radius:20px; font-size:10px; font-weight:700; }
-    .sch-badge.reguler { background:#F2F4F7; color:#667085; }
-    .sch-badge.project { background:#EFF6FF; color:#1D6FF3; }
-    .sch-badge.shift-pagi { background:#ECFDF3; color:#027A48; }
-    .ov-red { color:#B42318; font-weight:700; }
-    /* MODAL */
+
+    /* SCHEDULE BADGE */
+    .sch-badge { padding:3px 9px; border-radius:20px; font-size:10.5px; font-weight:700; white-space:nowrap; }
+    .sch-badge.reguler   { background:#F2F4F7; color:#667085; }
+    .sch-badge.project   { background:#EFF6FF; color:#1D6FF3; }
+    .sch-badge.shift-pagi{ background:#ECFDF3; color:#027A48; }
+
+    /* ── MODAL ── */
     .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:100; display:none; align-items:center; justify-content:center; }
     .modal-overlay.open { display:flex; }
     .modal-panel { background:white; border-radius:16px; width:860px; max-height:90vh; overflow-y:auto; padding:28px; position:relative; }
@@ -137,7 +193,7 @@
     .modal-av { width:48px; height:48px; border-radius:12px; background:linear-gradient(135deg,#1D6FF3,#1558C8); display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:800; color:white; flex-shrink:0; }
     .modal-name { font-size:16px; font-weight:800; color:#101828; margin-bottom:2px; }
     .modal-meta { font-size:12px; color:#667085; display:flex; gap:10px; flex-wrap:wrap; }
-    .modal-close { margin-left:auto; width:32px; height:32px; border-radius:8px; border:1px solid #EAECF0; background:white; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; font-size:18px; color:#667085; }
+    .modal-close { margin-left:auto; width:32px; height:32px; border-radius:8px; border:1px solid #EAECF0; background:white; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:18px; color:#667085; }
     .modal-close:hover { background:#F9FAFB; }
     .modal-body { display:grid; grid-template-columns:1.5fr 1fr; gap:22px; }
     .modal-section { margin-bottom:18px; }
@@ -145,9 +201,9 @@
     .cal-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:4px; margin-bottom:8px; }
     .cal-dot { width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; }
     .cal-dot.hadir { background:#ECFDF3; color:#027A48; }
-    .cal-dot.izin { background:#FFFAEB; color:#B54708; }
+    .cal-dot.izin  { background:#FFFAEB; color:#B54708; }
     .cal-dot.sakit { background:#FEF3F2; color:#B42318; }
-    .cal-dot.off { background:#F2F4F7; color:#98A2B3; }
+    .cal-dot.off   { background:#F2F4F7; color:#98A2B3; }
     .cal-legend { display:flex; gap:10px; flex-wrap:wrap; font-size:10px; color:#667085; }
     .cal-legend span { display:flex; align-items:center; gap:4px; }
     .cal-legend-dot { width:8px; height:8px; border-radius:50%; }
@@ -165,9 +221,9 @@
     .activity-type { font-weight:600; color:#101828; flex:1; }
     .activity-time { color:#98A2B3; white-space:nowrap; }
     .coaching-card { background:#F9FAFB; border-radius:9px; padding:10px 12px; margin-bottom:8px; }
-    .coaching-card-date { font-size:10px; color:#98A2B3; margin-bottom:3px; }
+    .coaching-card-date  { font-size:10px; color:#98A2B3; margin-bottom:3px; }
     .coaching-card-topic { font-size:12px; font-weight:700; color:#101828; margin-bottom:3px; }
-    .coaching-card-note { font-size:11px; color:#667085; line-height:1.4; }
+    .coaching-card-note  { font-size:11px; color:#667085; line-height:1.4; }
     .comp-row { display:flex; align-items:center; justify-content:space-between; padding:7px 0; border-bottom:1px solid #F2F4F7; font-size:11px; }
     .comp-row:last-child { border-bottom:none; }
     .comp-name { color:#344054; }
@@ -175,7 +231,8 @@
 </head>
 <body>
 <div class="mgmt-layout">
-  <!-- SIDEBAR -->
+
+  <!-- ══ SIDEBAR ══ -->
   <aside class="sidebar">
     <div class="sb-logo">
       <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
@@ -183,11 +240,11 @@
     </div>
     <nav class="sb-nav">
       <a href="dashboard.html" class="sb-item">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
         Dashboard
       </a>
       <div class="sb-group">
-        <div class="sb-group-head open" id="people-head" onclick="togglePeople()">
+        <div class="sb-group-head open" id="people-head" onclick="toggleGroup('people')">
           <svg class="sb-ico" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           People
           <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
@@ -195,37 +252,30 @@
         <div class="sb-sub open" id="people-sub">
           <a href="tim.html" class="sb-sub-item active"><span class="sb-sub-dot"></span>Team</a>
           <a href="attendance.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Attendance</a>
-          <a href="hiring.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Hiring Request</a>
+          <a href="hiring.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Hiring Track</a>
           <a href="reviews.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Reviews</a>
         </div>
       </div>
-      <div class="sb-group">
-        <div class="sb-group-head" id="requests-head" onclick="toggleRequests()">
-          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-          Requests
-          <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-        </div>
-        <div class="sb-sub" id="requests-sub">
-          <a href="requests.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Overview</a>
-          <a href="requests.html" class="sb-sub-item"><span class="sb-sub-dot"></span>My Requests</a>
-          <a href="request-create.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Create Request</a>
-        </div>
-      </div>
+      <a href="requests.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Requests
+        <span class="sb-badge">3</span>
+      </a>
       <a href="approval.html" class="sb-item">
         <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
         Approval
-        <span class="sb-badge">2</span>
+        <span class="sb-badge">3</span>
       </a>
       <div class="sb-group">
-        <div class="sb-group-head" id="learning-head" onclick="toggleLearning()">
+        <div class="sb-group-head" id="learning-head" onclick="toggleGroup('learning')">
           <svg class="sb-ico" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg>
           Learning
           <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </div>
         <div class="sb-sub" id="learning-sub">
-          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>My Learning Progress</a>
-          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Learning Library</a>
-          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Team Learning Progress</a>
+          <a href="#" class="sb-sub-item"><span class="sb-sub-dot"></span>My Learning</a>
+          <a href="#" class="sb-sub-item"><span class="sb-sub-dot"></span>Learning Library</a>
+          <a href="#" class="sb-sub-item"><span class="sb-sub-dot"></span>Team Learning</a>
         </div>
       </div>
       <a href="laporan.html" class="sb-item">
@@ -235,16 +285,42 @@
     </nav>
     <div class="sb-connect">
       <div class="sb-connect-label">Connect</div>
-      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>CRM<span class="sb-connect-sub">Sistem CRM</span></a>
-      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>ERP<span class="sb-connect-sub">ERP Operasional</span></a>
-      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>NOC<span class="sb-connect-sub">Monitoring NOC</span></a>
-      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Ticketing<span class="sb-connect-sub">Sistem Ticket</span></a>
-      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>Maps<span class="sb-connect-sub">Google Maps</span></a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        CRM <span class="sb-connect-sub">Sistem CRM</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        ERP <span class="sb-connect-sub">ERP Operasional</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        NOC <span class="sb-connect-sub">Monitoring NOC</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        Ticketing <span class="sb-connect-sub">Sistem Ticket</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+        Maps <span class="sb-connect-sub">Google Maps</span>
+      </a>
+    </div>
+    <div class="sb-support">
+      <div class="sb-support-ico">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <div>
+        <div class="sb-support-text">Bantuan &amp; Support</div>
+        <div class="sb-support-sub">Butuh bantuan? Hubungi kami.</div>
+      </div>
     </div>
   </aside>
 
-  <!-- MAIN CONTENT -->
+  <!-- ══ MAIN ══ -->
   <main class="main-content">
+
+    <!-- TOPBAR -->
     <header class="topbar">
       <div class="topbar-left">
         <div>
@@ -255,20 +331,20 @@
       <div class="topbar-right">
         <div class="topbar-date">
           <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          Jumat, 19 Juni 2026
+          Jumat, 20 Juni 2026
         </div>
-        <button class="topbar-notif">
+        <div class="topbar-notif">
           <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          <span class="notif-dot"></span>
-        </button>
+          <span class="notif-badge">4</span>
+        </div>
         <div class="user-chip">
           <div class="user-av">BS</div>
           <div>
             <div class="user-name">Budi Santoso</div>
-            <div class="user-role">Branch Leader</div>
+            <div class="user-role">Branch Leader <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
           </div>
         </div>
-        <a href="../../../index.html" class="topbar-logout">
+        <a href="dashboard.html" class="topbar-logout">
           <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
           Keluar
         </a>
@@ -276,259 +352,519 @@
     </header>
 
     <div class="content-area">
-      <!-- KPI STRIP -->
-      <div class="kpi-strip">
-        <div class="kpi-card">
-          <div class="kpi-ico blue"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-          <div><div class="kpi-val">16</div><div class="kpi-lbl">Total Tim</div></div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-ico green"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <div><div class="kpi-val">14</div><div class="kpi-lbl">Hadir Hari Ini</div></div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-ico orange"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-          <div><div class="kpi-val">2</div><div class="kpi-lbl">Belum Check In</div></div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-ico purple"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg></div>
-          <div><div class="kpi-val">3</div><div class="kpi-lbl">Dalam Adaptasi</div></div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-ico red"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-          <div><div class="kpi-val">4</div><div class="kpi-lbl">Alert Aktif</div></div>
-        </div>
-      </div>
 
-      <!-- TAB BAR -->
+      <!-- ── SUMMARY STRIP ── -->
+      <div class="summary-strip">
+
+        <!-- Card 1: Account Executive -->
+        <div class="sum-card">
+          <div class="sum-top">
+            <div class="sum-ico blue">
+              <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            </div>
+            <div class="sum-center">
+              <div class="sum-num">10</div>
+              <div class="sum-lbl">Account Executive</div>
+            </div>
+            <div class="sum-pct">62.5%<br><span style="color:#9CA3AF;font-weight:400;font-size:10px;">dari total tim</span></div>
+          </div>
+          <div class="sum-rows">
+            <div class="sum-row">
+              <div class="sum-dot" style="background:#027A48;"></div>
+              <div class="sum-row-label">Certified</div>
+              <div class="sum-row-bar-bg"><div class="sum-row-bar-fill" style="background:#027A48;width:70%;"></div></div>
+              <div class="sum-row-val" style="color:#027A48;">7</div>
+            </div>
+            <div class="sum-row">
+              <div class="sum-dot" style="background:#D97706;"></div>
+              <div class="sum-row-label">Adaptasi</div>
+              <div class="sum-row-bar-bg"><div class="sum-row-bar-fill" style="background:#D97706;width:20%;"></div></div>
+              <div class="sum-row-val" style="color:#D97706;">2</div>
+            </div>
+            <div class="sum-row">
+              <div class="sum-dot" style="background:#1D6FF3;"></div>
+              <div class="sum-row-label">Training</div>
+              <div class="sum-row-bar-bg"><div class="sum-row-bar-fill" style="background:#1D6FF3;width:10%;"></div></div>
+              <div class="sum-row-val" style="color:#1D6FF3;">1</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Engineer -->
+        <div class="sum-card">
+          <div class="sum-top">
+            <div class="sum-ico green">
+              <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            </div>
+            <div class="sum-center">
+              <div class="sum-num">4</div>
+              <div class="sum-lbl">Engineer</div>
+            </div>
+            <div class="sum-pct">25.0%<br><span style="color:#9CA3AF;font-weight:400;font-size:10px;">dari total tim</span></div>
+          </div>
+          <div class="sum-rows">
+            <div class="sum-row">
+              <div class="sum-dot" style="background:#027A48;"></div>
+              <div class="sum-row-label">Hadir</div>
+              <div class="sum-row-bar-bg"><div class="sum-row-bar-fill" style="background:#027A48;width:75%;"></div></div>
+              <div class="sum-row-val" style="color:#027A48;">3</div>
+            </div>
+            <div class="sum-row">
+              <div class="sum-dot" style="background:#D92D20;"></div>
+              <div class="sum-row-label">Sakit</div>
+              <div class="sum-row-bar-bg"><div class="sum-row-bar-fill" style="background:#D92D20;width:25%;"></div></div>
+              <div class="sum-row-val" style="color:#D92D20;">1</div>
+            </div>
+            <div class="sum-row">
+              <div class="sum-dot" style="background:#344054;"></div>
+              <div class="sum-row-label">WO Selesai / Pending</div>
+              <div class="sum-row-bar-bg"><div class="sum-row-bar-fill" style="background:#344054;width:80%;"></div></div>
+              <div class="sum-row-val">18/4</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Permit / Freelance -->
+        <div class="sum-card">
+          <div class="sum-top">
+            <div class="sum-ico orange">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div class="sum-center">
+              <div class="sum-num">2</div>
+              <div class="sum-lbl">Permit / Freelance</div>
+            </div>
+            <div class="sum-pct">12.5%<br><span style="color:#9CA3AF;font-weight:400;font-size:10px;">dari total tim</span></div>
+          </div>
+          <div class="sum-rows">
+            <div class="sum-row">
+              <div class="sum-dot" style="background:#027A48;"></div>
+              <div class="sum-row-label">Kontrak Aktif</div>
+              <div class="sum-row-bar-bg"><div class="sum-row-bar-fill" style="background:#027A48;width:100%;"></div></div>
+              <div class="sum-row-val" style="color:#027A48;">2</div>
+            </div>
+            <div class="sum-row">
+              <div class="sum-dot" style="background:#D97706;"></div>
+              <div class="sum-row-label">Sisa Kontrak (avg)</div>
+              <div class="sum-row-bar-bg"><div class="sum-row-bar-fill" style="background:#D97706;width:50%;"></div></div>
+              <div class="sum-row-val" style="color:#D97706;">29 hr</div>
+            </div>
+            <div class="sum-row">
+              <div class="sum-dot" style="background:#9CA3AF;"></div>
+              <div class="sum-row-label">Berakhir Bulan Ini</div>
+              <div class="sum-row-bar-bg"><div class="sum-row-bar-fill" style="background:#D92D20;width:50%;"></div></div>
+              <div class="sum-row-val" style="color:#D92D20;">1</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /summary-strip -->
+
+      <!-- ── TAB BAR ── -->
       <div class="tab-bar">
         <button class="tab-btn active" onclick="switchTab('ae',this)">Account Executive</button>
         <button class="tab-btn" onclick="switchTab('eng',this)">Engineer</button>
         <button class="tab-btn" onclick="switchTab('pf',this)">Permit / Freelance</button>
       </div>
 
-      <!-- TAB AE -->
+      <!-- ══ TAB: ACCOUNT EXECUTIVE ══ -->
       <div id="tab-ae" class="tab-panel active">
+        <div class="search-row">
+          <div class="search-wrap">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input class="search-inp" type="text" placeholder="Cari anggota tim...">
+          </div>
+          <button class="filter-btn">
+            <svg viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+            Filter
+          </button>
+        </div>
         <table class="data-table" style="table-layout:fixed;width:100%;">
-          <colgroup><col style="width:195px"><col style="width:95px"><col style="width:120px"><col style="width:85px"><col style="width:135px"><col style="width:110px"><col style="width:135px"><col style="width:75px"></colgroup>
-          <thead><tr>
-            <th>Anggota</th><th>Kehadiran</th><th>Status Kompetensi</th><th>QP Score</th><th>Pipeline (CP/WP/HP)</th><th>Last Activity</th><th>Alert</th><th>Aksi</th>
-          </tr></thead>
+          <colgroup>
+            <col style="width:180px"><!-- Anggota -->
+            <col style="width:120px"><!-- Role -->
+            <col style="width:110px"><!-- Status Kompetensi -->
+            <col style="width:85px"> <!-- QP Score -->
+            <col style="width:145px"><!-- Pipeline -->
+            <col style="width:80px"> <!-- QP April -->
+            <col style="width:90px"> <!-- SP April -->
+            <col style="width:90px"> <!-- Lama Paket -->
+            <col style="width:65px"> <!-- Aksi -->
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Anggota</th>
+              <th>Role</th>
+              <th>Status Kompetensi</th>
+              <th>QP Score</th>
+              <th>Pipeline (CP/WP/HP)</th>
+              <th>QP April</th>
+              <th>SP April</th>
+              <th>Lama Paket</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
           <tbody>
+            <!-- 1 Andi Ramadan -->
             <tr>
-              <td><div class="member-cell"><div class="av blue">AR</div><span class="member-name">Andi Ramadan</span></div></td>
-              <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
-              <td><span class="badge green">Certified</span></td>
-              <td><div class="qp-wrap"><span class="qp-num" style="color:#027A48;">87</span><div class="qp-bar-bg"><div class="qp-bar" style="background:#12B76A;width:87%;"></div></div></div></td>
-              <td><span style="font-size:11px;">3CP / 18WP / 5HP</span></td>
-              <td style="font-size:11px;color:#667085;">35 menit lalu</td>
-              <td>—</td>
-              <td><button class="btn-sm" onclick="openDetail()">Detail</button></td>
+              <td>
+                <div class="member-cell">
+                  <div class="av blue">AR</div>
+                  <div><div class="member-name">Andi Ramadan</div></div>
+                </div>
+              </td>
+              <td style="font-size:11px;color:#667085;">Account Executive</td>
+              <td><span class="badge green"><span class="badge-dot"></span>Certified</span></td>
+              <td>
+                <div class="qp-cell">
+                  <span class="qp-num" style="color:#027A48;">87</span>
+                  <div class="qp-bar-bg"><div class="qp-bar-fill" style="background:#12B76A;width:87%;"></div></div>
+                </div>
+              </td>
+              <td>
+                <div class="pipeline-cell">
+                  <div class="pipe-cp"><span>2</span> CP &nbsp;·&nbsp; <span class="pipe-wp" style="color:#D97706;font-weight:700;">9</span> WP &nbsp;·&nbsp; <span class="pipe-hp" style="color:#027A48;font-weight:700;">5</span> HP</div>
+                </div>
+              </td>
+              <td style="font-size:12px;font-weight:700;color:#027A48;">87%</td>
+              <td><a href="#" class="sp-link">SP-24097</a></td>
+              <td><div class="lama-cell">2 Thn 4 Bln</div></td>
+              <td><button class="btn-sm" onclick="openDetail('Andi Ramadan','AR','blue')">Detail</button></td>
             </tr>
+            <!-- 2 Dian Safira -->
             <tr>
-              <td><div class="member-cell"><div class="av purple">DS</div><span class="member-name">Dian Safira</span></div></td>
-              <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
-              <td><span class="badge green">Certified</span></td>
-              <td><div class="qp-wrap"><span class="qp-num" style="color:#027A48;">92</span><div class="qp-bar-bg"><div class="qp-bar" style="background:#12B76A;width:92%;"></div></div></div></td>
-              <td><span style="font-size:11px;">5CP / 22WP / 7HP</span></td>
-              <td style="font-size:11px;color:#667085;">1 jam lalu</td>
-              <td>—</td>
-              <td><button class="btn-sm" onclick="openDetail()">Detail</button></td>
+              <td>
+                <div class="member-cell">
+                  <div class="av purple">DS</div>
+                  <div><div class="member-name">Dian Safira</div></div>
+                </div>
+              </td>
+              <td style="font-size:11px;color:#667085;">Account Executive</td>
+              <td><span class="badge green"><span class="badge-dot"></span>Certified</span></td>
+              <td>
+                <div class="qp-cell">
+                  <span class="qp-num" style="color:#027A48;">92</span>
+                  <div class="qp-bar-bg"><div class="qp-bar-fill" style="background:#12B76A;width:92%;"></div></div>
+                </div>
+              </td>
+              <td>
+                <div class="pipeline-cell">
+                  <div class="pipe-cp"><span>5</span> CP &nbsp;·&nbsp; <span style="color:#D97706;font-weight:700;">22</span> WP &nbsp;·&nbsp; <span style="color:#027A48;font-weight:700;">7</span> HP</div>
+                </div>
+              </td>
+              <td style="font-size:12px;font-weight:700;color:#027A48;">94%</td>
+              <td><a href="#" class="sp-link">SP-23841</a></td>
+              <td><div class="lama-cell">3 Thn 1 Bln</div></td>
+              <td><button class="btn-sm" onclick="openDetail('Dian Safira','DS','purple')">Detail</button></td>
             </tr>
+            <!-- 3 Rizal Pratama -->
             <tr>
-              <td><div class="member-cell"><div class="av amber">RP</div><span class="member-name">Rizal Pratama</span></div></td>
-              <td><span class="badge blue"><span class="badge-dot"></span>Kantor</span></td>
+              <td>
+                <div class="member-cell">
+                  <div class="av amber">RP</div>
+                  <div><div class="member-name">Rizal Pratama</div></div>
+                </div>
+              </td>
+              <td style="font-size:11px;color:#667085;">Account Executive</td>
               <td><span class="badge orange">Adaptasi</span></td>
-              <td><div class="qp-wrap"><span class="qp-num" style="color:#B42318;">34</span><div class="qp-bar-bg"><div class="qp-bar" style="background:#F04438;width:34%;"></div></div></div></td>
-              <td><span style="font-size:11px;">1CP / 6WP / 1HP</span></td>
-              <td style="font-size:11px;color:#667085;">Kemarin</td>
-              <td><span class="alert-chip">⚠ Adaptasi lambat</span></td>
-              <td><button class="btn-sm" onclick="openDetail()">Detail</button></td>
+              <td>
+                <div class="qp-cell">
+                  <span class="qp-num" style="color:#D92D20;">34</span>
+                  <div class="qp-bar-bg"><div class="qp-bar-fill" style="background:#F04438;width:34%;"></div></div>
+                </div>
+              </td>
+              <td>
+                <div class="pipeline-cell">
+                  <div class="pipe-cp"><span>1</span> CP &nbsp;·&nbsp; <span style="color:#D97706;font-weight:700;">6</span> WP &nbsp;·&nbsp; <span style="color:#027A48;font-weight:700;">1</span> HP</div>
+                </div>
+              </td>
+              <td style="font-size:12px;font-weight:700;color:#D92D20;">24%</td>
+              <td><a href="#" class="sp-link">SP-25102</a></td>
+              <td><div class="lama-cell">8 Bulan</div></td>
+              <td><button class="btn-sm" onclick="openDetail('Rizal Pratama','RP','amber')">Detail</button></td>
             </tr>
+            <!-- 4 Nova Fitriani -->
             <tr>
-              <td><div class="member-cell"><div class="av green">NF</div><span class="member-name">Nova Fitriani</span></div></td>
-              <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
-              <td><span class="badge green">Certified</span></td>
-              <td><div class="qp-wrap"><span class="qp-num" style="color:#027A48;">75</span><div class="qp-bar-bg"><div class="qp-bar" style="background:#12B76A;width:75%;"></div></div></div></td>
-              <td><span style="font-size:11px;">2CP / 11WP / 3HP</span></td>
-              <td style="font-size:11px;color:#667085;">2 jam lalu</td>
-              <td>—</td>
-              <td><button class="btn-sm" onclick="openDetail()">Detail</button></td>
+              <td>
+                <div class="member-cell">
+                  <div class="av green">NF</div>
+                  <div><div class="member-name">Nova Fitriani</div></div>
+                </div>
+              </td>
+              <td style="font-size:11px;color:#667085;">Account Executive</td>
+              <td><span class="badge green"><span class="badge-dot"></span>Certified</span></td>
+              <td>
+                <div class="qp-cell">
+                  <span class="qp-num" style="color:#027A48;">75</span>
+                  <div class="qp-bar-bg"><div class="qp-bar-fill" style="background:#12B76A;width:75%;"></div></div>
+                </div>
+              </td>
+              <td>
+                <div class="pipeline-cell">
+                  <div class="pipe-cp"><span>2</span> CP &nbsp;·&nbsp; <span style="color:#D97706;font-weight:700;">11</span> WP &nbsp;·&nbsp; <span style="color:#027A48;font-weight:700;">3</span> HP</div>
+                </div>
+              </td>
+              <td style="font-size:12px;font-weight:700;color:#027A48;">75%</td>
+              <td><a href="#" class="sp-link">SP-24315</a></td>
+              <td><div class="lama-cell">1 Thn 9 Bln</div></td>
+              <td><button class="btn-sm" onclick="openDetail('Nova Fitriani','NF','green')">Detail</button></td>
             </tr>
+            <!-- 5 Bima Wicaksono -->
             <tr>
-              <td><div class="member-cell"><div class="av red">BW</div><span class="member-name">Bima Wicaksono</span></div></td>
-              <td><span class="badge red"><span class="badge-dot"></span>Belum Check In</span></td>
+              <td>
+                <div class="member-cell">
+                  <div class="av red">BW</div>
+                  <div><div class="member-name">Bima Wicaksono</div></div>
+                </div>
+              </td>
+              <td style="font-size:11px;color:#667085;">Account Executive</td>
               <td><span class="badge blue">Training</span></td>
-              <td><div class="qp-wrap"><span class="qp-num" style="color:#98A2B3;">—</span></div></td>
-              <td style="color:#98A2B3;font-size:11px;">—</td>
-              <td style="font-size:11px;color:#98A2B3;">—</td>
-              <td><span class="alert-chip">⚠ Belum absen</span></td>
-              <td><button class="btn-sm" onclick="openDetail()">Detail</button></td>
+              <td>
+                <div class="qp-cell">
+                  <span class="qp-num" style="color:#9CA3AF;">—</span>
+                </div>
+              </td>
+              <td style="color:#9CA3AF;font-size:11px;">—</td>
+              <td style="color:#9CA3AF;font-size:11px;">—</td>
+              <td><a href="#" class="sp-link">SP-25287</a></td>
+              <td><div class="lama-cell">3 Bulan</div></td>
+              <td><button class="btn-sm" onclick="openDetail('Bima Wicaksono','BW','red')">Detail</button></td>
             </tr>
+            <!-- 6 Siti Rahayu -->
             <tr>
-              <td><div class="member-cell"><div class="av gray">SR</div><span class="member-name">Siti Rahayu</span></div></td>
-              <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
-              <td><span class="badge green">Certified</span></td>
-              <td><div class="qp-wrap"><span class="qp-num" style="color:#027A48;">68</span><div class="qp-bar-bg"><div class="qp-bar" style="background:#F79009;width:68%;"></div></div></div></td>
-              <td><span style="font-size:11px;">1CP / 14WP / 4HP</span></td>
-              <td style="font-size:11px;color:#667085;">45 menit lalu</td>
-              <td>—</td>
-              <td><button class="btn-sm" onclick="openDetail()">Detail</button></td>
+              <td>
+                <div class="member-cell">
+                  <div class="av gray">SR</div>
+                  <div><div class="member-name">Siti Rahayu</div></div>
+                </div>
+              </td>
+              <td style="font-size:11px;color:#667085;">Account Executive</td>
+              <td><span class="badge green"><span class="badge-dot"></span>Certified</span></td>
+              <td>
+                <div class="qp-cell">
+                  <span class="qp-num" style="color:#D97706;">68</span>
+                  <div class="qp-bar-bg"><div class="qp-bar-fill" style="background:#F79009;width:68%;"></div></div>
+                </div>
+              </td>
+              <td>
+                <div class="pipeline-cell">
+                  <div class="pipe-cp"><span>1</span> CP &nbsp;·&nbsp; <span style="color:#D97706;font-weight:700;">14</span> WP &nbsp;·&nbsp; <span style="color:#027A48;font-weight:700;">4</span> HP</div>
+                </div>
+              </td>
+              <td style="font-size:12px;font-weight:700;color:#D97706;">64%</td>
+              <td><a href="#" class="sp-link">SP-24088</a></td>
+              <td><div class="lama-cell">2 Thn 2 Bln</div></td>
+              <td><button class="btn-sm" onclick="openDetail('Siti Rahayu','SR','gray')">Detail</button></td>
             </tr>
+            <!-- 7 Lathifah Kalim -->
             <tr>
-              <td><div class="member-cell"><div class="av teal">HW</div><span class="member-name">Hendra Wijaya</span></div></td>
-              <td><span class="badge orange"><span class="badge-dot"></span>Izin</span></td>
-              <td><span class="badge green">Certified</span></td>
-              <td><div class="qp-wrap"><span class="qp-num" style="color:#027A48;">71</span><div class="qp-bar-bg"><div class="qp-bar" style="background:#12B76A;width:71%;"></div></div></div></td>
-              <td><span style="font-size:11px;">0CP / 9WP / 2HP</span></td>
-              <td style="font-size:11px;color:#667085;">Kemarin</td>
-              <td>—</td>
-              <td><button class="btn-sm" onclick="openDetail()">Detail</button></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av pink">PL</div><span class="member-name">Putri Lestari</span></div></td>
-              <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
+              <td>
+                <div class="member-cell">
+                  <div class="av teal">LK</div>
+                  <div><div class="member-name">Lathifah Kalim</div></div>
+                </div>
+              </td>
+              <td style="font-size:11px;color:#667085;">Account Executive</td>
               <td><span class="badge orange">Adaptasi</span></td>
-              <td><div class="qp-wrap"><span class="qp-num" style="color:#B54708;">41</span><div class="qp-bar-bg"><div class="qp-bar" style="background:#F79009;width:41%;"></div></div></div></td>
-              <td><span style="font-size:11px;">1CP / 7WP / 1HP</span></td>
-              <td style="font-size:11px;color:#667085;">3 jam lalu</td>
-              <td><span class="alert-chip">⚠ Target rendah</span></td>
-              <td><button class="btn-sm" onclick="openDetail()">Detail</button></td>
+              <td>
+                <div class="qp-cell">
+                  <span class="qp-num" style="color:#D92D20;">41</span>
+                  <div class="qp-bar-bg"><div class="qp-bar-fill" style="background:#F04438;width:41%;"></div></div>
+                </div>
+              </td>
+              <td>
+                <div class="pipeline-cell">
+                  <div class="pipe-cp"><span>1</span> CP &nbsp;·&nbsp; <span style="color:#D97706;font-weight:700;">7</span> WP &nbsp;·&nbsp; <span style="color:#027A48;font-weight:700;">1</span> HP</div>
+                </div>
+              </td>
+              <td style="font-size:12px;font-weight:700;color:#D92D20;">32%</td>
+              <td><a href="#" class="sp-link">SP-25066</a></td>
+              <td><div class="lama-cell">6 Bulan</div></td>
+              <td><button class="btn-sm" onclick="openDetail('Lathifah Kalim','LK','teal')">Detail</button></td>
+            </tr>
+            <!-- 8 Fajar Nurhadi -->
+            <tr>
+              <td>
+                <div class="member-cell">
+                  <div class="av orange">FN</div>
+                  <div><div class="member-name">Fajar Nurhadi</div></div>
+                </div>
+              </td>
+              <td style="font-size:11px;color:#667085;">Account Executive</td>
+              <td><span class="badge green"><span class="badge-dot"></span>Certified</span></td>
+              <td>
+                <div class="qp-cell">
+                  <span class="qp-num" style="color:#027A48;">79</span>
+                  <div class="qp-bar-bg"><div class="qp-bar-fill" style="background:#12B76A;width:79%;"></div></div>
+                </div>
+              </td>
+              <td>
+                <div class="pipeline-cell">
+                  <div class="pipe-cp"><span>3</span> CP &nbsp;·&nbsp; <span style="color:#D97706;font-weight:700;">16</span> WP &nbsp;·&nbsp; <span style="color:#027A48;font-weight:700;">6</span> HP</div>
+                </div>
+              </td>
+              <td style="font-size:12px;font-weight:700;color:#027A48;">81%</td>
+              <td><a href="#" class="sp-link">SP-23762</a></td>
+              <td><div class="lama-cell">4 Thn 0 Bln</div></td>
+              <td><button class="btn-sm" onclick="openDetail('Fajar Nurhadi','FN','orange')">Detail</button></td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <!-- TAB ENGINEER -->
+      <!-- ══ TAB: ENGINEER ══ -->
       <div id="tab-eng" class="tab-panel">
+        <div class="search-row">
+          <div class="search-wrap">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input class="search-inp" type="text" placeholder="Cari anggota tim...">
+          </div>
+          <button class="filter-btn">
+            <svg viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+            Filter
+          </button>
+        </div>
         <table class="data-table" style="table-layout:fixed;width:100%;">
-          <colgroup><col style="width:185px"><col style="width:95px"><col style="width:120px"><col style="width:80px"><col style="width:85px"><col style="width:90px"><col style="width:140px"><col style="width:75px"></colgroup>
-          <thead><tr>
-            <th>Anggota</th><th>Kehadiran</th><th>Jadwal Hari Ini</th><th>WO Open</th><th>WO Closed</th><th>Overdue WO</th><th>Alert</th><th>Aksi</th>
-          </tr></thead>
+          <colgroup>
+            <col style="width:180px">
+            <col style="width:110px">
+            <col style="width:130px">
+            <col style="width:85px">
+            <col style="width:85px">
+            <col style="width:90px">
+            <col style="width:130px">
+            <col style="width:65px">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Anggota</th>
+              <th>Kehadiran</th>
+              <th>Jadwal Hari Ini</th>
+              <th>WO Open</th>
+              <th>WO Closed</th>
+              <th>Overdue WO</th>
+              <th>Alert</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
           <tbody>
             <tr>
-              <td><div class="member-cell"><div class="av blue">AS</div><span class="member-name">Agus Subagyo</span></div></td>
+              <td><div class="member-cell"><div class="av blue">AS</div><div><div class="member-name">Agus Subagyo</div><div class="member-sub">Engineer</div></div></div></td>
               <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
               <td><span class="sch-badge reguler">Reguler</span></td>
-              <td style="text-align:center;font-weight:700;">3</td><td style="text-align:center;font-weight:700;">8</td><td style="text-align:center;">0</td>
-              <td>—</td>
-              <td><button class="btn-sm" onclick="openDetail()">Detail</button></td>
+              <td style="text-align:center;font-weight:700;font-size:13px;">3</td>
+              <td style="text-align:center;font-weight:700;font-size:13px;">8</td>
+              <td style="text-align:center;color:#9CA3AF;">0</td>
+              <td><span style="color:#9CA3AF;font-size:11px;">—</span></td>
+              <td><button class="btn-sm" onclick="openDetail('Agus Subagyo','AS','blue')">Detail</button></td>
             </tr>
             <tr>
-              <td><div class="member-cell"><div class="av green">FN</div><span class="member-name">Faisal Nugroho</span></div></td>
+              <td><div class="member-cell"><div class="av green">FN</div><div><div class="member-name">Faisal Nugroho</div><div class="member-sub">Engineer</div></div></div></td>
               <td><span class="badge blue"><span class="badge-dot"></span>Project</span></td>
               <td><span class="sch-badge project">Project Site A</span></td>
-              <td style="text-align:center;font-weight:700;">5</td><td style="text-align:center;font-weight:700;">12</td><td style="text-align:center;color:#B42318;font-weight:700;">1</td>
-              <td><span class="alert-chip">⚠ Overdue</span></td>
-              <td><button class="btn-sm" onclick="openDetail()">Detail</button></td>
+              <td style="text-align:center;font-weight:700;font-size:13px;">5</td>
+              <td style="text-align:center;font-weight:700;font-size:13px;">12</td>
+              <td style="text-align:center;font-weight:700;color:#D92D20;">1</td>
+              <td><span class="badge red" style="font-size:10px;">⚠ Overdue WO</span></td>
+              <td><button class="btn-sm" onclick="openDetail('Faisal Nugroho','FN','green')">Detail</button></td>
             </tr>
             <tr>
-              <td><div class="member-cell"><div class="av orange">HK</div><span class="member-name">Hendri Kurniawan</span></div></td>
+              <td><div class="member-cell"><div class="av orange">HK</div><div><div class="member-name">Hendri Kurniawan</div><div class="member-sub">Engineer</div></div></div></td>
               <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
               <td><span class="sch-badge reguler">Reguler</span></td>
-              <td style="text-align:center;font-weight:700;">2</td><td style="text-align:center;font-weight:700;">7</td><td style="text-align:center;">0</td>
-              <td>—</td>
-              <td><button class="btn-sm" onclick="openDetail()">Detail</button></td>
+              <td style="text-align:center;font-weight:700;font-size:13px;">2</td>
+              <td style="text-align:center;font-weight:700;font-size:13px;">7</td>
+              <td style="text-align:center;color:#9CA3AF;">0</td>
+              <td><span style="color:#9CA3AF;font-size:11px;">—</span></td>
+              <td><button class="btn-sm" onclick="openDetail('Hendri Kurniawan','HK','orange')">Detail</button></td>
             </tr>
             <tr>
-              <td><div class="member-cell"><div class="av purple">IM</div><span class="member-name">Irfan Maulana</span></div></td>
-              <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
-              <td><span class="sch-badge reguler">Reguler</span></td>
-              <td style="text-align:center;font-weight:700;">4</td><td style="text-align:center;font-weight:700;">5</td><td style="text-align:center;">0</td>
-              <td>—</td>
-              <td><button class="btn-sm" onclick="openDetail()">Detail</button></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av gray">JP</div><span class="member-name">Joni Prasetyo</span></div></td>
+              <td><div class="member-cell"><div class="av purple">IM</div><div><div class="member-name">Irfan Maulana</div><div class="member-sub">Engineer</div></div></div></td>
               <td><span class="badge red"><span class="badge-dot"></span>Sakit</span></td>
-              <td style="color:#98A2B3;font-size:11px;">—</td>
-              <td style="text-align:center;font-weight:700;">2</td><td style="text-align:center;font-weight:700;">3</td><td style="text-align:center;color:#B42318;font-weight:700;">2</td>
-              <td><span class="alert-chip">⚠ Overdue</span></td>
-              <td><button class="btn-sm" onclick="openDetail()">Detail</button></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av amber">KR</div><span class="member-name">Kurniadi</span></div></td>
-              <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
-              <td><span class="sch-badge shift-pagi">Shift Pagi</span></td>
-              <td style="text-align:center;font-weight:700;">1</td><td style="text-align:center;font-weight:700;">9</td><td style="text-align:center;">0</td>
-              <td>—</td>
-              <td><button class="btn-sm" onclick="openDetail()">Detail</button></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av teal">LA</div><span class="member-name">Lutfi Anwar</span></div></td>
-              <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
-              <td><span class="sch-badge reguler">Reguler</span></td>
-              <td style="text-align:center;font-weight:700;">6</td><td style="text-align:center;font-weight:700;">4</td><td style="text-align:center;">0</td>
-              <td><span class="alert-chip">⚠ WO tinggi</span></td>
-              <td><button class="btn-sm" onclick="openDetail()">Detail</button></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av pink">MS</div><span class="member-name">Manda Sari</span></div></td>
-              <td><span class="badge red"><span class="badge-dot"></span>Belum Check In</span></td>
-              <td><span class="sch-badge reguler">Reguler</span></td>
-              <td style="text-align:center;font-weight:700;">3</td><td style="text-align:center;font-weight:700;">6</td><td style="text-align:center;">0</td>
-              <td><span class="alert-chip">⚠ Belum absen</span></td>
-              <td><button class="btn-sm" onclick="openDetail()">Detail</button></td>
+              <td style="color:#9CA3AF;font-size:11px;">—</td>
+              <td style="text-align:center;font-weight:700;font-size:13px;">2</td>
+              <td style="text-align:center;font-weight:700;font-size:13px;">3</td>
+              <td style="text-align:center;font-weight:700;color:#D92D20;">2</td>
+              <td><span class="badge orange" style="font-size:10px;">⚠ WO Overdue</span></td>
+              <td><button class="btn-sm" onclick="openDetail('Irfan Maulana','IM','purple')">Detail</button></td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <!-- TAB PERMIT/FREELANCE -->
+      <!-- ══ TAB: PERMIT / FREELANCE ══ -->
       <div id="tab-pf" class="tab-panel">
+        <div class="search-row">
+          <div class="search-wrap">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input class="search-inp" type="text" placeholder="Cari anggota tim...">
+          </div>
+          <button class="filter-btn">
+            <svg viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+            Filter
+          </button>
+        </div>
         <table class="data-table" style="table-layout:fixed;width:100%;">
-          <colgroup><col style="width:200px"><col style="width:95px"><col style="width:185px"><col style="width:135px"><col style="width:110px"><col style="width:80px"></colgroup>
-          <thead><tr>
-            <th>Anggota</th><th>Status</th><th>Penugasan</th><th>Lokasi</th><th>Sisa Kontrak</th><th>Aksi</th>
-          </tr></thead>
+          <colgroup>
+            <col style="width:190px">
+            <col style="width:100px">
+            <col style="width:185px">
+            <col style="width:140px">
+            <col style="width:130px">
+            <col style="width:70px">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Anggota</th>
+              <th>Status</th>
+              <th>Penugasan</th>
+              <th>Lokasi</th>
+              <th>Sisa Kontrak</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
           <tbody>
             <tr>
-              <td><div class="member-cell"><div class="av blue">RS</div><span class="member-name">Ridwan Santoso</span></div></td>
+              <td><div class="member-cell"><div class="av blue">RS</div><div><div class="member-name">Ridwan Santoso</div><div class="member-sub">Freelance</div></div></div></td>
               <td><span class="badge green"><span class="badge-dot"></span>Aktif</span></td>
-              <td>Project FTTX Barat</td>
+              <td style="font-size:12px;">Project FTTX Barat</td>
               <td style="font-size:11px;color:#667085;">Kec. Lowokwaru</td>
-              <td style="font-size:12px;font-weight:700;color:#344054;">47 hari</td>
-              <td><button class="btn-sm" onclick="openDetail()">Detail</button></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:7px;">
+                  <div style="flex:1;height:4px;background:#F2F4F7;border-radius:2px;overflow:hidden;"><div style="height:100%;background:#027A48;width:63%;border-radius:2px;"></div></div>
+                  <span style="font-size:12px;font-weight:700;color:#344054;white-space:nowrap;">47 hari</span>
+                </div>
+              </td>
+              <td><button class="btn-sm" onclick="openDetail('Ridwan Santoso','RS','blue')">Detail</button></td>
             </tr>
             <tr>
-              <td><div class="member-cell"><div class="av green">TP</div><span class="member-name">Teguh Priyanto</span></div></td>
+              <td><div class="member-cell"><div class="av amber">TP</div><div><div class="member-name">Teguh Priyanto</div><div class="member-sub">Freelance</div></div></div></td>
               <td><span class="badge green"><span class="badge-dot"></span>Aktif</span></td>
-              <td>Maintenance Rutin</td>
+              <td style="font-size:12px;">Maintenance Rutin</td>
               <td style="font-size:11px;color:#667085;">Kec. Blimbing</td>
-              <td style="font-size:12px;font-weight:700;color:#B42318;">12 hari</td>
-              <td><button class="btn-sm" onclick="openDetail()">Detail</button></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av orange">BS</div><span class="member-name">Bambang Suwito</span></div></td>
-              <td><span class="badge green"><span class="badge-dot"></span>Aktif</span></td>
-              <td>Project Ekspansi</td>
-              <td style="font-size:11px;color:#667085;">Kec. Klojen</td>
-              <td style="font-size:12px;font-weight:700;color:#344054;">78 hari</td>
-              <td><button class="btn-sm" onclick="openDetail()">Detail</button></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av red">YH</div><span class="member-name">Yusuf Hakim</span></div></td>
-              <td><span class="badge red"><span class="badge-dot"></span>Tidak Aktif</span></td>
-              <td style="color:#98A2B3;">—</td>
-              <td style="color:#98A2B3;">—</td>
-              <td style="font-size:12px;font-weight:700;color:#B42318;">Berakhir</td>
-              <td><button class="btn-sm" onclick="openDetail()">Detail</button></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:7px;">
+                  <div style="flex:1;height:4px;background:#F2F4F7;border-radius:2px;overflow:hidden;"><div style="height:100%;background:#D92D20;width:16%;border-radius:2px;"></div></div>
+                  <span style="font-size:12px;font-weight:700;color:#D92D20;white-space:nowrap;">12 hari</span>
+                </div>
+              </td>
+              <td><button class="btn-sm" onclick="openDetail('Teguh Priyanto','TP','amber')">Detail</button></td>
             </tr>
           </tbody>
         </table>
       </div>
-    </div>
+
+    </div><!-- /content-area -->
   </main>
 </div>
 
-<!-- TEAM MEMBER 360 DETAIL MODAL -->
+<!-- ══ TEAM MEMBER DETAIL MODAL ══ -->
 <div class="modal-overlay" id="detail-modal" onclick="closeDetailOutside(event)">
   <div class="modal-panel">
     <div class="modal-header">
-      <div class="modal-av">AR</div>
+      <div class="modal-av" id="modal-av">AR</div>
       <div style="flex:1;">
-        <div class="modal-name">Andi Ramadan</div>
+        <div class="modal-name" id="modal-name">Andi Ramadan</div>
         <div class="modal-meta">
           <span>Account Executive</span>
           <span style="color:#D0D5DD;">·</span>
@@ -564,8 +900,8 @@
         <div class="modal-section">
           <div class="modal-section-title">Pipeline Progress</div>
           <div class="pipeline-cards">
-            <div class="pipeline-card"><div class="pipeline-card-val" style="color:#1D6FF3;">3</div><div class="pipeline-card-lbl">Cold Prospect</div></div>
-            <div class="pipeline-card"><div class="pipeline-card-val" style="color:#B54708;">18</div><div class="pipeline-card-lbl">Warm Prospect</div></div>
+            <div class="pipeline-card"><div class="pipeline-card-val" style="color:#1D6FF3;">2</div><div class="pipeline-card-lbl">Cold Prospect</div></div>
+            <div class="pipeline-card"><div class="pipeline-card-val" style="color:#B54708;">9</div><div class="pipeline-card-lbl">Warm Prospect</div></div>
             <div class="pipeline-card"><div class="pipeline-card-val" style="color:#027A48;">5</div><div class="pipeline-card-lbl">Hot Prospect</div></div>
           </div>
           <div style="background:#F9FAFB;border-radius:9px;padding:10px 14px;">
@@ -574,17 +910,17 @@
               <span style="font-size:18px;font-weight:800;color:#027A48;">87</span>
             </div>
             <div style="height:8px;background:#F2F4F7;border-radius:4px;"><div style="height:8px;width:87%;background:linear-gradient(90deg,#12B76A,#27AE60);border-radius:4px;"></div></div>
-            <div style="font-size:10px;color:#667085;margin-top:4px;">Target min: 70 &nbsp;·&nbsp; Rata-rata tim: 64</div>
+            <div style="font-size:10px;color:#667085;margin-top:4px;">Target min: 70 &nbsp;·&nbsp; Rata-rata tim: 67</div>
           </div>
         </div>
         <div class="modal-section">
           <div class="modal-section-title">Aktivitas Terakhir</div>
           <div style="background:white;border:1px solid #EAECF0;border-radius:9px;padding:2px 12px;">
-            <div class="activity-row"><span class="activity-type">Canvasing — Area Blimbing</span><span class="activity-time">Hari ini 09:15</span></div>
-            <div class="activity-row"><span class="activity-type">Survey Lokasi — Klojen</span><span class="activity-time">Kemarin 14:30</span></div>
-            <div class="activity-row"><span class="activity-type">Presentasi Prospect</span><span class="activity-time">17 Jun 10:00</span></div>
-            <div class="activity-row"><span class="activity-type">Follow-up WP — Bpk Heru</span><span class="activity-time">16 Jun 15:45</span></div>
-            <div class="activity-row"><span class="activity-type">Closing HP — Toko Mandiri</span><span class="activity-time">15 Jun 11:20</span></div>
+            <div class="activity-row"><span class="activity-type">Canvasing — Area Dau</span><span class="activity-time">Hari ini 09:15</span></div>
+            <div class="activity-row"><span class="activity-type">Survey Lokasi — Karangploso</span><span class="activity-time">Kemarin 14:30</span></div>
+            <div class="activity-row"><span class="activity-type">Presentasi Prospect</span><span class="activity-time">18 Jun 10:00</span></div>
+            <div class="activity-row"><span class="activity-type">Follow-up WP — Bpk Heru</span><span class="activity-time">17 Jun 15:45</span></div>
+            <div class="activity-row"><span class="activity-type">Closing HP — Toko Mandiri</span><span class="activity-time">16 Jun 11:20</span></div>
           </div>
         </div>
       </div>
@@ -621,7 +957,7 @@
           <div class="coaching-card">
             <div class="coaching-card-date">5 Jun 2026</div>
             <div class="coaching-card-topic">Strategi canvasing</div>
-            <div class="coaching-card-note">Direkomendasikan area Lowokwaru untuk ekspansi. Jadwal pendampingan minggu depan.</div>
+            <div class="coaching-card-note">Direkomendasikan area Dau dan Karangploso untuk ekspansi. Jadwal pendampingan minggu depan.</div>
           </div>
         </div>
       </div>
@@ -630,13 +966,44 @@
 </div>
 
 <script>
-function switchTab(id,btn){document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});document.getElementById('tab-'+id).classList.add('active');btn.classList.add('active');}
-function togglePeople(){var h=document.getElementById('people-head'),s=document.getElementById('people-sub');h.classList.toggle('open');s.classList.toggle('open');}
-function toggleRequests(){var h=document.getElementById('requests-head'),s=document.getElementById('requests-sub');h.classList.toggle('open');s.classList.toggle('open');}
-function toggleLearning(){var h=document.getElementById('learning-head'),s=document.getElementById('learning-sub');h.classList.toggle('open');s.classList.toggle('open');}
-function openDetail(){document.getElementById('detail-modal').classList.add('open');}
-function closeDetail(){document.getElementById('detail-modal').classList.remove('open');}
-function closeDetailOutside(e){if(e.target===document.getElementById('detail-modal'))closeDetail();}
+  function switchTab(id, btn) {
+    document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+    document.getElementById('tab-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function toggleGroup(id) {
+    var h = document.getElementById(id + '-head');
+    var s = document.getElementById(id + '-sub');
+    h.classList.toggle('open');
+    s.classList.toggle('open');
+  }
+
+  function openDetail(name, initials, color) {
+    var colors = {
+      blue:'linear-gradient(135deg,#1D6FF3,#1558C8)',
+      green:'linear-gradient(135deg,#12B76A,#059669)',
+      amber:'linear-gradient(135deg,#F79009,#D97706)',
+      purple:'linear-gradient(135deg,#7C3AED,#6D28D9)',
+      red:'linear-gradient(135deg,#F04438,#D92D20)',
+      gray:'linear-gradient(135deg,#667085,#344054)',
+      teal:'linear-gradient(135deg,#0E9F93,#0D7A73)',
+      orange:'linear-gradient(135deg,#F97316,#EA580C)'
+    };
+    document.getElementById('modal-av').textContent = initials;
+    document.getElementById('modal-av').style.background = colors[color] || colors.blue;
+    document.getElementById('modal-name').textContent = name;
+    document.getElementById('detail-modal').classList.add('open');
+  }
+
+  function closeDetail() {
+    document.getElementById('detail-modal').classList.remove('open');
+  }
+
+  function closeDetailOutside(e) {
+    if (e.target === document.getElementById('detail-modal')) closeDetail();
+  }
 </script>
 </body>
 </html>

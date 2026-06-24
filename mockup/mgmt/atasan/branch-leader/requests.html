@@ -3,116 +3,308 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Requests — Branch Leader</title>
+  <title>Requests — Branch Leader</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-    html, body { height:100%; font-family:Inter,-apple-system,sans-serif; font-size:14px; color:#101828; background:#F5F7FA; -webkit-font-smoothing:antialiased; }
+    html, body { height:100%; font-family:'Inter',-apple-system,sans-serif; font-size:14px; color:#101828; background:#F5F7FA; -webkit-font-smoothing:antialiased; }
     a { text-decoration:none; color:inherit; }
     button { font-family:inherit; cursor:pointer; border:none; background:none; }
+
+    /* ─── LAYOUT ─── */
     .mgmt-layout { display:flex; height:100vh; overflow:hidden; }
-    .sidebar { width:230px; flex-shrink:0; background:#0D1B3E; height:100vh; display:flex; flex-direction:column; overflow-y:auto; }
+
+    /* ─── SIDEBAR ─── */
+    .sidebar { width:230px; flex-shrink:0; background:#0D1B3E; height:100vh; display:flex; flex-direction:column; overflow-y:auto; overflow-x:hidden; }
     .sidebar::-webkit-scrollbar { width:3px; }
     .sidebar::-webkit-scrollbar-thumb { background:rgba(255,255,255,.1); border-radius:2px; }
-    .sb-logo { display:flex; align-items:center; gap:10px; padding:22px 18px 16px; color:white; font-size:14px; font-weight:800; letter-spacing:-.3px; border-bottom:1px solid rgba(255,255,255,.07); }
+    .sb-logo { display:flex; align-items:center; gap:10px; padding:22px 18px 16px; color:white; font-size:14px; font-weight:800; letter-spacing:-.3px; border-bottom:1px solid rgba(255,255,255,.07); flex-shrink:0; }
     .sb-logo svg { width:22px; height:22px; stroke:white; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
-    .sb-nav { padding:10px 10px; flex:1; }
+    .sb-nav { padding:10px; flex:1; }
     .sb-item { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
     .sb-item:hover { background:rgba(255,255,255,.07); color:rgba(255,255,255,.9); }
     .sb-item.active { background:rgba(29,111,243,.28); color:white; font-weight:700; }
     .sb-item svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
     .sb-badge { margin-left:auto; background:#F04438; color:white; font-size:9px; font-weight:800; min-width:17px; height:17px; border-radius:9px; display:flex; align-items:center; justify-content:center; padding:0 4px; }
-    .sb-connect { padding:6px 10px 20px; border-top:1px solid rgba(255,255,255,.07); margin-top:auto; }
+    .sb-group { margin-bottom:1px; }
+    .sb-group-head { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; cursor:pointer; user-select:none; transition:all .15s; }
+    .sb-group-head:hover { background:rgba(255,255,255,.07); color:rgba(255,255,255,.9); }
+    .sb-group-head.open { color:rgba(255,255,255,.9); background:rgba(255,255,255,.05); }
+    .sb-group-head svg.sb-ico { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-chev { margin-left:auto; width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; transition:transform .2s; }
+    .sb-group-head.open .sb-chev { transform:rotate(90deg); }
+    .sb-sub { padding-left:14px; overflow:hidden; max-height:0; transition:max-height .25s ease; }
+    .sb-sub.open { max-height:220px; }
+    .sb-sub-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.45); font-size:12px; font-weight:500; transition:all .15s; text-decoration:none; margin-bottom:1px; }
+    .sb-sub-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.8); }
+    .sb-sub-item.active { background:rgba(29,111,243,.2); color:#60A5FA; font-weight:700; }
+    .sb-sub-dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; opacity:.7; }
+    .sb-connect { padding:6px 10px 14px; border-top:1px solid rgba(255,255,255,.07); }
     .sb-connect-label { font-size:10px; font-weight:700; color:rgba(255,255,255,.3); text-transform:uppercase; letter-spacing:.8px; padding:10px 10px 6px; }
     .sb-connect-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.5); font-size:12px; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
     .sb-connect-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.85); }
     .sb-connect-item svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
     .sb-connect-sub { font-size:10px; color:rgba(255,255,255,.25); margin-left:auto; }
-    .sb-group { margin-bottom:1px; }
-    .sb-group-head { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; cursor:pointer; user-select:none; transition:all .15s; }
-    .sb-group-head:hover, .sb-group-head.open { color:rgba(255,255,255,.9); background:rgba(255,255,255,.05); }
-    .sb-ico { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
-    .sb-chev { margin-left:auto; width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; transition:transform .2s; }
-    .sb-group-head.open .sb-chev { transform:rotate(90deg); }
-    .sb-sub { padding-left:14px; overflow:hidden; max-height:0; transition:max-height .25s ease; }
-    .sb-sub.open { max-height:200px; }
-    .sb-sub-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.45); font-size:12px; font-weight:500; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
-    .sb-sub-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.8); }
-    .sb-sub-item.active { background:rgba(29,111,243,.2); color:#60A5FA; font-weight:700; }
-    .sb-sub-dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; }
-    .main-content { flex:1; height:100vh; overflow-y:auto; background:#F5F7FA; }
-    .topbar { background:white; height:62px; display:flex; align-items:center; justify-content:space-between; padding:0 28px; border-bottom:1px solid #EAECF0; position:sticky; top:0; z-index:20; }
-    .topbar-left { display:flex; align-items:center; gap:14px; }
-    .topbar-btn { width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:8px; color:#667085; }
-    .topbar-btn svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; }
-    .page-title { font-size:16px; font-weight:700; color:#101828; line-height:1.1; }
-    .page-sub { font-size:12px; color:#667085; }
-    .topbar-right { display:flex; align-items:center; gap:14px; }
+
+    /* ─── MAIN ─── */
+    .main-content { flex:1; height:100vh; display:flex; flex-direction:column; overflow:hidden; min-width:0; }
+
+    /* ─── TOPBAR ─── */
+    .topbar { background:white; height:62px; flex-shrink:0; display:flex; align-items:center; justify-content:space-between; padding:0 24px; border-bottom:1px solid #EAECF0; }
+    .page-title { font-size:16px; font-weight:800; color:#101828; }
+    .page-sub { font-size:11.5px; color:#98A2B3; margin-top:1px; }
+    .topbar-right { display:flex; align-items:center; gap:10px; }
     .topbar-date { font-size:12px; color:#667085; display:flex; align-items:center; gap:5px; }
-    .topbar-date svg { width:14px; height:14px; stroke:#98A2B3; fill:none; stroke-width:2; }
+    .topbar-date svg { width:14px; height:14px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .topbar-notif { position:relative; width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:9px; color:#667085; cursor:pointer; border:1px solid #EAECF0; background:white; }
+    .topbar-notif svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .notif-dot { position:absolute; top:6px; right:7px; width:8px; height:8px; background:#F04438; border-radius:50%; border:1.5px solid white; }
     .user-chip { display:flex; align-items:center; gap:9px; padding:6px 10px; border-radius:10px; cursor:pointer; }
     .user-chip:hover { background:#F5F7FA; }
-    .user-av { width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,#1D6FF3,#0E4FC4); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:white; flex-shrink:0; }
+    .user-av { width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,#1D6FF3,#1558C8); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:white; flex-shrink:0; }
     .user-name { font-size:13px; font-weight:700; color:#101828; }
-    .user-role { font-size:11px; color:#98A2B3; display:flex; align-items:center; gap:3px; }
-    .user-role svg { width:12px; height:12px; stroke:#98A2B3; fill:none; stroke-width:2; }
-    .topbar-notif { position:relative; width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:9px; border:1px solid #EAECF0; background:white; cursor:pointer; flex-shrink:0; }
-    .topbar-notif svg { width:17px; height:17px; stroke:#667085; fill:none; stroke-width:2; }
-    .notif-dot { position:absolute; top:6px; right:7px; width:8px; height:8px; background:#F04438; border-radius:50%; border:1.5px solid white; }
-    .topbar-notif:hover { background:#F9FAFB; }
-    .topbar-logout { display:flex; align-items:center; gap:6px; padding:7px 13px; border-radius:9px; background:#FEF3F2; border:1px solid #FECDCA; color:#B42318; font-size:12px; font-weight:700; cursor:pointer; text-decoration:none; transition:all .15s; flex-shrink:0; }
+    .user-role { font-size:11px; color:#98A2B3; }
+    .topbar-logout { display:flex; align-items:center; gap:6px; padding:7px 13px; border-radius:9px; background:#FEF3F2; border:1px solid #FECDCA; color:#B42318; font-size:12px; font-weight:700; cursor:pointer; text-decoration:none; transition:all .15s; }
     .topbar-logout:hover { background:#FEE4E2; }
-    .topbar-logout svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; }
-    .content-area { padding:22px 28px 32px; }
-    .kpi-strip { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:18px; }
-    .kpi-card { background:white; border-radius:12px; padding:16px 18px; border:1px solid #EAECF0; display:flex; align-items:flex-start; gap:12px; }
+    .topbar-logout svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* ─── CONTENT AREA ─── */
+    .content-area { flex:1; overflow-y:auto; padding:20px 24px 32px; }
+    .content-area::-webkit-scrollbar { width:4px; }
+    .content-area::-webkit-scrollbar-thumb { background:#D0D5DD; border-radius:2px; }
+
+    /* ─── KPI STRIP ─── */
+    .kpi-strip { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:18px; }
+    .kpi-card { background:white; border:1px solid #EAECF0; border-radius:12px; padding:14px 16px; display:flex; align-items:center; gap:12px; }
+    .kpi-card.alert { border-left:3px solid #F79009; }
     .kpi-ico { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-    .kpi-ico svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; }
+    .kpi-ico svg { width:17px; height:17px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
     .kpi-ico.blue { background:#EFF6FF; color:#1D6FF3; }
-    .kpi-ico.orange { background:#FFFAEB; color:#B54708; }
-    .kpi-ico.green { background:#ECFDF3; color:#027A48; }
-    .kpi-ico.red { background:#FEF3F2; color:#B42318; }
+    .kpi-ico.amber { background:#FFFAEB; color:#B54708; }
     .kpi-ico.purple { background:#F4F3FF; color:#7C3AED; }
-    .kpi-ico.gray { background:#F9FAFB; color:#667085; }
-    .kpi-val { font-size:24px; font-weight:800; color:#101828; letter-spacing:-1px; line-height:1; margin-bottom:2px; }
-    .kpi-lbl { font-size:11px; color:#667085; }
-    .kpi-sub { font-size:10px; margin-top:2px; }
-    .kpi-sub.orange { color:#B54708; font-weight:700; }
-    .kpi-sub.green { color:#027A48; font-weight:700; }
-    .kpi-sub.red { color:#B42318; font-weight:700; }
-    .kpi-sub.gray { color:#98A2B3; }
-    .requests-layout { display:flex; gap:20px; align-items:flex-start; }
-    .requests-main { flex:1; min-width:0; }
-    .requests-side { width:280px; flex-shrink:0; }
-    .section-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
-    .section-title { font-size:14px; font-weight:700; color:#101828; }
-    .btn-primary { display:inline-flex; align-items:center; gap:6px; padding:8px 16px; border-radius:9px; background:#1D6FF3; color:white; font-size:12px; font-weight:700; font-family:inherit; cursor:pointer; border:none; text-decoration:none; transition:all .15s; }
-    .btn-primary:hover { background:#1558C0; }
-    .btn-primary svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2.5; }
-    .cat-tabs { display:flex; gap:6px; margin-bottom:16px; flex-wrap:wrap; }
-    .cat-tab { padding:7px 14px; border-radius:8px; font-size:12px; font-weight:600; color:#667085; cursor:pointer; border:1px solid #EAECF0; background:white; font-family:inherit; display:flex; align-items:center; gap:6px; transition:all .15s; }
-    .cat-tab.active { background:#1D6FF3; color:white; border-color:#1D6FF3; }
-    .cat-tab:not(.active):hover { background:#F9FAFB; }
-    .cat-count { padding:1px 7px; border-radius:10px; font-size:10px; font-weight:800; }
-    .cat-tab.active .cat-count { background:rgba(255,255,255,.25); }
-    .cat-tab:not(.active) .cat-count { background:#F2F4F7; color:#344054; }
-    .req-table { width:100%; border-collapse:collapse; background:white; border:1px solid #EAECF0; border-radius:12px; overflow:hidden; margin-bottom:20px; }
-    .req-table th { font-size:11px; font-weight:700; color:#667085; text-align:left; padding:10px 14px; background:#F9FAFB; border-bottom:1px solid #EAECF0; white-space:nowrap; }
-    .req-table td { font-size:12px; color:#344054; padding:12px 14px; border-bottom:1px solid #F9FAFB; vertical-align:middle; }
+    .kpi-ico.red { background:#FEF3F2; color:#B42318; }
+    .kpi-ico.teal { background:#E6FEF8; color:#0E9F93; }
+    .kpi-val { font-size:22px; font-weight:800; color:#101828; letter-spacing:-1px; line-height:1; }
+    .kpi-lbl { font-size:11px; color:#667085; margin-top:3px; line-height:1.3; }
+    .kpi-note { font-size:10px; font-weight:700; margin-top:3px; }
+    .kpi-note.warn { color:#B54708; }
+    .kpi-note.ok { color:#027A48; }
+
+    /* ─── PAGE HEADER BAR ─── */
+    .page-hbar { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+    .ph-tabs { display:flex; gap:1px; background:#F2F4F7; border-radius:10px; padding:3px; }
+    .ph-tab { padding:8px 18px; border-radius:8px; font-size:13px; font-weight:600; color:#667085; border:none; background:none; cursor:pointer; transition:all .15s; display:inline-flex; align-items:center; gap:7px; font-family:inherit; white-space:nowrap; }
+    .ph-tab.active { background:white; color:#101828; font-weight:700; box-shadow:0 1px 3px rgba(0,0,0,.1); }
+    .ph-tab:not(.active):hover { color:#344054; background:rgba(255,255,255,.5); }
+    .ph-count { font-size:10px; font-weight:800; padding:1px 6px; border-radius:10px; }
+    .ph-tab.active .ph-count { background:#EFF6FF; color:#1D6FF3; }
+    .ph-tab:not(.active) .ph-count { background:#E4E7EC; color:#667085; }
+    .btn-create { display:inline-flex; align-items:center; gap:7px; padding:9px 18px; border-radius:10px; background:#1D6FF3; color:white; font-size:13px; font-weight:700; border:none; cursor:pointer; font-family:inherit; transition:all .15s; }
+    .btn-create:hover { background:#1558C0; }
+    .btn-create svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* ─── TAB PANELS ─── */
+    .tab-panel { display:none; }
+    .tab-panel.active { display:block; }
+
+    /* ─── PAGE LAYOUT ─── */
+    .page-layout { display:flex; gap:14px; align-items:flex-start; }
+    .page-main { flex:1; min-width:0; }
+    .page-side { width:252px; flex-shrink:0; }
+
+    /* ─── TOOLBAR CARD ─── */
+    .toolbar-card { background:white; border:1px solid #EAECF0; border-radius:12px; padding:11px 14px; margin-bottom:10px; }
+    .cat-tabs { display:flex; gap:4px; flex-wrap:wrap; margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid #F2F4F7; }
+    .cat-tab { padding:5px 11px; border-radius:8px; font-size:12px; font-weight:600; color:#667085; cursor:pointer; border:1px solid transparent; background:none; font-family:inherit; display:inline-flex; align-items:center; gap:5px; transition:all .15s; }
+    .cat-tab.active { background:#EFF6FF; color:#1D6FF3; border-color:#BFDBFE; }
+    .cat-tab:not(.active):hover { background:#F9FAFB; border-color:#EAECF0; color:#344054; }
+    .cat-count { font-size:10px; font-weight:800; padding:0 5px; border-radius:8px; }
+    .cat-tab.active .cat-count { background:rgba(29,111,243,.15); color:#1D6FF3; }
+    .cat-tab:not(.active) .cat-count { background:#F2F4F7; color:#667085; }
+
+    /* ─── FILTER BAR ─── */
+    .filter-bar { display:flex; align-items:center; gap:7px; }
+    .flt-dd { display:inline-flex; align-items:center; gap:5px; padding:6px 10px; background:#F9FAFB; border:1px solid #EAECF0; border-radius:8px; font-size:12px; font-weight:500; color:#344054; cursor:pointer; white-space:nowrap; flex-shrink:0; }
+    .flt-dd svg { width:12px; height:12px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .flt-dd .dd-ico { stroke:#667085; }
+    .search-bar { flex:1; display:flex; align-items:center; gap:7px; padding:6px 10px; background:#F9FAFB; border:1px solid #EAECF0; border-radius:8px; }
+    .search-bar svg { width:13px; height:13px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .search-bar input { border:none; outline:none; font-size:12px; font-family:inherit; color:#344054; background:none; width:100%; }
+    .search-bar input::placeholder { color:#98A2B3; }
+    .btn-export { display:inline-flex; align-items:center; gap:5px; padding:6px 11px; background:white; border:1px solid #EAECF0; border-radius:8px; font-size:12px; font-weight:600; color:#344054; cursor:pointer; font-family:inherit; flex-shrink:0; }
+    .btn-export:hover { background:#F9FAFB; }
+    .btn-export svg { width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* ─── TABLE ─── */
+    .table-wrap { background:white; border:1px solid #EAECF0; border-radius:12px; overflow:hidden; }
+    .req-table { width:100%; border-collapse:collapse; }
+    .req-table th { font-size:10px; font-weight:700; color:#98A2B3; text-transform:uppercase; letter-spacing:.5px; text-align:left; padding:10px 14px; background:white; border-bottom:1px solid #F2F4F7; white-space:nowrap; }
+    .req-table td { padding:11px 14px; border-bottom:1px solid #F8F9FA; vertical-align:middle; }
     .req-table tr:last-child td { border-bottom:none; }
-    .req-table tr:hover td { background:#FAFBFF; cursor:pointer; }
-    .cat-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
-    .cat-card { background:white; border:1px solid #EAECF0; border-radius:12px; padding:16px; cursor:pointer; transition:all .15s; }
-    .cat-card:hover { border-color:#1D6FF3; box-shadow:0 2px 8px rgba(29,111,243,.1); }
-    .cat-card-ico { width:36px; height:36px; border-radius:9px; display:flex; align-items:center; justify-content:center; margin-bottom:10px; }
-    .cat-card-ico svg { width:17px; height:17px; stroke:currentColor; fill:none; stroke-width:2; }
-    .cat-card-name { font-size:12px; font-weight:700; color:#101828; margin-bottom:3px; }
-    .cat-card-desc { font-size:11px; color:#98A2B3; line-height:1.4; }
-    .cat-card-count { font-size:11px; font-weight:700; margin-top:8px; }
+    .req-table tbody tr:hover td { background:#FAFBFF; }
+    .req-table th:last-child, .req-table td:last-child { text-align:center; }
+
+    /* ─── AVATARS ─── */
+    .av { width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:800; color:white; flex-shrink:0; }
+    .av.blue   { background:linear-gradient(135deg,#1D6FF3,#1558C8); }
+    .av.purple { background:linear-gradient(135deg,#7C3AED,#6D28D9); }
+    .av.amber  { background:linear-gradient(135deg,#F79009,#D97706); }
+    .av.green  { background:linear-gradient(135deg,#12B76A,#059669); }
+    .av.red    { background:linear-gradient(135deg,#F04438,#D92D20); }
+    .av.gray   { background:linear-gradient(135deg,#667085,#344054); }
+    .av.teal   { background:linear-gradient(135deg,#0E9F93,#0D7A73); }
+    .av.orange { background:linear-gradient(135deg,#F97316,#EA580C); }
+
+    /* ─── MEMBER CELL ─── */
+    .member-cell { display:flex; align-items:center; gap:9px; }
+    .member-name { font-size:12px; font-weight:700; color:#101828; line-height:1.2; white-space:nowrap; }
+    .member-role { font-size:10.5px; color:#98A2B3; white-space:nowrap; }
+
+    /* ─── REQUEST CELL (combined cat+title in one cell) ─── */
+    .req-cell { display:flex; flex-direction:column; gap:4px; }
+    .req-cell-top { display:flex; align-items:center; gap:6px; }
+    .req-title { font-size:12.5px; font-weight:700; color:#101828; }
+    .req-sub { font-size:11px; color:#98A2B3; }
+
+    /* ─── REQUEST TYPE ICON (small) ─── */
+    .req-ico { width:26px; height:26px; border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .req-ico svg { width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .req-ico.maint     { background:#FFF3E0; color:#B54708; }
+    .req-ico.peralatan { background:#E0F2FE; color:#0369A1; }
+    .req-ico.finansial { background:#FFFAEB; color:#B54708; }
+    .req-ico.kepeg     { background:#EFF6FF; color:#1D6FF3; }
+    .req-ico.ops       { background:#FFF7ED; color:#C2410C; }
+    .req-ico.adm       { background:#F2F4F7; color:#475569; }
+
+    /* ─── CATEGORY CHIPS ─── */
+    .cat-chip { display:inline-block; padding:2px 8px; border-radius:6px; font-size:10.5px; font-weight:700; white-space:nowrap; }
+    .cat-chip.maint     { background:#FFF3E0; color:#B54708; }
+    .cat-chip.peralatan { background:#E0F2FE; color:#0369A1; }
+    .cat-chip.finansial { background:#FFFAEB; color:#B54708; }
+    .cat-chip.kepeg     { background:#EFF6FF; color:#1D6FF3; }
+    .cat-chip.ops       { background:#FFF7ED; color:#C2410C; }
+    .cat-chip.adm       { background:#F2F4F7; color:#475569; }
+
+    /* ─── BADGES ─── */
+    .badge { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:20px; font-size:11px; font-weight:700; white-space:nowrap; }
+    .badge-dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; }
+    .badge.green  { background:#ECFDF3; color:#027A48; }
+    .badge.amber  { background:#FFFAEB; color:#B54708; }
+    .badge.orange { background:#FFF3E0; color:#B54708; }
+    .badge.red    { background:#FEF3F2; color:#B42318; }
+    .badge.blue   { background:#EFF6FF; color:#1D6FF3; }
+    .badge.gray   { background:#F2F4F7; color:#667085; }
+
+    /* ─── URGENCY ─── */
+    .urg { display:inline-block; padding:2px 8px; border-radius:6px; font-size:10.5px; font-weight:700; }
+    .urg.high   { background:#FEF3F2; color:#B42318; }
+    .urg.medium { background:#FFF3E0; color:#B54708; }
+    .urg.low    { background:#F2F4F7; color:#667085; }
+
+    /* ─── ICON BUTTON ─── */
+    .btn-icon { width:28px; height:28px; border-radius:7px; border:1px solid #EAECF0; background:white; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; transition:all .15s; }
+    .btn-icon:hover { background:#F9FAFB; border-color:#D0D5DD; }
+    .btn-icon svg { width:12px; height:12px; stroke:#667085; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* ─── PAGINATION ─── */
+    .pag-row { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-top:1px solid #F2F4F7; }
+    .pag-info { font-size:11.5px; color:#98A2B3; }
+    .pag-btns { display:flex; gap:3px; }
+    .pag-btn { width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:7px; font-size:12px; font-weight:600; color:#667085; cursor:pointer; border:1px solid #EAECF0; background:white; transition:all .15s; }
+    .pag-btn:hover { background:#F9FAFB; }
+    .pag-btn.active { background:#1D6FF3; color:white; border-color:#1D6FF3; }
+    .pag-btn svg { width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* ─── SIDE CARDS ─── */
+    .side-card { background:white; border:1px solid #EAECF0; border-radius:12px; padding:15px; margin-bottom:10px; }
+    .sc-title { font-size:12.5px; font-weight:800; color:#101828; margin-bottom:2px; }
+    .sc-sub { font-size:10.5px; color:#98A2B3; margin-bottom:12px; }
+
+    /* ─── QUICK ACCESS GRID ─── */
+    .qa-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+    .qa-btn { display:flex; flex-direction:column; align-items:flex-start; gap:6px; padding:10px; border-radius:9px; border:1px solid #EAECF0; background:white; cursor:pointer; transition:all .15s; text-align:left; font-family:inherit; width:100%; }
+    .qa-btn:hover { background:#FAFBFF; border-color:#BFDBFE; }
+    .qa-ico { width:26px; height:26px; border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .qa-ico svg { width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .qa-name { font-size:11px; font-weight:700; color:#344054; line-height:1.3; }
+
+    /* ─── DONUT ─── */
+    .donut-wrap { display:flex; align-items:center; gap:14px; }
+    .donut-legend { flex:1; display:flex; flex-direction:column; gap:7px; }
+    .donut-legend-item { display:flex; align-items:center; gap:7px; font-size:11px; color:#344054; }
+    .donut-legend-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+
+    /* ─── SLA BARS ─── */
+    .sla-row { margin-bottom:9px; }
+    .sla-row:last-child { margin-bottom:0; }
+    .sla-labels { display:flex; justify-content:space-between; font-size:11px; color:#344054; margin-bottom:4px; }
+    .sla-bar-bg { height:4px; background:#F2F4F7; border-radius:2px; overflow:hidden; }
+    .sla-bar-fill { height:4px; border-radius:2px; }
+
+    /* ─── DRAWER ─── */
+    .drawer-overlay { position:fixed; inset:0; background:rgba(16,24,40,.42); z-index:200; opacity:0; pointer-events:none; transition:opacity .25s; }
+    .drawer-overlay.open { opacity:1; pointer-events:auto; }
+    .req-drawer { position:fixed; top:0; right:0; width:530px; height:100vh; background:white; z-index:201; transform:translateX(100%); transition:transform .28s cubic-bezier(.4,0,.2,1); display:flex; flex-direction:column; box-shadow:-8px 0 40px rgba(0,0,0,.16); }
+    .req-drawer.open { transform:translateX(0); }
+    .drawer-head { display:flex; align-items:center; justify-content:space-between; padding:18px 22px; border-bottom:1px solid #EAECF0; flex-shrink:0; }
+    .drawer-title { font-size:15px; font-weight:800; color:#101828; }
+    .drawer-sub { font-size:12px; color:#667085; margin-top:2px; }
+    .drawer-close { width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:8px; border:1px solid #EAECF0; background:white; cursor:pointer; color:#667085; }
+    .drawer-close:hover { background:#F9FAFB; }
+    .drawer-close svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .drawer-body { flex:1; overflow-y:auto; padding:18px 22px 22px; background:#F5F7FA; }
+    .drawer-body::-webkit-scrollbar { width:4px; }
+    .drawer-body::-webkit-scrollbar-thumb { background:#D1D5DB; border-radius:2px; }
+    .drawer-foot { padding:14px 22px; border-top:1px solid #EAECF0; display:flex; align-items:center; justify-content:flex-end; gap:10px; flex-shrink:0; background:white; }
+    .btn-secondary { padding:8px 16px; border-radius:9px; border:1px solid #D0D5DD; background:white; color:#344054; font-size:13px; font-weight:600; font-family:inherit; cursor:pointer; }
+    .btn-secondary:hover { background:#F9FAFB; }
+    .btn-primary { display:inline-flex; align-items:center; gap:6px; padding:9px 18px; border-radius:9px; background:#1D6FF3; color:white; font-size:13px; font-weight:700; border:none; cursor:pointer; font-family:inherit; }
+    .btn-primary:hover { background:#1558C0; }
+    .btn-primary svg { width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+    .dform-card { background:white; border:1px solid #EAECF0; border-radius:12px; margin-bottom:12px; overflow:hidden; }
+    .dform-head { padding:13px 18px; border-bottom:1px solid #F2F4F7; display:flex; align-items:center; gap:10px; }
+    .dform-num { width:22px; height:22px; border-radius:50%; background:#1D6FF3; color:white; font-size:10px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .dform-title { font-size:13px; font-weight:700; color:#101828; }
+    .dform-desc { font-size:11px; color:#98A2B3; margin-top:1px; }
+    .dform-body { padding:15px 18px; }
+    .dcat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .dcat-opt { border:1.5px solid #EAECF0; border-radius:9px; padding:11px; cursor:pointer; transition:all .15s; text-align:left; background:white; font-family:inherit; width:100%; }
+    .dcat-opt:hover { border-color:#1D6FF3; background:#FAFBFF; }
+    .dcat-opt.selected { border-color:#1D6FF3; background:#EFF6FF; }
+    .dcat-ico { width:26px; height:26px; border-radius:7px; display:flex; align-items:center; justify-content:center; margin-bottom:7px; }
+    .dcat-ico svg { width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .dcat-name { font-size:11px; font-weight:700; color:#101828; }
+    .dcat-desc { font-size:9.5px; color:#98A2B3; margin-top:2px; line-height:1.35; }
+    .dform-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px; }
+    .dform-row.full { grid-template-columns:1fr; }
+    .dform-grp { display:flex; flex-direction:column; gap:4px; }
+    .dform-lbl { font-size:11.5px; font-weight:600; color:#344054; }
+    .dform-lbl .req { color:#F04438; }
+    .dform-inp { padding:8px 10px; border:1px solid #D0D5DD; border-radius:8px; font-size:12.5px; font-family:inherit; color:#101828; outline:none; transition:border .15s; background:white; width:100%; }
+    .dform-inp:focus { border-color:#1D6FF3; box-shadow:0 0 0 3px rgba(29,111,243,.1); }
+    .dform-sel { padding:8px 10px; border:1px solid #D0D5DD; border-radius:8px; font-size:12.5px; font-family:inherit; color:#101828; outline:none; cursor:pointer; background:white; width:100%; }
+    .dform-sel:focus { border-color:#1D6FF3; box-shadow:0 0 0 3px rgba(29,111,243,.1); }
+    .dform-ta { padding:8px 10px; border:1px solid #D0D5DD; border-radius:8px; font-size:12.5px; font-family:inherit; color:#101828; outline:none; resize:vertical; min-height:72px; width:100%; }
+    .dform-ta:focus { border-color:#1D6FF3; box-shadow:0 0 0 3px rgba(29,111,243,.1); }
+    .upload-zone { border:1.5px dashed #D0D5DD; border-radius:8px; padding:14px; text-align:center; cursor:pointer; background:white; transition:all .15s; }
+    .upload-zone:hover { border-color:#1D6FF3; background:#FAFBFF; }
+    .upload-zone-text { font-size:11.5px; color:#667085; margin-top:6px; }
+    .upload-zone-text strong { color:#1D6FF3; }
+    .upload-zone-hint { font-size:10.5px; color:#98A2B3; margin-top:2px; }
+    .wf-preview { display:flex; align-items:center; padding:12px 14px; background:#F9FAFB; border-radius:8px; }
+    .wfp-step { display:flex; flex-direction:column; align-items:center; gap:3px; flex-shrink:0; }
+    .wfp-dot { width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:800; }
+    .wfp-dot.current { background:#1D6FF3; color:white; }
+    .wfp-dot.pending { background:#F2F4F7; color:#98A2B3; border:1.5px solid #EAECF0; }
+    .wfp-name { font-size:10px; font-weight:600; color:#344054; text-align:center; max-width:64px; line-height:1.2; }
+    .wfp-role { font-size:9px; color:#98A2B3; text-align:center; }
+    .wfp-line { flex:1; height:1px; background:#D0D5DD; margin:0 5px; margin-bottom:18px; }
   </style>
 </head>
 <body>
 <div class="mgmt-layout">
+
+  <!-- ═══════════════════════════════════ SIDEBAR ═══════════════════════════════════ -->
   <aside class="sidebar">
     <div class="sb-logo">
       <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
@@ -120,32 +312,34 @@
     </div>
     <nav class="sb-nav">
       <a href="dashboard.html" class="sb-item">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
         Dashboard
       </a>
-      <a href="attendance.html" class="sb-item">
-        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        Attendance &amp; Schedule
-      </a>
       <div class="sb-group">
-        <div class="sb-group-head open" id="requests-head" onclick="toggleRequests()">
-          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-          Requests
+        <div class="sb-group-head" id="people-head" onclick="toggleGroup('people')">
+          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          People
           <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </div>
-        <div class="sb-sub open" id="requests-sub">
-          <a href="requests.html" class="sb-sub-item active"><span class="sb-sub-dot"></span>Overview</a>
-          <a href="requests.html" class="sb-sub-item"><span class="sb-sub-dot"></span>My Requests</a>
-          <a href="request-create.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Create Request</a>
+        <div class="sb-sub" id="people-sub">
+          <a href="tim.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Team</a>
+          <a href="attendance.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Attendance</a>
+          <a href="hiring.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Hiring Request</a>
+          <a href="reviews.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Reviews</a>
         </div>
       </div>
+      <a href="requests.html" class="sb-item active">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Requests
+        <span class="sb-badge">3</span>
+      </a>
       <a href="approval.html" class="sb-item">
         <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
         Approval
-        <span class="sb-badge">8</span>
+        <span class="sb-badge">2</span>
       </a>
       <div class="sb-group">
-        <div class="sb-group-head" id="learning-head" onclick="toggleLearning()">
+        <div class="sb-group-head" id="learning-head" onclick="toggleGroup('learning')">
           <svg class="sb-ico" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg>
           Learning
           <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
@@ -153,13 +347,9 @@
         <div class="sb-sub" id="learning-sub">
           <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>My Learning Progress</a>
           <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Learning Library</a>
-          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Team Learning Progress</a>
+          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Team Progress</a>
         </div>
       </div>
-      <a href="tim.html" class="sb-item">
-        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        Tim Saya
-      </a>
       <a href="laporan.html" class="sb-item">
         <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
         Report &amp; Analytics
@@ -167,432 +357,804 @@
     </nav>
     <div class="sb-connect">
       <div class="sb-connect-label">Connect</div>
-      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>CRM<span class="sb-connect-sub">Sistem CRM</span></a>
-      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>ERP<span class="sb-connect-sub">ERP Operasional</span></a>
-      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>NOC<span class="sb-connect-sub">Monitoring NOC</span></a>
-      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>GIS<span class="sb-connect-sub">Peta Wilayah</span></a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        CRM<span class="sb-connect-sub">Sistem CRM</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        ERP<span class="sb-connect-sub">ERP Operasional</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        NOC<span class="sb-connect-sub">Monitoring NOC</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        Ticketing<span class="sb-connect-sub">Sistem Ticket</span>
+      </a>
     </div>
   </aside>
+
+  <!-- ═══════════════════════════════════ MAIN ═══════════════════════════════════ -->
   <main class="main-content">
+
+    <!-- TOPBAR -->
     <header class="topbar">
-      <div class="topbar-left">
-        <button class="topbar-btn"><svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
-        <div>
-          <div class="page-title">My Requests</div>
-          <div class="page-sub">Branch Leader &middot; Branch Singosari</div>
-        </div>
+      <div>
+        <div class="page-title">Requests</div>
+        <div class="page-sub">Cabang Karangploso &middot; 21 Juni 2026</div>
       </div>
       <div class="topbar-right">
         <div class="topbar-date">
           <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          Jumat, 19 Juni 2026
+          Minggu, 21 Juni 2026
         </div>
         <button class="topbar-notif">
           <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
           <span class="notif-dot"></span>
         </button>
         <div class="user-chip">
-          <div class="user-av">AS</div>
+          <div class="user-av">BS</div>
           <div>
-            <div class="user-name">Ahmad Subagyo</div>
-            <div class="user-role">Branch Leader <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+            <div class="user-name">Budi Santoso</div>
+            <div class="user-role">Branch Leader</div>
           </div>
         </div>
-        <a href="../../../index.html" class="topbar-logout">
+        <a href="#" class="topbar-logout">
           <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
           Keluar
         </a>
       </div>
     </header>
+
+    <!-- CONTENT -->
     <div class="content-area">
+
+      <!-- ── KPI STRIP ── -->
       <div class="kpi-strip">
         <div class="kpi-card">
-          <div class="kpi-ico blue"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-          <div><div class="kpi-val">12</div><div class="kpi-lbl">Total Requests</div><div class="kpi-sub gray">Bulan ini</div></div>
+          <div class="kpi-ico blue">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <div>
+            <div class="kpi-val">12</div>
+            <div class="kpi-lbl">Total Pengajuan</div>
+            <div class="kpi-note ok">Bulan ini</div>
+          </div>
+        </div>
+        <div class="kpi-card alert">
+          <div class="kpi-ico amber">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <div class="kpi-val">3</div>
+            <div class="kpi-lbl">Menunggu Approval</div>
+            <div class="kpi-note warn">Perlu tindakan</div>
+          </div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-ico orange"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-          <div><div class="kpi-val">3</div><div class="kpi-lbl">Menunggu Approval</div><div class="kpi-sub orange">Perlu tindak lanjut</div></div>
+          <div class="kpi-ico purple">
+            <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div>
+            <div class="kpi-val">8</div>
+            <div class="kpi-lbl">Sedang Diproses</div>
+            <div class="kpi-note ok">On track</div>
+          </div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-ico green"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <div><div class="kpi-val">8</div><div class="kpi-lbl">Disetujui</div><div class="kpi-sub green">MTD</div></div>
+          <div class="kpi-ico red">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          </div>
+          <div>
+            <div class="kpi-val">1</div>
+            <div class="kpi-lbl">Ditolak</div>
+            <div class="kpi-note ok">Rendah</div>
+          </div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-ico red"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div>
-          <div><div class="kpi-val">1</div><div class="kpi-lbl">Ditolak</div><div class="kpi-sub gray">MTD</div></div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-ico purple"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
-          <div><div class="kpi-val">0</div><div class="kpi-lbl">Draft</div><div class="kpi-sub gray">Belum dikirim</div></div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-ico gray"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
-          <div><div class="kpi-val">4.2<span style="font-size:13px;font-weight:600;"> hari</span></div><div class="kpi-lbl">Avg Approval Time</div><div class="kpi-sub green">Lebih cepat dari target</div></div>
+          <div class="kpi-ico teal">
+            <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <div>
+            <div class="kpi-val">4.2<span style="font-size:13px;font-weight:600;letter-spacing:0;">j</span></div>
+            <div class="kpi-lbl">Rata-rata Approval</div>
+            <div class="kpi-note ok">Di bawah target</div>
+          </div>
         </div>
       </div>
-      <div class="requests-layout">
-        <div class="requests-main">
-          <div class="section-head">
-            <div class="section-title">Riwayat Pengajuan</div>
-            <a href="request-create.html" class="btn-primary">
-              <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              Buat Pengajuan
-            </a>
-          </div>
-          <div class="cat-tabs">
-            <button class="cat-tab active" onclick="filterCat('all',this)">Semua <span class="cat-count">14</span></button>
-            <button class="cat-tab" onclick="filterCat('attendance',this)">Attendance <span class="cat-count">5</span></button>
-            <button class="cat-tab" onclick="filterCat('development',this)">Development <span class="cat-count">2</span></button>
-            <button class="cat-tab" onclick="filterCat('financial',this)">Financial <span class="cat-count">2</span></button>
-            <button class="cat-tab" onclick="filterCat('people-movement',this)">People Movement <span class="cat-count">1</span></button>
-            <button class="cat-tab" onclick="filterCat('operations',this)">Operations <span class="cat-count">2</span></button>
-            <button class="cat-tab" onclick="filterCat('administration',this)">Administration <span class="cat-count">2</span></button>
-          </div>
-          <table class="req-table">
-            <thead>
-              <tr>
-                <th>Request</th>
-                <th>Tanggal</th>
-                <th>Workflow</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr data-cat="attendance">
-                <td>
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <div style="width:32px;height:32px;border-radius:8px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1D6FF3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-                    <div><div style="font-size:12px;font-weight:700;color:#101828;">Izin Keluarga</div><div style="font-size:11px;color:#98A2B3;">Attendance &middot; 19 Jun 2026</div></div>
-                  </div>
-                </td>
-                <td style="font-size:11px;color:#667085;">19 Jun 09:15</td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:3px;white-space:nowrap;">
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">Submitted</span>
-                    <span style="color:#D0D5DD;font-size:10px;">&#8594;</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#FFFAEB;color:#B54708;">HeadRegion</span>
-                    <span style="color:#D0D5DD;font-size:10px;">&#8594;</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#F2F4F7;color:#98A2B3;">HC</span>
-                  </div>
-                </td>
-                <td><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;background:#FFFAEB;color:#B54708;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>Waiting</span></td>
-                <td><button style="width:28px;height:28px;border-radius:6px;border:1px solid #EAECF0;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
-              </tr>
-              <tr data-cat="attendance">
-                <td>
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <div style="width:32px;height:32px;border-radius:8px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1D6FF3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-                    <div><div style="font-size:12px;font-weight:700;color:#101828;">Cuti Tahunan</div><div style="font-size:11px;color:#98A2B3;">Attendance &middot; 2 Hari</div></div>
-                  </div>
-                </td>
-                <td style="font-size:11px;color:#667085;">15 Jun 08:30</td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:3px;white-space:nowrap;">
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">Submitted</span>
-                    <span style="color:#D0D5DD;font-size:10px;">&#8594;</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#FFFAEB;color:#B54708;">HeadRegion</span>
-                    <span style="color:#D0D5DD;font-size:10px;">&#8594;</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#F2F4F7;color:#98A2B3;">HC</span>
-                  </div>
-                </td>
-                <td><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;background:#FFFAEB;color:#B54708;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>Waiting</span></td>
-                <td><button style="width:28px;height:28px;border-radius:6px;border:1px solid #EAECF0;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
-              </tr>
-              <tr data-cat="financial">
-                <td>
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <div style="width:32px;height:32px;border-radius:8px;background:#FFFAEB;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#B54708" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-                    <div><div style="font-size:12px;font-weight:700;color:#101828;">Reimbursement Perjalanan</div><div style="font-size:11px;color:#98A2B3;">Financial &middot; Rp 450.000</div></div>
-                  </div>
-                </td>
-                <td style="font-size:11px;color:#667085;">12 Jun 10:00</td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:3px;white-space:nowrap;">
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">Submitted</span>
-                    <span style="color:#D0D5DD;font-size:10px;">&#8594;</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#FFFAEB;color:#B54708;">HeadRegion</span>
-                    <span style="color:#D0D5DD;font-size:10px;">&#8594;</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#F2F4F7;color:#98A2B3;">FAT</span>
-                  </div>
-                </td>
-                <td><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;background:#FFFAEB;color:#B54708;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>Waiting</span></td>
-                <td><button style="width:28px;height:28px;border-radius:6px;border:1px solid #EAECF0;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
-              </tr>
-              <tr data-cat="development">
-                <td>
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <div style="width:32px;height:32px;border-radius:8px;background:#F4F3FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg></div>
-                    <div><div style="font-size:12px;font-weight:700;color:#101828;">Training Leadership</div><div style="font-size:11px;color:#98A2B3;">Development &middot; 3 Hari</div></div>
-                  </div>
-                </td>
-                <td style="font-size:11px;color:#667085;">05 Jun 09:00</td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:3px;white-space:nowrap;">
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">Submitted</span>
-                    <span style="color:#D0D5DD;font-size:10px;">&#8594;</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">HeadRegion</span>
-                    <span style="color:#D0D5DD;font-size:10px;">&#8594;</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">HC</span>
-                  </div>
-                </td>
-                <td><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;background:#ECFDF3;color:#027A48;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>Approved</span></td>
-                <td><button style="width:28px;height:28px;border-radius:6px;border:1px solid #EAECF0;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
-              </tr>
-              <tr data-cat="attendance">
-                <td>
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <div style="width:32px;height:32px;border-radius:8px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1D6FF3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-                    <div><div style="font-size:12px;font-weight:700;color:#101828;">Dinas Luar Kota</div><div style="font-size:11px;color:#98A2B3;">Attendance &middot; 1 Hari</div></div>
-                  </div>
-                </td>
-                <td style="font-size:11px;color:#667085;">01 Jun 07:45</td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:3px;white-space:nowrap;">
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">Submitted</span>
-                    <span style="color:#D0D5DD;font-size:10px;">&#8594;</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">HeadRegion</span>
-                    <span style="color:#D0D5DD;font-size:10px;">&#8594;</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">HC</span>
-                  </div>
-                </td>
-                <td><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;background:#ECFDF3;color:#027A48;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>Approved</span></td>
-                <td><button style="width:28px;height:28px;border-radius:6px;border:1px solid #EAECF0;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
-              </tr>
-              <tr data-cat="financial">
-                <td>
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <div style="width:32px;height:32px;border-radius:8px;background:#FFFAEB;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#B54708" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-                    <div><div style="font-size:12px;font-weight:700;color:#101828;">Cash Advance Event</div><div style="font-size:11px;color:#98A2B3;">Financial &middot; Rp 2.000.000</div></div>
-                  </div>
-                </td>
-                <td style="font-size:11px;color:#667085;">28 Mei 11:00</td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:3px;white-space:nowrap;">
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">Submitted</span>
-                    <span style="color:#D0D5DD;font-size:10px;">&#8594;</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">HeadRegion</span>
-                    <span style="color:#D0D5DD;font-size:10px;">&#8594;</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#FEF3F2;color:#B42318;">Dir</span>
-                  </div>
-                </td>
-                <td><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;background:#FEF3F2;color:#B42318;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>Rejected</span></td>
-                <td><button style="width:28px;height:28px;border-radius:6px;border:1px solid #EAECF0;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
-              </tr>
-              <tr data-cat="people-movement">
-                <td>
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <div style="width:32px;height:32px;border-radius:8px;background:#ECFDF3;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#027A48" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-                    <div><div style="font-size:12px;font-weight:700;color:#101828;">Pengajuan Rekrut Teknisi</div><div style="font-size:11px;color:#98A2B3;">People Movement &middot; 1 Posisi</div></div>
-                  </div>
-                </td>
-                <td style="font-size:11px;color:#667085;">20 Mei 09:30</td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:3px;white-space:nowrap;">
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">Submitted</span>
-                    <span style="color:#D0D5DD;font-size:10px;">&#8594;</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">HeadRegion</span>
-                    <span style="color:#D0D5DD;font-size:10px;">&#8594;</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">HC</span>
-                  </div>
-                </td>
-                <td><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;background:#ECFDF3;color:#027A48;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>Approved</span></td>
-                <td><button style="width:28px;height:28px;border-radius:6px;border:1px solid #EAECF0;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
-              </tr>
-              <tr data-cat="operations">
-                <td>
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <div style="width:32px;height:32px;border-radius:8px;background:#FFF7ED;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C2410C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 1.41 14.14"/><path d="M4.93 4.93a10 10 0 0 0-1.41 14.14"/></svg></div>
-                    <div><div style="font-size:12px;font-weight:700;color:#101828;">Permintaan Laptop Baru</div><div style="font-size:11px;color:#98A2B3;">Operations &middot; Permintaan Aset</div></div>
-                  </div>
-                </td>
-                <td style="font-size:11px;color:#667085;">10 Jun 08:00</td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:3px;white-space:nowrap;">
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">Submitted</span>
-                    <span style="color:#D0D5DD;font-size:10px;">&#8594;</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">HeadRegion</span>
-                  </div>
-                </td>
-                <td><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;background:#ECFDF3;color:#027A48;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>Approved</span></td>
-                <td><button style="width:28px;height:28px;border-radius:6px;border:1px solid #EAECF0;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
-              </tr>
-              <tr data-cat="operations">
-                <td>
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <div style="width:32px;height:32px;border-radius:8px;background:#FFF7ED;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C2410C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 1.41 14.14"/><path d="M4.93 4.93a10 10 0 0 0-1.41 14.14"/></svg></div>
-                    <div><div style="font-size:12px;font-weight:700;color:#101828;">Permintaan Kendaraan Operasional</div><div style="font-size:11px;color:#98A2B3;">Operations &middot; Permintaan Kendaraan</div></div>
-                  </div>
-                </td>
-                <td style="font-size:11px;color:#667085;">05 Jun 10:15</td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:3px;white-space:nowrap;">
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">Submitted</span>
-                    <span style="color:#D0D5DD;font-size:10px;">&#8594;</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#FFFAEB;color:#B54708;">HeadRegion</span>
-                  </div>
-                </td>
-                <td><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;background:#FFFAEB;color:#B54708;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>Waiting</span></td>
-                <td><button style="width:28px;height:28px;border-radius:6px;border:1px solid #EAECF0;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
-              </tr>
-              <tr data-cat="administration">
-                <td>
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <div style="width:32px;height:32px;border-radius:8px;background:#F8FAFC;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
-                    <div><div style="font-size:12px;font-weight:700;color:#101828;">Surat Tugas Survey Area</div><div style="font-size:11px;color:#98A2B3;">Administration &middot; Surat Tugas</div></div>
-                  </div>
-                </td>
-                <td style="font-size:11px;color:#667085;">18 Jun 07:30</td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:3px;white-space:nowrap;">
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">Submitted</span>
-                    <span style="color:#D0D5DD;font-size:10px;">&#8594;</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">HC/Legal</span>
-                  </div>
-                </td>
-                <td><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;background:#ECFDF3;color:#027A48;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>Approved</span></td>
-                <td><button style="width:28px;height:28px;border-radius:6px;border:1px solid #EAECF0;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
-              </tr>
-              <tr data-cat="administration">
-                <td>
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <div style="width:32px;height:32px;border-radius:8px;background:#F8FAFC;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
-                    <div><div style="font-size:12px;font-weight:700;color:#101828;">Surat Keterangan Kerja</div><div style="font-size:11px;color:#98A2B3;">Administration &middot; Surat Keterangan</div></div>
-                  </div>
-                </td>
-                <td style="font-size:11px;color:#667085;">15 Jun 11:00</td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:3px;white-space:nowrap;">
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">Submitted</span>
-                    <span style="color:#D0D5DD;font-size:10px;">&#8594;</span>
-                    <span style="padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;background:#ECFDF3;color:#027A48;">HC/Legal</span>
-                  </div>
-                </td>
-                <td><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;background:#ECFDF3;color:#027A48;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;"></span>Issued</span></td>
-                <td><button style="width:28px;height:28px;border-radius:6px;border:1px solid #EAECF0;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
-              </tr>
-            </tbody>
-          </table>
-          <div style="font-size:13px;font-weight:700;color:#101828;margin-bottom:14px;">Jenis Pengajuan Tersedia</div>
-          <div class="cat-cards">
-            <a href="request-create.html" class="cat-card">
-              <div class="cat-card-ico" style="background:#EFF6FF;color:#1D6FF3;"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-              <div class="cat-card-name">Attendance &amp; Workforce</div>
-              <div class="cat-card-desc">Izin, Cuti, Sakit, Dinas Luar, Project Assignment, Pergantian Shift</div>
-              <div class="cat-card-count" style="color:#1D6FF3;">6 jenis &rarr;</div>
-            </a>
-            <a href="request-create.html" class="cat-card">
-              <div class="cat-card-ico" style="background:#F4F3FF;color:#7C3AED;"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg></div>
-              <div class="cat-card-name">Development</div>
-              <div class="cat-card-desc">External Training, Certification, Scholarship</div>
-              <div class="cat-card-count" style="color:#7C3AED;">3 jenis &rarr;</div>
-            </a>
-            <a href="request-create.html" class="cat-card">
-              <div class="cat-card-ico" style="background:#FFFAEB;color:#B54708;"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-              <div class="cat-card-name">Financial</div>
-              <div class="cat-card-desc">Employee Loan, Reimbursement</div>
-              <div class="cat-card-count" style="color:#B54708;">2 jenis &rarr;</div>
-            </a>
-            <a href="request-create.html" class="cat-card">
-              <div class="cat-card-ico" style="background:#ECFDF3;color:#027A48;"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-              <div class="cat-card-name">People Movement</div>
-              <div class="cat-card-desc">Promotion, Mutation, Rotation, Demotion</div>
-              <div class="cat-card-count" style="color:#027A48;">4 jenis &rarr;</div>
-            </a>
-            <a href="request-create.html" class="cat-card">
-              <div class="cat-card-ico" style="background:#FFF7ED;color:#C2410C;"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 1.41 14.14"/><path d="M4.93 4.93a10 10 0 0 0-1.41 14.14"/></svg></div>
-              <div class="cat-card-name">Operational Support</div>
-              <div class="cat-card-desc">Permintaan Aset, Penggantian, Maintenance, Material, Kendaraan</div>
-              <div class="cat-card-count" style="color:#C2410C;">6 jenis &rarr;</div>
-            </a>
-            <a href="request-create.html" class="cat-card">
-              <div class="cat-card-ico" style="background:#F8FAFC;color:#475569;"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
-              <div class="cat-card-name">Administrative Services</div>
-              <div class="cat-card-desc">Surat Tugas, Surat Keterangan, Surat Perjalanan Dinas, Surat Pengantar</div>
-              <div class="cat-card-count" style="color:#475569;">6 jenis &rarr;</div>
-            </a>
-          </div>
+
+      <!-- ── PAGE HEADER BAR: tabs + CTA ── -->
+      <div class="page-hbar">
+        <div class="ph-tabs">
+          <button class="ph-tab active" onclick="switchPageTab('semua',this)">
+            Semua Pengajuan <span class="ph-count">12</span>
+          </button>
+          <button class="ph-tab" onclick="switchPageTab('mine',this)">
+            Pengajuan Saya <span class="ph-count">4</span>
+          </button>
         </div>
-        <div class="requests-side">
-          <div style="background:white;border:1px solid #EAECF0;border-radius:12px;padding:16px;margin-bottom:14px;">
-            <div style="font-size:13px;font-weight:700;color:#101828;margin-bottom:4px;">Frequently Used Requests</div>
-            <div style="font-size:11px;color:#98A2B3;margin-bottom:12px;">Pengajuan yang paling sering digunakan</div>
-            <div style="display:flex;flex-direction:column;gap:6px;">
-              <a href="request-create.html" style="display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;border:1px solid #EAECF0;background:white;text-decoration:none;transition:all .15s;" onmouseover="this.style.background='#F9FAFB'" onmouseout="this.style.background='white'">
-                <div style="width:28px;height:28px;border-radius:7px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1D6FF3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-                <div><div style="font-size:12px;font-weight:600;color:#101828;">Izin / Cuti</div><div style="font-size:10px;color:#98A2B3;">Attendance &amp; Workforce</div></div>
-                <svg style="margin-left:auto;flex-shrink:0;" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D0D5DD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-              </a>
-              <a href="request-create.html" style="display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;border:1px solid #EAECF0;background:white;text-decoration:none;transition:all .15s;" onmouseover="this.style.background='#F9FAFB'" onmouseout="this.style.background='white'">
-                <div style="width:28px;height:28px;border-radius:7px;background:#FFFAEB;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#B54708" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-                <div><div style="font-size:12px;font-weight:600;color:#101828;">Reimbursement</div><div style="font-size:10px;color:#98A2B3;">Financial</div></div>
-                <svg style="margin-left:auto;flex-shrink:0;" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D0D5DD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-              </a>
-              <a href="request-create.html" style="display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;border:1px solid #EAECF0;background:white;text-decoration:none;transition:all .15s;" onmouseover="this.style.background='#F9FAFB'" onmouseout="this.style.background='white'">
-                <div style="width:28px;height:28px;border-radius:7px;background:#FFFAEB;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#B54708" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
-                <div><div style="font-size:12px;font-weight:600;color:#101828;">Employee Loan</div><div style="font-size:10px;color:#98A2B3;">Financial</div></div>
-                <svg style="margin-left:auto;flex-shrink:0;" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D0D5DD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-              </a>
-              <a href="request-create.html" style="display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;border:1px solid #EAECF0;background:white;text-decoration:none;transition:all .15s;" onmouseover="this.style.background='#F9FAFB'" onmouseout="this.style.background='white'">
-                <div style="width:28px;height:28px;border-radius:7px;background:#F4F3FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg></div>
-                <div><div style="font-size:12px;font-weight:600;color:#101828;">Training / Sertifikasi</div><div style="font-size:10px;color:#98A2B3;">Development</div></div>
-                <svg style="margin-left:auto;flex-shrink:0;" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D0D5DD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-              </a>
-              <a href="request-create.html" style="display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;border:1px solid #EAECF0;background:white;text-decoration:none;transition:all .15s;" onmouseover="this.style.background='#F9FAFB'" onmouseout="this.style.background='white'">
-                <div style="width:28px;height:28px;border-radius:7px;background:#FFF7ED;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C2410C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 1.41 14.14"/><path d="M4.93 4.93a10 10 0 0 0-1.41 14.14"/></svg></div>
-                <div><div style="font-size:12px;font-weight:600;color:#101828;">Permintaan Aset</div><div style="font-size:10px;color:#98A2B3;">Operational Support</div></div>
-                <svg style="margin-left:auto;flex-shrink:0;" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D0D5DD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-              </a>
-              <a href="request-create.html" style="display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;border:1px solid #EAECF0;background:white;text-decoration:none;transition:all .15s;" onmouseover="this.style.background='#F9FAFB'" onmouseout="this.style.background='white'">
-                <div style="width:28px;height:28px;border-radius:7px;background:#F8FAFC;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg></div>
-                <div><div style="font-size:12px;font-weight:600;color:#101828;">Surat Tugas</div><div style="font-size:10px;color:#98A2B3;">Administrative Services</div></div>
-                <svg style="margin-left:auto;flex-shrink:0;" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D0D5DD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-              </a>
+        <button class="btn-create" onclick="openDrawer()">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Buat Pengajuan
+        </button>
+      </div>
+
+      <!-- ════════════════ TAB: SEMUA PENGAJUAN ════════════════ -->
+      <div id="tab-semua" class="tab-panel active">
+        <div class="page-layout">
+
+          <!-- MAIN COLUMN -->
+          <div class="page-main">
+
+            <!-- Toolbar card: category tabs + filter bar -->
+            <div class="toolbar-card">
+              <div class="cat-tabs">
+                <button class="cat-tab active" onclick="filterCat('all',this)">Semua <span class="cat-count">14</span></button>
+                <button class="cat-tab" onclick="filterCat('maint',this)">Maintenance <span class="cat-count">3</span></button>
+                <button class="cat-tab" onclick="filterCat('peralatan',this)">Peralatan <span class="cat-count">2</span></button>
+                <button class="cat-tab" onclick="filterCat('finansial',this)">Finansial <span class="cat-count">2</span></button>
+                <button class="cat-tab" onclick="filterCat('kepeg',this)">Kepegawaian <span class="cat-count">4</span></button>
+                <button class="cat-tab" onclick="filterCat('ops',this)">Operasional <span class="cat-count">2</span></button>
+                <button class="cat-tab" onclick="filterCat('adm',this)">Administrasi <span class="cat-count">1</span></button>
+              </div>
+              <div class="filter-bar">
+                <div class="flt-dd">
+                  <svg class="dd-ico" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  1 Jun – 21 Jun 2026
+                  <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+                <div class="flt-dd">
+                  Semua Status
+                  <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+                <div class="flt-dd">
+                  Semua Anggota
+                  <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+                <div class="search-bar">
+                  <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  <input type="text" placeholder="Cari pengajuan...">
+                </div>
+                <button class="btn-export">
+                  <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  Export
+                </button>
+              </div>
             </div>
-          </div>
-          <div style="background:white;border:1px solid #EAECF0;border-radius:12px;padding:16px;margin-bottom:14px;">
-            <div style="font-size:13px;font-weight:700;color:#101828;margin-bottom:14px;">Status Bulan Ini</div>
-            <div style="display:flex;align-items:center;gap:14px;">
-              <div style="position:relative;width:80px;height:80px;flex-shrink:0;">
-                <svg viewBox="0 0 36 36" style="width:80px;height:80px;transform:rotate(-90deg);">
-                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#F2F4F7" stroke-width="3"/>
-                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#12B76A" stroke-width="3" stroke-dasharray="67 33" stroke-dashoffset="0"/>
-                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#F79009" stroke-width="3" stroke-dasharray="25 75" stroke-dashoffset="-67"/>
-                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#F04438" stroke-width="3" stroke-dasharray="8 92" stroke-dashoffset="-92"/>
-                </svg>
-                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;">
-                  <div style="font-size:18px;font-weight:800;color:#101828;">12</div>
-                  <div style="font-size:9px;color:#98A2B3;">Total</div>
+
+            <!-- Table -->
+            <div class="table-wrap">
+              <table class="req-table">
+                <thead>
+                  <tr>
+                    <th style="width:170px;">Pengaju</th>
+                    <th>Pengajuan</th>
+                    <th style="width:140px;">Atasan</th>
+                    <th style="width:80px;">Urgensi</th>
+                    <th style="width:110px;">Status</th>
+                    <th style="width:88px;">Diajukan</th>
+                    <th style="width:44px;"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-cat="maint">
+                    <td><div class="member-cell"><div class="av blue">AR</div><div><div class="member-name">Andi Ramadan</div><div class="member-role">AE · Karangploso</div></div></div></td>
+                    <td><div class="req-cell"><div class="req-cell-top"><span class="cat-chip maint">Maintenance</span></div><div class="req-title">Perbaikan Kabel Drop</div><div class="req-sub">Area Dau — 3 titik</div></div></td>
+                    <td><div class="member-name">Ahmad Subagyo</div><div class="member-role">Head of Region</div></td>
+                    <td><span class="urg high">High</span></td>
+                    <td><span class="badge orange"><span class="badge-dot"></span>In Review</span></td>
+                    <td><span style="font-size:11.5px;color:#667085;white-space:nowrap;">19 Jun 2026</span></td>
+                    <td><button class="btn-icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
+                  </tr>
+                  <tr data-cat="kepeg">
+                    <td><div class="member-cell"><div class="av amber">RP</div><div><div class="member-name">Rizal Pratama</div><div class="member-role">AE · Karangploso</div></div></div></td>
+                    <td><div class="req-cell"><div class="req-cell-top"><span class="cat-chip kepeg">Kepegawaian</span></div><div class="req-title">Izin Keluarga</div><div class="req-sub">Attendance — 1 hari</div></div></td>
+                    <td><div class="member-name">Budi Santoso</div><div class="member-role">Branch Leader</div></td>
+                    <td><span class="urg low">Low</span></td>
+                    <td><span class="badge amber"><span class="badge-dot"></span>Waiting</span></td>
+                    <td><span style="font-size:11.5px;color:#667085;white-space:nowrap;">18 Jun 2026</span></td>
+                    <td><button class="btn-icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
+                  </tr>
+                  <tr data-cat="kepeg">
+                    <td><div class="member-cell"><div class="av green">NF</div><div><div class="member-name">Nova Fitriani</div><div class="member-role">AE · Karangploso</div></div></div></td>
+                    <td><div class="req-cell"><div class="req-cell-top"><span class="cat-chip kepeg">Kepegawaian</span></div><div class="req-title">Cuti Tahunan</div><div class="req-sub">Attendance — 2 hari</div></div></td>
+                    <td><div class="member-name">Budi Santoso</div><div class="member-role">Branch Leader</div></td>
+                    <td><span class="urg low">Low</span></td>
+                    <td><span class="badge amber"><span class="badge-dot"></span>Waiting</span></td>
+                    <td><span style="font-size:11.5px;color:#667085;white-space:nowrap;">17 Jun 2026</span></td>
+                    <td><button class="btn-icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
+                  </tr>
+                  <tr data-cat="finansial">
+                    <td><div class="member-cell"><div class="av orange">FN</div><div><div class="member-name">Fajar Nurhadi</div><div class="member-role">AE · Karangploso</div></div></div></td>
+                    <td><div class="req-cell"><div class="req-cell-top"><span class="cat-chip finansial">Finansial</span></div><div class="req-title">Reimbursement Perjalanan</div><div class="req-sub">Rp 450.000</div></div></td>
+                    <td><div class="member-name">Ahmad Kurnia</div><div class="member-role">Finance &amp; Accounting</div></td>
+                    <td><span class="urg medium">Medium</span></td>
+                    <td><span class="badge green"><span class="badge-dot"></span>Approved</span></td>
+                    <td><span style="font-size:11.5px;color:#667085;white-space:nowrap;">15 Jun 2026</span></td>
+                    <td><button class="btn-icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
+                  </tr>
+                  <tr data-cat="maint">
+                    <td><div class="member-cell"><div class="av gray">SR</div><div><div class="member-name">Siti Rahayu</div><div class="member-role">AE · Karangploso</div></div></div></td>
+                    <td><div class="req-cell"><div class="req-cell-top"><span class="cat-chip maint">Maintenance</span></div><div class="req-title">Penggantian ODC Area Dau</div><div class="req-sub">Maintenance — Prioritas</div></div></td>
+                    <td><div class="member-name">Ahmad Subagyo</div><div class="member-role">Head of Region</div></td>
+                    <td><span class="urg high">High</span></td>
+                    <td><span class="badge orange"><span class="badge-dot"></span>In Review</span></td>
+                    <td><span style="font-size:11.5px;color:#667085;white-space:nowrap;">12 Jun 2026</span></td>
+                    <td><button class="btn-icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
+                  </tr>
+                  <tr data-cat="peralatan">
+                    <td><div class="member-cell"><div class="av teal">LK</div><div><div class="member-name">Lathifah Kalim</div><div class="member-role">AE · Karangploso</div></div></div></td>
+                    <td><div class="req-cell"><div class="req-cell-top"><span class="cat-chip peralatan">Peralatan</span></div><div class="req-title">Permintaan Laptop</div><div class="req-sub">Peralatan — Aset Baru</div></div></td>
+                    <td><div class="member-name">Ahmad Subagyo</div><div class="member-role">Head of Region</div></td>
+                    <td><span class="urg medium">Medium</span></td>
+                    <td><span class="badge green"><span class="badge-dot"></span>Approved</span></td>
+                    <td><span style="font-size:11.5px;color:#667085;white-space:nowrap;">10 Jun 2026</span></td>
+                    <td><button class="btn-icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
+                  </tr>
+                  <tr data-cat="ops">
+                    <td><div class="member-cell"><div class="av green">AS</div><div><div class="member-name">Agus Subagyo</div><div class="member-role">Engineer · Karangploso</div></div></div></td>
+                    <td><div class="req-cell"><div class="req-cell-top"><span class="cat-chip ops">Operasional</span></div><div class="req-title">Permintaan Kendaraan</div><div class="req-sub">Operasional — 3 hari</div></div></td>
+                    <td><div class="member-name">Budi Santoso</div><div class="member-role">Branch Leader</div></td>
+                    <td><span class="urg medium">Medium</span></td>
+                    <td><span class="badge amber"><span class="badge-dot"></span>Waiting</span></td>
+                    <td><span style="font-size:11.5px;color:#667085;white-space:nowrap;">08 Jun 2026</span></td>
+                    <td><button class="btn-icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
+                  </tr>
+                  <tr data-cat="maint">
+                    <td><div class="member-cell"><div class="av blue">FN</div><div><div class="member-name">Faisal Nugroho</div><div class="member-role">Engineer · Karangploso</div></div></div></td>
+                    <td><div class="req-cell"><div class="req-cell-top"><span class="cat-chip maint">Maintenance</span></div><div class="req-title">Pemeliharaan ODP Lawang</div><div class="req-sub">Maintenance — Rutin</div></div></td>
+                    <td><div class="member-name">Rudi Direktur</div><div class="member-role">Direktur</div></td>
+                    <td><span class="urg high">High</span></td>
+                    <td><span class="badge green"><span class="badge-dot"></span>Approved</span></td>
+                    <td><span style="font-size:11.5px;color:#667085;white-space:nowrap;">05 Jun 2026</span></td>
+                    <td><button class="btn-icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
+                  </tr>
+                  <tr data-cat="kepeg">
+                    <td><div class="member-cell"><div class="av purple">DS</div><div><div class="member-name">Dian Safira</div><div class="member-role">AE · Karangploso</div></div></div></td>
+                    <td><div class="req-cell"><div class="req-cell-top"><span class="cat-chip kepeg">Kepegawaian</span></div><div class="req-title">Training Leadership</div><div class="req-sub">Development — 3 hari</div></div></td>
+                    <td><div class="member-name">Sari Indah</div><div class="member-role">HC Manager</div></td>
+                    <td><span class="urg medium">Medium</span></td>
+                    <td><span class="badge green"><span class="badge-dot"></span>Approved</span></td>
+                    <td><span style="font-size:11.5px;color:#667085;white-space:nowrap;">03 Jun 2026</span></td>
+                    <td><button class="btn-icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
+                  </tr>
+                  <tr data-cat="finansial">
+                    <td><div class="member-cell"><div class="av red">BW</div><div><div class="member-name">Bima Wicaksono</div><div class="member-role">AE · Karangploso</div></div></div></td>
+                    <td><div class="req-cell"><div class="req-cell-top"><span class="cat-chip finansial">Finansial</span></div><div class="req-title">Cash Advance Event</div><div class="req-sub">Rp 2.000.000</div></div></td>
+                    <td><div class="member-name">Rudi Direktur</div><div class="member-role">Direktur</div></td>
+                    <td><span class="urg medium">Medium</span></td>
+                    <td><span class="badge red"><span class="badge-dot"></span>Rejected</span></td>
+                    <td><span style="font-size:11.5px;color:#667085;white-space:nowrap;">28 Mei 2026</span></td>
+                    <td><button class="btn-icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
+                  </tr>
+                  <tr data-cat="peralatan">
+                    <td><div class="member-cell"><div class="av blue">AR</div><div><div class="member-name">Andi Ramadan</div><div class="member-role">AE · Karangploso</div></div></div></td>
+                    <td><div class="req-cell"><div class="req-cell-top"><span class="cat-chip peralatan">Peralatan</span></div><div class="req-title">Permintaan Alat Ukur OPM</div><div class="req-sub">Peralatan — Tools</div></div></td>
+                    <td><div class="member-name">Ahmad Subagyo</div><div class="member-role">Head of Region</div></td>
+                    <td><span class="urg low">Low</span></td>
+                    <td><span class="badge green"><span class="badge-dot"></span>Approved</span></td>
+                    <td><span style="font-size:11.5px;color:#667085;white-space:nowrap;">25 Mei 2026</span></td>
+                    <td><button class="btn-icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
+                  </tr>
+                  <tr data-cat="ops">
+                    <td><div class="member-cell"><div class="av orange">FN2</div><div><div class="member-name">Fajar Nurhadi</div><div class="member-role">AE · Karangploso</div></div></div></td>
+                    <td><div class="req-cell"><div class="req-cell-top"><span class="cat-chip ops">Operasional</span></div><div class="req-title">Permintaan Material FTTH</div><div class="req-sub">Operasional — Pengadaan</div></div></td>
+                    <td><div class="member-name">Hendro Logistik</div><div class="member-role">Manajer Logistik</div></td>
+                    <td><span class="urg high">High</span></td>
+                    <td><span class="badge green"><span class="badge-dot"></span>Approved</span></td>
+                    <td><span style="font-size:11.5px;color:#667085;white-space:nowrap;">22 Mei 2026</span></td>
+                    <td><button class="btn-icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
+                  </tr>
+                  <tr data-cat="kepeg">
+                    <td><div class="member-cell"><div class="av gray">SR2</div><div><div class="member-name">Siti Rahayu</div><div class="member-role">AE · Karangploso</div></div></div></td>
+                    <td><div class="req-cell"><div class="req-cell-top"><span class="cat-chip kepeg">Kepegawaian</span></div><div class="req-title">Pengajuan Rekrut AE</div><div class="req-sub">People Movement — 1 Posisi</div></div></td>
+                    <td><div class="member-name">Sari Indah</div><div class="member-role">HC Manager</div></td>
+                    <td><span class="urg medium">Medium</span></td>
+                    <td><span class="badge green"><span class="badge-dot"></span>Approved</span></td>
+                    <td><span style="font-size:11.5px;color:#667085;white-space:nowrap;">20 Mei 2026</span></td>
+                    <td><button class="btn-icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
+                  </tr>
+                  <tr data-cat="adm">
+                    <td><div class="member-cell"><div class="av teal">LK2</div><div><div class="member-name">Lathifah Kalim</div><div class="member-role">AE · Karangploso</div></div></div></td>
+                    <td><div class="req-cell"><div class="req-cell-top"><span class="cat-chip adm">Administrasi</span></div><div class="req-title">Surat Tugas Survey Area</div><div class="req-sub">Administrasi — Surat Tugas</div></div></td>
+                    <td><div class="member-name">Sari Indah</div><div class="member-role">HC / Legal</div></td>
+                    <td><span class="urg low">Low</span></td>
+                    <td><span class="badge green"><span class="badge-dot"></span>Issued</span></td>
+                    <td><span style="font-size:11.5px;color:#667085;white-space:nowrap;">18 Jun 2026</span></td>
+                    <td><button class="btn-icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="pag-row">
+                <div class="pag-info">Menampilkan 1–14 dari 14 pengajuan</div>
+                <div class="pag-btns">
+                  <button class="pag-btn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+                  <button class="pag-btn active">1</button>
+                  <button class="pag-btn"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
                 </div>
               </div>
-              <div style="flex:1;font-size:11px;display:flex;flex-direction:column;gap:6px;">
-                <div style="display:flex;align-items:center;gap:6px;"><span style="width:8px;height:8px;border-radius:50%;background:#12B76A;flex-shrink:0;"></span><span style="flex:1;color:#344054;">Approved</span><span style="font-weight:700;">8</span></div>
-                <div style="display:flex;align-items:center;gap:6px;"><span style="width:8px;height:8px;border-radius:50%;background:#F79009;flex-shrink:0;"></span><span style="flex:1;color:#344054;">Waiting</span><span style="font-weight:700;">3</span></div>
-                <div style="display:flex;align-items:center;gap:6px;"><span style="width:8px;height:8px;border-radius:50%;background:#F04438;flex-shrink:0;"></span><span style="flex:1;color:#344054;">Rejected</span><span style="font-weight:700;">1</span></div>
+            </div>
+          </div><!-- /page-main -->
+
+          <!-- SIDE COLUMN -->
+          <div class="page-side">
+
+            <!-- Quick Access -->
+            <div class="side-card">
+              <div class="sc-title">Ajukan Cepat</div>
+              <div class="sc-sub">Buat pengajuan dengan satu klik</div>
+              <div class="qa-grid">
+                <button class="qa-btn" onclick="openDrawer('attendance')">
+                  <div class="qa-ico" style="background:#EFF6FF;color:#1D6FF3;"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+                  <div class="qa-name">Izin / Cuti</div>
+                </button>
+                <button class="qa-btn" onclick="openDrawer('financial')">
+                  <div class="qa-ico" style="background:#FFFAEB;color:#B54708;"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+                  <div class="qa-name">Reimbursement</div>
+                </button>
+                <button class="qa-btn" onclick="openDrawer('financial')">
+                  <div class="qa-ico" style="background:#FFFAEB;color:#B54708;"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
+                  <div class="qa-name">Employee Loan</div>
+                </button>
+                <button class="qa-btn" onclick="openDrawer('development')">
+                  <div class="qa-ico" style="background:#F4F3FF;color:#7C3AED;"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg></div>
+                  <div class="qa-name">Training</div>
+                </button>
+                <button class="qa-btn" onclick="openDrawer('operations')">
+                  <div class="qa-ico" style="background:#FFF7ED;color:#C2410C;"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+                  <div class="qa-name">Perm. Aset</div>
+                </button>
+                <button class="qa-btn" onclick="openDrawer('admin')">
+                  <div class="qa-ico" style="background:#F2F4F7;color:#475569;"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+                  <div class="qa-name">Surat Tugas</div>
+                </button>
               </div>
             </div>
+
+            <!-- Status Chart -->
+            <div class="side-card">
+              <div class="sc-title">Status Bulan Ini</div>
+              <div class="sc-sub">Distribusi status pengajuan tim</div>
+              <div class="donut-wrap">
+                <div style="position:relative;width:78px;height:78px;flex-shrink:0;">
+                  <svg viewBox="0 0 36 36" style="width:78px;height:78px;transform:rotate(-90deg);">
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#F2F4F7" stroke-width="3.2"/>
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#12B76A" stroke-width="3.2" stroke-dasharray="57 43" stroke-dashoffset="0"/>
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#F79009" stroke-width="3.2" stroke-dasharray="29 71" stroke-dashoffset="-57"/>
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#F04438" stroke-width="3.2" stroke-dasharray="7 93" stroke-dashoffset="-86"/>
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#7C3AED" stroke-width="3.2" stroke-dasharray="7 93" stroke-dashoffset="-93"/>
+                  </svg>
+                  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1px;">
+                    <div style="font-size:17px;font-weight:800;color:#101828;line-height:1;">12</div>
+                    <div style="font-size:8.5px;color:#98A2B3;">Total</div>
+                  </div>
+                </div>
+                <div class="donut-legend">
+                  <div class="donut-legend-item"><div class="donut-legend-dot" style="background:#12B76A;"></div><span style="flex:1;">Approved</span><strong>8</strong></div>
+                  <div class="donut-legend-item"><div class="donut-legend-dot" style="background:#F79009;"></div><span style="flex:1;">Waiting</span><strong>3</strong></div>
+                  <div class="donut-legend-item"><div class="donut-legend-dot" style="background:#F04438;"></div><span style="flex:1;">Rejected</span><strong>1</strong></div>
+                  <div class="donut-legend-item"><div class="donut-legend-dot" style="background:#7C3AED;"></div><span style="flex:1;">In Review</span><strong>2</strong></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SLA Performance -->
+            <div class="side-card">
+              <div class="sc-title">SLA Performance</div>
+              <div class="sc-sub">Rata-rata waktu approval per kategori</div>
+              <div class="sla-row">
+                <div class="sla-labels"><span>Kepegawaian</span><span style="font-weight:700;color:#027A48;">1.5 hari</span></div>
+                <div class="sla-bar-bg"><div class="sla-bar-fill" style="width:85%;background:#12B76A;"></div></div>
+              </div>
+              <div class="sla-row">
+                <div class="sla-labels"><span>Administrasi</span><span style="font-weight:700;color:#027A48;">1.0 hari</span></div>
+                <div class="sla-bar-bg"><div class="sla-bar-fill" style="width:92%;background:#0E9F93;"></div></div>
+              </div>
+              <div class="sla-row">
+                <div class="sla-labels"><span>Peralatan</span><span style="font-weight:700;color:#027A48;">3.0 hari</span></div>
+                <div class="sla-bar-bg"><div class="sla-bar-fill" style="width:62%;background:#0369A1;"></div></div>
+              </div>
+              <div class="sla-row">
+                <div class="sla-labels"><span>Operasional</span><span style="font-weight:700;color:#027A48;">2.0 hari</span></div>
+                <div class="sla-bar-bg"><div class="sla-bar-fill" style="width:75%;background:#6366F1;"></div></div>
+              </div>
+              <div class="sla-row">
+                <div class="sla-labels"><span>Finansial</span><span style="font-weight:700;color:#B54708;">4.2 hari</span></div>
+                <div class="sla-bar-bg"><div class="sla-bar-fill" style="width:50%;background:#F79009;"></div></div>
+              </div>
+              <div class="sla-row">
+                <div class="sla-labels"><span>Maintenance</span><span style="font-weight:700;color:#B54708;">5.1 hari</span></div>
+                <div class="sla-bar-bg"><div class="sla-bar-fill" style="width:40%;background:#F97316;"></div></div>
+              </div>
+            </div>
+
+          </div><!-- /page-side -->
+        </div><!-- /page-layout -->
+      </div><!-- /tab-semua -->
+
+      <!-- ════════════════ TAB: PENGAJUAN SAYA ════════════════ -->
+      <div id="tab-mine" class="tab-panel">
+        <div class="page-layout">
+
+          <div class="page-main">
+            <div class="toolbar-card">
+              <div class="cat-tabs">
+                <button class="cat-tab active" onclick="filterMyCat('all',this)">Semua <span class="cat-count">4</span></button>
+                <button class="cat-tab" onclick="filterMyCat('my-kepeg',this)">Kepegawaian <span class="cat-count">2</span></button>
+                <button class="cat-tab" onclick="filterMyCat('my-finansial',this)">Finansial <span class="cat-count">1</span></button>
+                <button class="cat-tab" onclick="filterMyCat('my-ops',this)">Operasional <span class="cat-count">1</span></button>
+              </div>
+              <div class="filter-bar">
+                <div class="flt-dd">
+                  <svg class="dd-ico" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  1 Jun – 21 Jun 2026
+                  <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+                <div class="flt-dd">
+                  Semua Status
+                  <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+                <div class="search-bar">
+                  <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  <input type="text" placeholder="Cari pengajuan saya...">
+                </div>
+                <button class="btn-export">
+                  <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  Export
+                </button>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table class="req-table">
+                <thead>
+                  <tr>
+                    <th style="width:180px;">Tipe Pengajuan</th>
+                    <th>Keterangan</th>
+                    <th style="width:150px;">Approver</th>
+                    <th style="width:80px;">Urgensi</th>
+                    <th style="width:110px;">Status</th>
+                    <th style="width:88px;">Diajukan</th>
+                    <th style="width:44px;"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-mycat="my-kepeg">
+                    <td><div style="display:flex;align-items:center;gap:9px;"><div class="req-ico kepeg"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div><div class="member-name">Izin Dinas Luar</div><div class="member-role">Kepegawaian</div></div></div></td>
+                    <td><div class="req-title" style="font-size:12px;">Meeting Koordinasi Regional</div><div class="req-sub">1 hari — Malang</div></td>
+                    <td><div class="member-name">Ahmad Subagyo</div><div class="member-role">Head of Region</div></td>
+                    <td><span class="urg medium">Medium</span></td>
+                    <td><span class="badge green"><span class="badge-dot"></span>Approved</span></td>
+                    <td><span style="font-size:11.5px;color:#667085;white-space:nowrap;">18 Jun 2026</span></td>
+                    <td><button class="btn-icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
+                  </tr>
+                  <tr data-mycat="my-finansial">
+                    <td><div style="display:flex;align-items:center;gap:9px;"><div class="req-ico finansial"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div><div class="member-name">Reimbursement</div><div class="member-role">Finansial</div></div></div></td>
+                    <td><div class="req-title" style="font-size:12px;">BBM &amp; Tol Perjalanan Dinas</div><div class="req-sub">Rp 320.000</div></td>
+                    <td><div class="member-name">Ahmad Kurnia</div><div class="member-role">Finance &amp; Accounting</div></td>
+                    <td><span class="urg low">Low</span></td>
+                    <td><span class="badge orange"><span class="badge-dot"></span>In Review</span></td>
+                    <td><span style="font-size:11.5px;color:#667085;white-space:nowrap;">14 Jun 2026</span></td>
+                    <td><button class="btn-icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
+                  </tr>
+                  <tr data-mycat="my-kepeg">
+                    <td><div style="display:flex;align-items:center;gap:9px;"><div class="req-ico kepeg"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div><div class="member-name">Pengajuan Rekrut</div><div class="member-role">Kepegawaian</div></div></div></td>
+                    <td><div class="req-title" style="font-size:12px;">Rekrut AE Baru</div><div class="req-sub">1 posisi — Branch Karangploso</div></td>
+                    <td><div class="member-name">Sari Indah</div><div class="member-role">HC Manager</div></td>
+                    <td><span class="urg medium">Medium</span></td>
+                    <td><span class="badge amber"><span class="badge-dot"></span>Waiting</span></td>
+                    <td><span style="font-size:11.5px;color:#667085;white-space:nowrap;">10 Jun 2026</span></td>
+                    <td><button class="btn-icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
+                  </tr>
+                  <tr data-mycat="my-ops">
+                    <td><div style="display:flex;align-items:center;gap:9px;"><div class="req-ico ops"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 4v4h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div><div><div class="member-name">Permintaan Kendaraan</div><div class="member-role">Operasional</div></div></div></td>
+                    <td><div class="req-title" style="font-size:12px;">Survey Area Lawang</div><div class="req-sub">2 hari — Kendaraan Operasional</div></td>
+                    <td><div class="member-name">Ahmad Subagyo</div><div class="member-role">Head of Region</div></td>
+                    <td><span class="urg high">High</span></td>
+                    <td><span class="badge green"><span class="badge-dot"></span>Approved</span></td>
+                    <td><span style="font-size:11.5px;color:#667085;white-space:nowrap;">05 Jun 2026</span></td>
+                    <td><button class="btn-icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="pag-row">
+                <div class="pag-info">Menampilkan 1–4 dari 4 pengajuan</div>
+                <div class="pag-btns">
+                  <button class="pag-btn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+                  <button class="pag-btn active">1</button>
+                  <button class="pag-btn"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+                </div>
+              </div>
+            </div>
+          </div><!-- /page-main -->
+
+          <div class="page-side">
+            <div class="side-card">
+              <div class="sc-title">Ajukan Cepat</div>
+              <div class="sc-sub">Buat pengajuan baru</div>
+              <div class="qa-grid">
+                <button class="qa-btn" onclick="openDrawer('attendance')">
+                  <div class="qa-ico" style="background:#EFF6FF;color:#1D6FF3;"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+                  <div class="qa-name">Izin / Cuti</div>
+                </button>
+                <button class="qa-btn" onclick="openDrawer('financial')">
+                  <div class="qa-ico" style="background:#FFFAEB;color:#B54708;"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+                  <div class="qa-name">Finansial</div>
+                </button>
+                <button class="qa-btn" onclick="openDrawer('people')">
+                  <div class="qa-ico" style="background:#ECFDF3;color:#027A48;"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+                  <div class="qa-name">Kepegawaian</div>
+                </button>
+                <button class="qa-btn" onclick="openDrawer('operations')">
+                  <div class="qa-ico" style="background:#FFF7ED;color:#C2410C;"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+                  <div class="qa-name">Operasional</div>
+                </button>
+              </div>
+            </div>
+            <div class="side-card">
+              <div class="sc-title">Status Saya</div>
+              <div class="sc-sub">Distribusi pengajuan pribadi</div>
+              <div class="donut-wrap">
+                <div style="position:relative;width:78px;height:78px;flex-shrink:0;">
+                  <svg viewBox="0 0 36 36" style="width:78px;height:78px;transform:rotate(-90deg);">
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#F2F4F7" stroke-width="3.2"/>
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#12B76A" stroke-width="3.2" stroke-dasharray="50 50" stroke-dashoffset="0"/>
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#F79009" stroke-width="3.2" stroke-dasharray="25 75" stroke-dashoffset="-50"/>
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#F04438" stroke-width="3.2" stroke-dasharray="25 75" stroke-dashoffset="-75"/>
+                  </svg>
+                  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1px;">
+                    <div style="font-size:17px;font-weight:800;color:#101828;line-height:1;">4</div>
+                    <div style="font-size:8.5px;color:#98A2B3;">Saya</div>
+                  </div>
+                </div>
+                <div class="donut-legend">
+                  <div class="donut-legend-item"><div class="donut-legend-dot" style="background:#12B76A;"></div><span style="flex:1;">Approved</span><strong>2</strong></div>
+                  <div class="donut-legend-item"><div class="donut-legend-dot" style="background:#F79009;"></div><span style="flex:1;">In Review</span><strong>1</strong></div>
+                  <div class="donut-legend-item"><div class="donut-legend-dot" style="background:#F04438;"></div><span style="flex:1;">Waiting</span><strong>1</strong></div>
+                </div>
+              </div>
+            </div>
+          </div><!-- /page-side -->
+
+        </div><!-- /page-layout -->
+      </div><!-- /tab-mine -->
+
+    </div><!-- /content-area -->
+  </main>
+</div><!-- /mgmt-layout -->
+
+<!-- ═══════════════════════════════════ DRAWER ═══════════════════════════════════ -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+<div class="req-drawer" id="reqDrawer">
+  <div class="drawer-head">
+    <div>
+      <div class="drawer-title">Buat Pengajuan Baru</div>
+      <div class="drawer-sub">Isi form berikut untuk mengajukan permintaan</div>
+    </div>
+    <button class="drawer-close" onclick="closeDrawer()">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="drawer-body">
+
+    <!-- Step 1: Kategori -->
+    <div class="dform-card">
+      <div class="dform-head">
+        <div class="dform-num">1</div>
+        <div>
+          <div class="dform-title">Kategori Pengajuan</div>
+          <div class="dform-desc">Pilih kategori yang sesuai dengan kebutuhan</div>
+        </div>
+      </div>
+      <div class="dform-body">
+        <div class="dcat-grid">
+          <button class="dcat-opt selected" id="dcat-attendance" onclick="selectDrawerCat('attendance',this)">
+            <div class="dcat-ico" style="background:#EFF6FF;color:#1D6FF3;"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+            <div class="dcat-name">Kehadiran</div>
+            <div class="dcat-desc">Izin, Cuti, Sakit, Dinas</div>
+          </button>
+          <button class="dcat-opt" id="dcat-development" onclick="selectDrawerCat('development',this)">
+            <div class="dcat-ico" style="background:#F4F3FF;color:#7C3AED;"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg></div>
+            <div class="dcat-name">Pengembangan</div>
+            <div class="dcat-desc">Training, Sertifikasi</div>
+          </button>
+          <button class="dcat-opt" id="dcat-financial" onclick="selectDrawerCat('financial',this)">
+            <div class="dcat-ico" style="background:#FFFAEB;color:#B54708;"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+            <div class="dcat-name">Finansial</div>
+            <div class="dcat-desc">Loan, Reimbursement</div>
+          </button>
+          <button class="dcat-opt" id="dcat-people" onclick="selectDrawerCat('people',this)">
+            <div class="dcat-ico" style="background:#ECFDF3;color:#027A48;"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+            <div class="dcat-name">Perpindahan</div>
+            <div class="dcat-desc">Mutasi, Rotasi, Promosi</div>
+          </button>
+          <button class="dcat-opt" id="dcat-operations" onclick="selectDrawerCat('operations',this)">
+            <div class="dcat-ico" style="background:#FFF7ED;color:#C2410C;"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 1.41 14.14"/><path d="M4.93 4.93a10 10 0 0 0-1.41 14.14"/></svg></div>
+            <div class="dcat-name">Operasional</div>
+            <div class="dcat-desc">Aset, Peralatan, Material</div>
+          </button>
+          <button class="dcat-opt" id="dcat-admin" onclick="selectDrawerCat('admin',this)">
+            <div class="dcat-ico" style="background:#F8FAFC;color:#475569;"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <div class="dcat-name">Administratif</div>
+            <div class="dcat-desc">Surat Tugas, Perdin</div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Detail -->
+    <div class="dform-card">
+      <div class="dform-head">
+        <div class="dform-num">2</div>
+        <div>
+          <div class="dform-title">Detail Pengajuan</div>
+          <div class="dform-desc">Isi informasi lengkap pengajuan Anda</div>
+        </div>
+      </div>
+      <div class="dform-body">
+        <div class="dform-row full">
+          <div class="dform-grp">
+            <label class="dform-lbl">Jenis Pengajuan <span class="req">*</span></label>
+            <select class="dform-sel" id="dform-type">
+              <option value="">-- Pilih Jenis --</option>
+              <option value="izin">Izin (Tidak Masuk)</option>
+              <option value="cuti">Cuti Tahunan</option>
+              <option value="sakit">Sakit</option>
+              <option value="dinas">Dinas Luar</option>
+              <option value="shift">Pergantian Shift</option>
+            </select>
           </div>
-          <div style="background:white;border:1px solid #EAECF0;border-radius:12px;padding:16px;">
-            <div style="font-size:13px;font-weight:700;color:#101828;margin-bottom:10px;">SLA Pengajuan Saya</div>
-            <div style="display:flex;flex-direction:column;gap:8px;">
-              <div><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;"><span style="color:#344054;">Attendance</span><span style="font-weight:700;color:#027A48;">Avg 1.5 hari</span></div><div style="height:5px;background:#F2F4F7;border-radius:3px;"><div style="height:5px;background:#12B76A;border-radius:3px;width:85%;"></div></div></div>
-              <div><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;"><span style="color:#344054;">Development</span><span style="font-weight:700;color:#027A48;">Avg 3.1 hari</span></div><div style="height:5px;background:#F2F4F7;border-radius:3px;"><div style="height:5px;background:#7C3AED;border-radius:3px;width:60%;"></div></div></div>
-              <div><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;"><span style="color:#344054;">Financial</span><span style="font-weight:700;color:#B54708;">Avg 4.2 hari</span></div><div style="height:5px;background:#F2F4F7;border-radius:3px;"><div style="height:5px;background:#F79009;border-radius:3px;width:50%;"></div></div></div>
-              <div><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;"><span style="color:#344054;">People Movement</span><span style="font-weight:700;color:#B54708;">Avg 7.5 hari</span></div><div style="height:5px;background:#F2F4F7;border-radius:3px;"><div style="height:5px;background:#F04438;border-radius:3px;width:30%;"></div></div></div>
-              <div><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;"><span style="color:#344054;">Operations</span><span style="font-weight:700;color:#027A48;">Avg 2.0 hari</span></div><div style="height:5px;background:#F2F4F7;border-radius:3px;"><div style="height:5px;background:#C2410C;border-radius:3px;width:75%;"></div></div></div>
-              <div><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;"><span style="color:#344054;">Administration</span><span style="font-weight:700;color:#027A48;">Avg 1.0 hari</span></div><div style="height:5px;background:#F2F4F7;border-radius:3px;"><div style="height:5px;background:#475569;border-radius:3px;width:90%;"></div></div></div>
+        </div>
+        <div class="dform-row">
+          <div class="dform-grp">
+            <label class="dform-lbl">Tanggal Mulai <span class="req">*</span></label>
+            <input type="date" class="dform-inp" value="2026-06-22">
+          </div>
+          <div class="dform-grp">
+            <label class="dform-lbl">Tanggal Selesai <span class="req">*</span></label>
+            <input type="date" class="dform-inp" value="2026-06-22">
+          </div>
+        </div>
+        <div class="dform-row full">
+          <div class="dform-grp">
+            <label class="dform-lbl">Tingkat Urgensi</label>
+            <select class="dform-sel">
+              <option value="low">Low — Bisa menunggu</option>
+              <option value="medium" selected>Medium — Perlu segera</option>
+              <option value="high">High — Sangat mendesak</option>
+            </select>
+          </div>
+        </div>
+        <div class="dform-row full">
+          <div class="dform-grp">
+            <label class="dform-lbl">Keterangan / Alasan <span class="req">*</span></label>
+            <textarea class="dform-ta" placeholder="Jelaskan kebutuhan atau alasan pengajuan..."></textarea>
+          </div>
+        </div>
+        <div class="dform-row full" style="margin-bottom:0;">
+          <div class="dform-grp">
+            <label class="dform-lbl">Lampiran (Opsional)</label>
+            <div class="upload-zone">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#98A2B3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <div class="upload-zone-text"><strong>Klik untuk upload</strong> atau drag &amp; drop</div>
+              <div class="upload-zone-hint">PDF, JPG, PNG &bull; maks. 5MB</div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </main>
+
+    <!-- Step 3: Alur Approval -->
+    <div class="dform-card" style="margin-bottom:0;">
+      <div class="dform-head">
+        <div class="dform-num">3</div>
+        <div>
+          <div class="dform-title">Alur Persetujuan</div>
+          <div class="dform-desc">Pengajuan akan melalui tahap berikut</div>
+        </div>
+      </div>
+      <div class="dform-body">
+        <div class="wf-preview">
+          <div class="wfp-step">
+            <div class="wfp-dot current">1</div>
+            <div class="wfp-name">Anda</div>
+            <div class="wfp-role">Pengaju</div>
+          </div>
+          <div class="wfp-line"></div>
+          <div class="wfp-step">
+            <div class="wfp-dot pending">2</div>
+            <div class="wfp-name">Branch Leader</div>
+            <div class="wfp-role">Approval 1</div>
+          </div>
+          <div class="wfp-line"></div>
+          <div class="wfp-step">
+            <div class="wfp-dot pending">3</div>
+            <div class="wfp-name">HC</div>
+            <div class="wfp-role">Final</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:#667085;margin-top:10px;display:flex;align-items:center;gap:5px;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1D6FF3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Target persetujuan dalam 24 jam kerja
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="drawer-foot">
+    <button class="btn-secondary" onclick="closeDrawer()">Batal</button>
+    <button class="btn-primary">
+      <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      Kirim Pengajuan
+    </button>
+  </div>
 </div>
+
 <script>
-function toggleRequests(){var h=document.getElementById('requests-head'),s=document.getElementById('requests-sub');h.classList.toggle('open');s.classList.toggle('open');}
-function toggleLearning(){var h=document.getElementById('learning-head'),s=document.getElementById('learning-sub');h.classList.toggle('open');s.classList.toggle('open');}
-function filterCat(cat,btn){document.querySelectorAll('.cat-tab').forEach(function(t){t.classList.remove('active');});btn.classList.add('active');document.querySelectorAll('.req-table tbody tr').forEach(function(row){if(cat==='all'||row.getAttribute('data-cat')===cat){row.style.display='';}else{row.style.display='none';}});}
+function toggleGroup(name) {
+  var h = document.getElementById(name + '-head');
+  var s = document.getElementById(name + '-sub');
+  if (h && s) { h.classList.toggle('open'); s.classList.toggle('open'); }
+}
+
+function switchPageTab(tab, btn) {
+  document.querySelectorAll('.ph-tab').forEach(function(t) { t.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('tab-semua').classList.toggle('active', tab === 'semua');
+  document.getElementById('tab-mine').classList.toggle('active', tab === 'mine');
+}
+
+function filterCat(cat, btn) {
+  var panel = btn.closest('.tab-panel') || document;
+  panel.querySelectorAll('.cat-tab').forEach(function(t) { t.classList.remove('active'); });
+  btn.classList.add('active');
+  panel.querySelectorAll('.req-table tbody tr[data-cat]').forEach(function(row) {
+    row.style.display = (cat === 'all' || row.getAttribute('data-cat') === cat) ? '' : 'none';
+  });
+}
+
+function filterMyCat(cat, btn) {
+  var parentTabs = btn.closest('.cat-tabs');
+  parentTabs.querySelectorAll('.cat-tab').forEach(function(t) { t.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('[data-mycat]').forEach(function(row) {
+    row.style.display = (cat === 'all' || row.getAttribute('data-mycat') === cat) ? '' : 'none';
+  });
+}
+
+function openDrawer(cat) {
+  document.getElementById('drawerOverlay').classList.add('open');
+  document.getElementById('reqDrawer').classList.add('open');
+  if (cat) selectDrawerCat(cat, document.getElementById('dcat-' + cat));
+}
+
+function closeDrawer() {
+  document.getElementById('drawerOverlay').classList.remove('open');
+  document.getElementById('reqDrawer').classList.remove('open');
+}
+
+function selectDrawerCat(cat, el) {
+  document.querySelectorAll('.dcat-opt').forEach(function(o) { o.classList.remove('selected'); });
+  if (el) el.classList.add('selected');
+  var sel = document.getElementById('dform-type');
+  sel.innerHTML = '<option value="">-- Pilih Jenis --</option>';
+  var opts = {
+    attendance:  ['Izin (Tidak Masuk)','Cuti Tahunan','Sakit','Dinas Luar','Pergantian Shift'],
+    development: ['Training Eksternal','Sertifikasi','Scholarship','Workshop / Seminar'],
+    financial:   ['Employee Loan','Reimbursement','Cash Advance','Tunjangan Khusus'],
+    people:      ['Mutasi','Rotasi','Promosi','Demosi'],
+    operations:  ['Permintaan Aset','Kendaraan Operasional','Material / Peralatan','Perbaikan Fasilitas'],
+    admin:       ['Surat Tugas','Surat Keterangan','Perjalanan Dinas','Surat Izin Keluar']
+  };
+  (opts[cat] || opts['attendance']).forEach(function(o) {
+    var opt = document.createElement('option');
+    opt.value = o.toLowerCase().replace(/[\s/]+/g,'-');
+    opt.textContent = o;
+    sel.appendChild(opt);
+  });
+}
 </script>
 </body>
 </html>

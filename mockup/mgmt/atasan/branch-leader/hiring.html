@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>People — Hiring Request · Branch Leader</title>
+  <title>People — Hiring Tracking · Branch Leader</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -179,22 +179,15 @@
         <div class="sb-sub open" id="people-sub">
           <a href="tim.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Team</a>
           <a href="attendance.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Attendance</a>
-          <a href="hiring.html" class="sb-sub-item active"><span class="sb-sub-dot"></span>Hiring Request</a>
+          <a href="hiring.html" class="sb-sub-item active"><span class="sb-sub-dot"></span>Hiring Tracking</a>
           <a href="reviews.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Reviews</a>
         </div>
       </div>
-      <div class="sb-group">
-        <div class="sb-group-head" id="requests-head" onclick="toggleRequests()">
-          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-          Requests
-          <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-        </div>
-        <div class="sb-sub" id="requests-sub">
-          <a href="requests.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Overview</a>
-          <a href="requests.html" class="sb-sub-item"><span class="sb-sub-dot"></span>My Requests</a>
-          <a href="request-create.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Create Request</a>
-        </div>
-      </div>
+      <a href="requests.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Requests
+        <span class="sb-badge">3</span>
+      </a>
       <a href="approval.html" class="sb-item">
         <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
         Approval
@@ -232,7 +225,7 @@
     <header class="topbar">
       <div class="topbar-left">
         <div>
-          <div class="page-title">People — Hiring Request</div>
+          <div class="page-title">People — Hiring Tracking</div>
           <div class="page-sub">Cabang Karangploso &middot; Manajemen Kebutuhan Manpower</div>
         </div>
       </div>
@@ -643,7 +636,6 @@
 <script>
 function switchTab(id,btn){document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});document.getElementById('tab-'+id).classList.add('active');btn.classList.add('active');}
 function togglePeople(){var h=document.getElementById('people-head'),s=document.getElementById('people-sub');h.classList.toggle('open');s.classList.toggle('open');}
-function toggleRequests(){var h=document.getElementById('requests-head'),s=document.getElementById('requests-sub');h.classList.toggle('open');s.classList.toggle('open');}
 function toggleLearning(){var h=document.getElementById('learning-head'),s=document.getElementById('learning-sub');h.classList.toggle('open');s.classList.toggle('open');}
 </script>
 </body>

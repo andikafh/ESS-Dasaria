@@ -1,10 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Cabang — Branch Leader</title>
+  <title>Dashboard Cabang — GRIYANET BMS</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
   <style>
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     html, body { height:100%; font-family:'Inter',-apple-system,sans-serif; font-size:14px; color:#101828; background:#F5F7FA; -webkit-font-smoothing:antialiased; }
@@ -15,190 +16,19 @@
     .mgmt-layout { display:flex; height:100vh; overflow:hidden; }
 
     /* ── SIDEBAR ── */
-    .sidebar {
-      width:230px; flex-shrink:0; background:#0D1B3E;
-      height:100vh; display:flex; flex-direction:column;
-      overflow-y:auto; overflow-x:hidden;
-    }
+    .sidebar { width:230px; flex-shrink:0; background:#0D1B3E; height:100vh; display:flex; flex-direction:column; overflow-y:auto; overflow-x:hidden; transition:width .2s; }
     .sidebar::-webkit-scrollbar { width:3px; }
     .sidebar::-webkit-scrollbar-thumb { background:rgba(255,255,255,.1); border-radius:2px; }
-
-    .sb-logo {
-      display:flex; align-items:center; gap:10px;
-      padding:22px 18px 16px; color:white;
-      font-size:14px; font-weight:800; letter-spacing:-.3px;
-      border-bottom:1px solid rgba(255,255,255,.07);
-    }
+    .sb-logo { display:flex; align-items:center; gap:10px; padding:22px 18px 16px; color:white; font-size:14px; font-weight:800; letter-spacing:-.3px; border-bottom:1px solid rgba(255,255,255,.07); flex-shrink:0; }
     .sb-logo svg { width:22px; height:22px; stroke:white; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
-
-    .sb-nav { padding:10px 10px; flex:1; }
-    .sb-section { font-size:10px; font-weight:700; color:rgba(255,255,255,.3); text-transform:uppercase; letter-spacing:.8px; padding:10px 10px 4px; }
-
-    .sb-item {
-      display:flex; align-items:center; gap:10px;
-      padding:9px 10px; border-radius:8px;
-      color:rgba(255,255,255,.6); font-size:13px; font-weight:500;
-      transition:all .15s; cursor:pointer; position:relative;
-      text-decoration:none; margin-bottom:1px;
-    }
+    .sb-nav { padding:10px; flex:1; }
+    .sb-item { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; transition:all .15s; cursor:pointer; position:relative; text-decoration:none; margin-bottom:1px; }
     .sb-item:hover { background:rgba(255,255,255,.07); color:rgba(255,255,255,.9); }
     .sb-item.active { background:rgba(29,111,243,.28); color:white; font-weight:700; }
     .sb-item svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
     .sb-badge { margin-left:auto; background:#F04438; color:white; font-size:9px; font-weight:800; min-width:17px; height:17px; border-radius:9px; display:flex; align-items:center; justify-content:center; padding:0 4px; }
-
-    .sb-connect { padding:6px 10px 20px; border-top:1px solid rgba(255,255,255,.07); margin-top:auto; }
-    .sb-connect-label { font-size:10px; font-weight:700; color:rgba(255,255,255,.3); text-transform:uppercase; letter-spacing:.8px; padding:10px 10px 6px; }
-    .sb-connect-item {
-      display:flex; align-items:center; gap:9px;
-      padding:7px 10px; border-radius:7px;
-      color:rgba(255,255,255,.5); font-size:12px;
-      transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px;
-    }
-    .sb-connect-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.85); }
-    .sb-connect-item svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
-    .sb-connect-sub { font-size:10px; color:rgba(255,255,255,.25); margin-left:auto; }
-
-    /* ── MAIN ── */
-    .main-content { flex:1; height:100vh; overflow-y:auto; background:#F5F7FA; }
-
-    /* ── TOPBAR ── */
-    .topbar {
-      background:white; height:62px; flex-shrink:0;
-      display:flex; align-items:center; justify-content:space-between;
-      padding:0 28px; border-bottom:1px solid #EAECF0;
-      position:sticky; top:0; z-index:20;
-    }
-    .topbar-left { display:flex; align-items:center; gap:14px; }
-    .topbar-btn { width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:8px; color:#667085; }
-    .topbar-btn:hover { background:#F2F4F7; }
-    .topbar-btn svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; }
-    .topbar-titles {}
-    .page-title { font-size:16px; font-weight:700; color:#101828; line-height:1.1; }
-    .page-sub { font-size:12px; color:#667085; }
-    .topbar-right { display:flex; align-items:center; gap:14px; }
-    .topbar-date { font-size:12px; color:#667085; display:flex; align-items:center; gap:5px; }
-    .topbar-date svg { width:14px; height:14px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-    .user-chip { display:flex; align-items:center; gap:9px; padding:6px 10px; border-radius:10px; cursor:pointer; }
-    .user-chip:hover { background:#F5F7FA; }
-    .user-av { width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,#1D6FF3,#1558C8); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:white; flex-shrink:0; }
-    .user-name { font-size:13px; font-weight:700; color:#101828; }
-    .user-role { font-size:11px; color:#98A2B3; display:flex; align-items:center; gap:3px; }
-    .user-role svg { width:12px; height:12px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-
-    /* ── CONTENT ── */
-    .content-area { padding:22px 28px 32px; }
-
-    /* ── KPI STRIP ── */
-    .kpi-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:18px; }
-    .kpi-card { background:white; border-radius:12px; padding:18px 20px; border:1px solid #EAECF0; display:flex; align-items:flex-start; gap:14px; }
-    .kpi-ico { width:42px; height:42px; border-radius:11px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-    .kpi-ico svg { width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-    .kpi-ico.blue   { background:#EFF6FF; color:#1D6FF3; }
-    .kpi-ico.green  { background:#ECFDF3; color:#027A48; }
-    .kpi-ico.orange { background:#FFFAEB; color:#B54708; }
-    .kpi-ico.purple { background:#F4F3FF; color:#5925DC; }
-    .kpi-ico.red    { background:#FEF3F2; color:#B42318; }
-    .kpi-body {}
-    .kpi-val { font-size:28px; font-weight:800; color:#101828; letter-spacing:-1.5px; line-height:1; margin-bottom:3px; }
-    .kpi-lbl { font-size:12px; color:#667085; margin-bottom:5px; }
-    .kpi-delta { font-size:11px; font-weight:600; }
-    .kpi-delta.pos { color:#027A48; }
-    .kpi-delta.neu { color:#667085; }
-    .kpi-sub { font-size:11px; color:#98A2B3; margin-top:3px; }
-    .kpi-badge { display:inline-flex; align-items:center; gap:4px; background:#ECFDF3; color:#027A48; border:1px solid #A9EFC5; padding:2px 9px; border-radius:20px; font-size:11px; font-weight:600; }
-    .kpi-badge::before { content:''; width:6px; height:6px; border-radius:50%; background:#12B76A; }
-
-    /* ── DASHBOARD GRID ── */
-    .dash-grid { display:grid; grid-template-columns:1fr 310px; gap:16px; }
-    .dash-left, .dash-right { display:flex; flex-direction:column; gap:16px; }
-
-    /* ── WIDGET ── */
-    .w-card { background:white; border-radius:12px; border:1px solid #EAECF0; overflow:hidden; }
-    .w-head {
-      padding:13px 18px;
-      display:flex; align-items:center; justify-content:space-between;
-      border-bottom:1px solid #F2F4F7;
-    }
-    .w-title { font-size:13px; font-weight:700; color:#101828; display:flex; align-items:center; gap:7px; }
-    .w-title svg { width:15px; height:15px; stroke:#667085; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-    .w-link { font-size:12px; font-weight:600; color:#1D6FF3; cursor:pointer; }
-    .w-body { padding:16px 18px; }
-
-    /* ── METRIC 4-COL ── */
-    .metric-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
-    .m-box { text-align:center; padding:12px 6px; border-radius:10px; }
-    .m-box.blue   { background:#EFF6FF; }
-    .m-box.green  { background:#ECFDF3; }
-    .m-box.orange { background:#FFFAEB; }
-    .m-box.red    { background:#FEF3F2; }
-    .m-ico { font-size:18px; margin-bottom:4px; display:block; }
-    .m-val { font-size:22px; font-weight:800; line-height:1; margin-bottom:3px; }
-    .m-val.blue   { color:#1D6FF3; }
-    .m-val.green  { color:#027A48; }
-    .m-val.orange { color:#B54708; }
-    .m-val.red    { color:#B42318; }
-    .m-lbl { font-size:11px; color:#667085; font-weight:500; }
-
-    /* ── PIPELINE ── */
-    .pipeline-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
-    .pl-box { padding:13px 8px; border-radius:10px; text-align:center; }
-    .pl-count { font-size:30px; font-weight:800; letter-spacing:-1px; line-height:1; margin-bottom:3px; }
-    .pl-type  { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.4px; }
-    .pl-desc  { font-size:10px; color:#98A2B3; margin-top:3px; }
-    .pl-box.cp { background:#EFF6FF; }
-    .pl-box.cp .pl-count, .pl-box.cp .pl-type { color:#1D6FF3; }
-    .pl-box.wp { background:#FFFAEB; }
-    .pl-box.wp .pl-count, .pl-box.wp .pl-type { color:#B54708; }
-    .pl-box.hp { background:#FEF3F2; }
-    .pl-box.hp .pl-count, .pl-box.hp .pl-type { color:#B42318; }
-    .pl-box.cl { background:#ECFDF3; }
-    .pl-box.cl .pl-count, .pl-box.cl .pl-type { color:#027A48; }
-
-    /* ── PENDING ACTION ── */
-    .pending-list { display:flex; flex-direction:column; gap:0; }
-    .p-item { display:flex; align-items:center; gap:11px; padding:10px 0; border-bottom:1px solid #F9FAFB; cursor:pointer; }
-    .p-item:last-child { border-bottom:none; }
-    .p-item:hover .p-text { color:#1D6FF3; }
-    .p-ico { width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-    .p-ico svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-    .p-ico.orange { background:#FFFAEB; color:#B54708; }
-    .p-ico.red    { background:#FEF3F2; color:#B42318; }
-    .p-ico.blue   { background:#EFF6FF; color:#1D6FF3; }
-    .p-ico.green  { background:#ECFDF3; color:#027A48; }
-    .p-text { font-size:12px; color:#344054; flex:1; font-weight:500; line-height:1.4; }
-    .p-num { font-size:13px; font-weight:800; }
-    .p-num.orange { color:#B54708; }
-    .p-num.red    { color:#B42318; }
-    .p-num.blue   { color:#1D6FF3; }
-    .p-chev svg { width:13px; height:13px; stroke:#D0D5DD; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-
-    /* ── QUICK CONNECT ── */
-    .qc-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-    .qc-btn {
-      display:flex; align-items:center; gap:9px;
-      padding:10px 12px; border-radius:9px;
-      background:#F9FAFB; border:1px solid #EAECF0;
-      cursor:pointer; transition:all .15s; text-decoration:none;
-    }
-    .qc-btn:hover { background:#EFF6FF; border-color:#1D6FF3; }
-    .qc-btn svg { width:18px; height:18px; stroke:#1D6FF3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
-    .qc-info {}
-    .qc-name { font-size:12px; font-weight:700; color:#344054; }
-    .qc-sub  { font-size:10px; color:#98A2B3; }
-
-    /* ── REFRESH FOOTER ── */
-    .dash-foot { margin-top:20px; display:flex; align-items:center; gap:6px; font-size:12px; color:#98A2B3; }
-    .dash-foot svg { width:13px; height:13px; stroke:#98A2B3; fill:none; stroke-width:2; cursor:pointer; }
-    .dash-foot svg:hover { stroke:#1D6FF3; }
-
-    /* ── PEOPLE SUB-MENU ── */
     .sb-group { margin-bottom:1px; }
-    .sb-group-head {
-      display:flex; align-items:center; gap:10px;
-      padding:9px 10px; border-radius:8px;
-      color:rgba(255,255,255,.6); font-size:13px; font-weight:500;
-      cursor:pointer; user-select:none; transition:all .15s;
-    }
+    .sb-group-head { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; cursor:pointer; user-select:none; transition:all .15s; }
     .sb-group-head:hover { background:rgba(255,255,255,.07); color:rgba(255,255,255,.9); }
     .sb-group-head.open { color:rgba(255,255,255,.9); background:rgba(255,255,255,.05); }
     .sb-group-head svg.sb-ico { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
@@ -206,103 +36,321 @@
     .sb-group-head.open .sb-chev { transform:rotate(90deg); }
     .sb-sub { padding-left:14px; overflow:hidden; max-height:0; transition:max-height .25s ease; }
     .sb-sub.open { max-height:200px; }
-    .sb-sub-item {
-      display:flex; align-items:center; gap:9px;
-      padding:7px 10px; border-radius:7px;
-      color:rgba(255,255,255,.45); font-size:12px; font-weight:500;
-      transition:all .15s; text-decoration:none; margin-bottom:1px;
-    }
+    .sb-sub-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.45); font-size:12px; font-weight:500; transition:all .15s; text-decoration:none; margin-bottom:1px; }
     .sb-sub-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.8); }
-    .sb-sub-item.active { background:rgba(29,111,243,.2); color:#60A5FA; font-weight:700; }
     .sb-sub-dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; opacity:.7; }
-    .sb-sub-item.active .sb-sub-dot { opacity:1; }
+    .sb-connect { padding:6px 10px 10px; border-top:1px solid rgba(255,255,255,.07); }
+    .sb-connect-label { font-size:10px; font-weight:700; color:rgba(255,255,255,.3); text-transform:uppercase; letter-spacing:.8px; padding:10px 10px 6px; }
+    .sb-connect-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.5); font-size:12px; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
+    .sb-connect-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.85); }
+    .sb-connect-item svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-connect-sub { font-size:10px; color:rgba(255,255,255,.25); margin-left:auto; }
+    .sb-support { margin:8px 10px 14px; padding:10px 12px; background:rgba(255,255,255,.05); border-radius:10px; display:flex; align-items:center; gap:10px; cursor:pointer; }
+    .sb-support:hover { background:rgba(255,255,255,.09); }
+    .sb-support-ico { width:32px; height:32px; border-radius:8px; background:rgba(29,111,243,.3); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .sb-support-ico svg { width:16px; height:16px; stroke:#60A5FA; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .sb-support-text { font-size:11.5px; font-weight:700; color:rgba(255,255,255,.75); line-height:1.2; }
+    .sb-support-sub { font-size:10px; color:rgba(255,255,255,.35); }
 
-    /* ── TOPBAR ACTION BUTTONS ── */
-    .topbar-notif {
-      position:relative; width:36px; height:36px;
-      display:flex; align-items:center; justify-content:center;
-      border-radius:9px; color:#667085; cursor:pointer; border:1px solid #EAECF0; background:white;
-    }
-    .topbar-notif:hover { background:#F9FAFB; }
+    /* ── MAIN ── */
+    .main-content { flex:1; height:100vh; display:flex; flex-direction:column; overflow:hidden; min-width:0; }
+
+    /* ── TOPBAR ── */
+    .topbar { background:white; height:62px; flex-shrink:0; display:flex; align-items:center; justify-content:space-between; padding:0 24px; border-bottom:1px solid #EAECF0; z-index:20; }
+    .topbar-left { display:flex; align-items:center; gap:14px; }
+    .topbar-btn { width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:8px; color:#667085; }
+    .topbar-btn:hover { background:#F2F4F7; }
+    .topbar-btn svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; }
+    .page-title { font-size:16px; font-weight:700; color:#101828; line-height:1.1; }
+    .page-sub { font-size:12px; color:#667085; }
+    .topbar-right { display:flex; align-items:center; gap:12px; }
+    .topbar-date { font-size:12px; color:#667085; display:flex; align-items:center; gap:5px; }
+    .topbar-date svg { width:14px; height:14px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .topbar-notif { position:relative; width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:9px; color:#667085; cursor:pointer; border:1px solid #EAECF0; background:white; }
     .topbar-notif svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-    .notif-dot { position:absolute; top:6px; right:7px; width:8px; height:8px; background:#F04438; border-radius:50%; border:1.5px solid white; }
-    .topbar-logout {
-      display:flex; align-items:center; gap:6px;
-      padding:7px 13px; border-radius:9px;
-      background:#FEF3F2; border:1px solid #FECDCA; color:#B42318;
-      font-size:12px; font-weight:700; cursor:pointer; text-decoration:none;
-      transition:all .15s;
-    }
+    .notif-badge { position:absolute; top:4px; right:4px; min-width:16px; height:16px; background:#F04438; border-radius:8px; border:1.5px solid white; font-size:9px; font-weight:800; color:white; display:flex; align-items:center; justify-content:center; padding:0 3px; }
+    .user-chip { display:flex; align-items:center; gap:9px; padding:6px 10px; border-radius:10px; cursor:pointer; }
+    .user-chip:hover { background:#F5F7FA; }
+    .user-av { width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,#1D6FF3,#1558C8); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:white; flex-shrink:0; }
+    .user-name { font-size:13px; font-weight:700; color:#101828; }
+    .user-role { font-size:11px; color:#98A2B3; display:flex; align-items:center; gap:3px; }
+    .user-role svg { width:12px; height:12px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .topbar-logout { display:flex; align-items:center; gap:6px; padding:7px 13px; border-radius:9px; background:#FEF3F2; border:1px solid #FECDCA; color:#B42318; font-size:12px; font-weight:700; cursor:pointer; text-decoration:none; transition:all .15s; }
     .topbar-logout:hover { background:#FEE4E2; }
     .topbar-logout svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* ── CONTENT AREA ── */
+    .content-area { flex:1; overflow-y:auto; padding:16px 24px 24px; }
+    .content-area::-webkit-scrollbar { width:4px; }
+    .content-area::-webkit-scrollbar-thumb { background:#D1D5DB; border-radius:2px; }
+
+    /* ── FILTER BAR ── */
+    .filter-bar { display:flex; align-items:center; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+    .fb-select { display:flex; align-items:center; gap:6px; padding:7px 11px; background:white; border:1px solid #EAECF0; border-radius:8px; font-size:12px; font-weight:600; color:#344054; cursor:pointer; white-space:nowrap; }
+    .fb-select svg { width:14px; height:14px; stroke:#667085; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .fb-select .chev { width:12px; height:12px; stroke:#98A2B3; }
+    .fb-divider { width:1px; height:20px; background:#EAECF0; margin:0 2px; }
+    .fb-settings { display:flex; align-items:center; gap:6px; padding:7px 11px; background:white; border:1px solid #EAECF0; border-radius:8px; font-size:12px; font-weight:600; color:#667085; cursor:pointer; margin-left:auto; }
+    .fb-settings svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* ── DASH ROWS ── */
+    .dash-row { display:grid; gap:12px; margin-bottom:12px; align-items:stretch; }
+    .cols-4 { grid-template-columns:repeat(4,1fr); }
+    /* Teknisi | Trend | Alert | Approval | QC — balanced widths */
+    .cols-ops { grid-template-columns:1.05fr 2.3fr 1.15fr 0.85fr; }
+
+    /* ── CARD BASE ── */
+    .card { background:white; border-radius:12px; border:1px solid #EAECF0; overflow:hidden; display:flex; flex-direction:column; }
+
+    /* ── ROW 1: STRATEGIC SUMMARY CARDS ── */
+    .s1-head { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-bottom:1px solid #F2F4F7; gap:6px; }
+    .s1-title { font-size:10.5px; font-weight:800; color:#344054; text-transform:uppercase; letter-spacing:.4px; display:flex; align-items:center; gap:6px; flex-shrink:0; }
+    .s1-title svg { width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .s1-link { font-size:11px; color:#1D6FF3; font-weight:600; white-space:nowrap; }
+    .s1-link:hover { text-decoration:underline; }
+    /* 2×2 grid — each cell gets ~half the card width → labels never clip */
+    .s1-metrics { display:grid; grid-template-columns:1fr 1fr; flex:1; }
+    .s1-mc { padding:10px 14px; border-right:1px solid #F2F4F7; border-bottom:1px solid #F2F4F7; }
+    .s1-mc:nth-child(even) { border-right:none; }
+    .s1-mc:nth-child(3),.s1-mc:nth-child(4) { border-bottom:none; }
+    .s1-lbl { font-size:9px; color:#9CA3AF; font-weight:700; margin-bottom:3px; text-transform:uppercase; letter-spacing:.3px; line-height:1.3; }
+    .s1-val { font-size:21px; font-weight:800; color:#101828; letter-spacing:-.6px; line-height:1.1; }
+    .s1-val.warn { color:#D97706; }
+    .s1-val.good { color:#027A48; }
+    .s1-val.bad { color:#D92D20; }
+    .s1-sub { font-size:10px; color:#9CA3AF; margin-top:2px; }
+    .s1-delta { font-size:10px; font-weight:700; margin-top:2px; }
+    .s1-delta.up { color:#027A48; }
+    .s1-delta.dn { color:#D92D20; }
+    .s1-delta.warn { color:#D97706; }
+
+    /* ── ROW 2: LIVE AE MONITORING ── */
+    .ae-monitor-card { background:white; border-radius:12px; border:1px solid #EAECF0; overflow:hidden; margin-bottom:12px; }
+    .ae-monitor-head { display:flex; align-items:center; justify-content:space-between; padding:11px 16px; border-bottom:1px solid #F2F4F7; flex-wrap:wrap; gap:8px; }
+    .ae-monitor-left { display:flex; align-items:center; gap:12px; }
+    .ae-monitor-title { font-size:12px; font-weight:800; color:#101828; text-transform:uppercase; letter-spacing:.4px; }
+    .ae-legend { display:flex; align-items:center; gap:12px; }
+    .ae-leg-item { display:flex; align-items:center; gap:5px; font-size:11px; color:#667085; font-weight:500; }
+    .ae-leg-dot { width:9px; height:9px; border-radius:50%; }
+    .ae-monitor-body { display:flex; height:400px; }
+    .ae-map-panel { flex:0 0 70%; position:relative; }
+    .ae-map-panel #ae-map { width:100%; height:100%; }
+    .ae-list-panel { flex:0 0 30%; border-left:1px solid #EAECF0; display:flex; flex-direction:column; }
+
+    /* Leaflet custom pin */
+    .ae-pin-wrap { display:flex; flex-direction:column; align-items:center; gap:2px; }
+    .ae-pin-circle { width:36px; height:36px; border-radius:50%; border:3px solid #027A48; background:white; display:flex; align-items:center; justify-content:center; font-size:9.5px; font-weight:800; color:#101828; box-shadow:0 3px 8px rgba(0,0,0,.25); font-family:'Inter',sans-serif; line-height:1; }
+    .ae-pin-circle.on-route { border-color:#D97706; }
+    .ae-pin-circle.inactive { border-color:#9CA3AF; color:#9CA3AF; }
+    .ae-pin-label { background:white; border-radius:4px; padding:1px 5px; font-size:8.5px; font-weight:700; color:#344054; white-space:nowrap; box-shadow:0 1px 4px rgba(0,0,0,.15); font-family:'Inter',sans-serif; }
+
+    /* AE List panel */
+    .ae-list-hd { padding:10px 12px; border-bottom:1px solid #F2F4F7; display:flex; align-items:center; justify-content:space-between; }
+    .ae-list-title { font-size:11px; font-weight:800; color:#101828; text-transform:uppercase; letter-spacing:.3px; }
+    .ae-list-drop { font-size:11px; font-weight:600; color:#344054; border:1px solid #EAECF0; border-radius:6px; padding:4px 8px; cursor:pointer; background:white; display:flex; align-items:center; gap:4px; }
+    .ae-list-wrap { flex:1; overflow-y:auto; }
+    .ae-list-wrap::-webkit-scrollbar { width:3px; }
+    .ae-list-wrap::-webkit-scrollbar-thumb { background:#D1D5DB; border-radius:2px; }
+    .ae-tbl { width:100%; border-collapse:collapse; }
+    .ae-tbl thead th { padding:6px 7px; font-size:8px; font-weight:700; color:#9CA3AF; text-transform:uppercase; letter-spacing:.3px; border-bottom:1px solid #F2F4F7; text-align:center; position:sticky; top:0; background:#FAFAFA; white-space:nowrap; z-index:5; }
+    .ae-tbl thead th:nth-child(2) { text-align:left; }
+    .ae-tbl tbody td { padding:6px 7px; border-bottom:1px solid #F9FAFB; text-align:center; vertical-align:middle; font-size:10.5px; color:#344054; }
+    .ae-tbl tbody tr:last-child td { border-bottom:none; }
+    .ae-tbl tbody td:nth-child(2) { text-align:left; }
+    .ae-no { font-size:10px; color:#9CA3AF; font-weight:600; }
+    .ae-name-cell { display:flex; align-items:center; gap:5px; }
+    .ae-ava { width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:7px; font-weight:800; color:white; flex-shrink:0; }
+    .ae-ava.f { background:#027A48; }
+    .ae-ava.r { background:#D97706; }
+    .ae-ava.i { background:#9CA3AF; }
+    .ae-nm { font-size:10.5px; font-weight:600; color:#101828; white-space:nowrap; }
+    .ae-loc { font-size:10px; color:#9CA3AF; }
+    .ae-num { font-weight:700; font-size:11px; }
+    .ae-prog-cell { display:flex; align-items:center; gap:4px; justify-content:flex-end; min-width:60px; }
+    .ae-prog-bar { flex:1; height:4px; border-radius:2px; background:#F2F4F7; overflow:hidden; min-width:30px; }
+    .ae-prog-fill { height:100%; border-radius:2px; }
+    .ae-prog-pct { font-size:10px; font-weight:700; white-space:nowrap; min-width:26px; text-align:right; }
+    .ae-prog-fill.g { background:#027A48; }
+    .ae-prog-fill.y { background:#D97706; }
+    .ae-prog-fill.r { background:#D92D20; }
+    .ae-prog-pct.g { color:#027A48; }
+    .ae-prog-pct.y { color:#D97706; }
+    .ae-prog-pct.r { color:#D92D20; }
+    .ae-list-foot { padding:7px 12px; border-top:1px solid #F2F4F7; background:#FAFAFA; display:grid; grid-template-columns:1fr; }
+    .ae-foot-row { display:flex; align-items:center; justify-content:space-between; font-size:10.5px; font-weight:700; color:#344054; }
+    .ae-foot-sub { font-size:9.5px; color:#9CA3AF; font-weight:500; }
+
+    /* ── ROW 3: OPERATIONS ── */
+    /* Performa Teknisi */
+    .tek-card { display:flex; flex-direction:column; }
+    .tek-metrics { display:grid; grid-template-columns:1fr 1fr; flex:1; }
+    .tek-mc { padding:10px 14px; border-bottom:1px solid #F2F4F7; border-right:1px solid #F2F4F7; }
+    .tek-mc:nth-child(even) { border-right:none; }
+    .tek-mc:nth-child(5),.tek-mc:nth-child(6) { border-bottom:none; }
+    .tek-lbl { font-size:8.5px; color:#9CA3AF; font-weight:700; text-transform:uppercase; letter-spacing:.3px; margin-bottom:3px; white-space:nowrap; }
+    .tek-val { font-size:18px; font-weight:800; color:#101828; letter-spacing:-.5px; line-height:1.1; }
+    .tek-delta { font-size:9.5px; font-weight:700; margin-top:2px; }
+    .tek-delta.up { color:#027A48; }
+    .tek-delta.dn { color:#D92D20; }
+    .tek-delta.warn { color:#D97706; }
+
+    /* Trend Customer */
+    .trend-card { display:flex; flex-direction:column; }
+    .trend-head { display:flex; align-items:center; justify-content:space-between; padding:11px 14px 4px; }
+    .trend-title { font-size:11px; font-weight:800; color:#101828; text-transform:uppercase; letter-spacing:.4px; }
+    .trend-drop { font-size:11px; font-weight:600; color:#344054; border:1px solid #EAECF0; border-radius:6px; padding:3px 8px; cursor:pointer; background:white; }
+    .trend-legend { display:flex; align-items:center; gap:10px; padding:0 14px 4px; }
+    .trend-leg { display:flex; align-items:center; gap:4px; font-size:9.5px; color:#667085; }
+    .trend-leg-line { width:16px; height:3px; border-radius:2px; }
+    .trend-svg { padding:0 6px 4px; flex:1; }
+    .trend-foot { padding:6px 14px 10px; border-top:1px solid #F2F4F7; display:flex; justify-content:flex-end; margin-top:auto; }
+    .trend-link { font-size:11px; color:#1D6FF3; font-weight:600; }
+
+    /* Alert */
+    .alert-card { display:flex; flex-direction:column; }
+    .alert-hd { display:flex; align-items:center; justify-content:space-between; padding:11px 14px; border-bottom:1px solid #F2F4F7; }
+    .alert-title { font-size:11px; font-weight:800; color:#101828; text-transform:uppercase; letter-spacing:.4px; }
+    .alert-link { font-size:11px; color:#1D6FF3; font-weight:600; }
+    .alert-item { display:flex; align-items:flex-start; gap:9px; padding:8px 12px; border-bottom:1px solid #F9FAFB; }
+    .alert-item:last-child { border-bottom:none; }
+    /* circle icons */
+    .alert-ico { width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+    .alert-ico svg { width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .alert-body { flex:1; min-width:0; }
+    /* single-line title with ellipsis — prevents ugly wrapping */
+    .alert-t { font-size:10.5px; font-weight:700; color:#101828; line-height:1.35; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+    .alert-s { font-size:9.5px; color:#667085; margin-top:1px; line-height:1.3; }
+    .alert-ts { font-size:9px; color:#B0B9C8; margin-top:2px; }
+
+    /* Pending Approval */
+    .appr-hd { padding:11px 14px; border-bottom:1px solid #F2F4F7; font-size:11px; font-weight:800; color:#101828; text-transform:uppercase; letter-spacing:.4px; }
+    .appr-item { display:flex; align-items:center; gap:8px; padding:7px 12px; border-bottom:1px solid #F9FAFB; }
+    .appr-item:last-child { border-bottom:none; }
+    .appr-ico { width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .appr-ico svg { width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    /* force single line with ellipsis */
+    .appr-lbl { flex:1; font-size:10.5px; font-weight:600; color:#344054; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .appr-cnt { border-radius:20px; padding:2px 8px; font-size:10.5px; font-weight:800; white-space:nowrap; flex-shrink:0; }
+    .appr-cnt.red { background:#FEF3F2; color:#D92D20; }
+    .appr-cnt.blue { background:#EFF8FF; color:#1D6FF3; }
+    .appr-cnt.green { background:#ECFDF3; color:#027A48; }
+    .appr-cnt.warn { background:#FFFAEB; color:#D97706; }
+
+    /* Quick Connect */
+    .qc-hd { padding:11px 12px; border-bottom:1px solid #F2F4F7; font-size:11px; font-weight:800; color:#101828; text-transform:uppercase; letter-spacing:.4px; }
+    .qc-item { display:flex; align-items:center; gap:9px; padding:7px 12px; border-bottom:1px solid #F9FAFB; cursor:pointer; transition:background .15s; text-decoration:none; }
+    .qc-item:last-child { border-bottom:none; }
+    .qc-item:hover { background:#F9FAFB; }
+    .qc-ico { width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .qc-ico svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .qc-name { font-size:11.5px; font-weight:700; color:#101828; }
+    .qc-sub { font-size:9.5px; color:#9CA3AF; }
+
+    /* Performa Teknisi — mini progress bar per metric */
+    .tek-prog { height:3px; background:#F2F4F7; border-radius:2px; margin-top:5px; overflow:hidden; }
+    .tek-prog-fill { height:100%; border-radius:2px; }
+    .tek-prog-fill.g { background:#027A48; }
+    .tek-prog-fill.y { background:#D97706; }
+    .tek-prog-fill.r { background:#D92D20; }
+
+    /* Customer Per Area bar chart */
+    .area-card { display:flex; flex-direction:column; }
+    .area-body { flex:1; padding:6px 14px 4px; display:flex; flex-direction:column; justify-content:space-between; }
+    .area-row { display:flex; align-items:center; gap:7px; padding:4px 0; }
+    .area-rank { font-size:9px; font-weight:700; color:#C4C9D4; width:12px; text-align:center; flex-shrink:0; }
+    .area-name { font-size:10.5px; font-weight:600; color:#344054; width:72px; flex-shrink:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .area-bar-wrap { flex:1; height:9px; background:#EFF4FF; border-radius:5px; overflow:hidden; min-width:40px; }
+    .area-bar-fill { height:100%; border-radius:5px; background:linear-gradient(90deg,#1D6FF3,#60A5FA); }
+    .area-bar-fill.dn { background:linear-gradient(90deg,#D92D20,#F87171); }
+    .area-cnt { font-size:11px; font-weight:700; color:#101828; width:34px; text-align:right; flex-shrink:0; }
+    .area-d { font-size:9px; font-weight:700; width:38px; text-align:right; flex-shrink:0; }
+    .area-d.up { color:#027A48; }
+    .area-d.dn { color:#D92D20; }
+    .area-foot { padding:7px 14px 10px; border-top:1px solid #F2F4F7; display:flex; align-items:center; justify-content:space-between; }
+    .area-foot-stats { display:flex; gap:14px; }
+    .area-foot-stat { font-size:9.5px; color:#667085; }
+    .area-foot-stat strong { font-size:10.5px; font-weight:700; color:#101828; }
+
+    /* Card header reuse */
+    .card-hd { padding:11px 14px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #F2F4F7; }
+    .card-hd-title { font-size:11px; font-weight:800; color:#101828; text-transform:uppercase; letter-spacing:.4px; display:flex; align-items:center; gap:6px; }
+    .card-hd-title svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width:1320px) {
+      .sidebar { width:190px; }
+      .cols-ops { grid-template-columns:1.05fr 2.1fr 1.15fr 0.85fr; }
+    }
+    @media (max-width:1150px) {
+      .sidebar { width:168px; }
+      .sb-connect-sub { display:none; }
+      .cols-4 { grid-template-columns:repeat(2,1fr); }
+      .cols-ops { grid-template-columns:1fr 1fr; }
+    }
+    @media (max-width:860px) {
+      .sidebar { width:0; overflow:hidden; }
+      .topbar { padding:0 14px; }
+      .topbar-date { display:none; }
+      .content-area { padding:12px 12px 20px; }
+      .cols-4 { grid-template-columns:1fr 1fr; }
+      .cols-ops { grid-template-columns:1fr; }
+      .ae-monitor-body { flex-direction:column; height:auto; }
+      .ae-map-panel { flex:none; height:320px; }
+      .ae-list-panel { flex:none; height:300px; border-left:none; border-top:1px solid #EAECF0; }
+    }
+    @media (max-width:560px) {
+      .cols-4 { grid-template-columns:1fr; }
+      .s1-metrics { grid-template-columns:1fr 1fr; }
+    }
   </style>
 </head>
 <body>
 <div class="mgmt-layout">
 
-  <!-- ══════════ SIDEBAR ══════════ -->
+  <!-- ══ SIDEBAR ══ -->
   <aside class="sidebar">
     <div class="sb-logo">
       <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
       GRIYANET
     </div>
-
     <nav class="sb-nav">
       <a href="dashboard.html" class="sb-item active">
         <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
         Dashboard
       </a>
-
-      <!-- People -->
       <div class="sb-group">
-        <div class="sb-group-head" id="people-head" onclick="togglePeople()">
+        <div class="sb-group-head" id="people-head" onclick="toggleGroup('people')">
           <svg class="sb-ico" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           People
           <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </div>
         <div class="sb-sub" id="people-sub">
-          <a href="tim.html" class="sb-sub-item">
-            <span class="sb-sub-dot"></span>Team
-          </a>
-          <a href="attendance.html" class="sb-sub-item">
-            <span class="sb-sub-dot"></span>Attendance
-          </a>
-          <a href="#" class="sb-sub-item">
-            <span class="sb-sub-dot"></span>Hiring Request
-          </a>
-          <a href="#" class="sb-sub-item">
-            <span class="sb-sub-dot"></span>Reviews
-          </a>
+          <a href="tim.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Team</a>
+          <a href="attendance.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Attendance</a>
+          <a href="hiring.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Hiring Track</a>
+          <a href="reviews.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Reviews</a>
         </div>
       </div>
-
-      <!-- Requests -->
-      <div class="sb-group">
-        <div class="sb-group-head" id="requests-head" onclick="toggleRequests()">
-          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-          Requests
-          <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-        </div>
-        <div class="sb-sub" id="requests-sub">
-          <a href="requests.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Overview</a>
-          <a href="requests.html" class="sb-sub-item"><span class="sb-sub-dot"></span>My Requests</a>
-          <a href="request-create.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Create Request</a>
-        </div>
-      </div>      <a href="approval.html" class="sb-item">
+      <a href="requests.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Requests
+        <span class="sb-badge">3</span>
+      </a>
+      <a href="approval.html" class="sb-item">
         <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
         Approval
-        <span class="sb-badge">2</span>
+        <span class="sb-badge">3</span>
       </a>
       <div class="sb-group">
-        <div class="sb-group-head" id="learning-head" onclick="toggleLearning()">
+        <div class="sb-group-head" id="learning-head" onclick="toggleGroup('learning')">
           <svg class="sb-ico" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg>
           Learning
           <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </div>
         <div class="sb-sub" id="learning-sub">
-          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>My Learning Progress</a>
-          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Learning Library</a>
-          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Team Learning Progress</a>
+          <a href="#" class="sb-sub-item"><span class="sb-sub-dot"></span>My Learning</a>
+          <a href="#" class="sb-sub-item"><span class="sb-sub-dot"></span>Learning Library</a>
+          <a href="#" class="sb-sub-item"><span class="sb-sub-dot"></span>Team Learning</a>
         </div>
       </div>
       <a href="laporan.html" class="sb-item">
@@ -310,38 +358,41 @@
         Report &amp; Analytics
       </a>
     </nav>
-
     <div class="sb-connect">
       <div class="sb-connect-label">Connect</div>
       <a href="#" class="sb-connect-item">
         <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        CRM
-        <span class="sb-connect-sub">Sistem CRM</span>
+        CRM <span class="sb-connect-sub">Sistem CRM</span>
       </a>
       <a href="#" class="sb-connect-item">
         <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
-        ERP
-        <span class="sb-connect-sub">ERP Operasional</span>
+        ERP <span class="sb-connect-sub">ERP Operasional</span>
       </a>
       <a href="#" class="sb-connect-item">
         <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        NOC
-        <span class="sb-connect-sub">Monitoring NOC</span>
+        NOC <span class="sb-connect-sub">Monitoring NOC</span>
       </a>
       <a href="#" class="sb-connect-item">
         <svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-        Ticketing
-        <span class="sb-connect-sub">Sistem Ticket</span>
+        Ticketing <span class="sb-connect-sub">Sistem Ticket</span>
       </a>
       <a href="#" class="sb-connect-item">
         <svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
-        Maps
-        <span class="sb-connect-sub">Google Maps</span>
+        Maps <span class="sb-connect-sub">Google Maps</span>
       </a>
+    </div>
+    <div class="sb-support">
+      <div class="sb-support-ico">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <div>
+        <div class="sb-support-text">Bantuan &amp; Support</div>
+        <div class="sb-support-sub">Butuh bantuan? Hubungi tim support.</div>
+      </div>
     </div>
   </aside>
 
-  <!-- ══════════ MAIN CONTENT ══════════ -->
+  <!-- ══ MAIN ══ -->
   <main class="main-content">
 
     <!-- TOPBAR -->
@@ -350,7 +401,7 @@
         <button class="topbar-btn">
           <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
-        <div class="topbar-titles">
+        <div>
           <div class="page-title">Dashboard Cabang</div>
           <div class="page-sub">Cabang Karangploso</div>
         </div>
@@ -358,362 +409,662 @@
       <div class="topbar-right">
         <div class="topbar-date">
           <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          Jumat, 12 Juni 2026
+          Jumat, 20 Juni 2026
         </div>
-        <button class="topbar-notif" title="Notifikasi">
+        <div class="topbar-notif">
           <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          <span class="notif-dot"></span>
-        </button>
+          <span class="notif-badge">4</span>
+        </div>
         <div class="user-chip">
           <div class="user-av">BS</div>
           <div>
             <div class="user-name">Budi Santoso</div>
-            <div class="user-role">
-              Branch Leader
-              <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-            </div>
+            <div class="user-role">Branch Leader <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
           </div>
         </div>
-        <a href="../../../index.html" class="topbar-logout" title="Keluar">
+        <a href="#" class="topbar-logout">
           <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
           Keluar
         </a>
       </div>
     </header>
 
-    <!-- CONTENT AREA -->
+    <!-- CONTENT -->
     <div class="content-area">
 
-      <!-- KPI STRIP -->
-      <div class="kpi-strip">
-
-        <div class="kpi-card">
-          <div class="kpi-ico blue">
-            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          </div>
-          <div class="kpi-body">
-            <div class="kpi-val">4.285</div>
-            <div class="kpi-lbl">Customer Aktif</div>
-            <div class="kpi-delta pos">▲ +85 bulan ini</div>
-          </div>
+      <!-- FILTER BAR -->
+      <div class="filter-bar">
+        <div class="fb-select">
+          <svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+          Karangploso
+          <svg class="chev" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
-
-        <div class="kpi-card">
-          <div class="kpi-ico green">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>
-          </div>
-          <div class="kpi-body">
-            <div class="kpi-val">12</div>
-            <div class="kpi-lbl">AE Aktif</div>
-            <div class="kpi-sub">10 On Field</div>
-          </div>
+        <div class="fb-select">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          1 – 20 Jun 2026
+          <svg class="chev" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
-
-        <div class="kpi-card">
-          <div class="kpi-ico orange">
-            <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-          </div>
-          <div class="kpi-body">
-            <div class="kpi-val">4</div>
-            <div class="kpi-lbl">Engineer Aktif</div>
-            <div class="kpi-sub">3 On Field</div>
-          </div>
+        <div class="fb-divider"></div>
+        <div class="fb-select">vs 1 – 20 Mei 2026 <svg class="chev" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        <div class="fb-settings" style="margin-left:auto;">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+          Atur Tampilan
         </div>
-
-        <div class="kpi-card">
-          <div class="kpi-ico purple">
-            <svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="2"/></svg>
-          </div>
-          <div class="kpi-body">
-            <div class="kpi-val">1</div>
-            <div class="kpi-lbl">Permit</div>
-            <div class="kpi-badge">Aktif</div>
-          </div>
-        </div>
-
-      </div><!-- /kpi-strip -->
-
-      <!-- DASHBOARD GRID -->
-      <div class="dash-grid">
-
-        <!-- LEFT COLUMN -->
-        <div class="dash-left">
-
-          <!-- Aktivitas Hari Ini -->
-          <div class="w-card">
-            <div class="w-head">
-              <div class="w-title">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                Aktivitas Hari Ini
-              </div>
-              <a class="w-link">Lihat Detail ›</a>
-            </div>
-            <div class="w-body">
-              <div class="metric-4">
-                <div class="m-box blue">
-                  <span class="m-ico">📋</span>
-                  <div class="m-val blue">12</div>
-                  <div class="m-lbl">Pemasangan Hari Ini</div>
-                </div>
-                <div class="m-box green">
-                  <span class="m-ico">✅</span>
-                  <div class="m-val green">7</div>
-                  <div class="m-lbl">Selesai</div>
-                </div>
-                <div class="m-box orange">
-                  <span class="m-ico">⏳</span>
-                  <div class="m-val orange">3</div>
-                  <div class="m-lbl">Progress</div>
-                </div>
-                <div class="m-box red">
-                  <span class="m-ico">⚠️</span>
-                  <div class="m-val red">2</div>
-                  <div class="m-lbl">Pending</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Sales Pipeline -->
-          <div class="w-card">
-            <div class="w-head">
-              <div class="w-title">
-                <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                Sales Pipeline Bulan Ini
-              </div>
-              <a class="w-link">Lihat Pipeline ›</a>
-            </div>
-            <div class="w-body">
-              <div class="pipeline-4">
-                <div class="pl-box cp">
-                  <div class="pl-count">124</div>
-                  <div class="pl-type">CP</div>
-                  <div class="pl-desc">Calon Prospect</div>
-                </div>
-                <div class="pl-box wp">
-                  <div class="pl-count">48</div>
-                  <div class="pl-type">WP</div>
-                  <div class="pl-desc">Warm Prospect</div>
-                </div>
-                <div class="pl-box hp">
-                  <div class="pl-count">17</div>
-                  <div class="pl-type">HP</div>
-                  <div class="pl-desc">Hot Prospect</div>
-                </div>
-                <div class="pl-box cl">
-                  <div class="pl-count">9</div>
-                  <div class="pl-type">Closing</div>
-                  <div class="pl-desc">Bulan Ini</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Workforce Health -->
-          <div class="w-card">
-            <div class="w-head">
-              <div class="w-title">
-                <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                Workforce Health
-              </div>
-              <a class="w-link">Lihat Kehadiran ›</a>
-            </div>
-            <div class="w-body">
-              <div class="metric-4">
-                <div class="m-box green">
-                  <span class="m-ico">🟢</span>
-                  <div class="m-val green">16</div>
-                  <div class="m-lbl">Hadir</div>
-                </div>
-                <div class="m-box orange">
-                  <span class="m-ico">📅</span>
-                  <div class="m-val orange">1</div>
-                  <div class="m-lbl">Izin</div>
-                </div>
-                <div class="m-box blue">
-                  <span class="m-ico">🏥</span>
-                  <div class="m-val blue">0</div>
-                  <div class="m-lbl">Sakit</div>
-                </div>
-                <div class="m-box red">
-                  <span class="m-ico">⚠️</span>
-                  <div class="m-val red">2</div>
-                  <div class="m-lbl">Belum Check In</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Adaptasi AE -->
-          <div class="w-card">
-            <div class="w-head">
-              <div class="w-title">
-                <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-                Adaptasi AE
-              </div>
-              <a class="w-link">Lihat Adaptasi ›</a>
-            </div>
-            <div class="w-body">
-              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
-                <div class="m-box blue">
-                  <span class="m-ico">📚</span>
-                  <div class="m-val blue">4</div>
-                  <div class="m-lbl">Training</div>
-                  <div style="font-size:10px;color:#98A2B3;margin-top:2px;">Dalam Training</div>
-                </div>
-                <div class="m-box orange">
-                  <span class="m-ico">🔥</span>
-                  <div class="m-val orange">2</div>
-                  <div class="m-lbl">Adaptation</div>
-                  <div style="font-size:10px;color:#98A2B3;margin-top:2px;">Adaptasi</div>
-                </div>
-                <div class="m-box green">
-                  <span class="m-ico">🏆</span>
-                  <div class="m-val green">8</div>
-                  <div class="m-lbl">Certified</div>
-                  <div style="font-size:10px;color:#98A2B3;margin-top:2px;">Lulus & Sertifikasi</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div><!-- /dash-left -->
-
-        <!-- RIGHT COLUMN -->
-        <div class="dash-right">
-
-          <!-- Pending Action -->
-          <div class="w-card">
-            <div class="w-head">
-              <div class="w-title">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                Pending Action
-              </div>
-              <a class="w-link">Lihat Semua ›</a>
-            </div>
-            <div class="w-body">
-              <div class="pending-list">
-
-                <div class="p-item">
-                  <div class="p-ico orange">
-                    <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                  </div>
-                  <div class="p-text">Prospect Hot belum Follow Up</div>
-                  <div class="p-num orange">3</div>
-                  <div class="p-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
-                </div>
-
-                <div class="p-item">
-                  <div class="p-ico blue">
-                    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                  </div>
-                  <div class="p-text">Survey belum dijadwalkan</div>
-                  <div class="p-num blue">2</div>
-                  <div class="p-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
-                </div>
-
-                <div class="p-item">
-                  <div class="p-ico red">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                  </div>
-                  <div class="p-text">Permit overdue</div>
-                  <div class="p-num red">1</div>
-                  <div class="p-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
-                </div>
-
-                <div class="p-item">
-                  <div class="p-ico orange">
-                    <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-                  </div>
-                  <div class="p-text">Approval menunggu</div>
-                  <div class="p-num orange">2</div>
-                  <div class="p-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-          <!-- Quick Connect -->
-          <div class="w-card">
-            <div class="w-head">
-              <div class="w-title">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/></svg>
-                Quick Connect
-              </div>
-            </div>
-            <div class="w-body">
-              <div class="qc-grid">
-                <a href="#" class="qc-btn">
-                  <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                  <div class="qc-info">
-                    <div class="qc-name">CRM</div>
-                    <div class="qc-sub">Sistem CRM</div>
-                  </div>
-                </a>
-                <a href="#" class="qc-btn">
-                  <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
-                  <div class="qc-info">
-                    <div class="qc-name">ERP</div>
-                    <div class="qc-sub">ERP Operasional</div>
-                  </div>
-                </a>
-                <a href="#" class="qc-btn">
-                  <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                  <div class="qc-info">
-                    <div class="qc-name">NOC</div>
-                    <div class="qc-sub">Monitoring NOC</div>
-                  </div>
-                </a>
-                <a href="#" class="qc-btn">
-                  <svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-                  <div class="qc-info">
-                    <div class="qc-name">Ticketing</div>
-                    <div class="qc-sub">Sistem Ticket</div>
-                  </div>
-                </a>
-                <a href="#" class="qc-btn" style="grid-column:span 2;">
-                  <svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
-                  <div class="qc-info">
-                    <div class="qc-name">Maps</div>
-                    <div class="qc-sub">Google Maps</div>
-                  </div>
-                </a>
-              </div>
-            </div>
-          </div>
-
-        </div><!-- /dash-right -->
-      </div><!-- /dash-grid -->
-
-      <!-- FOOTER -->
-      <div class="dash-foot">
-        <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-        Dashboard diperbarui 2 menit yang lalu
       </div>
+
+      <!-- ════════════════════════════════════
+           LAYER 1 — STRATEGIC SUMMARY (4 Cards)
+           ════════════════════════════════════ -->
+      <div class="dash-row cols-4">
+
+        <!-- ANALISIS CUSTOMER -->
+        <div class="card">
+          <div class="s1-head">
+            <div class="s1-title" style="color:#1D6FF3;">
+              <svg viewBox="0 0 24 24" style="stroke:#1D6FF3;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              Analisis Customer
+            </div>
+            <a href="#" class="s1-link">Lihat Detail →</a>
+          </div>
+          <div class="s1-metrics">
+            <div class="s1-mc">
+              <div class="s1-lbl">Customer Aktif</div>
+              <div class="s1-val">4.285</div>
+              <div class="s1-delta up">▲ 5.2%</div>
+            </div>
+            <div class="s1-mc">
+              <div class="s1-lbl">Customer Baru (Bln)</div>
+              <div class="s1-val good">128</div>
+              <div class="s1-delta up">▲ 12.8%</div>
+            </div>
+            <div class="s1-mc">
+              <div class="s1-lbl">Isolir</div>
+              <div class="s1-val warn">96</div>
+              <div class="s1-delta warn">▲ 3.1%</div>
+            </div>
+            <div class="s1-mc">
+              <div class="s1-lbl">Churn Rate</div>
+              <div class="s1-val">1.32%</div>
+              <div class="s1-delta up">▼ 0.24%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ANALISIS AE -->
+        <div class="card">
+          <div class="s1-head">
+            <div class="s1-title" style="color:#7C3AED;">
+              <svg viewBox="0 0 24 24" style="stroke:#7C3AED;"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              Analisis AE
+            </div>
+            <a href="#" class="s1-link">Lihat Detail →</a>
+          </div>
+          <div class="s1-metrics">
+            <div class="s1-mc">
+              <div class="s1-lbl">CP Total</div>
+              <div class="s1-val">1.248</div>
+              <div class="s1-delta up">▲ 8.6%</div>
+            </div>
+            <div class="s1-mc">
+              <div class="s1-lbl">CP Valid</div>
+              <div class="s1-val">842</div>
+              <div class="s1-delta up">▲ 10.4%</div>
+            </div>
+            <div class="s1-mc">
+              <div class="s1-lbl">Konversi</div>
+              <div class="s1-val">38.7%</div>
+              <div class="s1-delta up">▲ 2.1%</div>
+            </div>
+            <div class="s1-mc">
+              <div class="s1-lbl">Closing (Bln Ini)</div>
+              <div class="s1-val good">9</div>
+              <div class="s1-delta up">▲ 12.5%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ANALISIS AREA -->
+        <div class="card">
+          <div class="s1-head">
+            <div class="s1-title" style="color:#059669;">
+              <svg viewBox="0 0 24 24" style="stroke:#059669;"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+              Analisis Area
+            </div>
+            <a href="#" class="s1-link">Lihat Detail →</a>
+          </div>
+          <div class="s1-metrics">
+            <div class="s1-mc">
+              <div class="s1-lbl">Area Aktif</div>
+              <div class="s1-val" style="color:#1D6FF3;">28</div>
+              <div class="s1-sub">area</div>
+            </div>
+            <div class="s1-mc">
+              <div class="s1-lbl">Area Baru (Bln Ini)</div>
+              <div class="s1-val good">2</div>
+              <div class="s1-delta up">+2 bln ini</div>
+            </div>
+            <div class="s1-mc">
+              <div class="s1-lbl">Area Prospek</div>
+              <div class="s1-val warn">6</div>
+              <div class="s1-delta warn">perlu FU</div>
+            </div>
+            <div class="s1-mc">
+              <div class="s1-lbl">Top Area</div>
+              <div class="s1-val" style="font-size:13px;font-weight:700;">Dau</div>
+              <div class="s1-delta up">▲ 8.2%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PEOPLE (TIM) -->
+        <div class="card">
+          <div class="s1-head">
+            <div class="s1-title" style="color:#D97706;">
+              <svg viewBox="0 0 24 24" style="stroke:#D97706;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              People (Tim)
+            </div>
+            <a href="tim.html" class="s1-link">Lihat Detail →</a>
+          </div>
+          <div class="s1-metrics">
+            <div class="s1-mc">
+              <div class="s1-lbl">Total Tim</div>
+              <div class="s1-val">20</div>
+              <div class="s1-sub">Orang</div>
+            </div>
+            <div class="s1-mc">
+              <div class="s1-lbl">Hadir</div>
+              <div class="s1-val good">17</div>
+              <div class="s1-sub">85%</div>
+            </div>
+            <div class="s1-mc">
+              <div class="s1-lbl">Terlambat</div>
+              <div class="s1-val warn">1</div>
+              <div class="s1-sub">5%</div>
+            </div>
+            <div class="s1-mc">
+              <div class="s1-lbl">Tdk Hadir</div>
+              <div class="s1-val bad">2</div>
+              <div class="s1-sub">10%</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /layer1 -->
+
+      <!-- ════════════════════════════════════
+           LAYER 2 — LIVE AE MONITORING
+           ════════════════════════════════════ -->
+      <div class="ae-monitor-card">
+        <div class="ae-monitor-head">
+          <div class="ae-monitor-left">
+            <div class="ae-monitor-title">Live View AE Aktif (10 AE)</div>
+            <div class="ae-legend">
+              <div class="ae-leg-item"><div class="ae-leg-dot" style="background:#027A48;"></div>On Field (7)</div>
+              <div class="ae-leg-item"><div class="ae-leg-dot" style="background:#D97706;"></div>On Route (2)</div>
+              <div class="ae-leg-item"><div class="ae-leg-dot" style="background:#9CA3AF;"></div>Inactive (1)</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="font-size:10.5px;color:#667085;display:flex;align-items:center;gap:4px;">
+              <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:#9CA3AF;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Update: 10:24 WIB
+            </div>
+            <button style="font-size:11px;font-weight:600;color:#344054;border:1px solid #EAECF0;border-radius:6px;padding:4px 9px;background:white;cursor:pointer;display:flex;align-items:center;gap:4px;">
+              10 AE <svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="ae-monitor-body">
+
+          <!-- MAP 70% -->
+          <div class="ae-map-panel">
+            <div id="ae-map"></div>
+          </div>
+
+          <!-- LIST AE 30% -->
+          <div class="ae-list-panel">
+            <div class="ae-list-hd">
+              <div class="ae-list-title">List AE Aktif</div>
+            </div>
+            <div class="ae-list-wrap">
+              <table class="ae-tbl">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>AE</th>
+                    <th>Lokasi</th>
+                    <th>CP</th>
+                    <th>Valid</th>
+                    <th>Target</th>
+                    <th>Progress</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="ae-no">1</td>
+                    <td><div class="ae-name-cell"><div class="ae-ava f">AS</div><div class="ae-nm">Ahmad Suharto</div></div></td>
+                    <td class="ae-loc">Dau</td>
+                    <td class="ae-num">18</td><td class="ae-num">12</td><td class="ae-num">15</td>
+                    <td><div class="ae-prog-cell"><div class="ae-prog-bar"><div class="ae-prog-fill g" style="width:80%;"></div></div><span class="ae-prog-pct g">80%</span></div></td>
+                  </tr>
+                  <tr>
+                    <td class="ae-no">2</td>
+                    <td><div class="ae-name-cell"><div class="ae-ava r">LP</div><div class="ae-nm">Lina Permata</div></div></td>
+                    <td class="ae-loc">Singosari</td>
+                    <td class="ae-num">16</td><td class="ae-num">11</td><td class="ae-num">15</td>
+                    <td><div class="ae-prog-cell"><div class="ae-prog-bar"><div class="ae-prog-fill y" style="width:73%;"></div></div><span class="ae-prog-pct y">73%</span></div></td>
+                  </tr>
+                  <tr>
+                    <td class="ae-no">3</td>
+                    <td><div class="ae-name-cell"><div class="ae-ava f">BR</div><div class="ae-nm">Budi Raharjo</div></div></td>
+                    <td class="ae-loc">Dau</td>
+                    <td class="ae-num">14</td><td class="ae-num">10</td><td class="ae-num">15</td>
+                    <td><div class="ae-prog-cell"><div class="ae-prog-bar"><div class="ae-prog-fill y" style="width:67%;"></div></div><span class="ae-prog-pct y">67%</span></div></td>
+                  </tr>
+                  <tr>
+                    <td class="ae-no">4</td>
+                    <td><div class="ae-name-cell"><div class="ae-ava f">CM</div><div class="ae-nm">Citra Maharani</div></div></td>
+                    <td class="ae-loc">Dau</td>
+                    <td class="ae-num">17</td><td class="ae-num">13</td><td class="ae-num">15</td>
+                    <td><div class="ae-prog-cell"><div class="ae-prog-bar"><div class="ae-prog-fill g" style="width:87%;"></div></div><span class="ae-prog-pct g">87%</span></div></td>
+                  </tr>
+                  <tr>
+                    <td class="ae-no">5</td>
+                    <td><div class="ae-name-cell"><div class="ae-ava r">DK</div><div class="ae-nm">Dewi Kusuma</div></div></td>
+                    <td class="ae-loc">Lawang</td>
+                    <td class="ae-num">12</td><td class="ae-num">9</td><td class="ae-num">15</td>
+                    <td><div class="ae-prog-cell"><div class="ae-prog-bar"><div class="ae-prog-fill y" style="width:60%;"></div></div><span class="ae-prog-pct y">60%</span></div></td>
+                  </tr>
+                  <tr>
+                    <td class="ae-no">6</td>
+                    <td><div class="ae-name-cell"><div class="ae-ava f">FR</div><div class="ae-nm">Farida Rahma</div></div></td>
+                    <td class="ae-loc">Karangploso</td>
+                    <td class="ae-num">11</td><td class="ae-num">7</td><td class="ae-num">15</td>
+                    <td><div class="ae-prog-cell"><div class="ae-prog-bar"><div class="ae-prog-fill r" style="width:47%;"></div></div><span class="ae-prog-pct r">47%</span></div></td>
+                  </tr>
+                  <tr>
+                    <td class="ae-no">7</td>
+                    <td><div class="ae-name-cell"><div class="ae-ava f">RD</div><div class="ae-nm">Ricky Dwi</div></div></td>
+                    <td class="ae-loc">Singosari</td>
+                    <td class="ae-num">9</td><td class="ae-num">6</td><td class="ae-num">15</td>
+                    <td><div class="ae-prog-cell"><div class="ae-prog-bar"><div class="ae-prog-fill r" style="width:40%;"></div></div><span class="ae-prog-pct r">40%</span></div></td>
+                  </tr>
+                  <tr>
+                    <td class="ae-no">8</td>
+                    <td><div class="ae-name-cell"><div class="ae-ava f">AG</div><div class="ae-nm">Agus Setiawan</div></div></td>
+                    <td class="ae-loc">Lawang</td>
+                    <td class="ae-num">15</td><td class="ae-num">10</td><td class="ae-num">15</td>
+                    <td><div class="ae-prog-cell"><div class="ae-prog-bar"><div class="ae-prog-fill y" style="width:67%;"></div></div><span class="ae-prog-pct y">67%</span></div></td>
+                  </tr>
+                  <tr style="opacity:.55;">
+                    <td class="ae-no">9</td>
+                    <td><div class="ae-name-cell"><div class="ae-ava i">RL</div><div class="ae-nm">Rina Lestari</div></div></td>
+                    <td class="ae-loc" style="color:#D92D20;">—</td>
+                    <td class="ae-num">0</td><td class="ae-num">0</td><td class="ae-num">15</td>
+                    <td><div class="ae-prog-cell"><div class="ae-prog-bar"><div class="ae-prog-fill r" style="width:0%;"></div></div><span class="ae-prog-pct r">0%</span></div></td>
+                  </tr>
+                  <tr>
+                    <td class="ae-no">10</td>
+                    <td><div class="ae-name-cell"><div class="ae-ava f">FN</div><div class="ae-nm">Fajar Nugroho</div></div></td>
+                    <td class="ae-loc">Dau</td>
+                    <td class="ae-num">10</td><td class="ae-num">7</td><td class="ae-num">15</td>
+                    <td><div class="ae-prog-cell"><div class="ae-prog-bar"><div class="ae-prog-fill r" style="width:47%;"></div></div><span class="ae-prog-pct r">47%</span></div></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="ae-list-foot">
+              <div class="ae-foot-row">
+                <span>Total</span>
+                <span>132 CP &nbsp;|&nbsp; 85 Valid &nbsp;|&nbsp; 150 Target</span>
+                <span class="ae-prog-pct y" style="font-size:11px;">57%</span>
+              </div>
+              <div class="ae-foot-sub" style="margin-top:2px;">Progress rata-rata tim hari ini</div>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /layer2 -->
+
+      <!-- ════════════════════════════════════
+           LAYER 3 — OPERATION & ANALYTICS
+           ════════════════════════════════════ -->
+      <div class="dash-row cols-ops">
+
+        <!-- PERFORMA TEKNISI -->
+        <div class="card tek-card">
+          <div class="card-hd">
+            <div class="card-hd-title" style="color:#D97706;">
+              <svg viewBox="0 0 24 24" style="stroke:#D97706;"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+              Performa Teknisi
+            </div>
+          </div>
+          <div class="tek-metrics">
+            <div class="tek-mc">
+              <div class="tek-lbl">WO Selesai</div>
+              <div class="tek-val">186</div>
+              <div class="tek-prog"><div class="tek-prog-fill g" style="width:93%;"></div></div>
+              <div class="tek-delta up">▲ 8.7% · 93% target</div>
+            </div>
+            <div class="tek-mc">
+              <div class="tek-lbl">SLA &lt;48 Jam</div>
+              <div class="tek-val" style="color:#027A48;">92%</div>
+              <div class="tek-prog"><div class="tek-prog-fill g" style="width:92%;"></div></div>
+              <div class="tek-delta up">▲ 3.4% · target 95%</div>
+            </div>
+            <div class="tek-mc">
+              <div class="tek-lbl">Revisit</div>
+              <div class="tek-val" style="color:#D97706;">6</div>
+              <div class="tek-prog"><div class="tek-prog-fill y" style="width:60%;"></div></div>
+              <div class="tek-delta dn">▲ 1.0% · target ≤5</div>
+            </div>
+            <div class="tek-mc">
+              <div class="tek-lbl">WO Pending</div>
+              <div class="tek-val" style="color:#D92D20;">34</div>
+              <div class="tek-prog"><div class="tek-prog-fill r" style="width:100%;"></div></div>
+              <div class="tek-delta warn">▲ 5.6% · over target</div>
+            </div>
+            <div class="tek-mc">
+              <div class="tek-lbl">PSB/Teknisi/Hr</div>
+              <div class="tek-val">4.2</div>
+              <div class="tek-prog"><div class="tek-prog-fill g" style="width:84%;"></div></div>
+              <div class="tek-delta up">▲ 9.3% · target 5.0</div>
+            </div>
+            <div class="tek-mc">
+              <div class="tek-lbl">First Time Fix</div>
+              <div class="tek-val" style="color:#027A48;">95%</div>
+              <div class="tek-prog"><div class="tek-prog-fill g" style="width:95%;"></div></div>
+              <div class="tek-delta up">▲ 2.6% · target 97%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CUSTOMER PER AREA -->
+        <div class="card area-card">
+          <div class="card-hd">
+            <div class="card-hd-title" style="color:#1D6FF3;">
+              <svg viewBox="0 0 24 24" style="stroke:#1D6FF3;"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+              Customer Per Area
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-size:10px;color:#9CA3AF;">Total: <strong style="color:#101828;font-size:11px;">4.285</strong></span>
+              <button class="trend-drop">Bln Ini ▾</button>
+            </div>
+          </div>
+          <div class="area-body">
+
+            <!-- Row header -->
+            <div class="area-row" style="padding-bottom:2px;border-bottom:1px solid #F2F4F7;margin-bottom:2px;">
+              <div class="area-rank" style="color:#9CA3AF;">#</div>
+              <div class="area-name" style="font-size:9px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:.3px;">Area</div>
+              <div style="flex:1;font-size:9px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:.3px;">Distribusi</div>
+              <div style="width:34px;font-size:9px;font-weight:700;color:#9CA3AF;text-align:right;text-transform:uppercase;letter-spacing:.3px;">Cust.</div>
+              <div style="width:38px;font-size:9px;font-weight:700;color:#9CA3AF;text-align:right;text-transform:uppercase;letter-spacing:.3px;">Δ Bln</div>
+            </div>
+
+            <!-- 1 Dau — 820 / 820 = 100% -->
+            <div class="area-row">
+              <div class="area-rank">1</div>
+              <div class="area-name">Dau</div>
+              <div class="area-bar-wrap"><div class="area-bar-fill" style="width:100%;"></div></div>
+              <div class="area-cnt">820</div>
+              <div class="area-d up">▲8.2%</div>
+            </div>
+            <!-- 2 Singosari — 615 / 820 = 75% -->
+            <div class="area-row">
+              <div class="area-rank">2</div>
+              <div class="area-name">Singosari</div>
+              <div class="area-bar-wrap"><div class="area-bar-fill" style="width:75%;"></div></div>
+              <div class="area-cnt">615</div>
+              <div class="area-d up">▲3.4%</div>
+            </div>
+            <!-- 3 Karangploso — 580 / 820 = 71% -->
+            <div class="area-row">
+              <div class="area-rank">3</div>
+              <div class="area-name">Karangploso</div>
+              <div class="area-bar-wrap"><div class="area-bar-fill" style="width:71%;"></div></div>
+              <div class="area-cnt">580</div>
+              <div class="area-d up">▲2.1%</div>
+            </div>
+            <!-- 4 Lawang — 465 / 820 = 57% (declining) -->
+            <div class="area-row">
+              <div class="area-rank">4</div>
+              <div class="area-name">Lawang</div>
+              <div class="area-bar-wrap" style="background:#FEE2E2;"><div class="area-bar-fill dn" style="width:57%;"></div></div>
+              <div class="area-cnt">465</div>
+              <div class="area-d dn">▼1.2%</div>
+            </div>
+            <!-- 5 Pakis — 390 / 820 = 48% -->
+            <div class="area-row">
+              <div class="area-rank">5</div>
+              <div class="area-name">Pakis</div>
+              <div class="area-bar-wrap"><div class="area-bar-fill" style="width:48%;"></div></div>
+              <div class="area-cnt">390</div>
+              <div class="area-d up">▲5.6%</div>
+            </div>
+            <!-- 6 Tumpang — 340 / 820 = 41% -->
+            <div class="area-row">
+              <div class="area-rank">6</div>
+              <div class="area-name">Tumpang</div>
+              <div class="area-bar-wrap"><div class="area-bar-fill" style="width:41%;"></div></div>
+              <div class="area-cnt">340</div>
+              <div class="area-d up">▲1.8%</div>
+            </div>
+            <!-- 7 Jabung — 285 / 820 = 35% -->
+            <div class="area-row">
+              <div class="area-rank">7</div>
+              <div class="area-name">Jabung</div>
+              <div class="area-bar-wrap"><div class="area-bar-fill" style="width:35%;"></div></div>
+              <div class="area-cnt">285</div>
+              <div class="area-d up">▲0.9%</div>
+            </div>
+            <!-- 8 Kepanjen — 250 / 820 = 30% (declining) -->
+            <div class="area-row">
+              <div class="area-rank">8</div>
+              <div class="area-name">Kepanjen</div>
+              <div class="area-bar-wrap" style="background:#FEE2E2;"><div class="area-bar-fill dn" style="width:30%;"></div></div>
+              <div class="area-cnt">250</div>
+              <div class="area-d dn">▼2.3%</div>
+            </div>
+
+          </div>
+          <div class="area-foot">
+            <div class="area-foot-stats">
+              <div class="area-foot-stat">Area Aktif: <strong>8</strong></div>
+              <div class="area-foot-stat">Tumbuh: <strong style="color:#027A48;">6</strong></div>
+              <div class="area-foot-stat">Turun: <strong style="color:#D92D20;">2</strong></div>
+            </div>
+            <a href="#" class="trend-link">Lihat Detail →</a>
+          </div>
+        </div>
+
+        <!-- PENDING APPROVAL -->
+        <div class="card">
+          <div class="appr-hd">Pending Approval</div>
+          <div class="appr-item">
+            <div class="appr-ico" style="background:#EFF8FF;">
+              <svg viewBox="0 0 24 24" style="stroke:#1D6FF3;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            </div>
+            <div class="appr-lbl">Approval Attendance</div>
+            <div class="appr-cnt blue">2</div>
+          </div>
+          <div class="appr-item">
+            <div class="appr-ico" style="background:#ECFDF3;">
+              <svg viewBox="0 0 24 24" style="stroke:#027A48;"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <div class="appr-lbl">Approval Financial</div>
+            <div class="appr-cnt red">3</div>
+          </div>
+          <div class="appr-item">
+            <div class="appr-ico" style="background:#FEF3F2;">
+              <svg viewBox="0 0 24 24" style="stroke:#D92D20;"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            </div>
+            <div class="appr-lbl">Approval Asset</div>
+            <div class="appr-cnt warn">1</div>
+          </div>
+          <div class="appr-item">
+            <div class="appr-ico" style="background:#FFFAEB;">
+              <svg viewBox="0 0 24 24" style="stroke:#D97706;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div class="appr-lbl">Approval Team Movement</div>
+            <div class="appr-cnt warn">1</div>
+          </div>
+          <div class="appr-item">
+            <div class="appr-ico" style="background:#F5F3FF;">
+              <svg viewBox="0 0 24 24" style="stroke:#7C3AED;"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg>
+            </div>
+            <div class="appr-lbl">Approval Learning</div>
+            <div class="appr-cnt blue">1</div>
+          </div>
+          <div style="padding:8px 12px;border-top:1px solid #F2F4F7;margin-top:auto;display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:10px;color:#667085;">Total: <strong style="color:#D92D20;font-weight:800;">8</strong> pending</span>
+            <a href="approval.html" style="font-size:11px;color:#1D6FF3;font-weight:600;">Review Semua →</a>
+          </div>
+        </div>
+
+        <!-- QUICK CONNECT -->
+        <div class="card">
+          <div class="qc-hd">Quick Connect</div>
+          <a href="#" class="qc-item">
+            <div class="qc-ico" style="background:#EFF8FF;">
+              <svg viewBox="0 0 24 24" style="stroke:#1D6FF3;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div><div class="qc-name">CRM</div><div class="qc-sub">Sistem CRM</div></div>
+          </a>
+          <a href="#" class="qc-item">
+            <div class="qc-ico" style="background:#ECFDF3;">
+              <svg viewBox="0 0 24 24" style="stroke:#027A48;"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+            </div>
+            <div><div class="qc-name">ERP</div><div class="qc-sub">ERP Operasional</div></div>
+          </a>
+          <a href="#" class="qc-item">
+            <div class="qc-ico" style="background:#FFFAEB;">
+              <svg viewBox="0 0 24 24" style="stroke:#D97706;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <div><div class="qc-name">NOC</div><div class="qc-sub">Monitoring NOC</div></div>
+          </a>
+          <a href="#" class="qc-item">
+            <div class="qc-ico" style="background:#FEF3F2;">
+              <svg viewBox="0 0 24 24" style="stroke:#D92D20;"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            </div>
+            <div><div class="qc-name">Ticketing</div><div class="qc-sub">Sistem Ticket</div></div>
+          </a>
+          <a href="#" class="qc-item">
+            <div class="qc-ico" style="background:#F5F3FF;">
+              <svg viewBox="0 0 24 24" style="stroke:#7C3AED;"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div><div class="qc-name">Maps</div><div class="qc-sub">Google Maps</div></div>
+          </a>
+        </div>
+
+      </div><!-- /layer3 -->
 
     </div><!-- /content-area -->
   </main>
 </div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-function toggleLearning() {
-  var head = document.getElementById('learning-head');
-  var sub  = document.getElementById('learning-sub');
-  head.classList.toggle('open');
-  sub.classList.toggle('open');
-}
-function togglePeople() {
-  var head = document.getElementById('people-head');
-  var sub  = document.getElementById('people-sub');
-  head.classList.toggle('open');
-  sub.classList.toggle('open');
-}
-function toggleRequests() {
-  var head = document.getElementById('requests-head');
-  var sub  = document.getElementById('requests-sub');
-  head.classList.toggle('open');
-  sub.classList.toggle('open');
-}
+  /* ── Sidebar group toggle ── */
+  function toggleGroup(id) {
+    const head = document.getElementById(id + '-head');
+    const sub  = document.getElementById(id + '-sub');
+    head.classList.toggle('open');
+    sub.classList.toggle('open');
+  }
+
+  /* ── Leaflet map ── */
+  const map = L.map('ae-map', {
+    center: [-7.9269, 112.5872],
+    zoom: 13,
+    zoomControl: true,
+    attributionControl: false
+  });
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19
+  }).addTo(map);
+
+  L.control.attribution({ prefix: false }).addTo(map).setPrefix('© <a href="https://openstreetmap.org">OSM</a>');
+
+  /* AE data */
+  const aeList = [
+    { id:'AS', name:'Ahmad Suharto',  lat:-7.9095, lng:112.5488, status:'field', cp:18, valid:12, target:15, pct:80, loc:'Dau' },
+    { id:'LP', name:'Lina Permata',   lat:-7.9012, lng:112.6218, status:'route', cp:16, valid:11, target:15, pct:73, loc:'Singosari' },
+    { id:'BR', name:'Budi Raharjo',   lat:-7.8930, lng:112.6680, status:'field', cp:14, valid:10, target:15, pct:67, loc:'Dau' },
+    { id:'CM', name:'Citra Maharani', lat:-7.9285, lng:112.5512, status:'field', cp:17, valid:13, target:15, pct:87, loc:'Dau' },
+    { id:'DK', name:'Dewi Kusuma',    lat:-7.9135, lng:112.6085, status:'route', cp:12, valid:9,  target:15, pct:60, loc:'Lawang' },
+    { id:'FR', name:'Farida Rahma',   lat:-7.9435, lng:112.5932, status:'field', cp:11, valid:7,  target:15, pct:47, loc:'Karangploso' },
+    { id:'RD', name:'Ricky Dwi',      lat:-7.9050, lng:112.6482, status:'field', cp:9,  valid:6,  target:15, pct:40, loc:'Singosari' },
+    { id:'AG', name:'Agus Setiawan',  lat:-7.9582, lng:112.6352, status:'field', cp:15, valid:10, target:15, pct:67, loc:'Lawang' },
+    { id:'FN', name:'Fajar Nugroho',  lat:-7.9720, lng:112.6530, status:'field', cp:10, valid:7,  target:15, pct:47, loc:'Dau' },
+  ];
+
+  function pinColor(status) {
+    return status === 'field' ? '#027A48' : status === 'route' ? '#D97706' : '#9CA3AF';
+  }
+  function pctColor(pct) {
+    return pct >= 80 ? '#027A48' : pct >= 60 ? '#D97706' : '#D92D20';
+  }
+
+  aeList.forEach(ae => {
+    const color = pinColor(ae.status);
+    const icon = L.divIcon({
+      html: `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+        <div style="width:36px;height:36px;border-radius:50%;border:3px solid ${color};background:white;
+          display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:800;
+          color:#101828;box-shadow:0 3px 8px rgba(0,0,0,.25);font-family:'Inter',sans-serif;line-height:1;">${ae.id}</div>
+        <div style="background:white;border-radius:4px;padding:1px 5px;font-size:8px;font-weight:700;
+          color:#344054;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.15);font-family:'Inter',sans-serif;">${ae.valid}/${ae.target} CP</div>
+      </div>`,
+      className: '',
+      iconSize: [60, 52],
+      iconAnchor: [30, 52],
+      popupAnchor: [0, -54]
+    });
+
+    const statusLabel = ae.status === 'field' ? 'On Field' : ae.status === 'route' ? 'On Route' : 'Inactive';
+    const statusColor = pinColor(ae.status);
+    const bar = Math.round(ae.pct);
+    const bColor = pctColor(ae.pct);
+
+    L.marker([ae.lat, ae.lng], { icon }).addTo(map).bindPopup(`
+      <div style="font-family:'Inter',sans-serif;min-width:180px;padding:2px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <div style="width:32px;height:32px;border-radius:50%;border:2.5px solid ${statusColor};background:white;
+            display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#101828;">${ae.id}</div>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:#101828;">${ae.name}</div>
+            <div style="font-size:10px;color:${statusColor};font-weight:600;">${statusLabel}</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:11px;">
+          <div style="color:#9CA3AF;">Lokasi</div><div style="font-weight:600;color:#344054;">${ae.loc}</div>
+          <div style="color:#9CA3AF;">CP Hari Ini</div><div style="font-weight:700;color:#101828;">${ae.cp}</div>
+          <div style="color:#9CA3AF;">CP Valid</div><div style="font-weight:700;color:#101828;">${ae.valid}</div>
+          <div style="color:#9CA3AF;">Target CP</div><div style="font-weight:600;color:#344054;">${ae.target}</div>
+          <div style="color:#9CA3AF;">Progress</div>
+          <div><span style="font-weight:800;color:${bColor};">${ae.pct}%</span></div>
+        </div>
+        <div style="margin-top:8px;height:5px;background:#F2F4F7;border-radius:3px;overflow:hidden;">
+          <div style="width:${bar}%;height:100%;background:${bColor};border-radius:3px;"></div>
+        </div>
+        <div style="margin-top:6px;font-size:9.5px;color:#9CA3AF;">Last update: 10:24 WIB</div>
+      </div>
+    `, { maxWidth: 220, className: 'ae-popup' });
+  });
+
+  /* Route line (yellow) through Dau → Karangploso → Singosari */
+  const routeCoords = [
+    [-7.9095, 112.5488],
+    [-7.9285, 112.5512],
+    [-7.9269, 112.5872],
+    [-7.9135, 112.6085],
+    [-7.9012, 112.6218],
+    [-7.9050, 112.6482],
+    [-7.8930, 112.6680]
+  ];
+  L.polyline(routeCoords, { color:'#EAB308', weight:3, opacity:.7, dashArray:'8,4' }).addTo(map);
 </script>
 </body>
 </html>

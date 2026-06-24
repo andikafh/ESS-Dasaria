@@ -10,11 +10,15 @@
     html, body { height:100%; font-family:'Inter',-apple-system,sans-serif; font-size:14px; color:#101828; background:#F5F7FA; -webkit-font-smoothing:antialiased; }
     a { text-decoration:none; color:inherit; }
     button { font-family:inherit; cursor:pointer; border:none; background:none; }
+
+    /* LAYOUT */
     .mgmt-layout { display:flex; height:100vh; overflow:hidden; }
-    .sidebar { width:230px; flex-shrink:0; background:#0D1B3E; height:100vh; display:flex; flex-direction:column; overflow-y:auto; }
+
+    /* SIDEBAR */
+    .sidebar { width:230px; flex-shrink:0; background:#0D1B3E; height:100vh; display:flex; flex-direction:column; overflow-y:auto; overflow-x:hidden; }
     .sidebar::-webkit-scrollbar { width:3px; }
     .sidebar::-webkit-scrollbar-thumb { background:rgba(255,255,255,.1); border-radius:2px; }
-    .sb-logo { display:flex; align-items:center; gap:10px; padding:22px 18px 16px; color:white; font-size:14px; font-weight:800; letter-spacing:-.3px; border-bottom:1px solid rgba(255,255,255,.07); }
+    .sb-logo { display:flex; align-items:center; gap:10px; padding:22px 18px 16px; color:white; font-size:14px; font-weight:800; letter-spacing:-.3px; border-bottom:1px solid rgba(255,255,255,.07); flex-shrink:0; }
     .sb-logo svg { width:22px; height:22px; stroke:white; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
     .sb-nav { padding:10px; flex:1; }
     .sb-item { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
@@ -24,170 +28,253 @@
     .sb-badge { margin-left:auto; background:#F04438; color:white; font-size:9px; font-weight:800; min-width:17px; height:17px; border-radius:9px; display:flex; align-items:center; justify-content:center; padding:0 4px; }
     .sb-group { margin-bottom:1px; }
     .sb-group-head { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; cursor:pointer; user-select:none; transition:all .15s; }
-    .sb-group-head:hover, .sb-group-head.open { color:rgba(255,255,255,.9); background:rgba(255,255,255,.05); }
-    .sb-ico { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
-    .sb-chev { margin-left:auto; width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; transition:transform .2s; }
+    .sb-group-head:hover { background:rgba(255,255,255,.07); color:rgba(255,255,255,.9); }
+    .sb-group-head.open { color:rgba(255,255,255,.9); background:rgba(255,255,255,.05); }
+    .sb-group-head svg.sb-ico { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-chev { margin-left:auto; width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; transition:transform .2s; }
     .sb-group-head.open .sb-chev { transform:rotate(90deg); }
     .sb-sub { padding-left:14px; overflow:hidden; max-height:0; transition:max-height .25s ease; }
     .sb-sub.open { max-height:200px; }
-    .sb-sub-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.45); font-size:12px; font-weight:500; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
+    .sb-sub-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.45); font-size:12px; font-weight:500; transition:all .15s; text-decoration:none; margin-bottom:1px; }
     .sb-sub-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.8); }
     .sb-sub-item.active { background:rgba(29,111,243,.2); color:#60A5FA; font-weight:700; }
-    .sb-sub-dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; }
-    .sb-connect { padding:6px 10px 20px; border-top:1px solid rgba(255,255,255,.07); margin-top:auto; }
+    .sb-sub-dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; opacity:.7; }
+    .sb-connect { padding:6px 10px 14px; border-top:1px solid rgba(255,255,255,.07); }
     .sb-connect-label { font-size:10px; font-weight:700; color:rgba(255,255,255,.3); text-transform:uppercase; letter-spacing:.8px; padding:10px 10px 6px; }
     .sb-connect-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.5); font-size:12px; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
     .sb-connect-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.85); }
     .sb-connect-item svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
     .sb-connect-sub { font-size:10px; color:rgba(255,255,255,.25); margin-left:auto; }
+
     /* MAIN */
-    .main-content { flex:1; height:100vh; overflow-y:auto; background:#F5F7FA; }
-    .topbar { background:white; height:62px; display:flex; align-items:center; justify-content:space-between; padding:0 28px; border-bottom:1px solid #EAECF0; position:sticky; top:0; z-index:20; }
+    .main-content { flex:1; height:100vh; display:flex; flex-direction:column; overflow:hidden; min-width:0; }
+
+    /* TOPBAR */
+    .topbar { background:white; height:62px; flex-shrink:0; display:flex; align-items:center; justify-content:space-between; padding:0 24px; border-bottom:1px solid #EAECF0; z-index:20; }
     .topbar-left { display:flex; align-items:center; gap:14px; }
     .page-title { font-size:16px; font-weight:700; color:#101828; line-height:1.1; }
     .page-sub { font-size:12px; color:#667085; }
-    .topbar-right { display:flex; align-items:center; gap:14px; }
+    .topbar-right { display:flex; align-items:center; gap:12px; }
     .topbar-date { font-size:12px; color:#667085; display:flex; align-items:center; gap:5px; }
-    .topbar-date svg { width:14px; height:14px; stroke:#98A2B3; fill:none; stroke-width:2; }
+    .topbar-date svg { width:14px; height:14px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .topbar-notif { position:relative; width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:9px; color:#667085; cursor:pointer; border:1px solid #EAECF0; background:white; }
+    .topbar-notif svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .notif-dot { position:absolute; top:6px; right:7px; width:8px; height:8px; background:#F04438; border-radius:50%; border:1.5px solid white; }
     .user-chip { display:flex; align-items:center; gap:9px; padding:6px 10px; border-radius:10px; cursor:pointer; }
     .user-chip:hover { background:#F5F7FA; }
     .user-av { width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,#1D6FF3,#1558C8); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:white; flex-shrink:0; }
     .user-name { font-size:13px; font-weight:700; color:#101828; }
     .user-role { font-size:11px; color:#98A2B3; }
-    .topbar-notif { position:relative; width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:9px; border:1px solid #EAECF0; background:white; cursor:pointer; flex-shrink:0; }
-    .topbar-notif svg { width:17px; height:17px; stroke:#667085; fill:none; stroke-width:2; }
-    .notif-dot { position:absolute; top:6px; right:7px; width:8px; height:8px; background:#F04438; border-radius:50%; border:1.5px solid white; }
-    .topbar-notif:hover { background:#F9FAFB; }
-    .topbar-logout { display:flex; align-items:center; gap:6px; padding:7px 13px; border-radius:9px; background:#FEF3F2; border:1px solid #FECDCA; color:#B42318; font-size:12px; font-weight:700; cursor:pointer; text-decoration:none; transition:all .15s; flex-shrink:0; }
+    .topbar-logout { display:flex; align-items:center; gap:6px; padding:7px 13px; border-radius:9px; background:#FEF3F2; border:1px solid #FECDCA; color:#B42318; font-size:12px; font-weight:700; cursor:pointer; text-decoration:none; transition:all .15s; }
     .topbar-logout:hover { background:#FEE4E2; }
-    .topbar-logout svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; }
-    .content-area { padding:22px 28px 32px; }
-    /* KPI */
-    .kpi-strip { display:grid; grid-template-columns:repeat(6,1fr); gap:11px; margin-bottom:20px; }
-    .kpi-card { background:white; border-radius:12px; padding:13px 14px; border:1px solid #EAECF0; display:flex; align-items:flex-start; gap:10px; }
-    .kpi-ico { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-    .kpi-ico svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; }
+    .topbar-logout svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* CONTENT AREA */
+    .content-area { flex:1; overflow-y:auto; padding:18px 24px 28px; }
+    .content-area::-webkit-scrollbar { width:4px; }
+    .content-area::-webkit-scrollbar-thumb { background:#D1D5DB; border-radius:2px; }
+
+    /* KPI STRIP */
+    .kpi-strip { display:grid; grid-template-columns:repeat(5,1fr); gap:11px; margin-bottom:18px; }
+    .kpi-card { background:white; border-radius:12px; padding:14px 16px; border:1px solid #EAECF0; display:flex; align-items:center; gap:12px; }
+    .kpi-ico { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .kpi-ico svg { width:17px; height:17px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
     .kpi-ico.blue { background:#EFF6FF; color:#1D6FF3; }
     .kpi-ico.green { background:#ECFDF3; color:#027A48; }
-    .kpi-ico.orange { background:#FFFAEB; color:#B54708; }
-    .kpi-ico.red { background:#FEF3F2; color:#B42318; }
+    .kpi-ico.orange { background:#FFF3E0; color:#B54708; }
     .kpi-ico.amber { background:#FFFAEB; color:#B54708; }
-    .kpi-ico.purple { background:#F4F3FF; color:#7C3AED; }
-    .kpi-val { font-size:20px; font-weight:800; color:#101828; letter-spacing:-1px; line-height:1; margin-bottom:2px; }
+    .kpi-ico.gray { background:#F2F4F7; color:#667085; }
+    .kpi-val { font-size:22px; font-weight:800; color:#101828; letter-spacing:-1px; line-height:1; margin-bottom:2px; }
     .kpi-lbl { font-size:11px; color:#667085; line-height:1.3; }
-    /* TABS */
+
+    /* MAIN TABS */
     .tab-bar { display:flex; gap:0; border-bottom:2px solid #EAECF0; margin-bottom:18px; }
-    .tab-btn { padding:9px 18px; font-size:13px; font-weight:600; color:#667085; cursor:pointer; border:none; background:none; font-family:inherit; border-bottom:2px solid transparent; margin-bottom:-2px; transition:all .15s; }
+    .tab-btn { padding:9px 20px; font-size:13px; font-weight:600; color:#667085; cursor:pointer; border:none; background:none; font-family:inherit; border-bottom:2px solid transparent; margin-bottom:-2px; transition:all .15s; white-space:nowrap; }
     .tab-btn.active { color:#1D6FF3; border-bottom-color:#1D6FF3; }
     .tab-btn:hover:not(.active) { color:#344054; }
     .tab-panel { display:none; }
     .tab-panel.active { display:block; }
-    /* TABLE */
-    .data-table { width:100%; border-collapse:collapse; background:white; border:1px solid #EAECF0; border-radius:12px; overflow:hidden; }
-    .data-table th { font-size:11px; font-weight:700; color:#667085; text-align:left; padding:10px 13px; background:#F9FAFB; border-bottom:1px solid #EAECF0; white-space:nowrap; }
-    .data-table td { font-size:12px; color:#344054; padding:10px 13px; border-bottom:1px solid #F9FAFB; vertical-align:middle; }
+
+    /* FILTER ROW */
+    .filter-row { display:flex; align-items:center; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
+    .filter-dd { display:flex; align-items:center; gap:6px; padding:7px 11px; background:white; border:1px solid #EAECF0; border-radius:8px; font-size:12px; font-weight:600; color:#344054; cursor:pointer; white-space:nowrap; }
+    .filter-dd svg { width:13px; height:13px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .search-box { display:flex; align-items:center; gap:7px; padding:7px 12px; background:white; border:1px solid #EAECF0; border-radius:8px; flex:1; min-width:180px; max-width:280px; }
+    .search-box svg { width:14px; height:14px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .search-box input { border:none; outline:none; font-size:12px; font-family:inherit; color:#344054; background:none; width:100%; }
+    .search-box input::placeholder { color:#98A2B3; }
+    .btn-export { display:flex; align-items:center; gap:6px; padding:7px 13px; background:white; border:1px solid #EAECF0; border-radius:8px; font-size:12px; font-weight:700; color:#344054; cursor:pointer; margin-left:auto; white-space:nowrap; font-family:inherit; }
+    .btn-export:hover { background:#F9FAFB; }
+    .btn-export svg { width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .btn-primary { display:inline-flex; align-items:center; gap:6px; padding:7px 14px; border-radius:8px; background:#1D6FF3; color:white; font-size:12px; font-weight:700; font-family:inherit; cursor:pointer; border:none; text-decoration:none; transition:all .15s; }
+    .btn-primary:hover { background:#1558C0; }
+    .btn-primary svg { width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* DATA TABLE */
+    .table-wrap { background:white; border:1px solid #EAECF0; border-radius:12px; overflow:hidden; margin-bottom:14px; }
+    .data-table { width:100%; border-collapse:collapse; }
+    .data-table th { font-size:11px; font-weight:700; color:#667085; text-transform:uppercase; letter-spacing:.3px; text-align:left; padding:10px 14px; background:#F9FAFB; border-bottom:1px solid #EAECF0; white-space:nowrap; }
+    .data-table td { font-size:12.5px; color:#344054; padding:10px 14px; border-bottom:1px solid #F9FAFB; vertical-align:middle; }
     .data-table tr:last-child td { border-bottom:none; }
     .data-table tr:hover td { background:#FAFBFF; }
-    .av { width:28px; height:28px; border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:800; color:white; flex-shrink:0; }
+    .member-cell { display:flex; align-items:center; gap:9px; }
+    .av { width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:800; color:white; flex-shrink:0; }
     .av.blue { background:linear-gradient(135deg,#1D6FF3,#1558C8); }
-    .av.green { background:linear-gradient(135deg,#12B76A,#059669); }
-    .av.amber { background:linear-gradient(135deg,#F79009,#D97706); }
     .av.purple { background:linear-gradient(135deg,#7C3AED,#6D28D9); }
+    .av.amber { background:linear-gradient(135deg,#F79009,#D97706); }
+    .av.green { background:linear-gradient(135deg,#12B76A,#059669); }
     .av.red { background:linear-gradient(135deg,#F04438,#D92D20); }
     .av.gray { background:linear-gradient(135deg,#667085,#344054); }
     .av.teal { background:linear-gradient(135deg,#0E9F93,#0D7A73); }
-    .av.pink { background:linear-gradient(135deg,#EC4899,#DB2777); }
     .av.orange { background:linear-gradient(135deg,#F97316,#EA580C); }
-    .member-cell { display:flex; align-items:center; gap:8px; }
-    .member-name { font-size:12px; font-weight:700; color:#101828; line-height:1.1; }
-    .member-sub { font-size:10px; color:#98A2B3; }
+    .av.pink { background:linear-gradient(135deg,#EC4899,#DB2777); }
+    .member-name { font-size:12.5px; font-weight:700; color:#101828; line-height:1.1; }
+    .member-sub { font-size:10.5px; color:#98A2B3; }
+    .role-chip { display:inline-block; padding:2px 8px; border-radius:6px; font-size:10.5px; font-weight:700; background:#F2F4F7; color:#344054; }
+    .role-chip.ae { background:#EFF6FF; color:#1558C8; }
+    .role-chip.eng { background:#ECFDF3; color:#027A48; }
+    .role-chip.tr { background:#FFF3E0; color:#B54708; }
+    .sch-chip { display:inline-block; padding:2px 8px; border-radius:6px; font-size:10.5px; font-weight:600; }
+    .sch-chip.reguler { background:#F2F4F7; color:#667085; }
+    .sch-chip.project { background:#EFF6FF; color:#1558C8; }
+    .sch-chip.training { background:#FFF3E0; color:#B54708; }
+    .time-val { font-size:12.5px; font-weight:600; color:#344054; font-variant-numeric:tabular-nums; }
+    .time-dash { color:#D0D5DD; }
+    .dur-val { font-size:12px; color:#344054; font-variant-numeric:tabular-nums; }
     .badge { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:20px; font-size:11px; font-weight:700; white-space:nowrap; }
     .badge-dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; }
     .badge.green { background:#ECFDF3; color:#027A48; }
-    .badge.orange { background:#FFFAEB; color:#B54708; }
-    .badge.red { background:#FEF3F2; color:#B42318; }
-    .badge.blue { background:#EFF6FF; color:#1D6FF3; }
-    .badge.purple { background:#F4F3FF; color:#7C3AED; }
+    .badge.orange { background:#FFF3E0; color:#B54708; }
+    .badge.amber { background:#FFFAEB; color:#B54708; }
     .badge.gray { background:#F2F4F7; color:#667085; }
-    .badge.amber { background:#FFF5E1; color:#B54708; }
-    .sch-badge { padding:2px 9px; border-radius:20px; font-size:10px; font-weight:700; }
-    .sch-badge.reguler { background:#F2F4F7; color:#667085; }
-    .sch-badge.project { background:#EFF6FF; color:#1D6FF3; }
-    .sch-badge.shift-pagi { background:#ECFDF3; color:#027A48; }
-    /* Buttons */
-    .btn-sm { padding:4px 11px; border-radius:7px; font-size:11px; font-weight:700; font-family:inherit; cursor:pointer; border:1px solid #EAECF0; background:white; color:#344054; transition:all .15s; display:inline-flex; align-items:center; gap:4px; }
+    .badge.blue { background:#EFF6FF; color:#1D6FF3; }
+    .badge.red { background:#FEF3F2; color:#B42318; }
+    .btn-sm { padding:4px 10px; border-radius:6px; font-size:11px; font-weight:700; font-family:inherit; cursor:pointer; border:1px solid #EAECF0; background:white; color:#344054; transition:all .15s; }
     .btn-sm:hover { background:#F9FAFB; }
-    .btn-sm.green { background:#ECFDF3; color:#027A48; border-color:#ABEFC6; }
-    .btn-sm.red { background:#FEF3F2; color:#B42318; border-color:#FECDCA; }
     .btn-sm.blue { background:#EFF6FF; color:#1D6FF3; border-color:#B2DDFF; }
-    .btn-sm.gray { background:#F2F4F7; color:#667085; border-color:#EAECF0; }
-    .btn-primary { display:inline-flex; align-items:center; gap:6px; padding:8px 16px; border-radius:9px; background:#1D6FF3; color:white; font-size:12px; font-weight:700; font-family:inherit; cursor:pointer; border:none; text-decoration:none; transition:all .15s; }
-    .btn-primary:hover { background:#1558C0; }
-    /* Stat chip */
-    .stat-chips { display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
-    .stat-chip { display:flex; align-items:center; gap:6px; padding:5px 12px; border-radius:20px; font-size:11px; font-weight:700; border:1px solid #EAECF0; background:white; }
-    .stat-chip.amber { background:#FFFAEB; color:#B54708; border-color:#FDE9B2; }
-    .stat-chip.green { background:#ECFDF3; color:#027A48; border-color:#ABEFC6; }
-    .stat-chip.red { background:#FEF3F2; color:#B42318; border-color:#FECDCA; }
-    /* Calendar */
-    .cal-wrapper { background:white; border:1px solid #EAECF0; border-radius:12px; padding:18px; margin-bottom:16px; }
-    .cal-month-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
-    .cal-month-title { font-size:14px; font-weight:800; color:#101828; }
-    .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
-    .cal-day-header { text-align:center; font-size:10px; font-weight:700; color:#98A2B3; padding:4px; }
-    .cal-cell { min-height:44px; border-radius:8px; padding:4px; position:relative; }
-    .cal-cell.working { background:#ECFDF3; }
-    .cal-cell.off { background:#F9FAFB; }
-    .cal-cell.empty { background:transparent; }
-    .cal-date-num { font-size:10px; font-weight:700; color:#667085; margin-bottom:3px; }
-    .cal-pill { display:inline-flex; align-items:center; justify-content:center; font-size:9px; font-weight:800; padding:1px 5px; border-radius:8px; }
-    .cal-pill.M { background:#ECFDF3; color:#027A48; }
-    .cal-pill.I { background:#FFFAEB; color:#B54708; }
-    .cal-pill.S { background:#FEF3F2; color:#B42318; }
-    .cal-pill.C { background:#F4F3FF; color:#7C3AED; }
-    .cal-pill.O { background:#F2F4F7; color:#98A2B3; }
-    .cal-pill.P { background:#EFF6FF; color:#1D6FF3; }
-    .cal-legend { display:flex; gap:12px; flex-wrap:wrap; margin-top:12px; font-size:11px; color:#667085; }
-    .cal-legend span { display:flex; align-items:center; gap:5px; }
-    /* Shift table */
-    .shift-table { width:100%; border-collapse:collapse; background:white; border:1px solid #EAECF0; border-radius:12px; overflow:hidden; }
-    .shift-table th { font-size:11px; font-weight:700; color:#667085; text-align:center; padding:9px 10px; background:#F9FAFB; border-bottom:1px solid #EAECF0; }
-    .shift-table th:first-child { text-align:left; padding-left:14px; }
-    .shift-table td { font-size:11px; color:#344054; padding:9px 10px; border-bottom:1px solid #F9FAFB; text-align:center; vertical-align:middle; }
-    .shift-table td:first-child { text-align:left; padding-left:14px; font-weight:700; }
-    .shift-table tr:last-child td { border-bottom:none; }
-    .shift-pill { display:inline-block; padding:2px 8px; border-radius:9px; font-size:10px; font-weight:700; }
-    .shift-pill.pagi { background:#ECFDF3; color:#027A48; }
-    .shift-pill.siang { background:#FFFAEB; color:#B54708; }
-    .shift-pill.malam { background:#F4F3FF; color:#7C3AED; }
-    .shift-pill.off { background:#F2F4F7; color:#98A2B3; }
-    /* Filter bar */
-    .filter-bar { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
-    .filter-select { padding:7px 12px; border-radius:8px; border:1px solid #EAECF0; background:white; font-size:12px; font-family:inherit; color:#344054; cursor:pointer; }
-    .filter-input { padding:7px 12px; border-radius:8px; border:1px solid #EAECF0; background:white; font-size:12px; font-family:inherit; color:#344054; outline:none; }
-    .filter-input:focus { border-color:#1D6FF3; }
-    /* Regular info card */
-    .reguler-card { background:white; border:1px solid #EAECF0; border-radius:12px; padding:22px 28px; margin-bottom:18px; max-width:480px; }
-    .reguler-card-title { font-size:13px; font-weight:800; color:#101828; margin-bottom:4px; }
-    .reguler-card-days { font-size:28px; font-weight:800; color:#1D6FF3; margin:12px 0 4px; }
-    .reguler-card-label { font-size:13px; color:#344054; font-weight:600; }
-    .reguler-card-sub { font-size:12px; color:#667085; margin-top:8px; line-height:1.5; }
-    /* Sub-tab for schedule type */
+
+    /* STATUS LEGEND */
+    .legend-row { display:flex; align-items:center; gap:14px; flex-wrap:wrap; padding:10px 14px; background:white; border:1px solid #EAECF0; border-radius:10px; margin-bottom:14px; }
+    .legend-item { display:flex; align-items:center; gap:5px; font-size:11px; font-weight:600; color:#667085; }
+    .legend-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+
+    /* PAGINATION */
+    .pagination-row { display:flex; align-items:center; justify-content:space-between; }
+    .pag-info { font-size:12px; color:#667085; }
+    .pag-btns { display:flex; gap:4px; }
+    .pag-btn { width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:8px; font-size:12px; font-weight:600; color:#667085; cursor:pointer; border:1px solid #EAECF0; background:white; transition:all .15s; }
+    .pag-btn:hover { background:#F9FAFB; }
+    .pag-btn.active { background:#1D6FF3; color:white; border-color:#1D6FF3; }
+    .pag-btn svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* SUB-TABS */
     .sub-tab-bar { display:flex; gap:6px; margin-bottom:16px; }
-    .sub-tab-btn { padding:6px 14px; border-radius:8px; font-size:12px; font-weight:600; color:#667085; cursor:pointer; border:1px solid #EAECF0; background:white; font-family:inherit; transition:all .15s; }
+    .sub-tab-btn { padding:6px 15px; border-radius:8px; font-size:12px; font-weight:600; color:#667085; cursor:pointer; border:1px solid #EAECF0; background:white; font-family:inherit; transition:all .15s; }
     .sub-tab-btn.active { background:#1D6FF3; color:white; border-color:#1D6FF3; }
     .sub-tab-btn:hover:not(.active) { background:#F9FAFB; }
     .sub-tab-panel { display:none; }
     .sub-tab-panel.active { display:block; }
-    /* toolbar row */
-    .toolbar-row { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
-    .toggle-group { display:flex; border-radius:8px; overflow:hidden; border:1px solid #EAECF0; }
-    .toggle-btn { padding:6px 14px; font-size:12px; font-weight:600; color:#667085; background:white; border:none; cursor:pointer; font-family:inherit; }
-    .toggle-btn.active { background:#1D6FF3; color:white; }
+
+    /* CALENDAR TABLE */
+    .cal-table-wrap { overflow-x:auto; background:white; border:1px solid #EAECF0; border-radius:12px; margin-bottom:16px; }
+    .cal-table-wrap::-webkit-scrollbar { height:5px; }
+    .cal-table-wrap::-webkit-scrollbar-thumb { background:#D1D5DB; border-radius:3px; }
+    .cal-table { border-collapse:collapse; min-width:100%; }
+    .cal-table th { font-size:10px; font-weight:700; color:#667085; text-align:center; padding:8px 6px; background:#F9FAFB; border-bottom:1px solid #EAECF0; white-space:nowrap; position:sticky; top:0; z-index:1; }
+    .cal-table th:first-child { text-align:left; padding-left:14px; min-width:150px; position:sticky; left:0; z-index:2; background:#F9FAFB; }
+    .cal-table td { font-size:11px; color:#344054; padding:6px 4px; border-bottom:1px solid #F9FAFB; text-align:center; vertical-align:middle; }
+    .cal-table td:first-child { text-align:left; padding-left:14px; position:sticky; left:0; background:white; z-index:1; border-right:1px solid #EAECF0; }
+    .cal-table tr:hover td { background:#FAFBFF; }
+    .cal-table tr:hover td:first-child { background:#FAFBFF; }
+    .cal-table tr:last-child td { border-bottom:none; }
+    .cal-member { display:flex; align-items:center; gap:7px; padding:2px 0; }
+    .cal-av { width:24px; height:24px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:8px; font-weight:800; color:white; flex-shrink:0; }
+    .cal-name { font-size:11.5px; font-weight:700; color:#101828; white-space:nowrap; }
+    .cal-role { font-size:9.5px; color:#98A2B3; }
+    .cal-chip { display:inline-block; padding:2px 5px; border-radius:5px; font-size:9.5px; font-weight:700; min-width:24px; text-align:center; }
+    .cal-chip.R { background:#EFF6FF; color:#1558C8; }
+    .cal-chip.SP { background:#ECFDF3; color:#027A48; }
+    .cal-chip.PR { background:#FFF3E0; color:#B54708; }
+    .cal-chip.WFH { background:#F4F3FF; color:#7C3AED; }
+    .cal-chip.I { background:#FFFAEB; color:#B54708; }
+    .cal-chip.C { background:#FEF3F2; color:#B42318; }
+    .cal-chip.TR { background:#E0F2FE; color:#0369A1; }
+    .cal-chip.OFF { background:#F2F4F7; color:#D0D5DD; font-size:8px; }
+    .cal-weekend { background:#F9FAFB; }
+    .cal-dayrow th { font-size:9px; color:#98A2B3; font-weight:500; }
+    .cal-legend { display:flex; gap:10px; flex-wrap:wrap; padding:10px 14px; border-top:1px solid #EAECF0; background:#FAFBFC; }
+    .cal-legend-item { display:flex; align-items:center; gap:5px; font-size:10.5px; color:#667085; }
+    .cal-legend-chip { padding:1px 6px; border-radius:4px; font-size:9.5px; font-weight:700; }
+
+    /* TEMPLATE CARDS */
+    .tmpl-strip { display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap; }
+    .tmpl-card { background:white; border:1.5px solid #EAECF0; border-radius:10px; padding:12px 15px; min-width:140px; flex:1; cursor:pointer; transition:all .15s; }
+    .tmpl-card:hover { border-color:#1D6FF3; box-shadow:0 0 0 3px rgba(29,111,243,.08); }
+    .tmpl-card-name { font-size:12px; font-weight:800; color:#101828; margin-bottom:3px; }
+    .tmpl-card-time { font-size:11px; color:#1D6FF3; font-weight:700; margin-bottom:2px; }
+    .tmpl-card-days { font-size:10.5px; color:#98A2B3; }
+    .tmpl-card-tag { display:inline-block; margin-top:6px; padding:2px 7px; border-radius:6px; font-size:9.5px; font-weight:700; }
+
+    /* WEEK GRID */
+    .week-toolbar { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+    .week-nav { display:flex; align-items:center; gap:8px; font-size:13px; font-weight:700; color:#101828; }
+    .week-nav-btn { width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:7px; border:1px solid #EAECF0; background:white; cursor:pointer; }
+    .week-nav-btn svg { width:13px; height:13px; stroke:#667085; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .week-actions { display:flex; gap:7px; }
+    .week-table-wrap { background:white; border:1px solid #EAECF0; border-radius:12px; overflow:hidden; }
+    .week-table { width:100%; border-collapse:collapse; }
+    .week-table th { font-size:10.5px; font-weight:700; color:#667085; text-align:center; padding:9px 10px; background:#F9FAFB; border-bottom:1px solid #EAECF0; }
+    .week-table th:first-child { text-align:left; padding-left:14px; width:150px; }
+    .week-table td { font-size:11px; color:#344054; padding:8px 8px; border-bottom:1px solid #F9FAFB; text-align:center; vertical-align:middle; }
+    .week-table td:first-child { text-align:left; padding-left:14px; }
+    .week-table tr:last-child td { border-bottom:none; }
+    .week-table tr:hover td { background:#FAFBFF; }
+    .week-day-hdr { display:flex; flex-direction:column; align-items:center; gap:1px; }
+    .week-day-name { font-size:10px; font-weight:700; color:#667085; }
+    .week-day-num { font-size:13px; font-weight:800; color:#101828; }
+    .week-day-num.today { background:#1D6FF3; color:white; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+    .week-member { display:flex; align-items:center; gap:8px; }
+    .week-chip { display:inline-block; padding:2px 7px; border-radius:6px; font-size:10px; font-weight:700; }
+    .week-chip.R { background:#EFF6FF; color:#1558C8; }
+    .week-chip.SP { background:#ECFDF3; color:#027A48; }
+    .week-chip.PR { background:#FFF3E0; color:#B54708; }
+    .week-chip.WFH { background:#F4F3FF; color:#7C3AED; }
+    .week-chip.I { background:#FFFAEB; color:#B54708; }
+    .week-chip.C { background:#FEF3F2; color:#B42318; }
+    .week-chip.OFF { background:#F2F4F7; color:#98A2B3; }
+    .week-chip.TR { background:#E0F2FE; color:#0369A1; }
+
+    /* REQUEST TABLE */
+    .req-table-wrap { background:white; border:1px solid #EAECF0; border-radius:12px; overflow:hidden; }
+    .req-table { width:100%; border-collapse:collapse; }
+    .req-table th { font-size:11px; font-weight:700; color:#667085; text-transform:uppercase; letter-spacing:.3px; text-align:left; padding:10px 14px; background:#F9FAFB; border-bottom:1px solid #EAECF0; white-space:nowrap; }
+    .req-table td { font-size:12.5px; color:#344054; padding:11px 14px; border-bottom:1px solid #F9FAFB; vertical-align:middle; }
+    .req-table tr:last-child td { border-bottom:none; }
+    .req-table tr:hover td { background:#FAFBFF; }
+    .req-type-badge { display:inline-flex; align-items:center; gap:5px; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; }
+    .req-type-badge.izin { background:#FFFAEB; color:#B54708; }
+    .req-type-badge.cuti { background:#F4F3FF; color:#7C3AED; }
+    .req-type-badge.lembur { background:#EFF6FF; color:#1D6FF3; }
+    .req-type-badge.koreksi { background:#FEF3F2; color:#B42318; }
+    .req-status { display:inline-block; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; }
+    .req-status.pending { background:#FFF3E0; color:#B54708; }
+    .req-status.approved { background:#ECFDF3; color:#027A48; }
+    .req-status.rejected { background:#FEF3F2; color:#B42318; }
+
+    /* SECTION HEADER */
+    .section-hdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+    .section-title { font-size:13px; font-weight:800; color:#101828; }
+    .section-sub { font-size:12px; color:#98A2B3; }
+
+    /* RIWAYAT */
+    .riwayat-toolbar { display:flex; align-items:center; gap:8px; margin-bottom:14px; }
+    .date-input { padding:7px 11px; border-radius:8px; border:1px solid #EAECF0; background:white; font-size:12px; font-family:inherit; color:#344054; outline:none; cursor:pointer; }
+    .date-input:focus { border-color:#1D6FF3; }
   </style>
 </head>
 <body>
 <div class="mgmt-layout">
+
   <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sb-logo">
@@ -200,7 +287,7 @@
         Dashboard
       </a>
       <div class="sb-group">
-        <div class="sb-group-head open" id="people-head" onclick="togglePeople()">
+        <div class="sb-group-head open" id="people-head" onclick="toggleGroup('people')">
           <svg class="sb-ico" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           People
           <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
@@ -212,25 +299,18 @@
           <a href="reviews.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Reviews</a>
         </div>
       </div>
-      <div class="sb-group">
-        <div class="sb-group-head" id="requests-head" onclick="toggleRequests()">
-          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-          Requests
-          <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-        </div>
-        <div class="sb-sub" id="requests-sub">
-          <a href="requests.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Overview</a>
-          <a href="requests.html" class="sb-sub-item"><span class="sb-sub-dot"></span>My Requests</a>
-          <a href="request-create.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Create Request</a>
-        </div>
-      </div>
+      <a href="requests.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Requests
+        <span class="sb-badge">3</span>
+      </a>
       <a href="approval.html" class="sb-item">
         <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
         Approval
         <span class="sb-badge">2</span>
       </a>
       <div class="sb-group">
-        <div class="sb-group-head" id="learning-head" onclick="toggleLearning()">
+        <div class="sb-group-head" id="learning-head" onclick="toggleGroup('learning')">
           <svg class="sb-ico" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg>
           Learning
           <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
@@ -238,7 +318,7 @@
         <div class="sb-sub" id="learning-sub">
           <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>My Learning Progress</a>
           <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Learning Library</a>
-          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Team Learning Progress</a>
+          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Team Progress</a>
         </div>
       </div>
       <a href="laporan.html" class="sb-item">
@@ -248,11 +328,22 @@
     </nav>
     <div class="sb-connect">
       <div class="sb-connect-label">Connect</div>
-      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>CRM<span class="sb-connect-sub">Sistem CRM</span></a>
-      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>ERP<span class="sb-connect-sub">ERP Operasional</span></a>
-      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>NOC<span class="sb-connect-sub">Monitoring NOC</span></a>
-      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Ticketing<span class="sb-connect-sub">Sistem Ticket</span></a>
-      <a href="#" class="sb-connect-item"><svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>Maps<span class="sb-connect-sub">Google Maps</span></a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        CRM<span class="sb-connect-sub">Sistem CRM</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        ERP<span class="sb-connect-sub">ERP Operasional</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        NOC<span class="sb-connect-sub">Monitoring NOC</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        Ticketing<span class="sb-connect-sub">Sistem Ticket</span>
+      </a>
     </div>
   </aside>
 
@@ -268,7 +359,7 @@
       <div class="topbar-right">
         <div class="topbar-date">
           <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          Jumat, 19 Juni 2026
+          Sabtu, 20 Juni 2026
         </div>
         <button class="topbar-notif">
           <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
@@ -281,7 +372,7 @@
             <div class="user-role">Branch Leader</div>
           </div>
         </div>
-        <a href="../../../index.html" class="topbar-logout">
+        <a href="#" class="topbar-logout">
           <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
           Keluar
         </a>
@@ -289,474 +380,717 @@
     </header>
 
     <div class="content-area">
-      <!-- KPI STRIP (6) -->
+
+      <!-- KPI STRIP -->
       <div class="kpi-strip">
         <div class="kpi-card">
-          <div class="kpi-ico blue"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-          <div><div class="kpi-val">16</div><div class="kpi-lbl">Total Tim</div></div>
+          <div class="kpi-ico blue">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div>
+            <div class="kpi-val">16</div>
+            <div class="kpi-lbl">Total Tim</div>
+          </div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-ico green"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <div><div class="kpi-val">11</div><div class="kpi-lbl">Hadir</div></div>
+          <div class="kpi-ico green">
+            <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <div>
+            <div class="kpi-val">12</div>
+            <div class="kpi-lbl">Hadir Tepat Waktu</div>
+          </div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-ico orange"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-          <div><div class="kpi-val">1</div><div class="kpi-lbl">Izin</div></div>
+          <div class="kpi-ico orange">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <div class="kpi-val">1</div>
+            <div class="kpi-lbl">Terlambat</div>
+          </div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-ico red"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
-          <div><div class="kpi-val">2</div><div class="kpi-lbl">Sakit</div></div>
+          <div class="kpi-ico amber">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <div>
+            <div class="kpi-val">2</div>
+            <div class="kpi-lbl">Izin / Sakit</div>
+          </div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-ico amber"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-          <div><div class="kpi-val">2</div><div class="kpi-lbl">Belum Check In</div></div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-ico purple"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-          <div><div class="kpi-val">3</div><div class="kpi-lbl">Penugasan Project</div></div>
+          <div class="kpi-ico gray">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div>
+            <div class="kpi-val">1</div>
+            <div class="kpi-lbl">Belum Check In</div>
+          </div>
         </div>
       </div>
 
-      <!-- TABS -->
+      <!-- MAIN TAB BAR -->
       <div class="tab-bar">
-        <button class="tab-btn active" onclick="switchTab('today',this)">Kehadiran Hari Ini</button>
-        <button class="tab-btn" onclick="switchTab('jadwal',this)">Jadwal Kerja</button>
-        <button class="tab-btn" onclick="switchTab('pengajuan',this)">Pengajuan Kehadiran</button>
-        <button class="tab-btn" onclick="switchTab('riwayat',this)">Riwayat</button>
+        <button class="tab-btn active" onclick="switchTab('hari-ini', this)">Hari Ini</button>
+        <button class="tab-btn" onclick="switchTab('jadwal', this)">Jadwal Kerja</button>
+        <button class="tab-btn" onclick="switchTab('pengajuan', this)">Pengajuan Kehadiran</button>
+        <button class="tab-btn" onclick="switchTab('riwayat', this)">Riwayat</button>
       </div>
 
-      <!-- TAB 1: KEHADIRAN HARI INI -->
-      <div id="tab-today" class="tab-panel active">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-          <span style="font-size:13px;font-weight:700;color:#101828;">Kehadiran Tim — Jumat, 19 Juni 2026</span>
-          <span style="font-size:11px;color:#98A2B3;">Last updated: 08:47</span>
-        </div>
-        <table class="data-table" style="table-layout:fixed;width:100%;">
-          <colgroup><col style="width:220px"><col style="width:90px"><col style="width:80px"><col style="width:80px"><col style="width:150px"></colgroup>
-          <thead><tr>
-            <th>Anggota</th><th>Jadwal</th><th>Check In</th><th>Check Out</th><th>Status</th>
-          </tr></thead>
-          <tbody>
-            <tr>
-              <td><div class="member-cell"><div class="av blue">AR</div><div><div class="member-name">Andi Ramadan</div><div class="member-sub">AE</div></div></div></td>
-              <td><span class="sch-badge reguler">Reguler</span></td>
-              <td style="font-size:12px;font-weight:700;">07:52</td>
-              <td style="color:#98A2B3;">—</td>
-              <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av purple">DS</div><div><div class="member-name">Dian Safira</div><div class="member-sub">AE</div></div></div></td>
-              <td><span class="sch-badge reguler">Reguler</span></td>
-              <td style="font-size:12px;font-weight:700;">08:01</td>
-              <td style="color:#98A2B3;">—</td>
-              <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av amber">RP</div><div><div class="member-name">Rizal Pratama</div><div class="member-sub">AE</div></div></div></td>
-              <td><span class="sch-badge reguler">Reguler</span></td>
-              <td style="font-size:12px;font-weight:700;">08:45</td>
-              <td style="color:#98A2B3;">—</td>
-              <td><span class="badge orange"><span class="badge-dot"></span>Terlambat</span></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av green">NF</div><div><div class="member-name">Nova Fitriani</div><div class="member-sub">AE</div></div></div></td>
-              <td><span class="sch-badge reguler">Reguler</span></td>
-              <td style="font-size:12px;font-weight:700;">07:59</td>
-              <td style="color:#98A2B3;">—</td>
-              <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av red">BW</div><div><div class="member-name">Bima Wicaksono</div><div class="member-sub">AE</div></div></div></td>
-              <td><span class="sch-badge reguler">Reguler</span></td>
-              <td style="color:#98A2B3;">—</td>
-              <td style="color:#98A2B3;">—</td>
-              <td><span class="badge amber">Belum Check In</span></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av gray">SR</div><div><div class="member-name">Siti Rahayu</div><div class="member-sub">AE</div></div></div></td>
-              <td><span class="sch-badge reguler">Reguler</span></td>
-              <td style="font-size:12px;font-weight:700;">08:03</td>
-              <td style="color:#98A2B3;">—</td>
-              <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av teal">HW</div><div><div class="member-name">Hendra Wijaya</div><div class="member-sub">AE</div></div></div></td>
-              <td><span class="sch-badge reguler">Reguler</span></td>
-              <td style="color:#98A2B3;">—</td>
-              <td style="color:#98A2B3;">—</td>
-              <td><span class="badge blue"><span class="badge-dot"></span>Izin</span></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av pink">PL</div><div><div class="member-name">Putri Lestari</div><div class="member-sub">AE</div></div></div></td>
-              <td><span class="sch-badge reguler">Reguler</span></td>
-              <td style="font-size:12px;font-weight:700;">08:12</td>
-              <td style="color:#98A2B3;">—</td>
-              <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av blue">AS</div><div><div class="member-name">Agus Subagyo</div><div class="member-sub">Engineer</div></div></div></td>
-              <td><span class="sch-badge reguler">Reguler</span></td>
-              <td style="font-size:12px;font-weight:700;">07:45</td>
-              <td style="color:#98A2B3;">—</td>
-              <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av green">FN</div><div><div class="member-name">Faisal Nugroho</div><div class="member-sub">Engineer</div></div></div></td>
-              <td><span class="sch-badge project">Project</span></td>
-              <td style="font-size:12px;font-weight:700;">07:30</td>
-              <td style="color:#98A2B3;">—</td>
-              <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av orange">HK</div><div><div class="member-name">Hendri Kurniawan</div><div class="member-sub">Engineer</div></div></div></td>
-              <td><span class="sch-badge reguler">Reguler</span></td>
-              <td style="font-size:12px;font-weight:700;">08:05</td>
-              <td style="color:#98A2B3;">—</td>
-              <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av purple">IM</div><div><div class="member-name">Irfan Maulana</div><div class="member-sub">Engineer</div></div></div></td>
-              <td><span class="sch-badge reguler">Reguler</span></td>
-              <td style="font-size:12px;font-weight:700;">08:10</td>
-              <td style="color:#98A2B3;">—</td>
-              <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av gray">JP</div><div><div class="member-name">Joni Prasetyo</div><div class="member-sub">Engineer</div></div></div></td>
-              <td><span class="sch-badge reguler">Reguler</span></td>
-              <td style="color:#98A2B3;">—</td>
-              <td style="color:#98A2B3;">—</td>
-              <td><span class="badge red"><span class="badge-dot"></span>Sakit</span></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av amber">KR</div><div><div class="member-name">Kurniadi</div><div class="member-sub">Engineer</div></div></div></td>
-              <td><span class="sch-badge shift-pagi">Shift Pagi</span></td>
-              <td style="font-size:12px;font-weight:700;">07:00</td>
-              <td style="color:#98A2B3;">—</td>
-              <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <!-- TAB: HARI INI -->
+      <div class="tab-panel active" id="panel-hari-ini">
 
-      <!-- TAB 2: JADWAL KERJA -->
-      <div id="tab-jadwal" class="tab-panel">
-        <div class="toolbar-row">
-          <div class="toggle-group">
-            <button class="toggle-btn active">Bulanan</button>
-            <button class="toggle-btn">Mingguan</button>
+        <!-- Filter row -->
+        <div class="filter-row">
+          <div class="filter-dd">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Hari Ini &nbsp;
+            <svg class="chev" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
-          <select class="filter-select"><option>Semua Tim</option><option>Account Executive</option><option>Engineer</option></select>
-          <div style="margin-left:auto;" class="sub-tab-bar" style="margin-bottom:0;">
-            <button class="sub-tab-btn active" onclick="switchSubTab('reguler',this)">Regular</button>
-            <button class="sub-tab-btn" onclick="switchSubTab('shift',this)">Shift</button>
-            <button class="sub-tab-btn" onclick="switchSubTab('project',this)">Project</button>
+          <div class="filter-dd">
+            Semua Status &nbsp;
+            <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:#98A2B3;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
+          <div class="filter-dd">
+            Semua Jabatan &nbsp;
+            <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:#98A2B3;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="search-box">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" placeholder="Cari anggota tim...">
+          </div>
+          <button class="btn-export">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export
+          </button>
         </div>
 
-        <!-- REGULAR -->
-        <div id="sub-reguler" class="sub-tab-panel active">
-          <div class="reguler-card">
-            <div class="reguler-card-title">Jadwal Reguler — Tim Cabang Karangploso</div>
-            <div style="border-top:1px solid #EAECF0;margin:12px 0;"></div>
-            <div style="font-size:12px;font-weight:700;color:#667085;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Ketentuan Hari Kerja</div>
-            <div class="reguler-card-days">6 Hari Kerja</div>
-            <div class="reguler-card-label">per Minggu &nbsp;·&nbsp; Senin — Sabtu</div>
-            <div class="reguler-card-sub">Pengaturan jam kerja dilakukan oleh<br>masing-masing kepala organisasi.</div>
-          </div>
-
-          <!-- Calendar June 2026 -->
-          <div class="cal-wrapper">
-            <div class="cal-month-header">
-              <div class="cal-month-title">Juni 2026 — Kalender Kehadiran Tim</div>
-              <div style="font-size:11px;color:#98A2B3;">Agregat kehadiran 16 anggota</div>
-            </div>
-            <div class="cal-grid">
-              <!-- Headers -->
-              <div class="cal-day-header">Sen</div><div class="cal-day-header">Sel</div><div class="cal-day-header">Rab</div><div class="cal-day-header">Kam</div><div class="cal-day-header">Jum</div><div class="cal-day-header">Sab</div><div class="cal-day-header">Min</div>
-              <!-- Week 1: Mon 1 Jun = Mon -->
-              <div class="cal-cell working"><div class="cal-date-num">1</div><span class="cal-pill M">M</span></div>
-              <div class="cal-cell working"><div class="cal-date-num">2</div><span class="cal-pill M">M</span></div>
-              <div class="cal-cell working"><div class="cal-date-num">3</div><span class="cal-pill M">M</span></div>
-              <div class="cal-cell working"><div class="cal-date-num">4</div><span class="cal-pill M">M</span></div>
-              <div class="cal-cell working"><div class="cal-date-num">5</div><span class="cal-pill I">I</span></div>
-              <div class="cal-cell working"><div class="cal-date-num">6</div><span class="cal-pill M">M</span></div>
-              <div class="cal-cell off"><div class="cal-date-num">7</div><span class="cal-pill O">O</span></div>
-              <!-- Week 2 -->
-              <div class="cal-cell working"><div class="cal-date-num">8</div><span class="cal-pill M">M</span></div>
-              <div class="cal-cell working"><div class="cal-date-num">9</div><span class="cal-pill M">M</span></div>
-              <div class="cal-cell working"><div class="cal-date-num">10</div><span class="cal-pill M">M</span></div>
-              <div class="cal-cell working"><div class="cal-date-num">11</div><span class="cal-pill S">S</span></div>
-              <div class="cal-cell working"><div class="cal-date-num">12</div><span class="cal-pill M">M</span></div>
-              <div class="cal-cell working"><div class="cal-date-num">13</div><span class="cal-pill M">M</span></div>
-              <div class="cal-cell off"><div class="cal-date-num">14</div><span class="cal-pill O">O</span></div>
-              <!-- Week 3 -->
-              <div class="cal-cell working"><div class="cal-date-num">15</div><span class="cal-pill C">C</span></div>
-              <div class="cal-cell working"><div class="cal-date-num">16</div><span class="cal-pill M">M</span></div>
-              <div class="cal-cell working"><div class="cal-date-num">17</div><span class="cal-pill M">M</span></div>
-              <div class="cal-cell working"><div class="cal-date-num">18</div><span class="cal-pill M">M</span></div>
-              <div class="cal-cell working"><div class="cal-date-num">19</div><span class="cal-pill M">M</span></div>
-              <div class="cal-cell working"><div class="cal-date-num">20</div><span class="cal-pill M">M</span></div>
-              <div class="cal-cell off"><div class="cal-date-num">21</div><span class="cal-pill O">O</span></div>
-              <!-- Week 4 -->
-              <div class="cal-cell working"><div class="cal-date-num">22</div><span class="cal-pill M">M</span></div>
-              <div class="cal-cell working"><div class="cal-date-num">23</div><span class="cal-pill I">I</span></div>
-              <div class="cal-cell working"><div class="cal-date-num">24</div><span class="cal-pill M">M</span></div>
-              <div class="cal-cell working"><div class="cal-date-num">25</div><span class="cal-pill M">M</span></div>
-              <div class="cal-cell working"><div class="cal-date-num">26</div><span class="cal-pill P">P</span></div>
-              <div class="cal-cell working"><div class="cal-date-num">27</div><span class="cal-pill M">M</span></div>
-              <div class="cal-cell off"><div class="cal-date-num">28</div><span class="cal-pill O">O</span></div>
-              <!-- Week 5 -->
-              <div class="cal-cell working"><div class="cal-date-num">29</div><span class="cal-pill M">M</span></div>
-              <div class="cal-cell working"><div class="cal-date-num">30</div><span class="cal-pill M">M</span></div>
-              <div class="cal-cell empty"></div><div class="cal-cell empty"></div><div class="cal-cell empty"></div><div class="cal-cell empty"></div><div class="cal-cell empty"></div>
-            </div>
-            <div class="cal-legend">
-              <span><span class="cal-pill M" style="margin-right:2px;">M</span>Masuk</span>
-              <span><span class="cal-pill I" style="margin-right:2px;">I</span>Izin</span>
-              <span><span class="cal-pill S" style="margin-right:2px;">S</span>Sakit</span>
-              <span><span class="cal-pill C" style="margin-right:2px;">C</span>Cuti</span>
-              <span><span class="cal-pill P" style="margin-right:2px;">P</span>Project</span>
-              <span><span class="cal-pill O" style="margin-right:2px;">O</span>Off</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- SHIFT -->
-        <div id="sub-shift" class="sub-tab-panel">
-          <div style="font-size:13px;font-weight:700;color:#101828;margin-bottom:12px;">Jadwal Shift — Minggu 15–21 Juni 2026</div>
-          <table class="shift-table">
-            <thead><tr>
-              <th>Nama</th><th>Senin 15</th><th>Selasa 16</th><th>Rabu 17</th><th>Kamis 18</th><th>Jumat 19</th><th>Sabtu 20</th>
-            </tr></thead>
-            <tbody>
-              <tr><td>Agus Subagyo</td><td><span class="shift-pill pagi">Pagi</span></td><td><span class="shift-pill pagi">Pagi</span></td><td><span class="shift-pill pagi">Pagi</span></td><td><span class="shift-pill pagi">Pagi</span></td><td><span class="shift-pill pagi">Pagi</span></td><td><span class="shift-pill off">Off</span></td></tr>
-              <tr><td>Hendri Kurniawan</td><td><span class="shift-pill siang">Siang</span></td><td><span class="shift-pill siang">Siang</span></td><td><span class="shift-pill siang">Siang</span></td><td><span class="shift-pill siang">Siang</span></td><td><span class="shift-pill siang">Siang</span></td><td><span class="shift-pill off">Off</span></td></tr>
-              <tr><td>Irfan Maulana</td><td><span class="shift-pill malam">Malam</span></td><td><span class="shift-pill malam">Malam</span></td><td><span class="shift-pill off">Off</span></td><td><span class="shift-pill malam">Malam</span></td><td><span class="shift-pill malam">Malam</span></td><td><span class="shift-pill malam">Malam</span></td></tr>
-              <tr><td>Kurniadi</td><td><span class="shift-pill pagi">Pagi</span></td><td><span class="shift-pill pagi">Pagi</span></td><td><span class="shift-pill pagi">Pagi</span></td><td><span class="shift-pill off">Off</span></td><td><span class="shift-pill pagi">Pagi</span></td><td><span class="shift-pill pagi">Pagi</span></td></tr>
-              <tr><td>Lutfi Anwar</td><td><span class="shift-pill siang">Siang</span></td><td><span class="shift-pill siang">Siang</span></td><td><span class="shift-pill siang">Siang</span></td><td><span class="shift-pill siang">Siang</span></td><td><span class="shift-pill off">Off</span></td><td><span class="shift-pill siang">Siang</span></td></tr>
-            </tbody>
-          </table>
-          <div style="display:flex;gap:12px;margin-top:12px;font-size:11px;color:#667085;">
-            <span><span class="shift-pill pagi" style="margin-right:4px;">Pagi</span>07:00–15:00</span>
-            <span><span class="shift-pill siang" style="margin-right:4px;">Siang</span>11:00–19:00</span>
-            <span><span class="shift-pill malam" style="margin-right:4px;">Malam</span>19:00–07:00</span>
-          </div>
-        </div>
-
-        <!-- PROJECT -->
-        <div id="sub-project" class="sub-tab-panel">
-          <div style="font-size:13px;font-weight:700;color:#101828;margin-bottom:12px;">Penugasan Project Aktif</div>
+        <!-- Attendance Table -->
+        <div class="table-wrap">
           <table class="data-table">
-            <thead><tr><th>Nama</th><th>Proyek</th><th>Lokasi</th><th>PIC</th><th>Tanggal Mulai</th><th>Tanggal Selesai</th><th>Status</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Nama</th>
+                <th>Role</th>
+                <th>Jadwal</th>
+                <th>Check In</th>
+                <th>Check Out</th>
+                <th>Durasi</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
             <tbody>
               <tr>
-                <td><div class="member-cell"><div class="av green">FN</div><span style="font-weight:700;font-size:12px;">Faisal Nugroho</span></div></td>
-                <td>Ekspansi FTTX Area A</td>
-                <td style="font-size:11px;color:#667085;">Site Barat</td>
-                <td style="font-size:11px;">Hendri K.</td>
-                <td style="font-size:11px;color:#667085;">1 Jun 2026</td>
-                <td style="font-size:11px;color:#667085;">30 Jun 2026</td>
-                <td><span class="badge blue"><span class="badge-dot"></span>Aktif</span></td>
+                <td><div class="member-cell"><div class="av blue">AR</div><div><div class="member-name">Andi Ramadan</div><div class="member-sub">SP-24097</div></div></div></td>
+                <td><span class="role-chip ae">AE</span></td>
+                <td><span class="sch-chip reguler">Reguler</span></td>
+                <td><span class="time-val">08:03</span></td>
+                <td><span class="time-val">17:15</span></td>
+                <td><span class="dur-val">9j 12m</span></td>
+                <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
+                <td><button class="btn-sm">Detail</button></td>
               </tr>
               <tr>
-                <td><div class="member-cell"><div class="av amber">KR</div><span style="font-weight:700;font-size:12px;">Kurniadi</span></div></td>
-                <td>Maintenance Backbone</td>
-                <td style="font-size:11px;color:#667085;">Ring Selatan</td>
-                <td style="font-size:11px;">Agus S.</td>
-                <td style="font-size:11px;color:#667085;">10 Jun 2026</td>
-                <td style="font-size:11px;color:#667085;">20 Jun 2026</td>
-                <td><span class="badge orange"><span class="badge-dot"></span>Hampir Selesai</span></td>
+                <td><div class="member-cell"><div class="av purple">DS</div><div><div class="member-name">Dian Safira</div><div class="member-sub">SP-23841</div></div></div></td>
+                <td><span class="role-chip ae">AE</span></td>
+                <td><span class="sch-chip reguler">Reguler</span></td>
+                <td><span class="time-val">08:12</span></td>
+                <td><span class="time-dash">—</span></td>
+                <td><span class="time-dash">—</span></td>
+                <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
+                <td><button class="btn-sm">Detail</button></td>
               </tr>
               <tr>
-                <td><div class="member-cell"><div class="av orange">BS</div><span style="font-weight:700;font-size:12px;">Bambang Suwito</span></div></td>
-                <td>Project Ekspansi Klojen</td>
-                <td style="font-size:11px;color:#667085;">Kec. Klojen</td>
-                <td style="font-size:11px;">Irfan M.</td>
-                <td style="font-size:11px;color:#667085;">1 Mei 2026</td>
-                <td style="font-size:11px;color:#667085;">15 Agu 2026</td>
-                <td><span class="badge blue"><span class="badge-dot"></span>Aktif</span></td>
+                <td><div class="member-cell"><div class="av amber">RP</div><div><div class="member-name">Rizal Pratama</div><div class="member-sub">SP-25102</div></div></div></td>
+                <td><span class="role-chip ae">AE</span></td>
+                <td><span class="sch-chip reguler">Reguler</span></td>
+                <td><span class="time-val" style="color:#B54708;">09:14</span></td>
+                <td><span class="time-dash">—</span></td>
+                <td><span class="time-dash">—</span></td>
+                <td><span class="badge orange"><span class="badge-dot"></span>Terlambat</span></td>
+                <td><button class="btn-sm">Detail</button></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av green">NF</div><div><div class="member-name">Nova Fitriani</div><div class="member-sub">SP-24315</div></div></div></td>
+                <td><span class="role-chip ae">AE</span></td>
+                <td><span class="sch-chip reguler">Reguler</span></td>
+                <td><span class="time-val">07:55</span></td>
+                <td><span class="time-val">17:00</span></td>
+                <td><span class="dur-val">9j 5m</span></td>
+                <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
+                <td><button class="btn-sm">Detail</button></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av red">BW</div><div><div class="member-name">Bima Wicaksono</div><div class="member-sub">SP-25287</div></div></div></td>
+                <td><span class="role-chip tr">Training</span></td>
+                <td><span class="sch-chip training">Training</span></td>
+                <td><span class="time-dash">—</span></td>
+                <td><span class="time-dash">—</span></td>
+                <td><span class="time-dash">—</span></td>
+                <td><span class="badge gray"><span class="badge-dot"></span>Belum Check In</span></td>
+                <td><button class="btn-sm">Detail</button></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av gray">SR</div><div><div class="member-name">Siti Rahayu</div><div class="member-sub">SP-24088</div></div></div></td>
+                <td><span class="role-chip ae">AE</span></td>
+                <td><span class="sch-chip reguler">Reguler</span></td>
+                <td><span class="time-dash">—</span></td>
+                <td><span class="time-dash">—</span></td>
+                <td><span class="time-dash">—</span></td>
+                <td><span class="badge amber"><span class="badge-dot"></span>Izin</span></td>
+                <td><button class="btn-sm">Detail</button></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av teal">LK</div><div><div class="member-name">Lathifah Kalim</div><div class="member-sub">SP-25066</div></div></div></td>
+                <td><span class="role-chip ae">AE</span></td>
+                <td><span class="sch-chip reguler">Reguler</span></td>
+                <td><span class="time-val">08:15</span></td>
+                <td><span class="time-dash">—</span></td>
+                <td><span class="time-dash">—</span></td>
+                <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
+                <td><button class="btn-sm">Detail</button></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av orange">FN</div><div><div class="member-name">Fajar Nurhadi</div><div class="member-sub">SP-23762</div></div></div></td>
+                <td><span class="role-chip ae">AE</span></td>
+                <td><span class="sch-chip reguler">Reguler</span></td>
+                <td><span class="time-val">08:28</span></td>
+                <td><span class="time-dash">—</span></td>
+                <td><span class="time-dash">—</span></td>
+                <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
+                <td><button class="btn-sm">Detail</button></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av green">AS</div><div><div class="member-name">Agus Subagyo</div><div class="member-sub">Engineer</div></div></div></td>
+                <td><span class="role-chip eng">Engineer</span></td>
+                <td><span class="sch-chip reguler">Reguler</span></td>
+                <td><span class="time-val">07:58</span></td>
+                <td><span class="time-val">17:00</span></td>
+                <td><span class="dur-val">9j 2m</span></td>
+                <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
+                <td><button class="btn-sm">Detail</button></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av blue">FN</div><div><div class="member-name">Faisal Nugroho</div><div class="member-sub">Engineer</div></div></div></td>
+                <td><span class="role-chip eng">Engineer</span></td>
+                <td><span class="sch-chip project">Project</span></td>
+                <td><span class="time-dash">—</span></td>
+                <td><span class="time-dash">—</span></td>
+                <td><span class="time-dash">—</span></td>
+                <td><span class="badge blue"><span class="badge-dot"></span>Project</span></td>
+                <td><button class="btn-sm">Detail</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Legend + Pagination -->
+        <div class="legend-row">
+          <div class="legend-item"><div class="legend-dot" style="background:#12B76A;"></div>Hadir</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#F79009;"></div>Terlambat</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#F79009;opacity:.6;"></div>Izin</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#7C3AED;"></div>Cuti</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#1D6FF3;"></div>Project</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#98A2B3;"></div>Belum Check In</div>
+        </div>
+        <div class="pagination-row">
+          <div class="pag-info">Menampilkan 1–10 dari 16 anggota</div>
+          <div class="pag-btns">
+            <button class="pag-btn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+            <button class="pag-btn active">1</button>
+            <button class="pag-btn">2</button>
+            <button class="pag-btn"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: JADWAL KERJA -->
+      <div class="tab-panel" id="panel-jadwal">
+        <div class="sub-tab-bar">
+          <button class="sub-tab-btn active" onclick="switchSubTab('cal', this)">Kalender Bulanan</button>
+          <button class="sub-tab-btn" onclick="switchSubTab('week', this)">Jadwal Mingguan</button>
+          <button class="sub-tab-btn" onclick="switchSubTab('project', this)">Penugasan Project</button>
+        </div>
+
+        <!-- Sub-tab: Calendar View -->
+        <div class="sub-tab-panel active" id="subpanel-cal">
+          <div class="section-hdr">
+            <div>
+              <div class="section-title">Juni 2026</div>
+              <div class="section-sub">Jadwal kerja seluruh anggota tim</div>
+            </div>
+            <button class="btn-primary">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Atur Jadwal
+            </button>
+          </div>
+          <div class="cal-table-wrap">
+            <table class="cal-table" id="calTable">
+              <!-- Generated by JS -->
+            </table>
+          </div>
+        </div>
+
+        <!-- Sub-tab: Team Schedule (Weekly) -->
+        <div class="sub-tab-panel" id="subpanel-week">
+          <!-- Template Cards -->
+          <div class="section-hdr" style="margin-bottom:10px;">
+            <div class="section-title">Template Jadwal</div>
+          </div>
+          <div class="tmpl-strip">
+            <div class="tmpl-card">
+              <div class="tmpl-card-name">Reguler</div>
+              <div class="tmpl-card-time">08:00 – 17:00</div>
+              <div class="tmpl-card-days">Sen – Jum</div>
+              <span class="tmpl-card-tag cal-chip R">R</span>
+            </div>
+            <div class="tmpl-card">
+              <div class="tmpl-card-name">Shift Pagi</div>
+              <div class="tmpl-card-time">06:00 – 14:00</div>
+              <div class="tmpl-card-days">Sen – Jum</div>
+              <span class="tmpl-card-tag cal-chip SP">SP</span>
+            </div>
+            <div class="tmpl-card">
+              <div class="tmpl-card-name">Work From Home</div>
+              <div class="tmpl-card-time">08:00 – 17:00</div>
+              <div class="tmpl-card-days">Fleksibel</div>
+              <span class="tmpl-card-tag cal-chip WFH">WFH</span>
+            </div>
+            <div class="tmpl-card">
+              <div class="tmpl-card-name">Project</div>
+              <div class="tmpl-card-time">Situasional</div>
+              <div class="tmpl-card-days">Sesuai proyek</div>
+              <span class="tmpl-card-tag cal-chip PR">PR</span>
+            </div>
+            <div class="tmpl-card">
+              <div class="tmpl-card-name">Libur</div>
+              <div class="tmpl-card-time">—</div>
+              <div class="tmpl-card-days">Weekend / Off</div>
+              <span class="tmpl-card-tag cal-chip OFF">—</span>
+            </div>
+          </div>
+
+          <!-- Week Grid -->
+          <div class="week-toolbar">
+            <div class="week-nav">
+              <button class="week-nav-btn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+              16 – 22 Juni 2026
+              <button class="week-nav-btn"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+            </div>
+            <div class="week-actions">
+              <button class="btn-primary">
+                <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Bulk Jadwal
+              </button>
+            </div>
+          </div>
+          <div class="week-table-wrap">
+            <table class="week-table">
+              <thead>
+                <tr>
+                  <th>Anggota Tim</th>
+                  <th><div class="week-day-hdr"><span class="week-day-name">Sen</span><span class="week-day-num">16</span></div></th>
+                  <th><div class="week-day-hdr"><span class="week-day-name">Sel</span><span class="week-day-num">17</span></div></th>
+                  <th><div class="week-day-hdr"><span class="week-day-name">Rab</span><span class="week-day-num">18</span></div></th>
+                  <th><div class="week-day-hdr"><span class="week-day-name">Kam</span><span class="week-day-num">19</span></div></th>
+                  <th><div class="week-day-hdr"><span class="week-day-name">Jum</span><span class="week-day-num today">20</span></div></th>
+                  <th><div class="week-day-hdr"><span class="week-day-name">Sab</span><span class="week-day-num">21</span></div></th>
+                  <th><div class="week-day-hdr"><span class="week-day-name">Min</span><span class="week-day-num">22</span></div></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><div class="week-member"><div class="av blue" style="width:24px;height:24px;font-size:8px;">AR</div><div><div style="font-size:12px;font-weight:700;color:#101828;">Andi Ramadan</div><div style="font-size:10px;color:#98A2B3;">AE</div></div></div></td>
+                  <td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip OFF">—</span></td><td><span class="week-chip OFF">—</span></td>
+                </tr>
+                <tr>
+                  <td><div class="week-member"><div class="av purple" style="width:24px;height:24px;font-size:8px;">DS</div><div><div style="font-size:12px;font-weight:700;color:#101828;">Dian Safira</div><div style="font-size:10px;color:#98A2B3;">AE</div></div></div></td>
+                  <td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip I">I</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip OFF">—</span></td><td><span class="week-chip OFF">—</span></td>
+                </tr>
+                <tr>
+                  <td><div class="week-member"><div class="av amber" style="width:24px;height:24px;font-size:8px;">RP</div><div><div style="font-size:12px;font-weight:700;color:#101828;">Rizal Pratama</div><div style="font-size:10px;color:#98A2B3;">AE</div></div></div></td>
+                  <td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip OFF">—</span></td><td><span class="week-chip OFF">—</span></td>
+                </tr>
+                <tr>
+                  <td><div class="week-member"><div class="av green" style="width:24px;height:24px;font-size:8px;">NF</div><div><div style="font-size:12px;font-weight:700;color:#101828;">Nova Fitriani</div><div style="font-size:10px;color:#98A2B3;">AE</div></div></div></td>
+                  <td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip OFF">—</span></td><td><span class="week-chip OFF">—</span></td>
+                </tr>
+                <tr>
+                  <td><div class="week-member"><div class="av gray" style="width:24px;height:24px;font-size:8px;">SR</div><div><div style="font-size:12px;font-weight:700;color:#101828;">Siti Rahayu</div><div style="font-size:10px;color:#98A2B3;">AE</div></div></div></td>
+                  <td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip I">I</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip OFF">—</span></td><td><span class="week-chip OFF">—</span></td>
+                </tr>
+                <tr>
+                  <td><div class="week-member"><div class="av teal" style="width:24px;height:24px;font-size:8px;">LK</div><div><div style="font-size:12px;font-weight:700;color:#101828;">Lathifah Kalim</div><div style="font-size:10px;color:#98A2B3;">AE</div></div></div></td>
+                  <td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip OFF">—</span></td><td><span class="week-chip WFH">WFH</span></td>
+                </tr>
+                <tr>
+                  <td><div class="week-member"><div class="av orange" style="width:24px;height:24px;font-size:8px;">FN</div><div><div style="font-size:12px;font-weight:700;color:#101828;">Fajar Nurhadi</div><div style="font-size:10px;color:#98A2B3;">AE</div></div></div></td>
+                  <td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip OFF">—</span></td><td><span class="week-chip PR">PR</span></td>
+                </tr>
+                <tr>
+                  <td><div class="week-member"><div class="av green" style="width:24px;height:24px;font-size:8px;">AS</div><div><div style="font-size:12px;font-weight:700;color:#101828;">Agus Subagyo</div><div style="font-size:10px;color:#98A2B3;">Engineer</div></div></div></td>
+                  <td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip R">R</span></td><td><span class="week-chip OFF">—</span></td><td><span class="week-chip OFF">—</span></td>
+                </tr>
+                <tr>
+                  <td><div class="week-member"><div class="av blue" style="width:24px;height:24px;font-size:8px;">FN</div><div><div style="font-size:12px;font-weight:700;color:#101828;">Faisal Nugroho</div><div style="font-size:10px;color:#98A2B3;">Engineer</div></div></div></td>
+                  <td><span class="week-chip PR">PR</span></td><td><span class="week-chip PR">PR</span></td><td><span class="week-chip PR">PR</span></td><td><span class="week-chip PR">PR</span></td><td><span class="week-chip PR">PR</span></td><td><span class="week-chip OFF">—</span></td><td><span class="week-chip OFF">—</span></td>
+                </tr>
+                <tr>
+                  <td><div class="week-member"><div class="av red" style="width:24px;height:24px;font-size:8px;">BW</div><div><div style="font-size:12px;font-weight:700;color:#101828;">Bima Wicaksono</div><div style="font-size:10px;color:#98A2B3;">AE</div></div></div></td>
+                  <td><span class="week-chip TR">TR</span></td><td><span class="week-chip TR">TR</span></td><td><span class="week-chip TR">TR</span></td><td><span class="week-chip TR">TR</span></td><td><span class="week-chip TR">TR</span></td><td><span class="week-chip OFF">—</span></td><td><span class="week-chip OFF">—</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Sub-tab: Project Assignment -->
+        <div class="sub-tab-panel" id="subpanel-project">
+          <div class="section-hdr">
+            <div>
+              <div class="section-title">Penugasan Project Aktif</div>
+              <div class="section-sub">Juni 2026</div>
+            </div>
+            <button class="btn-primary">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Tambah Penugasan
+            </button>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Anggota</th>
+                  <th>Project</th>
+                  <th>Lokasi</th>
+                  <th>Periode</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><div class="member-cell"><div class="av green" style="width:26px;height:26px;font-size:8.5px;">NF</div><div class="member-name">Nova Fitriani</div></div></td>
+                  <td style="font-weight:600;color:#101828;">Migrasi FTTH Blok C</td>
+                  <td style="color:#667085;">Area Dau</td>
+                  <td style="color:#667085;font-size:11.5px;">10–16 Jun 2026</td>
+                  <td><span class="badge green"><span class="badge-dot"></span>Selesai</span></td>
+                  <td><button class="btn-sm">Detail</button></td>
+                </tr>
+                <tr>
+                  <td><div class="member-cell"><div class="av orange" style="width:26px;height:26px;font-size:8.5px;">FN</div><div class="member-name">Fajar Nurhadi</div></div></td>
+                  <td style="font-weight:600;color:#101828;">Ekspansi Singosari Utara</td>
+                  <td style="color:#667085;">Area Singosari</td>
+                  <td style="color:#667085;font-size:11.5px;">22–26 Jun 2026</td>
+                  <td><span class="badge blue"><span class="badge-dot"></span>Berjalan</span></td>
+                  <td><button class="btn-sm">Detail</button></td>
+                </tr>
+                <tr>
+                  <td><div class="member-cell"><div class="av blue" style="width:26px;height:26px;font-size:8.5px;">FN</div><div class="member-name">Faisal Nugroho</div></div></td>
+                  <td style="font-weight:600;color:#101828;">Perbaikan ODP Lawang</td>
+                  <td style="color:#667085;">Area Lawang</td>
+                  <td style="color:#667085;font-size:11.5px;">7–30 Jun 2026</td>
+                  <td><span class="badge blue"><span class="badge-dot"></span>Berjalan</span></td>
+                  <td><button class="btn-sm">Detail</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: PENGAJUAN KEHADIRAN -->
+      <div class="tab-panel" id="panel-pengajuan">
+        <div class="section-hdr">
+          <div>
+            <div class="section-title">Pengajuan Kehadiran</div>
+            <div class="section-sub">Permintaan izin, cuti, dan koreksi kehadiran tim</div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <div class="filter-dd">
+              Semua Jenis &nbsp;
+              <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:#98A2B3;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="filter-dd">
+              Semua Status &nbsp;
+              <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:#98A2B3;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="req-table-wrap">
+          <table class="req-table">
+            <thead>
+              <tr>
+                <th>Anggota</th>
+                <th>Jenis</th>
+                <th>Tanggal</th>
+                <th>Keterangan</th>
+                <th>Diajukan</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="member-cell"><div class="av purple" style="width:28px;height:28px;font-size:9px;">DS</div><div><div class="member-name">Dian Safira</div><div class="member-sub">AE</div></div></div></td>
+                <td><span class="req-type-badge izin">Izin</span></td>
+                <td style="white-space:nowrap;color:#344054;">19 Jun 2026</td>
+                <td style="color:#667085;font-size:12px;">Keperluan keluarga</td>
+                <td style="color:#98A2B3;font-size:11.5px;white-space:nowrap;">17 Jun 2026</td>
+                <td><span class="req-status approved">Disetujui</span></td>
+                <td><button class="btn-sm blue">Detail</button></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av gray" style="width:28px;height:28px;font-size:9px;">SR</div><div><div class="member-name">Siti Rahayu</div><div class="member-sub">AE</div></div></div></td>
+                <td><span class="req-type-badge izin">Izin</span></td>
+                <td style="white-space:nowrap;color:#344054;">19 Jun 2026</td>
+                <td style="color:#667085;font-size:12px;">Pemeriksaan kesehatan</td>
+                <td style="color:#98A2B3;font-size:11.5px;white-space:nowrap;">18 Jun 2026</td>
+                <td><span class="req-status approved">Disetujui</span></td>
+                <td><button class="btn-sm blue">Detail</button></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av gray" style="width:28px;height:28px;font-size:9px;">SR</div><div><div class="member-name">Siti Rahayu</div><div class="member-sub">AE</div></div></div></td>
+                <td><span class="req-type-badge cuti">Cuti</span></td>
+                <td style="white-space:nowrap;color:#344054;">25–26 Jun 2026</td>
+                <td style="color:#667085;font-size:12px;">Cuti tahunan</td>
+                <td style="color:#98A2B3;font-size:11.5px;white-space:nowrap;">18 Jun 2026</td>
+                <td><span class="req-status pending">Menunggu</span></td>
+                <td><div style="display:flex;gap:5px;"><button class="btn-sm" style="background:#ECFDF3;color:#027A48;border-color:#ABEFC6;">Setuju</button><button class="btn-sm" style="background:#FEF3F2;color:#B42318;border-color:#FECDCA;">Tolak</button></div></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av amber" style="width:28px;height:28px;font-size:9px;">RP</div><div><div class="member-name">Rizal Pratama</div><div class="member-sub">AE</div></div></div></td>
+                <td><span class="req-type-badge koreksi">Koreksi</span></td>
+                <td style="white-space:nowrap;color:#344054;">20 Jun 2026</td>
+                <td style="color:#667085;font-size:12px;">Lupa check-in — ada di lapangan</td>
+                <td style="color:#98A2B3;font-size:11.5px;white-space:nowrap;">20 Jun 2026</td>
+                <td><span class="req-status pending">Menunggu</span></td>
+                <td><div style="display:flex;gap:5px;"><button class="btn-sm" style="background:#ECFDF3;color:#027A48;border-color:#ABEFC6;">Setuju</button><button class="btn-sm" style="background:#FEF3F2;color:#B42318;border-color:#FECDCA;">Tolak</button></div></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av teal" style="width:28px;height:28px;font-size:9px;">LK</div><div><div class="member-name">Lathifah Kalim</div><div class="member-sub">AE</div></div></div></td>
+                <td><span class="req-type-badge lembur">Lembur</span></td>
+                <td style="white-space:nowrap;color:#344054;">18 Jun 2026</td>
+                <td style="color:#667085;font-size:12px;">Pendampingan pelanggan baru</td>
+                <td style="color:#98A2B3;font-size:11.5px;white-space:nowrap;">18 Jun 2026</td>
+                <td><span class="req-status approved">Disetujui</span></td>
+                <td><button class="btn-sm blue">Detail</button></td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <!-- TAB 3: PENGAJUAN KEHADIRAN -->
-      <div id="tab-pengajuan" class="tab-panel">
-        <div style="font-size:13px;font-weight:600;color:#667085;margin-bottom:12px;">Approval Center Cabang — Pengajuan masuk dari tim Anda</div>
-        <div class="stat-chips">
-          <span class="stat-chip amber">Menunggu Approval: 5</span>
-          <span class="stat-chip green">Disetujui Hari Ini: 3</span>
-          <span class="stat-chip red">Ditolak Bulan Ini: 1</span>
+      <!-- TAB: RIWAYAT -->
+      <div class="tab-panel" id="panel-riwayat">
+        <div class="section-hdr">
+          <div>
+            <div class="section-title">Riwayat Kehadiran</div>
+            <div class="section-sub">Data historis kehadiran tim per periode</div>
+          </div>
         </div>
-        <table class="data-table" style="table-layout:fixed;width:100%;">
-          <colgroup><col style="width:190px"><col style="width:130px"><col style="width:120px"><col style="width:80px"><col style="width:100px"><col style="width:170px"></colgroup>
-          <thead><tr><th>Anggota</th><th>Jenis</th><th>Tanggal</th><th>SLA</th><th>Status</th><th>Aksi</th></tr></thead>
-          <tbody>
-            <tr>
-              <td><div class="member-cell"><div class="av red">BW</div><span class="member-name">Bima Wicaksono</span></div></td>
-              <td>Belum Check In</td>
-              <td style="font-size:11px;color:#667085;">Hari ini</td>
-              <td style="font-size:11px;color:#B54708;font-weight:700;">4 jam</td>
-              <td><span class="badge amber">Menunggu</span></td>
-              <td><button class="btn-sm green" style="margin-right:4px;">&#10003; Setuju</button><button class="btn-sm red">&#10007; Tolak</button></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av gray">SR</div><span class="member-name">Siti Rahayu</span></div></td>
-              <td>Izin Pribadi</td>
-              <td style="font-size:11px;color:#667085;">15 Jun 2026</td>
-              <td style="font-size:11px;color:#B54708;font-weight:700;">1 hari</td>
-              <td><span class="badge amber">Menunggu</span></td>
-              <td><button class="btn-sm green" style="margin-right:4px;">&#10003;</button><button class="btn-sm red" style="margin-right:4px;">&#10007;</button><button class="btn-sm blue">&#8617; Revisi</button></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av gray">JP</div><span class="member-name">Joni Prasetyo</span></div></td>
-              <td>Sakit</td>
-              <td style="font-size:11px;color:#667085;">12–13 Jun</td>
-              <td style="font-size:11px;color:#98A2B3;">Selesai</td>
-              <td><span class="badge green">Disetujui</span></td>
-              <td><button class="btn-sm gray">&#128065; Lihat</button></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av pink">PL</div><span class="member-name">Putri Lestari</span></div></td>
-              <td>Dinas Luar</td>
-              <td style="font-size:11px;color:#667085;">16 Jun 2026</td>
-              <td style="font-size:11px;color:#B54708;font-weight:700;">2 jam</td>
-              <td><span class="badge amber">Menunggu</span></td>
-              <td><button class="btn-sm green" style="margin-right:4px;">&#10003;</button><button class="btn-sm red">&#10007;</button></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av amber">RP</div><span class="member-name">Rizal Pratama</span></div></td>
-              <td>Terlambat</td>
-              <td style="font-size:11px;color:#667085;">Hari ini</td>
-              <td style="font-size:11px;color:#B54708;font-weight:700;">4 jam</td>
-              <td><span class="badge amber">Menunggu</span></td>
-              <td><button class="btn-sm green" style="margin-right:4px;">&#10003;</button><button class="btn-sm red">&#10007;</button></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av pink">MS</div><span class="member-name">Manda Sari</span></div></td>
-              <td>Pergantian Shift</td>
-              <td style="font-size:11px;color:#667085;">17 Jun 2026</td>
-              <td style="font-size:11px;color:#B54708;font-weight:700;">1 hari</td>
-              <td><span class="badge amber">Menunggu</span></td>
-              <td><button class="btn-sm green" style="margin-right:4px;">&#10003;</button><button class="btn-sm red">&#10007;</button></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av teal">HW</div><span class="member-name">Hendra Wijaya</span></div></td>
-              <td>Cuti Tahunan</td>
-              <td style="font-size:11px;color:#667085;">12–14 Jun</td>
-              <td style="font-size:11px;color:#98A2B3;">Selesai</td>
-              <td><span class="badge green">Disetujui</span></td>
-              <td><button class="btn-sm gray">&#128065; Lihat</button></td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av blue">AS</div><span class="member-name">Agus Subagyo</span></div></td>
-              <td>Dinas Luar</td>
-              <td style="font-size:11px;color:#667085;">10 Jun 2026</td>
-              <td style="font-size:11px;color:#98A2B3;">Selesai</td>
-              <td><span class="badge red">Ditolak</span></td>
-              <td><button class="btn-sm gray">&#128065; Lihat</button></td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="riwayat-toolbar">
+          <input type="date" class="date-input" value="2026-06-01">
+          <span style="font-size:12px;color:#667085;">s.d.</span>
+          <input type="date" class="date-input" value="2026-06-20">
+          <div class="filter-dd">
+            Semua Anggota &nbsp;
+            <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:#98A2B3;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <button class="btn-primary" style="margin-left:auto;">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export Excel
+          </button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Anggota</th>
+                <th>Tanggal</th>
+                <th>Jadwal</th>
+                <th>Check In</th>
+                <th>Check Out</th>
+                <th>Durasi</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="member-cell"><div class="av blue" style="width:26px;height:26px;font-size:8.5px;">AR</div><div class="member-name">Andi Ramadan</div></div></td>
+                <td style="color:#667085;white-space:nowrap;">19 Jun 2026</td>
+                <td><span class="sch-chip reguler">Reguler</span></td>
+                <td><span class="time-val">08:05</span></td>
+                <td><span class="time-val">17:10</span></td>
+                <td>9j 5m</td>
+                <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av purple" style="width:26px;height:26px;font-size:8.5px;">DS</div><div class="member-name">Dian Safira</div></div></td>
+                <td style="color:#667085;white-space:nowrap;">19 Jun 2026</td>
+                <td><span class="sch-chip reguler">Reguler</span></td>
+                <td><span class="time-dash">—</span></td>
+                <td><span class="time-dash">—</span></td>
+                <td><span class="time-dash">—</span></td>
+                <td><span class="badge amber"><span class="badge-dot"></span>Izin</span></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av amber" style="width:26px;height:26px;font-size:8.5px;">RP</div><div class="member-name">Rizal Pratama</div></div></td>
+                <td style="color:#667085;white-space:nowrap;">18 Jun 2026</td>
+                <td><span class="sch-chip reguler">Reguler</span></td>
+                <td><span class="time-val">08:01</span></td>
+                <td><span class="time-val">17:05</span></td>
+                <td>9j 4m</td>
+                <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av green" style="width:26px;height:26px;font-size:8.5px;">NF</div><div class="member-name">Nova Fitriani</div></div></td>
+                <td style="color:#667085;white-space:nowrap;">18 Jun 2026</td>
+                <td><span class="sch-chip project">Project</span></td>
+                <td><span class="time-val">07:50</span></td>
+                <td><span class="time-val">18:00</span></td>
+                <td>10j 10m</td>
+                <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av teal" style="width:26px;height:26px;font-size:8.5px;">LK</div><div class="member-name">Lathifah Kalim</div></div></td>
+                <td style="color:#667085;white-space:nowrap;">18 Jun 2026</td>
+                <td><span class="sch-chip reguler">Reguler</span></td>
+                <td><span class="time-val">08:20</span></td>
+                <td><span class="time-val">20:15</span></td>
+                <td>11j 55m</td>
+                <td><span class="badge green"><span class="badge-dot"></span>Lembur</span></td>
+              </tr>
+              <tr>
+                <td><div class="member-cell"><div class="av orange" style="width:26px;height:26px;font-size:8.5px;">FN</div><div class="member-name">Fajar Nurhadi</div></div></td>
+                <td style="color:#667085;white-space:nowrap;">17 Jun 2026</td>
+                <td><span class="sch-chip reguler">Reguler</span></td>
+                <td><span class="time-val">08:02</span></td>
+                <td><span class="time-val">17:00</span></td>
+                <td>8j 58m</td>
+                <td><span class="badge green"><span class="badge-dot"></span>Hadir</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination-row" style="margin-top:12px;">
+          <div class="pag-info">Menampilkan 1–6 dari 142 entri</div>
+          <div class="pag-btns">
+            <button class="pag-btn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+            <button class="pag-btn active">1</button>
+            <button class="pag-btn">2</button>
+            <button class="pag-btn">3</button>
+            <button class="pag-btn"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+          </div>
+        </div>
       </div>
 
-      <!-- TAB 4: RIWAYAT -->
-      <div id="tab-riwayat" class="tab-panel">
-        <div class="filter-bar">
-          <select class="filter-select"><option>Juni 2026</option><option>Mei 2026</option><option>April 2026</option></select>
-          <input class="filter-input" type="text" placeholder="Cari nama...">
-          <select class="filter-select"><option>Semua Jenis</option><option>Izin</option><option>Sakit</option><option>Cuti</option><option>Dinas Luar</option><option>Terlambat</option></select>
-          <button style="padding:7px 14px;border-radius:8px;border:1px solid #EAECF0;background:white;font-size:12px;font-family:inherit;cursor:pointer;font-weight:600;color:#344054;margin-left:auto;">&#8595; Export CSV</button>
-        </div>
-        <table class="data-table" style="table-layout:fixed;width:100%;">
-          <colgroup><col style="width:185px"><col style="width:120px"><col style="width:110px"><col style="width:70px"><col style="width:90px"><col style="width:130px"></colgroup>
-          <thead><tr><th>Anggota</th><th>Jenis</th><th>Tanggal</th><th>Durasi</th><th>Status</th><th>Disetujui Oleh</th></tr></thead>
-          <tbody>
-            <tr>
-              <td><div class="member-cell"><div class="av gray">JP</div><span class="member-name">Joni Prasetyo</span></div></td>
-              <td>Sakit</td><td style="font-size:11px;color:#667085;">12–13 Jun</td>
-              <td style="font-size:11px;">2 hari</td>
-              <td><span class="badge green">Disetujui</span></td>
-              <td style="font-size:11px;color:#667085;">Budi Santoso</td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av teal">HW</div><span class="member-name">Hendra Wijaya</span></div></td>
-              <td>Cuti Tahunan</td><td style="font-size:11px;color:#667085;">12–14 Jun</td>
-              <td style="font-size:11px;">3 hari</td>
-              <td><span class="badge green">Disetujui</span></td>
-              <td style="font-size:11px;color:#667085;">Budi Santoso</td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av blue">AS</div><span class="member-name">Agus Subagyo</span></div></td>
-              <td>Dinas Luar</td><td style="font-size:11px;color:#667085;">10 Jun</td>
-              <td style="font-size:11px;">1 hari</td>
-              <td><span class="badge red">Ditolak</span></td>
-              <td style="font-size:11px;color:#667085;">Budi Santoso</td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av amber">RP</div><span class="member-name">Rizal Pratama</span></div></td>
-              <td>Terlambat</td><td style="font-size:11px;color:#667085;">9 Jun</td>
-              <td style="font-size:11px;">1x</td>
-              <td><span class="badge green">Disetujui</span></td>
-              <td style="font-size:11px;color:#667085;">Budi Santoso</td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av purple">DS</div><span class="member-name">Dian Safira</span></div></td>
-              <td>Izin Pribadi</td><td style="font-size:11px;color:#667085;">5 Jun</td>
-              <td style="font-size:11px;">1 hari</td>
-              <td><span class="badge green">Disetujui</span></td>
-              <td style="font-size:11px;color:#667085;">Budi Santoso</td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av red">BW</div><span class="member-name">Bima Wicaksono</span></div></td>
-              <td>Terlambat</td><td style="font-size:11px;color:#667085;">3 Jun</td>
-              <td style="font-size:11px;">1x</td>
-              <td><span class="badge orange">Catatan</span></td>
-              <td style="font-size:11px;color:#667085;">Budi Santoso</td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av green">NF</div><span class="member-name">Nova Fitriani</span></div></td>
-              <td>Dinas Luar</td><td style="font-size:11px;color:#667085;">1 Jun</td>
-              <td style="font-size:11px;">2 hari</td>
-              <td><span class="badge green">Disetujui</span></td>
-              <td style="font-size:11px;color:#667085;">Budi Santoso</td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av pink">MS</div><span class="member-name">Manda Sari</span></div></td>
-              <td>Sakit</td><td style="font-size:11px;color:#667085;">28 Mei</td>
-              <td style="font-size:11px;">1 hari</td>
-              <td><span class="badge green">Disetujui</span></td>
-              <td style="font-size:11px;color:#667085;">Budi Santoso</td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av purple">IM</div><span class="member-name">Irfan Maulana</span></div></td>
-              <td>Izin Pribadi</td><td style="font-size:11px;color:#667085;">25 Mei</td>
-              <td style="font-size:11px;">1 hari</td>
-              <td><span class="badge green">Disetujui</span></td>
-              <td style="font-size:11px;color:#667085;">Budi Santoso</td>
-            </tr>
-            <tr>
-              <td><div class="member-cell"><div class="av teal">LA</div><span class="member-name">Lutfi Anwar</span></div></td>
-              <td>Pergantian Shift</td><td style="font-size:11px;color:#667085;">20 Mei</td>
-              <td style="font-size:11px;">1x</td>
-              <td><span class="badge green">Disetujui</span></td>
-              <td style="font-size:11px;color:#667085;">Budi Santoso</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    </div><!-- end content-area -->
   </main>
 </div>
 
 <script>
-function switchTab(id,btn){document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});document.getElementById('tab-'+id).classList.add('active');btn.classList.add('active');}
-function switchSubTab(id,btn){document.querySelectorAll('.sub-tab-panel').forEach(function(p){p.classList.remove('active');});document.querySelectorAll('.sub-tab-btn').forEach(function(b){b.classList.remove('active');});document.getElementById('sub-'+id).classList.add('active');btn.classList.add('active');}
-function togglePeople(){var h=document.getElementById('people-head'),s=document.getElementById('people-sub');h.classList.toggle('open');s.classList.toggle('open');}
-function toggleRequests(){var h=document.getElementById('requests-head'),s=document.getElementById('requests-sub');h.classList.toggle('open');s.classList.toggle('open');}
-function toggleLearning(){var h=document.getElementById('learning-head'),s=document.getElementById('learning-sub');h.classList.toggle('open');s.classList.toggle('open');}
+// ── TAB SWITCHING ──
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function switchSubTab(id, btn) {
+  btn.closest('.sub-tab-bar').querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const panel = btn.closest('.sub-tab-panel, .tab-panel');
+  panel.querySelectorAll('.sub-tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('subpanel-' + id).classList.add('active');
+}
+
+// ── SIDEBAR GROUPS ──
+function toggleGroup(name) {
+  const head = document.getElementById(name + '-head');
+  const sub = document.getElementById(name + '-sub');
+  head.classList.toggle('open');
+  sub.classList.toggle('open');
+}
+
+// ── CALENDAR GENERATION ──
+(function buildCalendar() {
+  const WEEKENDS = new Set([6,7,13,14,20,21,27,28]);
+  const DAY_NAMES = ['Sen','Sel','Rab','Kam','Jum','Sab','Min']; // Mon=1..Sun=7
+
+  // June 2026 starts on Monday (day index 0 = Mon)
+  function dayOfWeek(d) {
+    // June 1 = Monday → (d-1) % 7
+    return (d - 1) % 7;
+  }
+
+  const members = [
+    { name:'Andi Ramadan',  initials:'AR', color:'blue',   role:'AE',       def:'R',  overrides:{} },
+    { name:'Dian Safira',   initials:'DS', color:'purple', role:'AE',       def:'R',  overrides:{19:'I'} },
+    { name:'Rizal Pratama', initials:'RP', color:'amber',  role:'AE',       def:'R',  overrides:{} },
+    { name:'Nova Fitriani', initials:'NF', color:'green',  role:'AE',       def:'R',  overrides:{10:'PR',11:'PR',12:'PR',15:'PR',16:'PR'} },
+    { name:'Bima Wicaksono',initials:'BW', color:'red',    role:'AE',       def:'TR', overrides:{} },
+    { name:'Siti Rahayu',   initials:'SR', color:'gray',   role:'AE',       def:'R',  overrides:{19:'I',25:'C',26:'C'} },
+    { name:'Lathifah Kalim',initials:'LK', color:'teal',   role:'AE',       def:'R',  overrides:{15:'WFH',22:'WFH'} },
+    { name:'Fajar Nurhadi', initials:'FN', color:'orange', role:'AE',       def:'R',  overrides:{22:'PR',23:'PR',24:'PR',25:'PR',26:'PR'} },
+    { name:'Agus Subagyo',  initials:'AS', color:'green',  role:'Engineer', def:'R',  overrides:{} },
+    { name:'Faisal Nugroho',initials:'FN', color:'blue',   role:'Engineer', def:'PR', overrides:{1:'R',2:'R',3:'R',4:'R',5:'R'} },
+  ];
+
+  const table = document.getElementById('calTable');
+  if (!table) return;
+
+  // Header row 1: day names
+  let headHTML = '<thead>';
+  headHTML += '<tr>';
+  headHTML += '<th style="text-align:left;padding-left:14px;min-width:150px;position:sticky;left:0;background:#F9FAFB;z-index:3;">Anggota Tim</th>';
+  for (let d = 1; d <= 30; d++) {
+    const isWe = WEEKENDS.has(d);
+    const dow = dayOfWeek(d);
+    headHTML += `<th style="min-width:34px;${isWe ? 'background:#F2F4F7;color:#C4C9D4;' : ''}">${DAY_NAMES[dow]}<br><span style="font-size:11px;font-weight:800;color:${isWe?'#C4C9D4':'#344054'};">${d}</span></th>`;
+  }
+  headHTML += '</tr></thead>';
+
+  // Body rows
+  let bodyHTML = '<tbody>';
+  members.forEach(m => {
+    bodyHTML += '<tr>';
+    bodyHTML += `<td style="position:sticky;left:0;background:white;z-index:1;border-right:1px solid #EAECF0;">
+      <div class="cal-member">
+        <div class="cal-av ${m.color}">${m.initials}</div>
+        <div><div class="cal-name">${m.name}</div><div class="cal-role">${m.role}</div></div>
+      </div></td>`;
+    for (let d = 1; d <= 30; d++) {
+      if (WEEKENDS.has(d)) {
+        bodyHTML += '<td class="cal-weekend"><span class="cal-chip OFF">—</span></td>';
+      } else {
+        const type = m.overrides[d] || m.def;
+        bodyHTML += `<td><span class="cal-chip ${type}">${type}</span></td>`;
+      }
+    }
+    bodyHTML += '</tr>';
+  });
+  bodyHTML += '</tbody>';
+
+  // Legend
+  const legendHTML = `<tfoot><tr><td colspan="31">
+    <div class="cal-legend">
+      <div class="cal-legend-item"><span class="cal-legend-chip cal-chip R">R</span> Reguler</div>
+      <div class="cal-legend-item"><span class="cal-legend-chip cal-chip SP">SP</span> Shift Pagi</div>
+      <div class="cal-legend-item"><span class="cal-legend-chip cal-chip PR">PR</span> Project</div>
+      <div class="cal-legend-item"><span class="cal-legend-chip cal-chip WFH">WFH</span> Work From Home</div>
+      <div class="cal-legend-item"><span class="cal-legend-chip cal-chip I">I</span> Izin</div>
+      <div class="cal-legend-item"><span class="cal-legend-chip cal-chip C">C</span> Cuti</div>
+      <div class="cal-legend-item"><span class="cal-legend-chip cal-chip TR">TR</span> Training</div>
+      <div class="cal-legend-item"><span class="cal-legend-chip cal-chip OFF">—</span> Libur</div>
+    </div>
+  </td></tr></tfoot>`;
+
+  table.innerHTML = headHTML + bodyHTML + legendHTML;
+})();
 </script>
 </body>
 </html>

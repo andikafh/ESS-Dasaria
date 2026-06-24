@@ -1,0 +1,144 @@
+Table employees {
+  id            int           [pk, increment]
+  employee_id   varchar(20)   [unique, not null, note: 'e.g. EMP2024001']
+  full_name     varchar(100)  [not null]
+  role          varchar(50)   [note: 'Branch Leader, AE, Engineer, Permit']
+  department    varchar(50)
+  branch        varchar(100)  [note: 'e.g. Cabang Karangploso']
+  password_hash varchar(255)  [not null]
+  contract_type varchar(10)   [not null, note: 'PKWT / PKWTT / Freelance']
+  contract_end  date          [note: 'null untuk PKWTT']
+  is_active     boolean       [default: true]
+  created_at    timestamp
+}
+
+Table sessions {
+  id          int          [pk, increment]
+  employee_id int          [not null, ref: > employees.id]
+  token       varchar(255) [unique, not null]
+  device_info varchar(255)
+  ip_address  varchar(45)
+  expires_at  timestamp
+  is_active   boolean      [default: true]
+  created_at  timestamp
+}
+
+Table work_schedules {
+  id         int         [pk, increment]
+  name       varchar(100) [not null, note: 'Regular Schedule, Shift Pagi, dst']
+  type       varchar(10)  [not null, note: 'Regular / Shift / Project']
+  start_time time         [note: 'null untuk Regular jika tidak ada jam tetap']
+  end_time   time
+  work_days  varchar(50)  [note: 'e.g. Senin-Sabtu']
+  location   varchar(100)
+  created_at timestamp
+}
+
+Table schedule_assignments {
+  id            int          [pk, increment]
+  employee_id   int          [not null, ref: > employees.id]
+  schedule_id   int          [not null, ref: > work_schedules.id]
+  date          date         [not null]
+  project_name  varchar(100) [note: 'khusus tipe Project']
+  site_location varchar(100)
+  notes         text
+  
+  indexes {
+    (employee_id, date)
+  }
+}
+
+Table attendance_logs {
+  id              int          [pk, increment]
+  employee_id     int          [not null, ref: > employees.id]
+  schedule_id     int          [ref: > work_schedules.id]
+  date            date         [not null]
+  check_in_at     timestamp
+  check_out_at    timestamp
+  check_in_lat    decimal(9,6)
+  check_in_lng    decimal(9,6)
+  check_out_lat   decimal(9,6)
+  check_out_lng   decimal(9,6)
+  status          varchar(20)  [not null, note: 'Hadir / Terlambat / Izin / Sakit / Cuti / Absen']
+  is_late         boolean      [default: false]
+  late_minutes    int          [default: 0]
+  notes           text
+  created_at      timestamp
+
+  indexes {
+    (employee_id, date) [unique]
+  }
+}
+
+Table attendance_monthly_summary {
+  id               int  [pk, increment]
+  employee_id      int  [not null, ref: > employees.id]
+  period_year      int  [not null]
+  period_month     int  [not null]
+  total_work_days  int  [default: 0]
+  hadir_count      int  [default: 0]
+  terlambat_count  int  [default: 0]
+  izin_count       int  [default: 0]
+  sakit_count      int  [default: 0]
+  cuti_count       int  [default: 0]
+  absen_count      int  [default: 0]
+  updated_at       timestamp
+
+  indexes {
+    (employee_id, period_year, period_month) [unique]
+  }
+}
+
+Table leave_types {
+  id                    int         [pk, increment]
+  code                  varchar(30) [unique, not null, note: 'cuti_tahunan / izin_sakit / dinas_luar / izin_pribadi']
+  name                  varchar(100) [not null]
+  category              varchar(10)  [not null, note: 'Izin / Cuti / Dinas']
+  requires_doc          boolean      [default: false, note: 'Sakit >2 hari wajib surat dokter']
+  max_days_per_request  int
+  deducted_from_balance boolean      [default: true]
+  is_active             boolean      [default: true]
+}
+
+Table leave_balances {
+  id            int  [pk, increment]
+  employee_id   int  [not null, ref: > employees.id]
+  leave_type_id int  [not null, ref: > leave_types.id]
+  year          int  [not null]
+  allocated     int  [not null, default: 0, note: 'Hak tahunan, e.g. 12 hari']
+  used          int  [not null, default: 0]
+  remaining     int  [not null, default: 0, note: 'allocated - used']
+  updated_at    timestamp
+
+  indexes {
+    (employee_id, leave_type_id, year) [unique]
+  }
+}
+
+Table leave_requests {
+  id             int          [pk, increment]
+  employee_id    int          [not null, ref: > employees.id]
+  leave_type_id  int          [not null, ref: > leave_types.id]
+  start_date     date         [not null]
+  end_date       date         [not null]
+  total_days     int          [not null]
+  reason         text
+  attachment_url varchar(500) [note: 'Surat keterangan dokter, dll']
+  status         varchar(15)  [not null, default: 'Menunggu', note: 'Draft / Menunggu / Disetujui / Ditolak / Dibatalkan']
+  submitted_at   timestamp
+  created_at     timestamp
+  updated_at     timestamp
+}
+
+Table leave_approvals {
+  id               int         [pk, increment]
+  leave_request_id int         [not null, ref: > leave_requests.id]
+  approver_id      int         [ref: > employees.id]
+  approver_role    varchar(50) [not null, note: 'Branch Leader / HC / HoR']
+  approver_order   int         [not null, note: 'Urutan chain: 1, 2, 3']
+  status           varchar(10) [not null, default: 'Menunggu', note: 'Menunggu / Disetujui / Ditolak / Revisi']
+  notes            text
+  sla_deadline     timestamp   [note: 'Target waktu keputusan']
+  decided_at       timestamp
+  created_at       timestamp
+}

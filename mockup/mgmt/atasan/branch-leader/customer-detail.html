@@ -1,0 +1,815 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Closing Customer — Branch Leader</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height:100%; font-family:'Inter',-apple-system,sans-serif; font-size:14px; color:#101828; background:#F5F7FA; -webkit-font-smoothing:antialiased; }
+    a { text-decoration:none; color:inherit; }
+    button { font-family:inherit; cursor:pointer; border:none; background:none; }
+
+    /* ─── LAYOUT ─── */
+    .mgmt-layout { display:flex; height:100vh; overflow:hidden; }
+
+    /* ─── SIDEBAR ─── */
+    .sidebar { width:230px; flex-shrink:0; background:#0D1B3E; height:100vh; display:flex; flex-direction:column; overflow-y:auto; overflow-x:hidden; }
+    .sidebar::-webkit-scrollbar { width:3px; }
+    .sidebar::-webkit-scrollbar-thumb { background:rgba(255,255,255,.1); border-radius:2px; }
+    .sb-logo { display:flex; align-items:center; gap:10px; padding:22px 18px 16px; color:white; font-size:14px; font-weight:800; letter-spacing:-.3px; border-bottom:1px solid rgba(255,255,255,.07); flex-shrink:0; }
+    .sb-logo svg { width:22px; height:22px; stroke:white; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-nav { padding:10px; flex:1; }
+    .sb-item { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
+    .sb-item:hover { background:rgba(255,255,255,.07); color:rgba(255,255,255,.9); }
+    .sb-item.active { background:rgba(29,111,243,.28); color:white; font-weight:700; }
+    .sb-item svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-badge { margin-left:auto; background:#F04438; color:white; font-size:9px; font-weight:800; min-width:17px; height:17px; border-radius:9px; display:flex; align-items:center; justify-content:center; padding:0 4px; }
+    .sb-group { margin-bottom:1px; }
+    .sb-group-head { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; cursor:pointer; user-select:none; transition:all .15s; }
+    .sb-group-head:hover { background:rgba(255,255,255,.07); color:rgba(255,255,255,.9); }
+    .sb-group-head.open { color:rgba(255,255,255,.9); background:rgba(255,255,255,.05); }
+    .sb-group-head svg.sb-ico { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-chev { margin-left:auto; width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; transition:transform .2s; }
+    .sb-group-head.open .sb-chev { transform:rotate(90deg); }
+    .sb-sub { padding-left:14px; overflow:hidden; max-height:0; transition:max-height .25s ease; }
+    .sb-sub.open { max-height:220px; }
+    .sb-sub-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.45); font-size:12px; font-weight:500; transition:all .15s; text-decoration:none; margin-bottom:1px; }
+    .sb-sub-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.8); }
+    .sb-sub-dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; opacity:.7; }
+    .sb-connect { padding:6px 10px 14px; border-top:1px solid rgba(255,255,255,.07); }
+    .sb-connect-label { font-size:10px; font-weight:700; color:rgba(255,255,255,.3); text-transform:uppercase; letter-spacing:.8px; padding:10px 10px 6px; }
+    .sb-connect-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.5); font-size:12px; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
+    .sb-connect-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.85); }
+    .sb-connect-item svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-connect-sub { font-size:10px; color:rgba(255,255,255,.25); margin-left:auto; }
+
+    /* ─── MAIN ─── */
+    .main-content { flex:1; height:100vh; display:flex; flex-direction:column; overflow:hidden; min-width:0; }
+
+    /* ─── TOPBAR ─── */
+    .topbar { background:white; height:62px; flex-shrink:0; display:flex; align-items:center; justify-content:space-between; padding:0 24px; border-bottom:1px solid #EAECF0; }
+    .topbar-left { display:flex; align-items:center; gap:12px; }
+    .btn-back { display:flex; align-items:center; gap:6px; padding:7px 12px; border-radius:9px; border:1px solid #EAECF0; background:white; color:#344054; font-size:12.5px; font-weight:600; cursor:pointer; font-family:inherit; transition:all .15s; text-decoration:none; }
+    .btn-back:hover { background:#F9FAFB; }
+    .btn-back svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .topbar-divider { width:1px; height:22px; background:#EAECF0; }
+    .page-title { font-size:16px; font-weight:800; color:#101828; }
+    .page-sub { font-size:11.5px; color:#98A2B3; margin-top:1px; }
+    .topbar-right { display:flex; align-items:center; gap:10px; }
+    .topbar-notif { position:relative; width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:9px; color:#667085; cursor:pointer; border:1px solid #EAECF0; background:white; }
+    .topbar-notif svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .notif-dot { position:absolute; top:6px; right:7px; width:8px; height:8px; background:#F04438; border-radius:50%; border:1.5px solid white; }
+    .user-chip { display:flex; align-items:center; gap:9px; padding:6px 10px; border-radius:10px; cursor:pointer; }
+    .user-chip:hover { background:#F5F7FA; }
+    .user-av { width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,#1D6FF3,#1558C8); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:white; flex-shrink:0; }
+    .user-name { font-size:13px; font-weight:700; color:#101828; }
+    .user-role { font-size:11px; color:#98A2B3; }
+    .topbar-logout { display:flex; align-items:center; gap:6px; padding:7px 13px; border-radius:9px; background:#FEF3F2; border:1px solid #FECDCA; color:#B42318; font-size:12px; font-weight:700; cursor:pointer; text-decoration:none; transition:all .15s; }
+    .topbar-logout:hover { background:#FEE4E2; }
+    .topbar-logout svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* ─── CONTENT ─── */
+    .content-area { flex:1; overflow-y:auto; padding:20px 24px 32px; }
+    .content-area::-webkit-scrollbar { width:4px; }
+    .content-area::-webkit-scrollbar-thumb { background:#D0D5DD; border-radius:2px; }
+
+    /* ─── BREADCRUMB ─── */
+    .breadcrumb { display:flex; align-items:center; gap:5px; font-size:12px; color:#98A2B3; margin-bottom:16px; }
+    .breadcrumb a { color:#667085; }
+    .breadcrumb a:hover { color:#1D6FF3; text-decoration:underline; }
+    .breadcrumb svg { width:12px; height:12px; stroke:#D0D5DD; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .breadcrumb-cur { color:#344054; font-weight:600; }
+
+    /* ─── KPI STRIP ─── */
+    .kpi-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:16px; }
+    .kpi-card { background:white; border:1px solid #EAECF0; border-radius:12px; padding:14px 16px; display:flex; align-items:center; gap:12px; }
+    .kpi-card.alert { border-left:3px solid #F79009; }
+    .kpi-ico { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .kpi-ico svg { width:17px; height:17px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .kpi-ico.blue   { background:#EFF6FF; color:#1D6FF3; }
+    .kpi-ico.green  { background:#ECFDF3; color:#027A48; }
+    .kpi-ico.amber  { background:#FFFAEB; color:#B54708; }
+    .kpi-ico.purple { background:#F4F3FF; color:#7C3AED; }
+    .kpi-val { font-size:22px; font-weight:800; color:#101828; letter-spacing:-1px; line-height:1; }
+    .kpi-lbl { font-size:11px; color:#667085; margin-top:3px; line-height:1.3; }
+    .kpi-note { font-size:10px; font-weight:700; margin-top:3px; }
+    .kpi-note.ok   { color:#027A48; }
+    .kpi-note.warn { color:#B54708; }
+    .kpi-note.bad  { color:#B42318; }
+
+    /* ─── TOOLBAR ─── */
+    .toolbar { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; flex-wrap:wrap; gap:10px; }
+    .toolbar-left { display:flex; align-items:center; gap:8px; }
+    .flt-dd { display:inline-flex; align-items:center; gap:5px; padding:7px 12px; background:white; border:1px solid #EAECF0; border-radius:9px; font-size:12.5px; font-weight:600; color:#344054; cursor:pointer; }
+    .flt-dd svg { width:13px; height:13px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .flt-dd.active { background:#EFF6FF; border-color:#BFDBFE; color:#1D6FF3; }
+    .flt-dd.active svg { stroke:#1D6FF3; }
+    .toolbar-right { display:flex; align-items:center; gap:7px; }
+    .btn-export { display:inline-flex; align-items:center; gap:6px; padding:7px 14px; background:white; border:1px solid #EAECF0; border-radius:9px; font-size:12.5px; font-weight:600; color:#344054; cursor:pointer; font-family:inherit; }
+    .btn-export:hover { background:#F9FAFB; }
+    .btn-export svg { width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .btn-print { display:inline-flex; align-items:center; gap:6px; padding:7px 14px; background:white; border:1px solid #EAECF0; border-radius:9px; font-size:12.5px; font-weight:600; color:#344054; cursor:pointer; font-family:inherit; }
+    .btn-print svg { width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* ─── TABLE ─── */
+    .table-wrap { background:white; border:1px solid #EAECF0; border-radius:14px; overflow:hidden; }
+    .dtl-table { width:100%; border-collapse:collapse; }
+
+    /* Column header */
+    .dtl-table thead tr { background:#F9FAFB; border-bottom:1px solid #EAECF0; }
+    .dtl-table thead th { padding:11px 16px; font-size:10px; font-weight:700; color:#98A2B3; text-transform:uppercase; letter-spacing:.5px; text-align:left; white-space:nowrap; }
+    .dtl-table thead th:not(:first-child) { text-align:right; }
+    .dtl-table thead th.col-status { text-align:center; }
+    .dtl-table thead th.col-pencapaian { text-align:left; min-width:140px; }
+
+    /* Month rows */
+    .dtl-table tbody tr.month-row td { padding:11px 16px; border-bottom:1px solid #F2F4F7; font-size:12.5px; color:#344054; vertical-align:middle; }
+    .dtl-table tbody tr.month-row td:not(:first-child):not(.col-status-td):not(.col-prog-td) { text-align:right; }
+    .dtl-table tbody tr.month-row:last-child td { border-bottom:none; }
+    .dtl-table tbody tr.month-row:hover td { background:#FAFBFF; }
+
+    /* In-progress (current month) */
+    .dtl-table tbody tr.inprog td { background:#FFFDF0; }
+    .dtl-table tbody tr.inprog:hover td { background:#FFF8E1; }
+
+    /* Future rows */
+    .dtl-table tbody tr.future td { background:#FAFAFA; }
+    .dtl-table tbody tr.future td { color:#C4C9D4; }
+    .dtl-table tbody tr.future:hover td { background:#F5F5F5; }
+
+    /* Quarterly subtotal rows */
+    .dtl-table tbody tr.q-row td { padding:10px 16px; background:#EFF6FF; border-top:2px solid #BFDBFE; border-bottom:2px solid #BFDBFE; font-weight:800; font-size:12px; vertical-align:middle; }
+    .dtl-table tbody tr.q-row td:not(:first-child):not(.col-status-td):not(.col-prog-td) { text-align:right; }
+    .dtl-table tbody tr.q-row .q-label { display:flex; align-items:center; gap:7px; color:#1558C8; }
+    .dtl-table tbody tr.q-row .q-badge { background:#1D6FF3; color:white; font-size:9px; font-weight:800; padding:2px 7px; border-radius:10px; letter-spacing:.3px; }
+    .dtl-table tbody tr.q-row .num { color:#1558C8; }
+    .dtl-table tbody tr.q-row .num.good { color:#027A48; }
+    .dtl-table tbody tr.q-row .num.warn { color:#B54708; }
+
+    /* Annual total row */
+    .dtl-table tbody tr.total-row td { padding:12px 16px; background:#0D1B3E; color:white; font-weight:800; font-size:13px; border-top:3px solid #1D6FF3; vertical-align:middle; }
+    .dtl-table tbody tr.total-row td:not(:first-child):not(.col-status-td):not(.col-prog-td) { text-align:right; }
+    .dtl-table tbody tr.total-row .total-label { display:flex; align-items:center; gap:7px; color:white; }
+    .dtl-table tbody tr.total-row .total-badge { background:rgba(255,255,255,.15); color:white; font-size:9px; font-weight:800; padding:2px 8px; border-radius:10px; letter-spacing:.3px; }
+    .dtl-table tbody tr.total-row .num { color:#93C5FD; }
+    .dtl-table tbody tr.total-row .num.good { color:#86EFAC; }
+    .dtl-table tbody tr.total-row .num.warn { color:#FCD34D; }
+
+    /* Month name cell */
+    .month-cell { display:flex; align-items:center; gap:10px; }
+    .month-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    .month-name { font-size:13px; font-weight:700; color:#101828; }
+    .month-info { font-size:10.5px; color:#98A2B3; margin-top:1px; }
+    .month-inprog { display:inline-flex; align-items:center; gap:4px; font-size:9.5px; font-weight:700; color:#B54708; background:#FFFAEB; padding:1px 6px; border-radius:8px; margin-top:2px; }
+
+    /* Number cells */
+    .num-cell { font-size:13px; font-weight:700; color:#101828; }
+    .num-cell.dim { color:#C4C9D4; font-weight:500; }
+    .num-sub { font-size:10px; color:#98A2B3; }
+
+    /* Progress bar in table */
+    .prog-cell { display:flex; align-items:center; gap:8px; }
+    .prog-bar-bg { flex:1; height:6px; background:#F2F4F7; border-radius:3px; overflow:hidden; min-width:60px; }
+    .prog-bar-fill { height:6px; border-radius:3px; }
+    .prog-bar-fill.g { background:linear-gradient(90deg,#12B76A,#34D399); }
+    .prog-bar-fill.a { background:linear-gradient(90deg,#F79009,#FBBF24); }
+    .prog-bar-fill.r { background:linear-gradient(90deg,#F04438,#F97066); }
+    .prog-bar-fill.b { background:linear-gradient(90deg,#1D6FF3,#60A5FA); }
+    .prog-pct { font-size:11px; font-weight:800; white-space:nowrap; min-width:40px; text-align:right; }
+    .prog-pct.g { color:#027A48; }
+    .prog-pct.a { color:#B54708; }
+    .prog-pct.r { color:#B42318; }
+    .prog-pct.b { color:#1D6FF3; }
+
+    /* Status badges */
+    .status-badge { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:20px; font-size:10.5px; font-weight:700; white-space:nowrap; }
+    .status-dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; }
+    .status-badge.green  { background:#ECFDF3; color:#027A48; }
+    .status-badge.amber  { background:#FFFAEB; color:#B54708; }
+    .status-badge.red    { background:#FEF3F2; color:#B42318; }
+    .status-badge.blue   { background:#EFF6FF; color:#1D6FF3; }
+    .status-badge.gray   { background:#F2F4F7; color:#667085; }
+
+    /* Table footer note */
+    .table-note { padding:10px 16px; border-top:1px solid #F2F4F7; font-size:11px; color:#98A2B3; display:flex; align-items:center; gap:5px; background:white; }
+    .table-note svg { width:12px; height:12px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+  </style>
+</head>
+<body>
+<div class="mgmt-layout">
+
+  <!-- ═══════════════ SIDEBAR ═══════════════ -->
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+      GRIYANET
+    </div>
+    <nav class="sb-nav">
+      <a href="dashboard.html" class="sb-item active">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+        Dashboard
+      </a>
+      <div class="sb-group">
+        <div class="sb-group-head" id="people-head" onclick="toggleGroup('people')">
+          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          People
+          <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="sb-sub" id="people-sub">
+          <a href="tim.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Team</a>
+          <a href="attendance.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Attendance</a>
+          <a href="hiring.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Hiring Request</a>
+          <a href="reviews.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Reviews</a>
+        </div>
+      </div>
+      <a href="requests.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Requests
+        <span class="sb-badge">3</span>
+      </a>
+      <a href="approval.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Approval
+        <span class="sb-badge">2</span>
+      </a>
+      <div class="sb-group">
+        <div class="sb-group-head" id="learning-head" onclick="toggleGroup('learning')">
+          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg>
+          Learning
+          <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="sb-sub" id="learning-sub">
+          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>My Learning Progress</a>
+          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Learning Library</a>
+          <a href="learning.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Team Progress</a>
+        </div>
+      </div>
+      <a href="laporan.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Report &amp; Analytics
+      </a>
+    </nav>
+    <div class="sb-connect">
+      <div class="sb-connect-label">Connect</div>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        CRM<span class="sb-connect-sub">Sistem CRM</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        ERP<span class="sb-connect-sub">ERP Operasional</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        NOC<span class="sb-connect-sub">Monitoring NOC</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        Ticketing<span class="sb-connect-sub">Sistem Ticket</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ═══════════════ MAIN ═══════════════ -->
+  <main class="main-content">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <a href="dashboard.html" class="btn-back">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          Kembali
+        </a>
+        <div class="topbar-divider"></div>
+        <div>
+          <div class="page-title">Detail Closing Customer</div>
+          <div class="page-sub">Cabang Karangploso · Tahun 2026</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="topbar-notif">
+          <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="notif-dot"></span>
+        </button>
+        <div class="user-chip">
+          <div class="user-av">BS</div>
+          <div>
+            <div class="user-name">Budi Santoso</div>
+            <div class="user-role">Branch Leader</div>
+          </div>
+        </div>
+        <a href="../rolemcc.html" class="topbar-logout">
+          <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Keluar
+        </a>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <div class="content-area">
+
+      <!-- Breadcrumb -->
+      <div class="breadcrumb">
+        <a href="dashboard.html">Dashboard</a>
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        <a href="dashboard.html">Analisis Customer</a>
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        <span class="breadcrumb-cur">Detail Closing</span>
+      </div>
+
+      <!-- KPI STRIP -->
+      <div class="kpi-strip">
+        <div class="kpi-card">
+          <div class="kpi-ico blue">
+            <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          </div>
+          <div>
+            <div class="kpi-val">1.182</div>
+            <div class="kpi-lbl">Total Closing YTD</div>
+            <div class="kpi-note ok">Jan – Jun 2026</div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-ico green">
+            <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <div>
+            <div class="kpi-val">89.5<span style="font-size:14px;font-weight:600;">%</span></div>
+            <div class="kpi-lbl">Pencapaian vs Target</div>
+            <div class="kpi-note warn">Target YTD: 1.320</div>
+          </div>
+        </div>
+        <div class="kpi-card alert">
+          <div class="kpi-ico amber">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <div style="display:flex;align-items:baseline;gap:3px;margin-bottom:4px;">
+              <span class="kpi-val" style="color:#B54708;">128</span>
+              <span style="font-size:12px;color:#D0D5DD;font-weight:600;">/</span>
+              <span style="font-size:14px;color:#98A2B3;font-weight:700;">220</span>
+            </div>
+            <div style="height:5px;background:#F2F4F7;border-radius:3px;overflow:hidden;margin-bottom:4px;"><div style="width:58%;height:5px;background:#F79009;border-radius:3px;"></div></div>
+            <div class="kpi-lbl">Closing Bulan Ini (Jun)</div>
+            <div class="kpi-note warn">58.2% · Sedang Berjalan</div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-ico purple">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </div>
+          <div>
+            <div class="kpi-val">210<span style="font-size:13px;font-weight:600;">.8</span></div>
+            <div class="kpi-lbl">Rata-rata / Bulan</div>
+            <div class="kpi-note ok">5 bln terselesaikan</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOOLBAR -->
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <div class="flt-dd active">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Tahun 2026
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="flt-dd">
+            Cabang Karangploso
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="flt-dd">
+            Semua AE
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+        <div class="toolbar-right">
+          <button class="btn-print">
+            <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Print
+          </button>
+          <button class="btn-export">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export Excel
+          </button>
+        </div>
+      </div>
+
+      <!-- TABLE -->
+      <div class="table-wrap">
+        <table class="dtl-table">
+          <thead>
+            <tr>
+              <th style="min-width:160px;">Bulan</th>
+              <th style="width:70px;">Tahun</th>
+              <th style="width:130px;">Closing by AE</th>
+              <th style="width:140px;">Closing by Admin</th>
+              <th style="width:150px;">Total All Closing</th>
+              <th style="width:100px;">Target</th>
+              <th class="col-pencapaian" style="min-width:160px;text-align:left;">Pencapaian</th>
+              <th class="col-status" style="width:130px;">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <!-- ── JANUARI ── -->
+            <tr class="month-row">
+              <td>
+                <div class="month-cell">
+                  <div class="month-dot" style="background:#6366F1;"></div>
+                  <div>
+                    <div class="month-name">Januari</div>
+                    <div class="month-info">1 – 31 Jan 2026</div>
+                  </div>
+                </div>
+              </td>
+              <td style="text-align:right;"><span class="num-cell">2026</span></td>
+              <td style="text-align:right;"><span class="num-cell">148</span><div class="num-sub" style="text-align:right;">AE</div></td>
+              <td style="text-align:right;"><span class="num-cell">42</span><div class="num-sub" style="text-align:right;">Admin</div></td>
+              <td style="text-align:right;"><span class="num-cell" style="font-size:14px;">190</span></td>
+              <td style="text-align:right;"><span class="num-cell">220</span></td>
+              <td class="col-prog-td">
+                <div class="prog-cell">
+                  <div class="prog-bar-bg"><div class="prog-bar-fill r" style="width:86%;"></div></div>
+                  <span class="prog-pct r">86.4%</span>
+                </div>
+              </td>
+              <td class="col-status-td" style="text-align:center;">
+                <span class="status-badge red"><span class="status-dot"></span>Belum Tercapai</span>
+              </td>
+            </tr>
+
+            <!-- ── FEBRUARI ── -->
+            <tr class="month-row">
+              <td>
+                <div class="month-cell">
+                  <div class="month-dot" style="background:#6366F1;"></div>
+                  <div>
+                    <div class="month-name">Februari</div>
+                    <div class="month-info">1 – 28 Feb 2026</div>
+                  </div>
+                </div>
+              </td>
+              <td style="text-align:right;"><span class="num-cell">2026</span></td>
+              <td style="text-align:right;"><span class="num-cell">166</span><div class="num-sub" style="text-align:right;">AE</div></td>
+              <td style="text-align:right;"><span class="num-cell">47</span><div class="num-sub" style="text-align:right;">Admin</div></td>
+              <td style="text-align:right;"><span class="num-cell" style="font-size:14px;">213</span></td>
+              <td style="text-align:right;"><span class="num-cell">220</span></td>
+              <td class="col-prog-td">
+                <div class="prog-cell">
+                  <div class="prog-bar-bg"><div class="prog-bar-fill a" style="width:96%;"></div></div>
+                  <span class="prog-pct a">96.8%</span>
+                </div>
+              </td>
+              <td class="col-status-td" style="text-align:center;">
+                <span class="status-badge amber"><span class="status-dot"></span>Hampir Tercapai</span>
+              </td>
+            </tr>
+
+            <!-- ── MARET ── -->
+            <tr class="month-row">
+              <td>
+                <div class="month-cell">
+                  <div class="month-dot" style="background:#6366F1;"></div>
+                  <div>
+                    <div class="month-name">Maret</div>
+                    <div class="month-info">1 – 31 Mar 2026</div>
+                  </div>
+                </div>
+              </td>
+              <td style="text-align:right;"><span class="num-cell">2026</span></td>
+              <td style="text-align:right;"><span class="num-cell">175</span><div class="num-sub" style="text-align:right;">AE</div></td>
+              <td style="text-align:right;"><span class="num-cell">49</span><div class="num-sub" style="text-align:right;">Admin</div></td>
+              <td style="text-align:right;"><span class="num-cell" style="font-size:14px;color:#027A48;">224</span></td>
+              <td style="text-align:right;"><span class="num-cell">220</span></td>
+              <td class="col-prog-td">
+                <div class="prog-cell">
+                  <div class="prog-bar-bg"><div class="prog-bar-fill g" style="width:100%;"></div></div>
+                  <span class="prog-pct g">101.8%</span>
+                </div>
+              </td>
+              <td class="col-status-td" style="text-align:center;">
+                <span class="status-badge green"><span class="status-dot"></span>Tercapai</span>
+              </td>
+            </tr>
+
+            <!-- ══ KUARTAL 1 (Bulan 3) ══ -->
+            <tr class="q-row">
+              <td colspan="1">
+                <div class="q-label">
+                  <span class="q-badge">Q1</span>
+                  Total Perolehan Closing — Kuartal 1 (Jan – Mar)
+                </div>
+              </td>
+              <td style="text-align:right;"><span class="num" style="color:#1558C8;">2026</span></td>
+              <td style="text-align:right;"><span class="num good">489</span></td>
+              <td style="text-align:right;"><span class="num good">138</span></td>
+              <td style="text-align:right;"><span class="num good" style="font-size:15px;">627</span></td>
+              <td style="text-align:right;"><span class="num">660</span></td>
+              <td class="col-prog-td">
+                <div class="prog-cell">
+                  <div class="prog-bar-bg" style="height:7px;"><div class="prog-bar-fill a" style="width:95%;height:7px;"></div></div>
+                  <span class="prog-pct a">95.0%</span>
+                </div>
+              </td>
+              <td class="col-status-td" style="text-align:center;">
+                <span class="status-badge amber" style="font-size:10px;"><span class="status-dot"></span>Hampir Tercapai</span>
+              </td>
+            </tr>
+
+            <!-- ── APRIL ── -->
+            <tr class="month-row">
+              <td>
+                <div class="month-cell">
+                  <div class="month-dot" style="background:#0E9F93;"></div>
+                  <div>
+                    <div class="month-name">April</div>
+                    <div class="month-info">1 – 30 Apr 2026</div>
+                  </div>
+                </div>
+              </td>
+              <td style="text-align:right;"><span class="num-cell">2026</span></td>
+              <td style="text-align:right;"><span class="num-cell">173</span><div class="num-sub" style="text-align:right;">AE</div></td>
+              <td style="text-align:right;"><span class="num-cell">49</span><div class="num-sub" style="text-align:right;">Admin</div></td>
+              <td style="text-align:right;"><span class="num-cell" style="font-size:14px;color:#027A48;">222</span></td>
+              <td style="text-align:right;"><span class="num-cell">220</span></td>
+              <td class="col-prog-td">
+                <div class="prog-cell">
+                  <div class="prog-bar-bg"><div class="prog-bar-fill g" style="width:100%;"></div></div>
+                  <span class="prog-pct g">100.9%</span>
+                </div>
+              </td>
+              <td class="col-status-td" style="text-align:center;">
+                <span class="status-badge green"><span class="status-dot"></span>Tercapai</span>
+              </td>
+            </tr>
+
+            <!-- ── MEI ── -->
+            <tr class="month-row">
+              <td>
+                <div class="month-cell">
+                  <div class="month-dot" style="background:#0E9F93;"></div>
+                  <div>
+                    <div class="month-name">Mei</div>
+                    <div class="month-info">1 – 31 Mei 2026</div>
+                  </div>
+                </div>
+              </td>
+              <td style="text-align:right;"><span class="num-cell">2026</span></td>
+              <td style="text-align:right;"><span class="num-cell">160</span><div class="num-sub" style="text-align:right;">AE</div></td>
+              <td style="text-align:right;"><span class="num-cell">45</span><div class="num-sub" style="text-align:right;">Admin</div></td>
+              <td style="text-align:right;"><span class="num-cell" style="font-size:14px;">205</span></td>
+              <td style="text-align:right;"><span class="num-cell">220</span></td>
+              <td class="col-prog-td">
+                <div class="prog-cell">
+                  <div class="prog-bar-bg"><div class="prog-bar-fill a" style="width:93%;"></div></div>
+                  <span class="prog-pct a">93.2%</span>
+                </div>
+              </td>
+              <td class="col-status-td" style="text-align:center;">
+                <span class="status-badge amber"><span class="status-dot"></span>Hampir Tercapai</span>
+              </td>
+            </tr>
+
+            <!-- ── JUNI (in progress) ── -->
+            <tr class="month-row inprog">
+              <td>
+                <div class="month-cell">
+                  <div class="month-dot" style="background:#F79009;"></div>
+                  <div>
+                    <div class="month-name">Juni</div>
+                    <div class="month-info">1 – 30 Jun 2026</div>
+                    <div class="month-inprog">
+                      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                      Sedang Berjalan (per 21 Jun)
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td style="text-align:right;"><span class="num-cell">2026</span></td>
+              <td style="text-align:right;"><span class="num-cell" style="color:#B54708;">100</span><div class="num-sub" style="text-align:right;">AE</div></td>
+              <td style="text-align:right;"><span class="num-cell" style="color:#B54708;">28</span><div class="num-sub" style="text-align:right;">Admin</div></td>
+              <td style="text-align:right;"><span class="num-cell" style="font-size:14px;color:#B54708;">128</span><div class="num-sub" style="text-align:right;color:#B54708;">*dalam proses</div></td>
+              <td style="text-align:right;"><span class="num-cell">220</span></td>
+              <td class="col-prog-td">
+                <div class="prog-cell">
+                  <div class="prog-bar-bg"><div class="prog-bar-fill b" style="width:58%;"></div></div>
+                  <span class="prog-pct b">58.2%</span>
+                </div>
+              </td>
+              <td class="col-status-td" style="text-align:center;">
+                <span class="status-badge blue"><span class="status-dot"></span>Dalam Proses</span>
+              </td>
+            </tr>
+
+            <!-- ══ KUARTAL 2 (Bulan 6) ══ -->
+            <tr class="q-row">
+              <td colspan="1">
+                <div class="q-label">
+                  <span class="q-badge">Q2</span>
+                  Total Perolehan Closing — Kuartal 2 (Apr – Jun)*
+                </div>
+              </td>
+              <td style="text-align:right;"><span class="num" style="color:#1558C8;">2026</span></td>
+              <td style="text-align:right;"><span class="num warn">433</span></td>
+              <td style="text-align:right;"><span class="num warn">122</span></td>
+              <td style="text-align:right;"><span class="num warn" style="font-size:15px;">555</span></td>
+              <td style="text-align:right;"><span class="num">660</span></td>
+              <td class="col-prog-td">
+                <div class="prog-cell">
+                  <div class="prog-bar-bg" style="height:7px;"><div class="prog-bar-fill b" style="width:84%;height:7px;"></div></div>
+                  <span class="prog-pct b">84.1%*</span>
+                </div>
+              </td>
+              <td class="col-status-td" style="text-align:center;">
+                <span class="status-badge blue" style="font-size:10px;"><span class="status-dot"></span>Dalam Proses</span>
+              </td>
+            </tr>
+
+            <!-- ── JULI ── -->
+            <tr class="month-row future">
+              <td>
+                <div class="month-cell">
+                  <div class="month-dot" style="background:#E4E7EC;"></div>
+                  <div>
+                    <div class="month-name" style="color:#C4C9D4;">Juli</div>
+                    <div class="month-info">1 – 31 Jul 2026</div>
+                  </div>
+                </div>
+              </td>
+              <td style="text-align:right;"><span class="num-cell dim">2026</span></td>
+              <td style="text-align:right;"><span class="num-cell dim">—</span></td>
+              <td style="text-align:right;"><span class="num-cell dim">—</span></td>
+              <td style="text-align:right;"><span class="num-cell dim">—</span></td>
+              <td style="text-align:right;"><span class="num-cell">220</span></td>
+              <td class="col-prog-td"><span style="font-size:11px;color:#D0D5DD;">Belum dimulai</span></td>
+              <td class="col-status-td" style="text-align:center;"><span class="status-badge gray"><span class="status-dot"></span>Belum Mulai</span></td>
+            </tr>
+            <tr class="month-row future">
+              <td>
+                <div class="month-cell">
+                  <div class="month-dot" style="background:#E4E7EC;"></div>
+                  <div>
+                    <div class="month-name" style="color:#C4C9D4;">Agustus</div>
+                    <div class="month-info">1 – 31 Ags 2026</div>
+                  </div>
+                </div>
+              </td>
+              <td style="text-align:right;"><span class="num-cell dim">2026</span></td>
+              <td style="text-align:right;"><span class="num-cell dim">—</span></td>
+              <td style="text-align:right;"><span class="num-cell dim">—</span></td>
+              <td style="text-align:right;"><span class="num-cell dim">—</span></td>
+              <td style="text-align:right;"><span class="num-cell">220</span></td>
+              <td class="col-prog-td"><span style="font-size:11px;color:#D0D5DD;">Belum dimulai</span></td>
+              <td class="col-status-td" style="text-align:center;"><span class="status-badge gray"><span class="status-dot"></span>Belum Mulai</span></td>
+            </tr>
+            <tr class="month-row future">
+              <td>
+                <div class="month-cell">
+                  <div class="month-dot" style="background:#E4E7EC;"></div>
+                  <div>
+                    <div class="month-name" style="color:#C4C9D4;">September</div>
+                    <div class="month-info">1 – 30 Sep 2026</div>
+                  </div>
+                </div>
+              </td>
+              <td style="text-align:right;"><span class="num-cell dim">2026</span></td>
+              <td style="text-align:right;"><span class="num-cell dim">—</span></td>
+              <td style="text-align:right;"><span class="num-cell dim">—</span></td>
+              <td style="text-align:right;"><span class="num-cell dim">—</span></td>
+              <td style="text-align:right;"><span class="num-cell">220</span></td>
+              <td class="col-prog-td"><span style="font-size:11px;color:#D0D5DD;">Belum dimulai</span></td>
+              <td class="col-status-td" style="text-align:center;"><span class="status-badge gray"><span class="status-dot"></span>Belum Mulai</span></td>
+            </tr>
+
+            <!-- ══ KUARTAL 3 (Bulan 9) ══ -->
+            <tr class="q-row">
+              <td colspan="1">
+                <div class="q-label">
+                  <span class="q-badge">Q3</span>
+                  Total Perolehan Closing — Kuartal 3 (Jul – Sep)
+                </div>
+              </td>
+              <td style="text-align:right;"><span class="num" style="color:#1558C8;">2026</span></td>
+              <td style="text-align:right;"><span class="num" style="color:#C4C9D4;">—</span></td>
+              <td style="text-align:right;"><span class="num" style="color:#C4C9D4;">—</span></td>
+              <td style="text-align:right;"><span class="num" style="font-size:15px;color:#C4C9D4;">—</span></td>
+              <td style="text-align:right;"><span class="num">660</span></td>
+              <td class="col-prog-td"><span style="font-size:11px;color:#D0D5DD;">—</span></td>
+              <td class="col-status-td" style="text-align:center;"><span class="status-badge gray" style="font-size:10px;"><span class="status-dot"></span>Belum Mulai</span></td>
+            </tr>
+
+            <!-- ── OKT – DES ── -->
+            <tr class="month-row future">
+              <td>
+                <div class="month-cell">
+                  <div class="month-dot" style="background:#E4E7EC;"></div>
+                  <div><div class="month-name" style="color:#C4C9D4;">Oktober</div><div class="month-info">1 – 31 Okt 2026</div></div>
+                </div>
+              </td>
+              <td style="text-align:right;"><span class="num-cell dim">2026</span></td>
+              <td style="text-align:right;"><span class="num-cell dim">—</span></td>
+              <td style="text-align:right;"><span class="num-cell dim">—</span></td>
+              <td style="text-align:right;"><span class="num-cell dim">—</span></td>
+              <td style="text-align:right;"><span class="num-cell">220</span></td>
+              <td class="col-prog-td"><span style="font-size:11px;color:#D0D5DD;">Belum dimulai</span></td>
+              <td class="col-status-td" style="text-align:center;"><span class="status-badge gray"><span class="status-dot"></span>Belum Mulai</span></td>
+            </tr>
+            <tr class="month-row future">
+              <td>
+                <div class="month-cell">
+                  <div class="month-dot" style="background:#E4E7EC;"></div>
+                  <div><div class="month-name" style="color:#C4C9D4;">November</div><div class="month-info">1 – 30 Nov 2026</div></div>
+                </div>
+              </td>
+              <td style="text-align:right;"><span class="num-cell dim">2026</span></td>
+              <td style="text-align:right;"><span class="num-cell dim">—</span></td>
+              <td style="text-align:right;"><span class="num-cell dim">—</span></td>
+              <td style="text-align:right;"><span class="num-cell dim">—</span></td>
+              <td style="text-align:right;"><span class="num-cell">220</span></td>
+              <td class="col-prog-td"><span style="font-size:11px;color:#D0D5DD;">Belum dimulai</span></td>
+              <td class="col-status-td" style="text-align:center;"><span class="status-badge gray"><span class="status-dot"></span>Belum Mulai</span></td>
+            </tr>
+            <tr class="month-row future">
+              <td>
+                <div class="month-cell">
+                  <div class="month-dot" style="background:#E4E7EC;"></div>
+                  <div><div class="month-name" style="color:#C4C9D4;">Desember</div><div class="month-info">1 – 31 Des 2026</div></div>
+                </div>
+              </td>
+              <td style="text-align:right;"><span class="num-cell dim">2026</span></td>
+              <td style="text-align:right;"><span class="num-cell dim">—</span></td>
+              <td style="text-align:right;"><span class="num-cell dim">—</span></td>
+              <td style="text-align:right;"><span class="num-cell dim">—</span></td>
+              <td style="text-align:right;"><span class="num-cell">220</span></td>
+              <td class="col-prog-td"><span style="font-size:11px;color:#D0D5DD;">Belum dimulai</span></td>
+              <td class="col-status-td" style="text-align:center;"><span class="status-badge gray"><span class="status-dot"></span>Belum Mulai</span></td>
+            </tr>
+
+            <!-- ══ KUARTAL 4 (Bulan 12) ══ -->
+            <tr class="q-row">
+              <td colspan="1">
+                <div class="q-label">
+                  <span class="q-badge">Q4</span>
+                  Total Perolehan Closing — Kuartal 4 (Okt – Des)
+                </div>
+              </td>
+              <td style="text-align:right;"><span class="num" style="color:#1558C8;">2026</span></td>
+              <td style="text-align:right;"><span class="num" style="color:#C4C9D4;">—</span></td>
+              <td style="text-align:right;"><span class="num" style="color:#C4C9D4;">—</span></td>
+              <td style="text-align:right;"><span class="num" style="font-size:15px;color:#C4C9D4;">—</span></td>
+              <td style="text-align:right;"><span class="num">660</span></td>
+              <td class="col-prog-td"><span style="font-size:11px;color:#D0D5DD;">—</span></td>
+              <td class="col-status-td" style="text-align:center;"><span class="status-badge gray" style="font-size:10px;"><span class="status-dot"></span>Belum Mulai</span></td>
+            </tr>
+
+            <!-- ══ TOTAL TAHUNAN ══ -->
+            <tr class="total-row">
+              <td colspan="1">
+                <div class="total-label">
+                  <span class="total-badge">2026</span>
+                  Total Perolehan Closing Tahunan
+                </div>
+              </td>
+              <td style="text-align:right;"><span style="color:rgba(255,255,255,.5);">—</span></td>
+              <td style="text-align:right;"><span class="num">922</span></td>
+              <td style="text-align:right;"><span class="num">260</span></td>
+              <td style="text-align:right;"><span class="num good" style="font-size:16px;">1.182</span></td>
+              <td style="text-align:right;"><span style="color:#93C5FD;font-weight:700;">2.640</span></td>
+              <td class="col-prog-td">
+                <div class="prog-cell">
+                  <div class="prog-bar-bg" style="height:7px;background:rgba(255,255,255,.1);"><div class="prog-bar-fill b" style="width:44%;height:7px;background:linear-gradient(90deg,#60A5FA,#93C5FD);"></div></div>
+                  <span class="prog-pct" style="color:#93C5FD;">44.8%*</span>
+                </div>
+              </td>
+              <td class="col-status-td" style="text-align:center;">
+                <span class="status-badge blue" style="font-size:10px;background:rgba(29,111,243,.25);color:#93C5FD;"><span class="status-dot"></span>Dalam Proses</span>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+
+        <!-- Table footer note -->
+        <div class="table-note">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          * Data Juni 2026 masih dalam proses (per 21 Juni 2026). Total Q2 dan Tahunan bersifat sementara dan akan diperbarui otomatis.
+          &nbsp;&nbsp;·&nbsp;&nbsp; Target per bulan: <strong>220 closing</strong> &nbsp;·&nbsp; Target tahunan: <strong>2.640 closing</strong>
+        </div>
+      </div>
+
+    </div><!-- /content-area -->
+  </main>
+</div><!-- /mgmt-layout -->
+
+<script>
+function toggleGroup(name) {
+  var h = document.getElementById(name + '-head');
+  var s = document.getElementById(name + '-sub');
+  if (h && s) { h.classList.toggle('open'); s.classList.toggle('open'); }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Analisis AE — Branch Leader</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height:100%; font-family:'Inter',-apple-system,sans-serif; font-size:14px; color:#101828; background:#F5F7FA; -webkit-font-smoothing:antialiased; }
+    a { text-decoration:none; color:inherit; }
+    button { font-family:inherit; cursor:pointer; border:none; background:none; }
+    .mgmt-layout { display:flex; height:100vh; overflow:hidden; }
+
+    /* SIDEBAR */
+    .sidebar { width:230px; flex-shrink:0; background:#0D1B3E; height:100vh; display:flex; flex-direction:column; overflow-y:auto; overflow-x:hidden; }
+    .sidebar::-webkit-scrollbar { width:3px; }
+    .sidebar::-webkit-scrollbar-thumb { background:rgba(255,255,255,.1); border-radius:2px; }
+    .sb-logo { display:flex; align-items:center; gap:10px; padding:22px 18px 16px; color:white; font-size:14px; font-weight:800; letter-spacing:-.3px; border-bottom:1px solid rgba(255,255,255,.07); flex-shrink:0; }
+    .sb-logo svg { width:22px; height:22px; stroke:white; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-nav { padding:10px; flex:1; }
+    .sb-item { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
+    .sb-item:hover { background:rgba(255,255,255,.07); color:rgba(255,255,255,.9); }
+    .sb-item.active { background:rgba(29,111,243,.28); color:white; font-weight:700; }
+    .sb-item svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-badge { margin-left:auto; background:#F04438; color:white; font-size:9px; font-weight:800; min-width:17px; height:17px; border-radius:9px; display:flex; align-items:center; justify-content:center; padding:0 4px; }
+    .sb-group { margin-bottom:1px; }
+    .sb-group-head { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:rgba(255,255,255,.6); font-size:13px; font-weight:500; cursor:pointer; user-select:none; transition:all .15s; }
+    .sb-group-head:hover, .sb-group-head.open { color:rgba(255,255,255,.9); background:rgba(255,255,255,.05); }
+    .sb-ico { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-chev { margin-left:auto; width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; transition:transform .2s; }
+    .sb-group-head.open .sb-chev { transform:rotate(90deg); }
+    .sb-sub { padding-left:14px; overflow:hidden; max-height:0; transition:max-height .25s ease; }
+    .sb-sub.open { max-height:200px; }
+    .sb-sub-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.45); font-size:12px; font-weight:500; transition:all .15s; text-decoration:none; margin-bottom:1px; }
+    .sb-sub-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.8); }
+    .sb-sub-item.active { background:rgba(29,111,243,.2); color:#60A5FA; font-weight:700; }
+    .sb-sub-dot { width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; }
+    .sb-connect { padding:6px 10px 20px; border-top:1px solid rgba(255,255,255,.07); margin-top:auto; }
+    .sb-connect-label { font-size:10px; font-weight:700; color:rgba(255,255,255,.3); text-transform:uppercase; letter-spacing:.8px; padding:10px 10px 6px; }
+    .sb-connect-item { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:7px; color:rgba(255,255,255,.5); font-size:12px; transition:all .15s; cursor:pointer; text-decoration:none; margin-bottom:1px; }
+    .sb-connect-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.85); }
+    .sb-connect-item svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .sb-connect-sub { font-size:10px; color:rgba(255,255,255,.25); margin-left:auto; }
+
+    /* MAIN */
+    .main-content { flex:1; height:100vh; overflow-y:auto; background:#F5F7FA; }
+    .topbar { background:white; height:62px; display:flex; align-items:center; justify-content:space-between; padding:0 28px; border-bottom:1px solid #EAECF0; position:sticky; top:0; z-index:20; }
+    .topbar-left { display:flex; align-items:center; gap:12px; }
+    .back-btn { display:flex; align-items:center; gap:6px; padding:6px 12px; border-radius:8px; border:1px solid #EAECF0; background:white; font-size:12px; font-weight:600; color:#344054; cursor:pointer; transition:all .15s; text-decoration:none; }
+    .back-btn:hover { background:#F9FAFB; }
+    .back-btn svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .breadcrumb { display:flex; align-items:center; gap:5px; font-size:12px; color:#98A2B3; }
+    .breadcrumb a { color:#1D6FF3; font-weight:600; }
+    .breadcrumb a:hover { text-decoration:underline; }
+    .breadcrumb-sep { color:#D0D5DD; }
+    .breadcrumb-cur { color:#344054; font-weight:700; }
+    .topbar-right { display:flex; align-items:center; gap:12px; }
+    .topbar-date { font-size:12px; color:#667085; display:flex; align-items:center; gap:5px; }
+    .topbar-date svg { width:14px; height:14px; stroke:#98A2B3; fill:none; stroke-width:2; }
+    .user-chip { display:flex; align-items:center; gap:9px; padding:6px 10px; border-radius:10px; cursor:pointer; }
+    .user-chip:hover { background:#F5F7FA; }
+    .user-av { width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,#1D6FF3,#1558C8); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:white; flex-shrink:0; }
+    .user-name { font-size:13px; font-weight:700; color:#101828; }
+    .user-role { font-size:11px; color:#98A2B3; }
+    .topbar-notif { position:relative; width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:9px; border:1px solid #EAECF0; background:white; cursor:pointer; flex-shrink:0; }
+    .topbar-notif svg { width:17px; height:17px; stroke:#667085; fill:none; stroke-width:2; }
+    .notif-dot { position:absolute; top:6px; right:7px; width:8px; height:8px; background:#F04438; border-radius:50%; border:1.5px solid white; }
+    .topbar-logout { display:flex; align-items:center; gap:6px; padding:7px 13px; border-radius:9px; background:#FEF3F2; border:1px solid #FECDCA; color:#B42318; font-size:12px; font-weight:700; cursor:pointer; text-decoration:none; transition:all .15s; flex-shrink:0; }
+    .topbar-logout:hover { background:#FEE4E2; }
+    .topbar-logout svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; }
+
+    .content-area { padding:22px 28px 36px; }
+
+    /* KPI STRIP */
+    .kpi-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:13px; margin-bottom:20px; }
+    .kpi-card { background:white; border-radius:12px; padding:16px 18px; border:1px solid #EAECF0; display:flex; align-items:flex-start; gap:12px; }
+    .kpi-ico { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .kpi-ico svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .kpi-ico.purple { background:#F5F3FF; color:#7C3AED; }
+    .kpi-ico.blue { background:#EFF6FF; color:#1D6FF3; }
+    .kpi-ico.green { background:#ECFDF3; color:#027A48; }
+    .kpi-ico.amber { background:#FFFAEB; color:#B54708; }
+    .kpi-body { flex:1; min-width:0; }
+    .kpi-val { font-size:26px; font-weight:800; color:#101828; letter-spacing:-1.2px; line-height:1; margin-bottom:2px; }
+    .kpi-val.good { color:#027A48; }
+    .kpi-val.warn { color:#B54708; }
+    .kpi-lbl { font-size:11px; color:#667085; font-weight:500; }
+    .kpi-delta { font-size:10px; font-weight:700; margin-top:3px; }
+    .kpi-delta.up { color:#027A48; }
+    .kpi-delta.dn { color:#B42318; }
+
+    /* FILTER TOOLBAR */
+    .filter-card { background:white; border-radius:12px; border:1px solid #EAECF0; padding:13px 16px; display:flex; align-items:center; gap:10px; margin-bottom:16px; flex-wrap:wrap; }
+    .filter-label { font-size:11px; font-weight:700; color:#98A2B3; text-transform:uppercase; letter-spacing:.5px; white-space:nowrap; }
+    .filter-sel { display:flex; align-items:center; gap:6px; padding:7px 12px; border:1px solid #EAECF0; border-radius:8px; font-size:12px; font-weight:600; color:#344054; cursor:pointer; background:white; white-space:nowrap; }
+    .filter-sel svg { width:12px; height:12px; stroke:#98A2B3; fill:none; stroke-width:2; stroke-linecap:round; }
+    .filter-divider { width:1px; height:20px; background:#EAECF0; }
+    .filter-actions { display:flex; align-items:center; gap:8px; margin-left:auto; }
+    .btn-outline { display:flex; align-items:center; gap:6px; padding:7px 13px; border:1px solid #EAECF0; border-radius:8px; background:white; font-size:12px; font-weight:600; color:#344054; cursor:pointer; transition:all .15s; }
+    .btn-outline:hover { background:#F9FAFB; }
+    .btn-outline svg { width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .btn-primary { display:flex; align-items:center; gap:6px; padding:7px 13px; border:none; border-radius:8px; background:#1D6FF3; font-size:12px; font-weight:700; color:white; cursor:pointer; transition:all .15s; }
+    .btn-primary:hover { background:#1558C8; }
+    .btn-primary svg { width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; }
+
+    /* AE TABLE CARD */
+    .table-card { background:white; border-radius:12px; border:1px solid #EAECF0; overflow:hidden; }
+    .table-head { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; border-bottom:1px solid #EAECF0; }
+    .table-title { font-size:13px; font-weight:800; color:#101828; display:flex; align-items:center; gap:8px; }
+    .table-title svg { width:15px; height:15px; stroke:#7C3AED; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .table-sub { font-size:11px; color:#98A2B3; font-weight:500; }
+    .table-wrap { overflow-x:auto; }
+    .ae-tbl { width:100%; border-collapse:collapse; min-width:820px; }
+    .ae-tbl thead th { padding:8px 12px; font-size:10px; font-weight:700; color:#667085; text-transform:uppercase; letter-spacing:.4px; border-bottom:2px solid #F2F4F7; background:#FAFAFA; text-align:center; white-space:nowrap; }
+    .ae-tbl thead th:nth-child(1), .ae-tbl thead th:nth-child(2) { text-align:left; }
+    .ae-tbl tbody td { padding:10px 12px; border-bottom:1px solid #F9FAFB; font-size:12.5px; color:#344054; text-align:center; vertical-align:middle; }
+    .ae-tbl tbody tr:last-child td { border-bottom:none; }
+    .ae-tbl tbody td:nth-child(1), .ae-tbl tbody td:nth-child(2) { text-align:left; }
+    .ae-tbl tbody tr:hover td { background:#FAFAFA; }
+    .row-no { font-size:11px; color:#98A2B3; font-weight:600; }
+    .ae-name-cell { display:flex; align-items:center; gap:9px; }
+    .ae-ava { width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:800; color:white; flex-shrink:0; }
+    .ae-ava.g { background:#027A48; }
+    .ae-ava.b { background:#1D6FF3; }
+    .ae-ava.a { background:#B54708; }
+    .ae-ava.r { background:#B42318; }
+    .ae-ava.gr { background:#667085; }
+    .ae-nm { font-size:12.5px; font-weight:700; color:#101828; }
+    .ae-area { font-size:10.5px; color:#98A2B3; }
+    .num-cell { font-size:13px; font-weight:700; color:#101828; }
+    .num-cell.warn { color:#B54708; }
+    .num-cell.bad { color:#B42318; }
+    .num-cell.good { color:#027A48; }
+    .offside-pos { font-size:12px; font-weight:700; color:#027A48; }
+    .offside-neg { font-size:12px; font-weight:700; color:#B42318; }
+    .offside-neu { font-size:12px; font-weight:700; color:#344054; }
+    .pct-bar-cell { display:flex; align-items:center; gap:6px; justify-content:center; min-width:80px; }
+    .pct-bar { flex:1; height:5px; border-radius:3px; background:#F2F4F7; overflow:hidden; }
+    .pct-fill { height:5px; border-radius:3px; }
+    .pct-fill.g { background:#12B76A; }
+    .pct-fill.a { background:#F79009; }
+    .pct-fill.r { background:#F04438; }
+    .pct-txt { font-size:11px; font-weight:700; white-space:nowrap; min-width:30px; text-align:right; }
+    .pct-txt.g { color:#027A48; }
+    .pct-txt.a { color:#B54708; }
+    .pct-txt.r { color:#B42318; }
+    .detail-btn { display:flex; align-items:center; gap:5px; padding:5px 11px; border-radius:7px; border:1px solid #D1D5DB; background:white; font-size:11px; font-weight:700; color:#344054; cursor:pointer; transition:all .15s; white-space:nowrap; }
+    .detail-btn:hover { background:#EFF6FF; border-color:#1D6FF3; color:#1D6FF3; }
+    .detail-btn svg { width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2; }
+    /* TOTAL ROW */
+    .ae-tbl tfoot td { padding:10px 12px; font-size:12px; font-weight:800; background:#0D1B3E; color:white; text-align:center; border-top:2px solid #1D6FF3; }
+    .ae-tbl tfoot td:nth-child(1), .ae-tbl tfoot td:nth-child(2) { text-align:left; }
+
+    /* DRAWER OVERLAY */
+    .drawer-overlay { position:fixed; inset:0; background:rgba(13,27,62,.32); z-index:100; opacity:0; pointer-events:none; transition:opacity .25s; }
+    .drawer-overlay.open { opacity:1; pointer-events:all; }
+
+    /* DETAIL DRAWER */
+    .detail-drawer { position:fixed; top:0; right:0; bottom:0; width:680px; max-width:95vw; background:white; z-index:101; transform:translateX(100%); transition:transform .28s cubic-bezier(.4,0,.2,1); display:flex; flex-direction:column; box-shadow:-8px 0 40px rgba(13,27,62,.18); }
+    .detail-drawer.open { transform:translateX(0); }
+    .drawer-header { padding:18px 22px 14px; border-bottom:1px solid #EAECF0; display:flex; align-items:flex-start; justify-content:space-between; flex-shrink:0; }
+    .drawer-title { font-size:15px; font-weight:800; color:#101828; margin-bottom:2px; }
+    .drawer-sub { font-size:12px; color:#667085; }
+    .drawer-close { width:32px; height:32px; border-radius:8px; border:1px solid #EAECF0; display:flex; align-items:center; justify-content:center; cursor:pointer; background:white; flex-shrink:0; }
+    .drawer-close:hover { background:#FEF3F2; border-color:#FECDCA; }
+    .drawer-close svg { width:16px; height:16px; stroke:#667085; fill:none; stroke-width:2; stroke-linecap:round; }
+    .drawer-kpi { display:flex; gap:0; border-bottom:1px solid #EAECF0; flex-shrink:0; }
+    .dkpi { flex:1; padding:12px 16px; border-right:1px solid #F2F4F7; }
+    .dkpi:last-child { border-right:none; }
+    .dkpi-val { font-size:20px; font-weight:800; color:#101828; letter-spacing:-.8px; line-height:1; }
+    .dkpi-val.good { color:#027A48; }
+    .dkpi-val.warn { color:#B54708; }
+    .dkpi-val.bad { color:#B42318; }
+    .dkpi-lbl { font-size:10px; color:#98A2B3; font-weight:600; margin-top:2px; text-transform:uppercase; letter-spacing:.3px; }
+    .drawer-body { flex:1; overflow-y:auto; padding:16px 22px; }
+    .drawer-body::-webkit-scrollbar { width:3px; }
+    .drawer-body::-webkit-scrollbar-thumb { background:#D1D5DB; border-radius:2px; }
+    .drawer-section-title { font-size:11px; font-weight:800; color:#344054; text-transform:uppercase; letter-spacing:.5px; margin-bottom:10px; display:flex; align-items:center; gap:6px; }
+    .drawer-section-title svg { width:13px; height:13px; stroke:#7C3AED; fill:none; stroke-width:2; }
+    .det-tbl { width:100%; border-collapse:collapse; }
+    .det-tbl thead th { padding:7px 10px; font-size:9.5px; font-weight:700; color:#667085; text-transform:uppercase; letter-spacing:.4px; border-bottom:2px solid #F2F4F7; background:#FAFAFA; text-align:center; white-space:nowrap; }
+    .det-tbl thead th:first-child { text-align:left; }
+    .det-tbl tbody td { padding:8px 10px; border-bottom:1px solid #F9FAFB; font-size:12px; color:#344054; text-align:center; vertical-align:middle; }
+    .det-tbl tbody tr:last-child td { border-bottom:none; }
+    .det-tbl tbody td:first-child { text-align:left; font-weight:600; color:#101828; }
+    .det-tbl tbody tr:hover td { background:#FAFAFA; }
+    .det-date { font-size:12px; font-weight:700; color:#101828; }
+    .det-day { font-size:10px; color:#98A2B3; }
+    .offset-pos { color:#027A48; font-weight:700; }
+    .offset-neg { color:#B42318; font-weight:700; }
+    .today-row td { background:#FFFDF0 !important; }
+    .det-tbl tfoot td { padding:8px 10px; font-size:11.5px; font-weight:800; background:#EFF6FF; color:#1558C8; text-align:center; border-top:2px solid #BFDBFE; }
+    .det-tbl tfoot td:first-child { text-align:left; color:#0D1B3E; }
+    .badge { display:inline-flex; align-items:center; padding:2px 8px; border-radius:20px; font-size:10px; font-weight:700; white-space:nowrap; }
+    .badge.green { background:#ECFDF3; color:#027A48; }
+    .badge.amber { background:#FFFAEB; color:#B54708; }
+    .badge.red { background:#FEF3F2; color:#B42318; }
+  </style>
+</head>
+<body>
+<div class="mgmt-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      GRIYANET BMS
+    </div>
+    <nav class="sb-nav">
+      <a href="dashboard.html" class="sb-item active">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="attendance.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Kehadiran & Jadwal
+      </a>
+      <a href="requests.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Pengajuan
+        <span class="sb-badge">3</span>
+      </a>
+      <a href="approval.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        Approval
+        <span class="sb-badge">5</span>
+      </a>
+      <div class="sb-group">
+        <div class="sb-group-head" onclick="toggleGroup('people')">
+          <svg class="sb-ico" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          People
+          <svg class="sb-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="sb-sub" id="grp-people">
+          <a href="tim.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Tim Saya</a>
+          <a href="hiring.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Hiring</a>
+          <a href="reviews.html" class="sb-sub-item"><span class="sb-sub-dot"></span>Review Kinerja</a>
+        </div>
+      </div>
+      <a href="learning.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        Learning
+      </a>
+      <a href="laporan.html" class="sb-item">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Laporan
+      </a>
+    </nav>
+    <div class="sb-connect">
+      <div class="sb-connect-label">Koneksi</div>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        CRM Pelanggan
+        <span class="sb-connect-sub">↗</span>
+      </a>
+      <a href="#" class="sb-connect-item">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        Sistem Tiket
+        <span class="sb-connect-sub">↗</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main-content">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <a href="dashboard.html" class="back-btn">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          Kembali
+        </a>
+        <div class="breadcrumb">
+          <a href="dashboard.html">Dashboard</a>
+          <span class="breadcrumb-sep">›</span>
+          <span>Analisis AE</span>
+          <span class="breadcrumb-sep">›</span>
+          <span class="breadcrumb-cur">Detail AE</span>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-date">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Juni 2026
+        </div>
+        <div class="topbar-notif">
+          <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <div class="notif-dot"></div>
+        </div>
+        <div class="user-chip">
+          <div class="user-av">BL</div>
+          <div>
+            <div class="user-name">Budi Santoso</div>
+            <div class="user-role">Branch Leader · Karangploso</div>
+          </div>
+        </div>
+        <a href="../rolemcc.html" class="topbar-logout">
+          <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Keluar
+        </a>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content-area">
+
+      <!-- KPI STRIP -->
+      <div class="kpi-strip">
+        <div class="kpi-card">
+          <div class="kpi-ico purple">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-val">1.248</div>
+            <div class="kpi-lbl">Total CP Bulan Ini</div>
+            <div class="kpi-delta up">▲ 8.6% vs bln lalu</div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-ico blue">
+            <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-val">84.2</div>
+            <div class="kpi-lbl">Rata-rata CP Valid/AE</div>
+            <div class="kpi-delta up">▲ 10.4% vs bln lalu</div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-ico green">
+            <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-val good">38.7%</div>
+            <div class="kpi-lbl">Rata-rata Konversi</div>
+            <div class="kpi-delta up">▲ 2.1% vs bln lalu</div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-ico amber">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-val warn">6</div>
+            <div class="kpi-lbl">AE Underperform</div>
+            <div class="kpi-delta dn">▲ 1 vs bln lalu</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FILTER -->
+      <div class="filter-card">
+        <span class="filter-label">Filter</span>
+        <div class="filter-sel">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026
+          <svg class="chev" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="filter-sel">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Juni 2026
+          <svg class="chev" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="filter-sel">
+          <svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+          Karangploso
+          <svg class="chev" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="filter-sel">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          Semua AE
+          <svg class="chev" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="filter-divider"></div>
+        <div class="filter-actions">
+          <button class="btn-outline">
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 3 18 9"/><line x1="12" y1="3" x2="12" y2="15"/><path d="M5 21h14"/></svg>
+            Export Excel
+          </button>
+          <button class="btn-outline">
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 3 18 9"/><line x1="12" y1="3" x2="12" y2="15"/><path d="M5 21h14"/></svg>
+            Print
+          </button>
+        </div>
+      </div>
+
+      <!-- AE TABLE -->
+      <div class="table-card">
+        <div class="table-head">
+          <div>
+            <div class="table-title">
+              <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              Performa AE — Juni 2026
+            </div>
+            <div class="table-sub">Cabang Karangploso · 10 AE Aktif</div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="ae-tbl">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Nama AE</th>
+                <th>No Action</th>
+                <th>Lost By System</th>
+                <th>Lost</th>
+                <th>Hot</th>
+                <th>Total CP</th>
+                <th>Target CP</th>
+                <th>Progress</th>
+                <th>Offside</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- AE 1: Ahmad Suharto -->
+              <tr>
+                <td class="row-no">1</td>
+                <td>
+                  <div class="ae-name-cell">
+                    <div class="ae-ava g">AS</div>
+                    <div>
+                      <div class="ae-nm">Ahmad Suharto</div>
+                      <div class="ae-area">Dau</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="num-cell warn">4</td>
+                <td class="num-cell bad">2</td>
+                <td class="num-cell bad">1</td>
+                <td class="num-cell good">11</td>
+                <td class="num-cell">18</td>
+                <td class="num-cell" style="color:#667085;">15</td>
+                <td>
+                  <div class="pct-bar-cell">
+                    <div class="pct-bar"><div class="pct-fill g" style="width:100%;"></div></div>
+                    <span class="pct-txt g">120%</span>
+                  </div>
+                </td>
+                <td class="offside-pos">+3</td>
+                <td><button class="detail-btn" onclick="openDetail('Ahmad Suharto','Dau','1')"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Detail</button></td>
+              </tr>
+              <!-- AE 2: Lina Permata -->
+              <tr>
+                <td class="row-no">2</td>
+                <td>
+                  <div class="ae-name-cell">
+                    <div class="ae-ava b">LP</div>
+                    <div>
+                      <div class="ae-nm">Lina Permata</div>
+                      <div class="ae-area">Singosari</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="num-cell warn">5</td>
+                <td class="num-cell bad">1</td>
+                <td class="num-cell bad">2</td>
+                <td class="num-cell good">8</td>
+                <td class="num-cell">16</td>
+                <td class="num-cell" style="color:#667085;">15</td>
+                <td>
+                  <div class="pct-bar-cell">
+                    <div class="pct-bar"><div class="pct-fill a" style="width:73%;"></div></div>
+                    <span class="pct-txt a">107%</span>
+                  </div>
+                </td>
+                <td class="offside-pos">+1</td>
+                <td><button class="detail-btn" onclick="openDetail('Lina Permata','Singosari','2')"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Detail</button></td>
+              </tr>
+              <!-- AE 3: Budi Raharjo -->
+              <tr>
+                <td class="row-no">3</td>
+                <td>
+                  <div class="ae-name-cell">
+                    <div class="ae-ava g">BR</div>
+                    <div>
+                      <div class="ae-nm">Budi Raharjo</div>
+                      <div class="ae-area">Dau</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="num-cell warn">6</td>
+                <td class="num-cell bad">3</td>
+                <td class="num-cell bad">2</td>
+                <td class="num-cell good">3</td>
+                <td class="num-cell">14</td>
+                <td class="num-cell" style="color:#667085;">15</td>
+                <td>
+                  <div class="pct-bar-cell">
+                    <div class="pct-bar"><div class="pct-fill a" style="width:67%;"></div></div>
+                    <span class="pct-txt a">93%</span>
+                  </div>
+                </td>
+                <td class="offside-neg">−1</td>
+                <td><button class="detail-btn" onclick="openDetail('Budi Raharjo','Dau','3')"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Detail</button></td>
+              </tr>
+              <!-- AE 4: Citra Maharani -->
+              <tr>
+                <td class="row-no">4</td>
+                <td>
+                  <div class="ae-name-cell">
+                    <div class="ae-ava g">CM</div>
+                    <div>
+                      <div class="ae-nm">Citra Maharani</div>
+                      <div class="ae-area">Dau</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="num-cell warn">3</td>
+                <td class="num-cell bad">1</td>
+                <td class="num-cell bad">1</td>
+                <td class="num-cell good">12</td>
+                <td class="num-cell">17</td>
+                <td class="num-cell" style="color:#667085;">15</td>
+                <td>
+                  <div class="pct-bar-cell">
+                    <div class="pct-bar"><div class="pct-fill g" style="width:100%;"></div></div>
+                    <span class="pct-txt g">113%</span>
+                  </div>
+                </td>
+                <td class="offside-pos">+2</td>
+                <td><button class="detail-btn" onclick="openDetail('Citra Maharani','Dau','4')"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Detail</button></td>
+              </tr>
+              <!-- AE 5: Dewi Kusuma -->
+              <tr>
+                <td class="row-no">5</td>
+                <td>
+                  <div class="ae-name-cell">
+                    <div class="ae-ava a">DK</div>
+                    <div>
+                      <div class="ae-nm">Dewi Kusuma</div>
+                      <div class="ae-area">Lawang</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="num-cell warn">7</td>
+                <td class="num-cell bad">2</td>
+                <td class="num-cell bad">3</td>
+                <td class="num-cell warn">0</td>
+                <td class="num-cell warn">12</td>
+                <td class="num-cell" style="color:#667085;">15</td>
+                <td>
+                  <div class="pct-bar-cell">
+                    <div class="pct-bar"><div class="pct-fill a" style="width:60%;"></div></div>
+                    <span class="pct-txt a">80%</span>
+                  </div>
+                </td>
+                <td class="offside-neg">−3</td>
+                <td><button class="detail-btn" onclick="openDetail('Dewi Kusuma','Lawang','5')"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Detail</button></td>
+              </tr>
+              <!-- AE 6: Farida Rahma -->
+              <tr>
+                <td class="row-no">6</td>
+                <td>
+                  <div class="ae-name-cell">
+                    <div class="ae-ava a">FR</div>
+                    <div>
+                      <div class="ae-nm">Farida Rahma</div>
+                      <div class="ae-area">Karangploso</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="num-cell warn">8</td>
+                <td class="num-cell bad">4</td>
+                <td class="num-cell bad">2</td>
+                <td class="num-cell warn">0</td>
+                <td class="num-cell bad">11</td>
+                <td class="num-cell" style="color:#667085;">15</td>
+                <td>
+                  <div class="pct-bar-cell">
+                    <div class="pct-bar"><div class="pct-fill r" style="width:47%;"></div></div>
+                    <span class="pct-txt r">73%</span>
+                  </div>
+                </td>
+                <td class="offside-neg">−4</td>
+                <td><button class="detail-btn" onclick="openDetail('Farida Rahma','Karangploso','6')"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Detail</button></td>
+              </tr>
+              <!-- AE 7: Ricky Dwi -->
+              <tr>
+                <td class="row-no">7</td>
+                <td>
+                  <div class="ae-name-cell">
+                    <div class="ae-ava b">RD</div>
+                    <div>
+                      <div class="ae-nm">Ricky Dwi</div>
+                      <div class="ae-area">Singosari</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="num-cell warn">9</td>
+                <td class="num-cell bad">3</td>
+                <td class="num-cell bad">4</td>
+                <td class="num-cell warn">0</td>
+                <td class="num-cell bad">9</td>
+                <td class="num-cell" style="color:#667085;">15</td>
+                <td>
+                  <div class="pct-bar-cell">
+                    <div class="pct-bar"><div class="pct-fill r" style="width:40%;"></div></div>
+                    <span class="pct-txt r">60%</span>
+                  </div>
+                </td>
+                <td class="offside-neg">−6</td>
+                <td><button class="detail-btn" onclick="openDetail('Ricky Dwi','Singosari','7')"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Detail</button></td>
+              </tr>
+              <!-- AE 8: Agus Setiawan -->
+              <tr>
+                <td class="row-no">8</td>
+                <td>
+                  <div class="ae-name-cell">
+                    <div class="ae-ava g">AG</div>
+                    <div>
+                      <div class="ae-nm">Agus Setiawan</div>
+                      <div class="ae-area">Lawang</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="num-cell warn">5</td>
+                <td class="num-cell bad">2</td>
+                <td class="num-cell bad">2</td>
+                <td class="num-cell good">6</td>
+                <td class="num-cell">15</td>
+                <td class="num-cell" style="color:#667085;">15</td>
+                <td>
+                  <div class="pct-bar-cell">
+                    <div class="pct-bar"><div class="pct-fill a" style="width:67%;"></div></div>
+                    <span class="pct-txt a">100%</span>
+                  </div>
+                </td>
+                <td class="offside-neu">0</td>
+                <td><button class="detail-btn" onclick="openDetail('Agus Setiawan','Lawang','8')"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Detail</button></td>
+              </tr>
+              <!-- AE 9: Rina Lestari (INACTIVE) -->
+              <tr style="opacity:.55;">
+                <td class="row-no">9</td>
+                <td>
+                  <div class="ae-name-cell">
+                    <div class="ae-ava gr">RL</div>
+                    <div>
+                      <div class="ae-nm">Rina Lestari</div>
+                      <div class="ae-area" style="color:#B42318;">Tidak Aktif</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="num-cell">0</td>
+                <td class="num-cell">0</td>
+                <td class="num-cell">0</td>
+                <td class="num-cell">0</td>
+                <td class="num-cell">0</td>
+                <td class="num-cell" style="color:#667085;">15</td>
+                <td>
+                  <div class="pct-bar-cell">
+                    <div class="pct-bar"><div class="pct-fill r" style="width:0%;"></div></div>
+                    <span class="pct-txt r">0%</span>
+                  </div>
+                </td>
+                <td class="offside-neg">−15</td>
+                <td><button class="detail-btn" style="opacity:.5;pointer-events:none;"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Detail</button></td>
+              </tr>
+              <!-- AE 10: Fajar Nugroho -->
+              <tr>
+                <td class="row-no">10</td>
+                <td>
+                  <div class="ae-name-cell">
+                    <div class="ae-ava b">FN</div>
+                    <div>
+                      <div class="ae-nm">Fajar Nugroho</div>
+                      <div class="ae-area">Dau</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="num-cell warn">6</td>
+                <td class="num-cell bad">3</td>
+                <td class="num-cell bad">3</td>
+                <td class="num-cell warn">0</td>
+                <td class="num-cell bad">10</td>
+                <td class="num-cell" style="color:#667085;">15</td>
+                <td>
+                  <div class="pct-bar-cell">
+                    <div class="pct-bar"><div class="pct-fill r" style="width:47%;"></div></div>
+                    <span class="pct-txt r">67%</span>
+                  </div>
+                </td>
+                <td class="offside-neg">−5</td>
+                <td><button class="detail-btn" onclick="openDetail('Fajar Nugroho','Dau','10')"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Detail</button></td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2">Total (10 AE)</td>
+                <td>53</td>
+                <td>21</td>
+                <td>20</td>
+                <td>40</td>
+                <td>122</td>
+                <td>150</td>
+                <td colspan="2" style="color:#60A5FA;">81% tercapai</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /content-area -->
+  </div><!-- /main-content -->
+
+</div><!-- /mgmt-layout -->
+
+<!-- DRAWER OVERLAY -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDetail()"></div>
+
+<!-- DETAIL DRAWER -->
+<div class="detail-drawer" id="detailDrawer">
+  <div class="drawer-header">
+    <div>
+      <div class="drawer-title" id="drawerAEName">Ahmad Suharto</div>
+      <div class="drawer-sub" id="drawerAESub">Area: Dau · Juni 2026 · 18 Hari Kerja</div>
+    </div>
+    <button class="drawer-close" onclick="closeDetail()">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="drawer-kpi">
+    <div class="dkpi">
+      <div class="dkpi-val" id="dk-total">18</div>
+      <div class="dkpi-lbl">Total CP</div>
+    </div>
+    <div class="dkpi">
+      <div class="dkpi-val good" id="dk-hot">11</div>
+      <div class="dkpi-lbl">Hot Prospect</div>
+    </div>
+    <div class="dkpi">
+      <div class="dkpi-val warn" id="dk-noact">4</div>
+      <div class="dkpi-lbl">No Action</div>
+    </div>
+    <div class="dkpi">
+      <div class="dkpi-val bad" id="dk-lost">3</div>
+      <div class="dkpi-lbl">Lost</div>
+    </div>
+    <div class="dkpi">
+      <div class="dkpi-val" id="dk-pct" style="color:#027A48;">120%</div>
+      <div class="dkpi-lbl">Capaian</div>
+    </div>
+  </div>
+  <div class="drawer-body">
+    <div class="drawer-section-title">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      Rincian Harian — Juni 2026
+    </div>
+    <table class="det-tbl" id="drawerTable">
+      <thead>
+        <tr>
+          <th>Tanggal</th>
+          <th>Input CP</th>
+          <th>Fu</th>
+          <th>No Action</th>
+          <th>Lost</th>
+          <th>Capaian</th>
+          <th>Target</th>
+          <th>Offset</th>
+        </tr>
+      </thead>
+      <tbody id="drawerTbody">
+        <!-- Injected by JS -->
+      </tbody>
+      <tfoot>
+        <tr id="drawerFoot">
+          <td>Total</td>
+          <td id="df-cp">—</td>
+          <td id="df-fu">—</td>
+          <td id="df-na">—</td>
+          <td id="df-lost">—</td>
+          <td id="df-cap">—</td>
+          <td id="df-tgt">—</td>
+          <td id="df-off">—</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+<script>
+  function toggleGroup(name) {
+    const head = document.querySelector('[onclick="toggleGroup(\'' + name + '\')"]');
+    const sub = document.getElementById('grp-' + name);
+    if (!head || !sub) return;
+    head.classList.toggle('open');
+    sub.classList.toggle('open');
+  }
+
+  /* ── Per-AE daily data sets ── */
+  const aeData = {
+    '1': {
+      name:'Ahmad Suharto', area:'Dau', total:18, hot:11, noact:4, lost:3, pct:'120%', pctClass:'good',
+      days:[
+        {d:'02',day:'Sen',cp:1,fu:0,na:0,lost:0,cap:1,tgt:1,off:0},
+        {d:'03',day:'Sel',cp:2,fu:1,na:0,lost:0,cap:2,tgt:1,off:1},
+        {d:'04',day:'Rab',cp:1,fu:0,na:1,lost:0,cap:1,tgt:1,off:0},
+        {d:'05',day:'Kam',cp:2,fu:1,na:0,lost:0,cap:2,tgt:1,off:1},
+        {d:'06',day:'Jum',cp:1,fu:1,na:0,lost:0,cap:1,tgt:1,off:0},
+        {d:'09',day:'Sen',cp:2,fu:0,na:1,lost:1,cap:2,tgt:1,off:1},
+        {d:'10',day:'Sel',cp:1,fu:1,na:0,lost:0,cap:1,tgt:1,off:0},
+        {d:'11',day:'Rab',cp:2,fu:0,na:0,lost:0,cap:2,tgt:1,off:1},
+        {d:'12',day:'Kam',cp:1,fu:1,na:1,lost:0,cap:1,tgt:1,off:0},
+        {d:'13',day:'Jum',cp:1,fu:0,na:0,lost:0,cap:1,tgt:1,off:0},
+        {d:'16',day:'Sen',cp:1,fu:1,na:1,lost:1,cap:1,tgt:1,off:0},
+        {d:'17',day:'Sel',cp:2,fu:1,na:0,lost:0,cap:2,tgt:1,off:1},
+        {d:'18',day:'Rab',cp:0,fu:0,na:0,lost:1,cap:0,tgt:1,off:-1},
+        {d:'19',day:'Kam',cp:1,fu:1,na:0,lost:0,cap:1,tgt:1,off:0},
+        {d:'20',day:'Jum',cp:0,fu:1,na:0,lost:0,cap:0,tgt:1,off:-1},
+        {d:'23',day:'Sen',cp:2,fu:0,na:0,lost:0,cap:2,tgt:1,off:1,today:true},
+      ]
+    },
+    '2': {
+      name:'Lina Permata', area:'Singosari', total:16, hot:8, noact:5, lost:3, pct:'107%', pctClass:'good',
+      days:[
+        {d:'02',day:'Sen',cp:1,fu:0,na:0,lost:0,cap:1,tgt:1,off:0},
+        {d:'03',day:'Sel',cp:1,fu:1,na:0,lost:0,cap:1,tgt:1,off:0},
+        {d:'04',day:'Rab',cp:2,fu:0,na:1,lost:0,cap:2,tgt:1,off:1},
+        {d:'05',day:'Kam',cp:1,fu:0,na:0,lost:0,cap:1,tgt:1,off:0},
+        {d:'06',day:'Jum',cp:1,fu:1,na:1,lost:0,cap:1,tgt:1,off:0},
+        {d:'09',day:'Sen',cp:2,fu:0,na:0,lost:1,cap:2,tgt:1,off:1},
+        {d:'10',day:'Sel',cp:0,fu:1,na:1,lost:0,cap:0,tgt:1,off:-1},
+        {d:'11',day:'Rab',cp:2,fu:0,na:0,lost:1,cap:2,tgt:1,off:1},
+        {d:'12',day:'Kam',cp:1,fu:1,na:1,lost:0,cap:1,tgt:1,off:0},
+        {d:'13',day:'Jum',cp:1,fu:0,na:0,lost:0,cap:1,tgt:1,off:0},
+        {d:'16',day:'Sen',cp:1,fu:1,na:1,lost:1,cap:1,tgt:1,off:0},
+        {d:'17',day:'Sel',cp:1,fu:0,na:0,lost:0,cap:1,tgt:1,off:0},
+        {d:'18',day:'Rab',cp:1,fu:0,na:0,lost:0,cap:1,tgt:1,off:0},
+        {d:'19',day:'Kam',cp:1,fu:1,na:0,lost:0,cap:1,tgt:1,off:0},
+        {d:'20',day:'Jum',cp:0,fu:0,na:0,lost:0,cap:0,tgt:1,off:-1},
+        {d:'23',day:'Sen',cp:0,fu:1,na:0,lost:0,cap:0,tgt:1,off:-1,today:true},
+      ]
+    }
+  };
+
+  /* default data for AEs 3–10 (generic pattern) */
+  function getDefaultData(id) {
+    const names = {
+      '3':['Budi Raharjo','Dau',14,3,6,5,'93%','warn'],
+      '4':['Citra Maharani','Dau',17,12,3,2,'113%','good'],
+      '5':['Dewi Kusuma','Lawang',12,0,7,5,'80%','warn'],
+      '6':['Farida Rahma','Karangploso',11,0,8,6,'73%','warn'],
+      '7':['Ricky Dwi','Singosari',9,0,9,7,'60%','bad'],
+      '8':['Agus Setiawan','Lawang',15,6,5,4,'100%','good'],
+      '10':['Fajar Nugroho','Dau',10,0,6,6,'67%','bad']
+    };
+    const d = names[id] || ['AE','—',0,0,0,0,'0%','bad'];
+    const days = [];
+    const dates = ['02','03','04','05','06','09','10','11','12','13','16','17','18','19','20','23'];
+    const dayNames = ['Sen','Sel','Rab','Kam','Jum','Sen','Sel','Rab','Kam','Jum','Sen','Sel','Rab','Kam','Jum','Sen'];
+    let cum = 0;
+    for (let i = 0; i < dates.length; i++) {
+      const cp = (i < dates.length - 1) ? (Math.random() > 0.2 ? (Math.floor(Math.random()*2)+1) : 0) : 0;
+      cum += cp;
+      const tgt = 1;
+      days.push({
+        d: dates[i], day: dayNames[i],
+        cp, fu: cp>0?1:0, na: cp===0?1:0, lost: Math.random()>0.8?1:0,
+        cap: cp, tgt,
+        off: cp - tgt,
+        today: dates[i]==='23'
+      });
+    }
+    return { name:d[0], area:d[1], total:d[2], hot:d[3], noact:d[4], lost:d[5], pct:d[6], pctClass:d[7], days };
+  }
+
+  function openDetail(name, area, id) {
+    const data = aeData[id] || getDefaultData(id);
+
+    document.getElementById('drawerAEName').textContent = data.name;
+    document.getElementById('drawerAESub').textContent = 'Area: ' + data.area + ' · Juni 2026 · ' + data.days.length + ' Hari Kerja';
+    document.getElementById('dk-total').textContent = data.total;
+    document.getElementById('dk-hot').textContent = data.hot;
+    document.getElementById('dk-noact').textContent = data.noact;
+    document.getElementById('dk-lost').textContent = data.lost;
+    const pctEl = document.getElementById('dk-pct');
+    pctEl.textContent = data.pct;
+    pctEl.style.color = data.pctClass === 'good' ? '#027A48' : data.pctClass === 'warn' ? '#B54708' : '#B42318';
+
+    let totCp=0, totFu=0, totNa=0, totLost=0, totCap=0, totTgt=0;
+    const tbody = document.getElementById('drawerTbody');
+    tbody.innerHTML = '';
+    data.days.forEach(row => {
+      totCp+=row.cp; totFu+=row.fu; totNa+=row.na; totLost+=row.lost; totCap+=row.cap; totTgt+=row.tgt;
+      const offCls = row.off > 0 ? 'offset-pos' : row.off < 0 ? 'offset-neg' : '';
+      const offStr = row.off > 0 ? '+'+row.off : ''+row.off;
+      const tr = document.createElement('tr');
+      if (row.today) tr.classList.add('today-row');
+      tr.innerHTML = `
+        <td><div class="det-date">${row.d} Jun${row.today?' <span class="badge amber" style="font-size:9px;padding:1px 6px;">Hari ini</span>':''}</div><div class="det-day">${row.day}</div></td>
+        <td>${row.cp||'—'}</td>
+        <td>${row.fu||'—'}</td>
+        <td>${row.na||'—'}</td>
+        <td>${row.lost||'—'}</td>
+        <td>${row.cap}</td>
+        <td>${row.tgt}</td>
+        <td class="${offCls}">${offStr}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+    const totOff = totCap - totTgt;
+    document.getElementById('df-cp').textContent = totCp;
+    document.getElementById('df-fu').textContent = totFu;
+    document.getElementById('df-na').textContent = totNa;
+    document.getElementById('df-lost').textContent = totLost;
+    document.getElementById('df-cap').textContent = totCap;
+    document.getElementById('df-tgt').textContent = totTgt;
+    document.getElementById('df-off').textContent = (totOff>0?'+':'')+totOff;
+
+    document.getElementById('drawerOverlay').classList.add('open');
+    document.getElementById('detailDrawer').classList.add('open');
+  }
+
+  function closeDetail() {
+    document.getElementById('drawerOverlay').classList.remove('open');
+    document.getElementById('detailDrawer').classList.remove('open');
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDetail(); });
+</script>
+</body>
+</html>

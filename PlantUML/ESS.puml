@@ -1,0 +1,237 @@
+@startuml ESS_Staff_UseCase
+
+' ─────────────────────────────────────────────
+'  ESS — Employee Self Service
+'  Use Case Diagram · Modul STAF
+'  Cabang: Folder /staff/ (13 halaman mockup)
+' ─────────────────────────────────────────────
+
+!theme plain
+skinparam backgroundColor #F8FAFC
+skinparam defaultFontName Inter
+skinparam defaultFontSize 12
+
+skinparam ActorStyle awesome
+skinparam ActorBorderColor #1D6FF3
+skinparam ActorBackgroundColor #EFF6FF
+skinparam ActorFontColor #0D1B3E
+skinparam ActorFontSize 12
+skinparam ActorFontStyle bold
+
+skinparam UsecaseBorderColor #1D6FF3
+skinparam UsecaseBackgroundColor #FFFFFF
+skinparam UsecaseFontColor #101828
+skinparam UsecaseFontSize 11
+
+skinparam PackageBorderColor #CBD5E1
+skinparam PackageBackgroundColor #FAFAFA
+skinparam PackageFontColor #344054
+skinparam PackageFontSize 12
+skinparam PackageFontStyle bold
+
+skinparam ArrowColor #1D6FF3
+skinparam ArrowThickness 1.2
+
+skinparam NoteBackgroundColor #FFFBEB
+skinparam NoteBorderColor #FCD34D
+skinparam NoteFontSize 10
+
+' ══════════════════════════
+'  ACTORS
+' ══════════════════════════
+
+actor "Staf / Karyawan" as Staf #EFF6FF
+actor "Atasan Langsung" as Atasan #ECFDF5
+actor "HC Comben" as HC #F5F3FF
+
+' ══════════════════════════
+'  SYSTEM BOUNDARY
+' ══════════════════════════
+
+rectangle "ESS — Employee Self Service (Modul Staf)" as ESS {
+
+  ' ─────────────────────────
+  '  1. AUTENTIKASI
+  ' ─────────────────────────
+  package "Autentikasi" as PKG_AUTH #E8F4FD {
+    usecase "Login ke ESS" as UC_LOGIN
+    usecase "Pilih Role / Tipe Akun" as UC_ROLE
+  }
+
+  ' ─────────────────────────
+  '  2. BERANDA
+  ' ─────────────────────────
+  package "Beranda" as PKG_HOME #EFF8FF {
+    usecase "Lihat Beranda" as UC_HOME
+    usecase "Lihat Status Kehadiran\nHari Ini" as UC_STATUS
+    usecase "Check In" as UC_CHECKIN
+    usecase "Check Out" as UC_CHECKOUT
+    usecase "Lihat Jadwal Hari Ini" as UC_JADWAL_HOME
+    usecase "Lihat Ringkasan\nBulan Ini" as UC_RINGKASAN
+    usecase "Akses Menu Layanan" as UC_LAYANAN
+  }
+
+  ' ─────────────────────────
+  '  3. KEHADIRAN & JADWAL
+  ' ─────────────────────────
+  package "Kehadiran & Jadwal" as PKG_ATT #F0FDF4 {
+    usecase "Lihat Jadwal Kerja\n(Mingguan / Bulanan)" as UC_JADWAL
+    usecase "Lihat Distribusi Jadwal\n(Regular, Project, Shift, Libur)" as UC_DISTRIB
+    usecase "Lihat Detail Kehadiran\nper Hari" as UC_ATT_DETAIL
+    usecase "Lihat Ringkasan\nKehadiran Bulanan" as UC_ATT_SUMMARY
+    usecase "Lihat Rekap\n(Hadir, Terlambat, Izin, Sakit, Alfa)" as UC_ATT_REKAP
+  }
+
+  ' ─────────────────────────
+  '  4. IZIN & CUTI
+  ' ─────────────────────────
+  package "Izin & Cuti" as PKG_LEAVE #FFF7ED {
+    usecase "Lihat Saldo Cuti" as UC_SALDO
+    usecase "Lihat Riwayat\nPengajuan Izin/Cuti" as UC_LEAVE_HIST
+    usecase "Ajukan Izin / Cuti" as UC_APPLY_LEAVE
+    usecase "Isi Form Pengajuan\n(Tipe, Tanggal, Alasan)" as UC_FORM_LEAVE
+    usecase "Upload Dokumen\nPendukung" as UC_UPLOAD_DOC
+    usecase "Lihat Status\nPengajuan" as UC_LEAVE_STATUS
+    usecase "Batalkan Pengajuan" as UC_CANCEL_LEAVE
+    usecase "Setujui Pengajuan\nIzin / Cuti" as UC_APPROVE_LEAVE
+    usecase "Tolak Pengajuan\nIzin / Cuti" as UC_REJECT_LEAVE
+    usecase "Finalisasi Persetujuan\nHC" as UC_HC_APPROVE
+  }
+
+  ' ─────────────────────────
+  '  5. PINJAMAN KARYAWAN
+  ' ─────────────────────────
+  package "Pinjaman Karyawan" as PKG_LOAN #FDF4FF {
+    usecase "Lihat Dashboard\nPinjaman Aktif" as UC_LOAN_DASH
+    usecase "Lihat Loan\nEligibility Score" as UC_LOAN_SCORE
+    usecase "Ajukan Pinjaman Baru" as UC_APPLY_LOAN
+    usecase "Isi Form Pinjaman\n(Nominal, Tenor, Alasan)" as UC_FORM_LOAN
+    usecase "Hitung Simulasi\nCicilan" as UC_SIMULASI
+    usecase "Upload Dokumen\nPendukung" as UC_UPLOAD_LOAN
+    usecase "Lihat Status\nPengajuan Pinjaman" as UC_LOAN_STATUS
+    usecase "Lihat Riwayat\nPinjaman" as UC_LOAN_HIST
+    usecase "Lihat Detail\nPinjaman" as UC_LOAN_DETAIL
+  }
+
+  ' ─────────────────────────
+  '  6. PROFIL
+  ' ─────────────────────────
+  package "Profil" as PKG_PROFILE #FFF8F1 {
+    usecase "Lihat Profil Saya" as UC_PROFILE
+    usecase "Edit Foto Profil" as UC_EDIT_PHOTO
+    usecase "Lihat Data Pribadi\n& Kepegawaian" as UC_DATA_PRIBADI
+    usecase "Lihat Data Kontrak\n(PKWT / Tetap)" as UC_KONTRAK
+    usecase "Lihat Aset\nPerusahaan" as UC_ASET
+    usecase "Lihat Kontak\nDarurat" as UC_KONTAK_DARURAT
+  }
+
+  ' ─────────────────────────
+  '  7. NOTIFIKASI & PENGUMUMAN
+  ' ─────────────────────────
+  package "Notifikasi & Pengumuman" as PKG_NOTIF #F0F9FF {
+    usecase "Lihat Inbox\nNotifikasi" as UC_NOTIF
+    usecase "Filter Notifikasi\n(Semua, Belum Dibaca, Persetujuan)" as UC_NOTIF_FILTER
+    usecase "Tandai Sudah\nDibaca" as UC_NOTIF_READ
+    usecase "Lihat Pengumuman" as UC_ANNOUNCE
+    usecase "Baca Detail\nPengumuman" as UC_ANNOUNCE_DETAIL
+  }
+
+}
+
+' ══════════════════════════
+'  STAF — RELASI UTAMA
+' ══════════════════════════
+
+' Auth
+Staf --> UC_LOGIN
+UC_LOGIN ..> UC_ROLE : <<include>>
+
+' Beranda
+Staf --> UC_HOME
+UC_HOME ..> UC_STATUS   : <<include>>
+UC_HOME ..> UC_JADWAL_HOME : <<include>>
+UC_HOME ..> UC_RINGKASAN   : <<include>>
+UC_HOME ..> UC_LAYANAN     : <<include>>
+UC_STATUS ..> UC_CHECKIN  : <<extend>>
+UC_STATUS ..> UC_CHECKOUT : <<extend>>
+
+' Kehadiran
+Staf --> UC_JADWAL
+UC_JADWAL ..> UC_DISTRIB    : <<include>>
+UC_JADWAL ..> UC_ATT_DETAIL : <<extend>>
+UC_JADWAL ..> UC_ATT_SUMMARY : <<include>>
+UC_ATT_SUMMARY ..> UC_ATT_REKAP : <<include>>
+
+' Izin & Cuti
+Staf --> UC_SALDO
+Staf --> UC_LEAVE_HIST
+Staf --> UC_APPLY_LEAVE
+UC_APPLY_LEAVE ..> UC_FORM_LEAVE   : <<include>>
+UC_APPLY_LEAVE ..> UC_UPLOAD_DOC   : <<extend>>
+UC_APPLY_LEAVE ..> UC_LEAVE_STATUS : <<include>>
+UC_LEAVE_STATUS ..> UC_CANCEL_LEAVE : <<extend>>
+
+' Pinjaman
+Staf --> UC_LOAN_DASH
+UC_LOAN_DASH ..> UC_LOAN_SCORE : <<include>>
+UC_LOAN_DASH ..> UC_LOAN_HIST  : <<include>>
+Staf --> UC_APPLY_LOAN
+UC_APPLY_LOAN ..> UC_FORM_LOAN  : <<include>>
+UC_APPLY_LOAN ..> UC_SIMULASI   : <<include>>
+UC_APPLY_LOAN ..> UC_UPLOAD_LOAN : <<extend>>
+UC_APPLY_LOAN ..> UC_LOAN_STATUS : <<include>>
+Staf --> UC_LOAN_DETAIL
+
+' Profil
+Staf --> UC_PROFILE
+UC_PROFILE ..> UC_DATA_PRIBADI     : <<include>>
+UC_PROFILE ..> UC_KONTRAK          : <<include>>
+UC_PROFILE ..> UC_ASET             : <<extend>>
+UC_PROFILE ..> UC_KONTAK_DARURAT   : <<extend>>
+UC_PROFILE ..> UC_EDIT_PHOTO       : <<extend>>
+
+' Notifikasi
+Staf --> UC_NOTIF
+UC_NOTIF ..> UC_NOTIF_FILTER : <<include>>
+UC_NOTIF ..> UC_NOTIF_READ   : <<extend>>
+Staf --> UC_ANNOUNCE
+UC_ANNOUNCE ..> UC_ANNOUNCE_DETAIL : <<include>>
+
+' ══════════════════════════
+'  ATASAN LANGSUNG — RELASI
+' ══════════════════════════
+
+Atasan --> UC_APPROVE_LEAVE
+Atasan --> UC_REJECT_LEAVE
+UC_APPROVE_LEAVE ..> UC_HC_APPROVE : <<include>>
+
+' ══════════════════════════
+'  HC COMBEN — RELASI
+' ══════════════════════════
+
+HC --> UC_HC_APPROVE
+HC --> UC_REJECT_LEAVE
+
+' ══════════════════════════
+'  NOTES
+' ══════════════════════════
+
+note right of UC_LOAN_SCORE
+  Skor 0–100 berdasarkan:
+  Masa Kerja · THP
+  Outstanding · Status Kepeg.
+  Disiplin
+end note
+
+note right of UC_APPLY_LEAVE
+  Alur 2 tahap:
+  1. Disetujui Atasan Langsung
+  2. Disetujui HC Comben
+end note
+
+note bottom of UC_CHECKIN
+  Validasi lokasi GPS
+  (geofencing area kantor)
+end note
+
+@enduml

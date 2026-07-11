@@ -33,8 +33,8 @@
   /* SIDEBAR */
   .sidebar{width:260px;background:#fff;border-right:1px solid var(--gray-border);flex-shrink:0;padding:20px 0;}
   .brand{display:flex;align-items:center;gap:10px;padding:0 20px 20px 20px;}
-  .brand .logo{width:34px;height:34px;background:#fff;border:1.5px solid var(--blue);border-radius:9px;display:flex;align-items:center;justify-content:center;color:var(--blue);font-size:9px;font-weight:800;letter-spacing:-.3px;}
-  .brand .name{font-size:20px;font-weight:700;}
+  .brand .logo{width:38px;height:38px;background:#fff;border:1.5px solid var(--gray-border);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(16,24,40,.08);color:var(--blue);font-size:11px;font-weight:800;letter-spacing:-.4px;flex-shrink:0;}
+  .brand .name{font-size:21px;font-weight:800;color:#101828;letter-spacing:-.3px;}
   .menu-label{font-size:12px;font-weight:700;padding:4px 20px 8px;color:var(--text-mid);text-transform:uppercase;letter-spacing:.4px;}
   .menu-item{display:flex;align-items:center;gap:10px;padding:9px 12px;margin:2px 12px;border-radius:8px;cursor:pointer;color:var(--text-dark);text-decoration:none;font-size:14px;}
   .menu-item svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.7;flex-shrink:0;}
@@ -442,6 +442,20 @@
   .preview-card .pc-grade{font-size:12px;color:var(--text-mid);margin-bottom:12px;}
   .preview-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
   .preview-grid label{display:block;font-size:11px;font-weight:700;color:var(--text-mid);margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px;}
+
+  /* ===== Data Karyawan — wide sticky table ===== */
+  .table-scroll{overflow-x:auto;border-radius:10px;}
+  .dk-table{border-collapse:separate;border-spacing:0;font-size:12.5px;}
+  .dk-table th, .dk-table td{white-space:nowrap;padding:10px 14px;}
+  .dk-table thead th{position:sticky;top:0;z-index:3;}
+  .dk-table .sticky-name{position:sticky;left:0;z-index:2;background:#fff;box-shadow:2px 0 4px rgba(0,0,0,.05);}
+  .dk-table thead th.sticky-name{background:var(--navy);z-index:4;}
+  .dk-emp{display:flex;align-items:center;gap:10px;}
+  .dk-emp-avatar{width:32px;height:32px;border-radius:50%;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+  .dk-emp-name{font-weight:700;color:var(--blue);white-space:nowrap;}
+  .dk-emp-sub{font-size:10.5px;color:var(--text-mid);font-weight:500;white-space:nowrap;margin-top:1px;}
+  .th-sort{display:inline-flex;align-items:center;gap:5px;}
+  .th-sort svg{width:10px;height:10px;stroke:rgba(255,255,255,.6);fill:none;stroke-width:2;}
 </style>
 </head>
 <body>
@@ -449,7 +463,7 @@
 
   <!-- SIDEBAR -->
   <div class="sidebar">
-    <div class="brand"><div class="logo">HR<br>iS</div><div class="name">Dasaria</div></div>
+    <div class="brand"><div class="logo">HRiS</div><div class="name">Dasaria</div></div>
     <div class="menu-label">Menu</div>
     <div class="menu-item active-parent" id="menu-dashboard" onclick="navTop('dashboard', this)">
       <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
@@ -804,6 +818,74 @@
         <div class="dash-footer">© 2024 Dasaria HRIS. All rights reserved.</div>
       </div>
       <!-- ============ END DASHBOARD ============ -->
+
+
+      <!-- ============ PAGE: DATA KARYAWAN ============ -->
+      <div class="page" id="page-datakaryawan">
+        <div class="page-header">
+          <h1>Data Master Karyawan</h1>
+          <div class="breadcrumb">Home &gt; <b>Data Karyawan</b></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <h2>Data Master Karyawan</h2>
+            <div class="toolbar">
+              <button class="btn btn-green">⇪ Ekspor</button>
+              <button class="btn btn-blue">+ Tambah Karyawan</button>
+            </div>
+          </div>
+          <div class="toolbar" style="margin-bottom:14px;">
+            <div class="search">🔍 Cari berdasarkan kata kunci</div>
+            <button class="btn btn-outline">☰ Filter</button>
+          </div>
+          <div class="table-scroll">
+            <table class="dk-table">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th class="sticky-name"><span class="th-sort">Nama <svg viewBox="0 0 24 24"><path d="M12 4v16M7 9l5-5 5 5M7 15l5 5 5-5"/></svg></span></th>
+                  <th><span class="th-sort">Email <svg viewBox="0 0 24 24"><path d="M12 4v16M7 9l5-5 5 5M7 15l5 5 5-5"/></svg></span></th>
+                  <th><span class="th-sort">Tanggal Lahir <svg viewBox="0 0 24 24"><path d="M12 4v16M7 9l5-5 5 5M7 15l5 5 5-5"/></svg></span></th>
+                  <th><span class="th-sort">Tanggal Masuk <svg viewBox="0 0 24 24"><path d="M12 4v16M7 9l5-5 5 5M7 15l5 5 5-5"/></svg></span></th>
+                  <th><span class="th-sort">Tanggal Berakhir <svg viewBox="0 0 24 24"><path d="M12 4v16M7 9l5-5 5 5M7 15l5 5 5-5"/></svg></span></th>
+                  <th><span class="th-sort">Sisa Kontrak <svg viewBox="0 0 24 24"><path d="M12 4v16M7 9l5-5 5 5M7 15l5 5 5-5"/></svg></span></th>
+                  <th><span class="th-sort">Perusahaan <svg viewBox="0 0 24 24"><path d="M12 4v16M7 9l5-5 5 5M7 15l5 5 5-5"/></svg></span></th>
+                  <th><span class="th-sort">Kantor <svg viewBox="0 0 24 24"><path d="M12 4v16M7 9l5-5 5 5M7 15l5 5 5-5"/></svg></span></th>
+                  <th><span class="th-sort">Jabatan <svg viewBox="0 0 24 24"><path d="M12 4v16M7 9l5-5 5 5M7 15l5 5 5-5"/></svg></span></th>
+                  <th><span class="th-sort">Jenjang Kepangkatan <svg viewBox="0 0 24 24"><path d="M12 4v16M7 9l5-5 5 5M7 15l5 5 5-5"/></svg></span></th>
+                  <th><span class="th-sort">Jenjang Struktural <svg viewBox="0 0 24 24"><path d="M12 4v16M7 9l5-5 5 5M7 15l5 5 5-5"/></svg></span></th>
+                  <th><span class="th-sort">Golongan <svg viewBox="0 0 24 24"><path d="M12 4v16M7 9l5-5 5 5M7 15l5 5 5-5"/></svg></span></th>
+                  <th><span class="th-sort">Unit <svg viewBox="0 0 24 24"><path d="M12 4v16M7 9l5-5 5 5M7 15l5 5 5-5"/></svg></span></th>
+                  <th><span class="th-sort">Departemen <svg viewBox="0 0 24 24"><path d="M12 4v16M7 9l5-5 5 5M7 15l5 5 5-5"/></svg></span></th>
+                  <th><span class="th-sort">Divisi <svg viewBox="0 0 24 24"><path d="M12 4v16M7 9l5-5 5 5M7 15l5 5 5-5"/></svg></span></th>
+                  <th><span class="th-sort">Direktorat <svg viewBox="0 0 24 24"><path d="M12 4v16M7 9l5-5 5 5M7 15l5 5 5-5"/></svg></span></th>
+                  <th><span class="th-sort">Status Karyawan <svg viewBox="0 0 24 24"><path d="M12 4v16M7 9l5-5 5 5M7 15l5 5 5-5"/></svg></span></th>
+                  <th><span class="th-sort">Status Penggajian <svg viewBox="0 0 24 24"><path d="M12 4v16M7 9l5-5 5 5M7 15l5 5 5-5"/></svg></span></th>
+                  <th><span class="th-sort">Status Data Karyawan <svg viewBox="0 0 24 24"><path d="M12 4v16M7 9l5-5 5 5M7 15l5 5 5-5"/></svg></span></th>
+                  <th><span class="th-sort">Kategori Karyawan <svg viewBox="0 0 24 24"><path d="M12 4v16M7 9l5-5 5 5M7 15l5 5 5-5"/></svg></span></th>
+                  <th>Hak Akses</th>
+                  <th>Detail Profil</th>
+                </tr>
+              </thead>
+              <tbody id="dk-table-body"></tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <span>Menampilkan <select class="pg-select"><option>10</option></select> 1 - 10 dari 248</span>
+            <div class="pg-btns">
+              <div class="pg-btn"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+              <div class="pg-btn active">1</div>
+              <div class="pg-btn">2</div>
+              <div class="pg-btn">3</div>
+              <div class="pg-btn">4</div>
+              <div class="pg-btn">5</div>
+              <div class="pg-btn"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ============ END DATA KARYAWAN ============ -->
 
 
       <!-- ============ PAGE: DASHBOARD PENGGAJIAN ============ -->
@@ -1558,12 +1640,75 @@
   }
   renderSparklines();
 
+  // ===== Data Master Karyawan =====
+  const karyawanData = [
+    { nip:'DSR0231', nama:'Ahmad Fauzi', posisi:'Supervisor Cabang Malang', email:'ahmad.fauzi@dasarata.co.id', tglLahir:'15 Mar 1993', tglMasuk:'1 Jan 2020', tglBerakhir:'-', sisaKontrak:'Tetap', perusahaan:'PT Dasarata', kantor:'Cabang Malang', jabatan:'Supervisor', jenjangKepangkatan:'Prinsipal Officer', jenjangStruktural:'Kepala Departemen', golongan:'G4', unit:'Unit Sales Malang', departemen:'Training & Adaptasi AE', divisi:'Sales Malang Raya', direktorat:'Direktorat Komersial', statusKaryawan:'Aktif', statusPenggajian:'Aktif', statusData:'Lengkap', kategori:'Staff', hakAkses:'-' },
+    { nip:'DSR0114', nama:'Siti Rahayu', posisi:'Officer Payroll', email:'siti.rahayu@dasarata.co.id', tglLahir:'22 Jul 1996', tglMasuk:'10 Mar 2021', tglBerakhir:'-', sisaKontrak:'Tetap', perusahaan:'PT Dasarata', kantor:'Kantor Pusat', jabatan:'Officer', jenjangKepangkatan:'Officer', jenjangStruktural:'Staff', golongan:'G2', unit:'Unit Payroll', departemen:'Finance', divisi:'-', direktorat:'Direktorat HC / Finance & Corporate', statusKaryawan:'Aktif', statusPenggajian:'Aktif', statusData:'Lengkap', kategori:'Staff', hakAkses:'Admin Penggajian' },
+    { nip:'DSR0089', nama:'Budi Santoso', posisi:'Direktur Komersial', email:'budi.santoso@dasarata.co.id', tglLahir:'3 Feb 1985', tglMasuk:'1 Jun 2016', tglBerakhir:'-', sisaKontrak:'Tetap', perusahaan:'PT Dasarata', kantor:'Kantor Pusat', jabatan:'Direktur', jenjangKepangkatan:'Direktur', jenjangStruktural:'Kepala Direktorat', golongan:'G6', unit:'-', departemen:'-', divisi:'-', direktorat:'Direktorat Komersial', statusKaryawan:'Aktif', statusPenggajian:'Aktif', statusData:'Lengkap', kategori:'Direksi', hakAkses:'Superadmin' },
+    { nip:'DSR0155', nama:'Dewi Kusuma', posisi:'AE Certified Cabang Kediri', email:'dewi.kusuma@dasarata.co.id', tglLahir:'12 Sep 1998', tglMasuk:'5 Apr 2022', tglBerakhir:'-', sisaKontrak:'Tetap', perusahaan:'PT Dasarata', kantor:'Cabang Kediri', jabatan:'Account Executive', jenjangKepangkatan:'Officer', jenjangStruktural:'Staff', golongan:'B2', unit:'Unit Sales Kediri', departemen:'-', divisi:'Sales Kediri Raya', direktorat:'Direktorat Komersial', statusKaryawan:'Aktif', statusPenggajian:'Aktif', statusData:'Belum Lengkap', kategori:'Staff', hakAkses:'-' },
+    { nip:'DSR0038', nama:'Rizky Pratama', posisi:'Teknisi Jaringan Cabang Blitar', email:'-', tglLahir:'29 Jul 1998', tglMasuk:'1 Feb 2025', tglBerakhir:'31 Jan 2026', sisaKontrak:'1 bulan', perusahaan:'Griyanet', kantor:'Cabang Blitar', jabatan:'Teknisi', jenjangKepangkatan:'Entry Level', jenjangStruktural:'Staff', golongan:'B1', unit:'Unit Instalasi Blitar', departemen:'Instalasi & Maintenance', divisi:'-', direktorat:'Direktorat Teknologi & Jaringan', statusKaryawan:'Aktif', statusPenggajian:'Aktif', statusData:'Belum Lengkap', kategori:'Kontrak (PKWT)', hakAkses:'-' },
+    { nip:'DSR0040', nama:'Sinta Aulia', posisi:'Branch Leader Cabang Tulungagung', email:'sinta.aulia@dasarata.co.id', tglLahir:'7 Jul 1996', tglMasuk:'15 Agt 2019', tglBerakhir:'-', sisaKontrak:'Tetap', perusahaan:'PT Dasarata', kantor:'Cabang Tulungagung', jabatan:'Branch Leader', jenjangKepangkatan:'Supervisor', jenjangStruktural:'Kepala Cabang', golongan:'B3', unit:'Unit Cabang Tulungagung', departemen:'-', divisi:'Sales Tulungagung Raya', direktorat:'Direktorat Operasional & Regional', statusKaryawan:'Aktif', statusPenggajian:'Aktif', statusData:'Lengkap', kategori:'Staff', hakAkses:'Admin Cabang' },
+    { nip:'DSR0037', nama:'Dimas Setiawan', posisi:'Head of Region Kediri', email:'dimas.setiawan@dasarata.co.id', tglLahir:'10 Jun 1992', tglMasuk:'1 Mar 2018', tglBerakhir:'-', sisaKontrak:'Tetap', perusahaan:'PT Dasarata', kantor:'Regional Kediri', jabatan:'Head of Region', jenjangKepangkatan:'Manager', jenjangStruktural:'Kepala Regional', golongan:'B4', unit:'-', departemen:'-', divisi:'-', direktorat:'Direktorat Operasional & Regional', statusKaryawan:'Aktif', statusPenggajian:'Aktif', statusData:'Lengkap', kategori:'Staff', hakAkses:'Admin Regional' },
+    { nip:'DSR0077', nama:'Nanda Putri', posisi:'Staff Finance Kantor Pusat', email:'nanda.putri@dasarata.co.id', tglLahir:'14 Jun 1995', tglMasuk:'3 Okt 2021', tglBerakhir:'-', sisaKontrak:'Tetap', perusahaan:'PT Dasarata', kantor:'Kantor Pusat', jabatan:'Staff', jenjangKepangkatan:'Entry Level', jenjangStruktural:'Staff', golongan:'G1', unit:'Unit Finance', departemen:'Finance', divisi:'-', direktorat:'Direktorat HC / Finance & Corporate', statusKaryawan:'Aktif', statusPenggajian:'Aktif', statusData:'Belum Lengkap', kategori:'Staff', hakAkses:'-' },
+    { nip:'DSR0082', nama:'Yoga Adi', posisi:'AE Cabang Malang', email:'yoga.adi@griyanet.co.id', tglLahir:'18 Jun 1991', tglMasuk:'1 Jul 2025', tglBerakhir:'30 Jun 2026', sisaKontrak:'11 bulan', perusahaan:'Griyanet', kantor:'Cabang Malang', jabatan:'Account Executive', jenjangKepangkatan:'Officer', jenjangStruktural:'Staff', golongan:'B2', unit:'Unit Sales Malang', departemen:'-', divisi:'Sales Malang Raya', direktorat:'Direktorat Komersial', statusKaryawan:'Aktif', statusPenggajian:'Aktif', statusData:'Belum Lengkap', kategori:'Kontrak (PKWT)', hakAkses:'-' },
+    { nip:'DSR0154', nama:'Fajar Maulana', posisi:'Manager Finance Kantor Pusat', email:'fajar.maulana@dasarata.co.id', tglLahir:'21 Jun 1994', tglMasuk:'12 Jan 2019', tglBerakhir:'-', sisaKontrak:'Tetap', perusahaan:'PT Dasarata', kantor:'Kantor Pusat', jabatan:'Manager', jenjangKepangkatan:'Manager', jenjangStruktural:'Kepala Departemen', golongan:'G5', unit:'Unit Finance', departemen:'Finance', divisi:'-', direktorat:'Direktorat HC / Finance & Corporate', statusKaryawan:'Aktif', statusPenggajian:'Aktif', statusData:'Lengkap', kategori:'Staff', hakAkses:'Admin Finance' }
+  ];
+  function initials(name){
+    return name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+  }
+  function pillFor(value){
+    if(value === 'Aktif' || value === 'Lengkap' || value === 'Tetap') return 'pill-green';
+    if(value === 'Belum Lengkap') return 'pill-red';
+    if(value === 'Kontrak (PKWT)') return 'pill-peach';
+    if(value.endsWith('bulan')) return 'pill-peach';
+    return 'pill-blue';
+  }
+  function renderKaryawan(){
+    const body = document.getElementById('dk-table-body');
+    if(!body) return;
+    body.innerHTML = karyawanData.map((k, i) => `
+      <tr>
+        <td>${i + 1}</td>
+        <td class="sticky-name">
+          <div class="dk-emp">
+            <div class="dk-emp-avatar">${initials(k.nama)}</div>
+            <div>
+              <div class="dk-emp-name">${k.nama}</div>
+              <div class="dk-emp-sub">${k.nip} · ${k.posisi}</div>
+            </div>
+          </div>
+        </td>
+        <td>${k.email}</td>
+        <td>${k.tglLahir}</td>
+        <td>${k.tglMasuk}</td>
+        <td>${k.tglBerakhir}</td>
+        <td><span class="pill ${pillFor(k.sisaKontrak)}">${k.sisaKontrak}</span></td>
+        <td>${k.perusahaan}</td>
+        <td>${k.kantor}</td>
+        <td>${k.jabatan}</td>
+        <td>${k.jenjangKepangkatan}</td>
+        <td>${k.jenjangStruktural}</td>
+        <td>${k.golongan}</td>
+        <td>${k.unit}</td>
+        <td>${k.departemen}</td>
+        <td>${k.divisi}</td>
+        <td>${k.direktorat}</td>
+        <td><span class="pill ${pillFor(k.statusKaryawan)}">${k.statusKaryawan}</span></td>
+        <td><span class="pill ${pillFor(k.statusPenggajian)}">${k.statusPenggajian}</span></td>
+        <td><span class="pill ${pillFor(k.statusData)}">${k.statusData}</span></td>
+        <td><span class="pill ${k.kategori === 'Direksi' ? '' : pillFor(k.kategori)}" ${k.kategori === 'Direksi' ? 'style="background:#F3EAFB;color:#9333EA"' : ''}>${k.kategori}</span></td>
+        <td>${k.hakAkses}</td>
+        <td><svg viewBox="0 0 24 24" width="16" height="16" stroke="var(--text-mid)" fill="none" stroke-width="2" style="cursor:pointer"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></td>
+      </tr>
+    `).join('');
+  }
+  renderKaryawan();
+
   const placeholderMeta = {
     struktur: {icon:'🏢', title:'Struktur dan Organisasi', desc:'Halaman ini menunggu detail desain untuk modul Struktur dan Organisasi.'},
     jenispengajuan: {icon:'📄', title:'Jenis Pengajuan', desc:'Halaman ini menunggu detail desain untuk modul Jenis Pengajuan.'},
     distribusi: {icon:'💸', title:'Distribusi Gaji & Slip Gaji', desc:'Halaman ini menunggu detail desain untuk modul Distribusi Gaji & Slip Gaji.'},
     kasbon: {icon:'💳', title:'Kasbon', desc:'Halaman ini menunggu detail desain untuk modul Kasbon.'},
-    datakaryawan: {icon:'🗂', title:'Data Karyawan', desc:'Halaman ini menunggu detail desain untuk modul Data Karyawan.'},
     perpanjangankontrak: {icon:'📑', title:'Perpanjangan Kontrak', desc:'Halaman ini menunggu detail desain untuk modul Perpanjangan Kontrak.'},
     pengundurandiri: {icon:'🚪', title:'Pengunduran Diri', desc:'Halaman ini menunggu detail desain untuk modul Pengunduran Diri.'},
     perubahanorganisasi: {icon:'🔀', title:'Perubahan Organisasi', desc:'Halaman ini menunggu detail desain untuk modul Perubahan Organisasi.'}

@@ -33,8 +33,8 @@
   /* SIDEBAR */
   .sidebar{width:260px;background:#fff;border-right:1px solid var(--gray-border);flex-shrink:0;padding:20px 0;}
   .brand{display:flex;align-items:center;gap:10px;padding:0 20px 20px 20px;}
-  .brand .logo{width:34px;height:34px;background:#fff;border:1.5px solid var(--blue);border-radius:9px;display:flex;align-items:center;justify-content:center;color:var(--blue);font-size:9px;font-weight:800;letter-spacing:-.3px;}
-  .brand .name{font-size:20px;font-weight:700;}
+  .brand .logo{width:38px;height:38px;background:#fff;border:1.5px solid var(--gray-border);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(16,24,40,.08);color:var(--blue);font-size:11px;font-weight:800;letter-spacing:-.4px;flex-shrink:0;}
+  .brand .name{font-size:21px;font-weight:800;color:#101828;letter-spacing:-.3px;}
   .menu-label{font-size:12px;font-weight:700;padding:4px 20px 8px;color:var(--text-mid);text-transform:uppercase;letter-spacing:.4px;}
   .menu-item{display:flex;align-items:center;gap:10px;padding:9px 12px;margin:2px 12px;border-radius:8px;cursor:pointer;color:var(--text-dark);text-decoration:none;font-size:14px;}
   .menu-item svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.7;flex-shrink:0;}
@@ -412,6 +412,79 @@
   .inner-panel{display:none;}
   .inner-panel.active{display:block;}
   .group-badge{display:inline-flex;align-items:center;gap:6px;background:var(--blue-light);color:var(--navy);font-weight:700;font-size:12px;padding:5px 12px;border-radius:20px;margin-left:10px;}
+
+  /* ===== Group UMK cards (Head Office + Branch) ===== */
+  .group-card .card-head{margin-bottom:4px;}
+  .group-card h2{display:flex;align-items:center;flex-wrap:wrap;}
+  .card-actions{display:flex;align-items:center;gap:8px;}
+  .btn-manage{background:var(--blue-light);color:var(--blue);border:none;border-radius:8px;padding:8px 14px;font-weight:700;font-size:12.5px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
+  .btn-manage:hover{background:#dde6ff;}
+  .chevron-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--gray-border);background:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .chevron-btn svg{width:14px;height:14px;stroke:var(--text-mid);fill:none;stroke-width:2.2;transition:transform .15s;}
+  .chevron-btn.rotated svg{transform:rotate(180deg);}
+
+  .status-pill{position:relative;display:inline-flex;}
+  .status-badge{display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:11.5px;padding:5px 10px 5px 12px;border-radius:20px;margin-left:10px;cursor:pointer;border:none;font-family:inherit;}
+  .status-badge svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2.6;}
+  .status-badge.aktif{background:#dcfce7;color:var(--green-dark);}
+  .status-badge.nonaktif{background:var(--gray-border);color:var(--text-mid);}
+  .status-menu{display:none;position:absolute;top:calc(100% + 6px);left:10px;background:#fff;border:1px solid var(--gray-border);border-radius:10px;box-shadow:0 8px 24px rgba(16,24,40,.12);padding:6px;min-width:140px;z-index:30;}
+  .status-menu.open{display:block;}
+  .status-menu button{width:100%;text-align:left;border:none;background:none;padding:8px 10px;border-radius:7px;font-size:12.5px;font-weight:600;color:var(--text-dark);cursor:pointer;display:flex;align-items:center;gap:8px;}
+  .status-menu button:hover{background:var(--gray-bg);}
+  .status-menu button i{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+  .status-menu button.opt-aktif i{background:var(--green-dark);}
+  .status-menu button.opt-nonaktif i{background:var(--text-mid);}
+
+  .group-body{transition:opacity .15s;}
+  .group-card.collapsed .group-body,
+  .group-card.collapsed .group-inactive-msg{display:none;}
+  .group-card.status-nonaktif .group-body{display:none;}
+  .group-inactive-msg{display:none;font-size:13px;color:var(--text-mid);background:var(--gray-bg);border:1px dashed var(--gray-border);border-radius:10px;padding:14px 16px;text-align:center;}
+  .group-card.status-nonaktif .group-inactive-msg{display:block;}
+  .group-card.status-nonaktif.collapsed .group-inactive-msg{display:none;}
+
+  .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:18px;}
+  .info-card{display:flex;align-items:flex-start;gap:12px;border:1px solid var(--gray-border);border-radius:12px;padding:14px 16px;}
+  .info-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .info-icon svg{width:19px;height:19px;stroke-width:2;fill:none;}
+  .info-icon.ii-green{background:#dcfce7;} .info-icon.ii-green svg{stroke:var(--green-dark);}
+  .info-icon.ii-blue{background:var(--blue-light);} .info-icon.ii-blue svg{stroke:var(--blue);}
+  .info-icon.ii-teal{background:#d7f6ec;} .info-icon.ii-teal svg{stroke:#0f9d78;}
+  .info-icon.ii-purple{background:#ede9fe;} .info-icon.ii-purple svg{stroke:#7c3aed;}
+  .info-card-lbl{font-size:11.5px;color:var(--text-mid);font-weight:600;margin-bottom:3px;}
+  .info-card-val{font-size:16px;font-weight:800;color:var(--text-dark);line-height:1.25;}
+  .info-card-sub{font-size:11px;color:var(--text-mid);margin-top:2px;}
+  .info-card-link{font-size:12.5px;font-weight:700;color:var(--blue);text-decoration:none;display:inline-flex;align-items:center;gap:4px;}
+  .info-card-link svg{width:11px;height:11px;stroke:var(--blue);fill:none;stroke-width:2.4;}
+
+  .kota-name{font-weight:700;font-size:13.5px;color:var(--text-dark);}
+  .kota-sub{font-size:11.5px;color:var(--text-mid);margin-top:2px;}
+  .region-row td{vertical-align:middle;}
+  .region-name-cell{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .region-tipe-tag{display:inline-block;font-size:9.5px;font-weight:800;padding:2px 6px;border-radius:5px;letter-spacing:.3px;text-transform:uppercase;}
+  .region-tipe-tag.kota{background:var(--blue-light);color:var(--blue);}
+  .region-tipe-tag.kab{background:#fef3c7;color:#b45309;}
+  .region-expand-btn{width:24px;height:24px;border-radius:6px;border:1px solid var(--gray-border);background:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .region-expand-btn svg{width:11px;height:11px;stroke:var(--text-mid);fill:none;stroke-width:2.4;transition:transform .15s;}
+  .region-expand-btn.rotated svg{transform:rotate(180deg);}
+  .region-actions{display:flex;align-items:center;gap:10px;}
+  .icon-link-btn{background:none;border:none;cursor:pointer;color:var(--text-mid);display:inline-flex;padding:2px;}
+  .icon-link-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;}
+  .region-detail-row td{padding:0;border-bottom:1px solid var(--gray-border);}
+  .region-detail{padding:18px 20px 20px 46px;background:var(--gray-bg);}
+  .region-detail .info-grid{margin-bottom:16px;}
+  .region-inactive-msg{padding:16px 20px 20px 46px;background:var(--gray-bg);font-size:13px;color:var(--text-mid);}
+
+  /* Job Role rows + expandable Sub-Level table */
+  .jobrole-row td{vertical-align:middle;}
+  .sublevel-detail-row td{border-bottom:1px solid var(--gray-border);}
+  .sublevel-table{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--gray-bg);}
+  .sublevel-table th{background:transparent;color:var(--text-mid);font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.3px;padding:8px 14px 8px 54px;border-bottom:1px solid var(--gray-border);text-align:left;}
+  .sublevel-table td{padding:9px 14px;border-bottom:1px solid var(--gray-border);color:var(--text-dark);}
+  .sublevel-table td:first-child{padding-left:54px;font-weight:600;}
+  .sublevel-table tr:last-child td{border-bottom:none;}
+  .pph-tag.nihil{margin-left:2px;}
   .netgross-toggle{display:flex;background:var(--gray-border);border-radius:8px;padding:3px;gap:3px;width:fit-content;}
   .netgross-toggle span{padding:7px 16px;border-radius:6px;font-size:12.5px;font-weight:700;cursor:pointer;color:var(--text-mid);}
   .netgross-toggle span.active{background:#fff;color:var(--blue);box-shadow:0 1px 2px rgba(0,0,0,.06);}
@@ -444,7 +517,7 @@
 
   <!-- SIDEBAR -->
   <div class="sidebar">
-    <div class="brand"><div class="logo">HR<br>iS</div><div class="name">Dasaria</div></div>
+    <div class="brand"><div class="logo">HRiS</div><div class="name">Dasaria</div></div>
     <div class="menu-label">Menu</div>
     <a class="menu-item" id="menu-dashboard" href="dashboard-hc.html">
       <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
@@ -618,20 +691,139 @@
 
         <!-- INNER: Struktur Grade -->
         <div class="inner-panel active" id="grade-inner-struktur">
-          <div class="card">
-            <div class="card-head">
-              <h2>Struktur &amp; Skala Upah (Grade)<span class="group-badge" id="grade-group-badge">Head Office</span></h2>
-              <select id="grade-group-select" onchange="renderGradeGroup()" style="max-width:260px;border:1px solid var(--gray-border);border-radius:8px;padding:9px 12px;font-size:13px;">
-                <option value="ho">Group UMK: Head Office</option>
-                <option value="malang">Group UMK: Malang Raya</option>
-                <option value="kediri">Group UMK: Kediri Raya</option>
-                <option value="blitar">Group UMK: Blitar Raya</option>
-                <option value="tulungagung">Group UMK: Tulungagung Raya</option>
-              </select>
-            </div>
-            <table id="grade-table"></table>
+
+          <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
+            <button class="btn btn-blue" id="add-group-toggle-btn" onclick="toggleAddGroupPanel()">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="#fff" fill="none" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+              Tambah Group UMK
+            </button>
           </div>
-          <div class="note-box" id="grade-umk-note" style="margin-bottom:0;"></div>
+
+          <!-- ADD GROUP UMK PANEL -->
+          <div class="form-panel" id="add-group-panel" style="display:none;">
+            <div class="form-panel-title">
+              <svg viewBox="0 0 24 24" width="15" height="15" stroke="var(--blue)" fill="none" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              Tambah Group UMK Baru
+            </div>
+            <div class="form-grid">
+              <div class="form-field">
+                <label>Kota</label>
+                <select id="ag-kota" onchange="onAgKotaChange()">
+                  <option value="__new__">+ Kota Baru…</option>
+                </select>
+              </div>
+              <div class="form-field" id="ag-newkota-field" style="display:none;">
+                <label>Nama Kota Baru</label>
+                <input type="text" id="ag-newkota" placeholder="mis. Kota Kediri">
+              </div>
+              <div class="form-field">
+                <label>Nama Region</label>
+                <input type="text" id="ag-region" placeholder="mis. Kediri Raya">
+              </div>
+              <div class="form-field">
+                <label>Tipe Wilayah</label>
+                <select id="ag-tipe">
+                  <option value="Kota">Kota</option>
+                  <option value="Kab">Kabupaten</option>
+                  <option value="Kota,Kab">Kota &amp; Kabupaten (Irisan)</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label>Nominal UMK (Rp)</label>
+                <input type="number" id="ag-umk" placeholder="mis. 2800000">
+              </div>
+              <div class="form-field">
+                <label>Tahun UMK</label>
+                <input type="number" id="ag-tahun" value="2026">
+              </div>
+              <div class="form-field">
+                <label>Cost Index</label>
+                <input type="number" step="0.01" id="ag-ci" placeholder="mis. 97.50">
+              </div>
+              <div class="form-field">
+                <label>Market Salary Index</label>
+                <input type="number" step="0.01" id="ag-msi" placeholder="mis. 0.98">
+              </div>
+              <div class="form-field" style="grid-column:1/-1;">
+                <label>Dasar Penetapan UMK</label>
+                <input type="text" id="ag-dasar" placeholder="mis. Keputusan Gubernur Jawa Timur No. ... Tahun 2025">
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-outline" onclick="resetAddGroupForm()">Batal</button>
+              <button class="btn btn-blue" onclick="addGroupUmk()">Simpan Group UMK</button>
+            </div>
+          </div>
+
+          <!-- SECTION A: HEAD OFFICE (Kota Utama) -->
+          <div class="card group-card" id="ho-card">
+            <div class="card-head">
+              <h2>Group UMK Head Office <span class="kota-sub" id="ho-kota-label" style="font-weight:600;margin-left:4px;"></span>
+                <span class="status-pill">
+                  <button class="status-badge" id="ho-status-badge" onclick="toggleHoStatusMenu(event)"></button>
+                  <div class="status-menu" id="ho-status-menu">
+                    <button class="opt-aktif" onclick="setHoStatus('aktif')"><i></i>Aktif</button>
+                    <button class="opt-nonaktif" onclick="setHoStatus('nonaktif')"><i></i>Nonaktif</button>
+                  </div>
+                </span>
+              </h2>
+              <div class="card-actions">
+                <button class="btn-manage" onclick="openManageGrade('ho', null)">
+                  <svg viewBox="0 0 24 24" width="13" height="13" stroke="var(--blue)" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.6a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+                  Kelola Grade
+                </button>
+                <button class="chevron-btn" id="ho-chevron" onclick="toggleCardCollapse('ho')">
+                  <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="group-body" id="ho-body">
+              <div class="info-grid" id="ho-info"></div>
+              <table id="ho-grade-table"></table>
+              <div class="form-panel" id="ho-addgrade-panel" style="display:none;margin-top:16px;">
+                <div class="form-panel-title">+ Tambah Grade — Head Office</div>
+                <div class="form-grid">
+                  <div class="form-field"><label>Kode Grade</label><input type="text" id="hg-code" placeholder="mis. G7"></div>
+                  <div class="form-field"><label>Job Role</label><input type="text" id="hg-name" placeholder="mis. Senior Manager"></div>
+                  <div class="form-field"><label>Gaji Pokok Dasar (Level Dasar)</label><input type="number" id="hg-basemin" placeholder="4000000"></div>
+                </div>
+                <div class="module-intro" style="margin:2px 0 0;">5 sub-level (Dasar, Junior, Intermediate, Senior, Expert) akan dibuat otomatis berdasarkan Gaji Pokok Dasar di atas.</div>
+                <div class="form-actions">
+                  <button class="btn btn-outline" onclick="closeManageGrade('ho', null)">Batal</button>
+                  <button class="btn btn-blue" onclick="addGradeRow('ho', null)">Simpan Grade</button>
+                </div>
+              </div>
+            </div>
+            <div class="group-inactive-msg" id="ho-inactive-msg">Group UMK Head Office nonaktif — klik status di atas untuk mengaktifkan kembali dan menampilkan struktur Grade-nya.</div>
+          </div>
+
+          <!-- SECTION B: BRANCH (Group UMK Kota) -->
+          <div class="card group-card" id="branch-card">
+            <div class="card-head">
+              <h2>Group UMK Kota (Cabang/Lapangan)</h2>
+              <div class="card-actions">
+                <button class="btn-manage" onclick="toggleAddGroupPanel()">
+                  <svg viewBox="0 0 24 24" width="13" height="13" stroke="var(--blue)" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.6a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+                  Kelola Group UMK
+                </button>
+                <button class="chevron-btn" id="branch-chevron" onclick="toggleCardCollapse('branch')">
+                  <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="module-intro" style="margin-top:-6px;">Satu Kota dapat memiliki lebih dari satu Region, masing-masing dengan UMK, Cost Index, dan Market Salary Index sendiri. Klik status untuk aktif/nonaktifkan, klik panah untuk membuka struktur Grade tiap Region.</div>
+            <div class="group-body" id="branch-body">
+              <table class="branch-region-table">
+                <thead>
+                  <tr><th>Kota</th><th>Region</th><th style="text-align:right">UMK Berlaku</th><th style="text-align:right">Cost Index</th><th style="text-align:right">Market Salary Index</th><th>Status</th><th>Aksi</th></tr>
+                </thead>
+                <tbody id="branch-table-body"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="note-box" style="margin-bottom:0;">ℹ Struktur gaji akan otomatis mengikuti UMK acuan yang berlaku pada setiap Group UMK. Pastikan UMK diperbarui setiap tahun.</div>
         </div>
 
         <!-- INNER: Screening & Kalkulator Remunerasi -->
@@ -642,13 +834,7 @@
             <div class="form-grid">
               <div class="form-field">
                 <label>Group UMK</label>
-                <select id="remun-group" onchange="updateRemunGrades(); calcRemun();">
-                  <option value="ho">Head Office</option>
-                  <option value="malang">Malang Raya</option>
-                  <option value="kediri">Kediri Raya</option>
-                  <option value="blitar">Blitar Raya</option>
-                  <option value="tulungagung">Tulungagung Raya</option>
-                </select>
+                <select id="remun-group" onchange="updateRemunGrades(); calcRemun();"></select>
               </div>
               <div class="form-field">
                 <label>Grade / Kepangkatan</label>
@@ -964,65 +1150,6 @@
   }
 
   // ===== Modul 2: Struktur & Skala Upah =====
-  const gradeGroups = {
-    ho: {
-      label: 'Head Office',
-      umkNote: 'Group UMK Head Office mengacu pada UMK Kota Malang 2026 (Rp 3.257.000) sebagai batas bawah — seluruh Grade HO sudah berada jauh di atasnya.',
-      grades: [
-        {code:'G1', name:'Entry Level', min:4000000, mid:4500000, max:5000000},
-        {code:'G2', name:'Officer', min:4000000, mid:4500000, max:5000000},
-        {code:'G3', name:'Principal Officer', min:3524238, mid:4262119, max:5000000},
-        {code:'G4', name:'Supervisor', min:3524238, mid:4262119, max:5000000},
-        {code:'G5', name:'Manager', min:4100000, mid:4550000, max:5000000},
-        {code:'G6', name:'Direktur', min:3524238, mid:4262119, max:5000000}
-      ]
-    },
-    malang: {
-      label: 'Malang Raya',
-      umkNote: 'Group UMK Malang Raya mengacu pada UMK Kota Malang 2026: Rp 3.257.000 — menjadi batas bawah Grade B1.',
-      grades: [
-        {code:'B1', name:'Teknisi / Engineer', min:3300000, mid:3600000, max:3900000},
-        {code:'B2', name:'Account Executive (AE)', min:3400000, mid:3800000, max:4300000},
-        {code:'B3', name:'Branch Leader', min:4500000, mid:5200000, max:6000000},
-        {code:'B4', name:'Head of Region', min:6500000, mid:7500000, max:8800000, national:true},
-        {code:'B5', name:'Head General Region', min:9000000, mid:10500000, max:12500000, national:true}
-      ]
-    },
-    kediri: {
-      label: 'Kediri Raya',
-      umkNote: 'Group UMK Kediri Raya mengacu pada UMK Kabupaten Kediri 2026: Rp 2.492.000.',
-      grades: [
-        {code:'B1', name:'Teknisi / Engineer', min:2520000, mid:2750000, max:2980000},
-        {code:'B2', name:'Account Executive (AE)', min:2600000, mid:2905000, max:3290000},
-        {code:'B3', name:'Branch Leader', min:3440000, mid:3980000, max:4590000},
-        {code:'B4', name:'Head of Region', min:6500000, mid:7500000, max:8800000, national:true},
-        {code:'B5', name:'Head General Region', min:9000000, mid:10500000, max:12500000, national:true}
-      ]
-    },
-    blitar: {
-      label: 'Blitar Raya',
-      umkNote: 'Group UMK Blitar Raya mengacu pada UMK Kota Blitar 2026: Rp 2.256.000.',
-      grades: [
-        {code:'B1', name:'Teknisi / Engineer', min:2290000, mid:2495000, max:2700000},
-        {code:'B2', name:'Account Executive (AE)', min:2355000, mid:2635000, max:2980000},
-        {code:'B3', name:'Branch Leader', min:3120000, mid:3605000, max:4160000},
-        {code:'B4', name:'Head of Region', min:6500000, mid:7500000, max:8800000, national:true},
-        {code:'B5', name:'Head General Region', min:9000000, mid:10500000, max:12500000, national:true}
-      ]
-    },
-    tulungagung: {
-      label: 'Tulungagung Raya',
-      umkNote: 'Group UMK Tulungagung Raya mengacu pada UMK Kabupaten Tulungagung 2026: Rp 2.371.000.',
-      grades: [
-        {code:'B1', name:'Teknisi / Engineer', min:2405000, mid:2620000, max:2840000},
-        {code:'B2', name:'Account Executive (AE)', min:2475000, mid:2770000, max:3130000},
-        {code:'B3', name:'Branch Leader', min:3275000, mid:3785000, max:4370000},
-        {code:'B4', name:'Head of Region', min:6500000, mid:7500000, max:8800000, national:true},
-        {code:'B5', name:'Head General Region', min:9000000, mid:10500000, max:12500000, national:true}
-      ]
-    }
-  };
-
   function switchGradeSub(key, el){
     document.querySelectorAll('#konf-grade .subtabbar-inner .stb').forEach(s=>s.classList.remove('active'));
     el.classList.add('active');
@@ -1030,26 +1157,427 @@
     document.getElementById('grade-inner-' + key).classList.add('active');
   }
 
-  function renderGradeGroup(){
-    const key = document.getElementById('grade-group-select').value;
-    const g = gradeGroups[key];
-    document.getElementById('grade-group-badge').textContent = g.label;
-    const rows = g.grades.map(gr =>
-      '<tr><td class="muted">' + gr.code + '</td><td>' + gr.name +
-      (gr.national ? ' <span class="pph-tag nihil" style="margin-left:6px;">Standar Nasional</span>' : '') + '</td>' +
-      '<td style="text-align:right">' + fmtRp(gr.min) + '</td><td style="text-align:right">' + fmtRp(gr.mid) + '</td><td style="text-align:right">' + fmtRp(gr.max) + '</td><td>✏️</td></tr>'
-    ).join('');
-    document.getElementById('grade-table').innerHTML =
-      '<thead><tr><th>Grade</th><th>Nama Grade</th><th style="text-align:right">Gaji Minimal</th><th style="text-align:right">Gaji Tengah (Mid)</th><th style="text-align:right">Gaji Maksimal</th><th>Aksi</th></tr></thead><tbody>' + rows + '</tbody>';
-    document.getElementById('grade-umk-note').textContent = 'ℹ ' + g.umkNote;
+  // Setiap Job Role punya 5 sub-level pengalaman; multiplier dihitung dari Gaji Pokok dasar (level "Dasar").
+  const SUBLEVEL_STEPS = [
+    {name:'Dasar', minM:1.00, midM:1.05, maxM:1.10},
+    {name:'Junior', minM:1.08, midM:1.14, maxM:1.20},
+    {name:'Intermediate', minM:1.18, midM:1.26, maxM:1.34},
+    {name:'Senior', minM:1.30, midM:1.40, maxM:1.50},
+    {name:'Expert', minM:1.45, midM:1.58, maxM:1.72}
+  ];
+  function buildSubLevels(baseMin){
+    return SUBLEVEL_STEPS.map(s => ({
+      name: s.name,
+      min: Math.round(baseMin * s.minM / 1000) * 1000,
+      mid: Math.round(baseMin * s.midM / 1000) * 1000,
+      max: Math.round(baseMin * s.maxM / 1000) * 1000
+    }));
+  }
+  function buildBranchGrades(engineerMin, branchLeadMin){
+    return [
+      {code:'B1', role:'Engineer', expanded:false, subLevels: buildSubLevels(engineerMin)},
+      {code:'B2', role:'Branch Lead', expanded:false, subLevels: buildSubLevels(branchLeadMin)},
+      {code:'B3', role:'Head Region', national:true, expanded:false, subLevels: buildSubLevels(6500000)}
+    ];
+  }
+
+  let hoGroup = {
+    status: 'aktif',
+    kotaLabel: 'Kota Malang',
+    umk: 3700000,
+    umkYear: 2026,
+    dasarLabel: 'Keputusan Gubernur Jawa Timur No. 188/45 Tahun 2025',
+    dasarUrl: '#',
+    costIndex: 101.20,
+    marketSalaryIndex: 1.08,
+    grades: [
+      {code:'G1', role:'Entry Level', expanded:false, subLevels: buildSubLevels(4000000)},
+      {code:'G2', role:'Officer', expanded:false, subLevels: buildSubLevels(4000000)},
+      {code:'G3', role:'Principal Officer', expanded:false, subLevels: buildSubLevels(3524238)},
+      {code:'G4', role:'Supervisor', expanded:false, subLevels: buildSubLevels(3524238)},
+      {code:'G5', role:'Manager', expanded:false, subLevels: buildSubLevels(4100000)},
+      {code:'G6', role:'Direktur', expanded:false, subLevels: buildSubLevels(3524238)}
+    ]
+  };
+
+  let branchKota = [
+    {
+      key: 'malang', label: 'Kota Malang',
+      regions: [
+        {
+          key: 'malang-raya', label: 'Malang Raya', tipe: ['Kota','Kab'], status: 'aktif', expanded: false, addGradeOpen: false,
+          umk: 3700000, umkYear: 2026,
+          dasarLabel: 'Keputusan Gubernur Jawa Timur No. 188/45 Tahun 2025', dasarUrl: '#',
+          costIndex: 99.50, marketSalaryIndex: 1.02,
+          grades: buildBranchGrades(3750000, 5000000)
+        }
+      ]
+    },
+    {
+      key: 'probolinggo', label: 'Kota Probolinggo',
+      regions: [
+        {
+          key: 'probolinggo-kota', label: 'Probolinggo Kota', tipe: ['Kota'], status: 'aktif', expanded: false, addGradeOpen: false,
+          umk: 2617000, umkYear: 2026,
+          dasarLabel: 'Keputusan Gubernur Jawa Timur No. 188/50 Tahun 2025', dasarUrl: '#',
+          costIndex: 95.80, marketSalaryIndex: 0.94,
+          grades: buildBranchGrades(2650000, 3600000)
+        },
+        {
+          key: 'probolinggo-kabupaten', label: 'Probolinggo Kabupaten', tipe: ['Kab'], status: 'aktif', expanded: false, addGradeOpen: false,
+          umk: 2540000, umkYear: 2026,
+          dasarLabel: 'Keputusan Gubernur Jawa Timur No. 188/51 Tahun 2025', dasarUrl: '#',
+          costIndex: 94.10, marketSalaryIndex: 0.91,
+          grades: buildBranchGrades(2570000, 3480000)
+        }
+      ]
+    }
+  ];
+
+  function findRegion(regionKey){
+    for(const kota of branchKota){
+      const r = kota.regions.find(rg => rg.key === regionKey);
+      if(r) return r;
+    }
+    return null;
+  }
+
+  const icoUmk = '<svg viewBox="0 0 24 24" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>';
+  const icoDoc = '<svg viewBox="0 0 24 24" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>';
+  const icoTrend = '<svg viewBox="0 0 24 24" stroke-width="2"><path d="M3 17l6-6 4 4 8-8M21 7v6h-6"/></svg>';
+  const icoPie = '<svg viewBox="0 0 24 24" stroke-width="2"><path d="M21.21 15.89A10 10 0 118 2.83"/><path d="M22 12A10 10 0 0012 2v10z"/></svg>';
+  const icoChevronSm = '<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>';
+  const icoExtLink = '<svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>';
+  const icoGear = '<svg viewBox="0 0 24 24" width="13" height="13" stroke="var(--blue)" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.6a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>';
+
+  function infoGridHtml(d){
+    return '<div class="info-grid">' +
+      '<div class="info-card"><div class="info-icon ii-green">' + icoUmk + '</div>' +
+        '<div><div class="info-card-lbl">Nominal UMK</div><div class="info-card-val">' + fmtRp(d.umk) + '</div><div class="info-card-sub">Tahun ' + d.umkYear + '</div></div></div>' +
+      '<div class="info-card"><div class="info-icon ii-blue">' + icoDoc + '</div>' +
+        '<div><div class="info-card-lbl">Dasar Penetapan UMK</div><a class="info-card-link" href="' + d.dasarUrl + '" target="_blank" rel="noopener">' + d.dasarLabel + icoExtLink + '</a></div></div>' +
+      '<div class="info-card"><div class="info-icon ii-teal">' + icoTrend + '</div>' +
+        '<div><div class="info-card-lbl">Cost Index</div><div class="info-card-val">' + d.costIndex.toFixed(2) + '</div><div class="info-card-sub">Tahun ' + d.umkYear + '</div></div></div>' +
+      '<div class="info-card"><div class="info-icon ii-purple">' + icoPie + '</div>' +
+        '<div><div class="info-card-lbl">Market Salary Index</div><div class="info-card-val">' + d.marketSalaryIndex.toFixed(2) + '</div><div class="info-card-sub">Tahun ' + d.umkYear + '</div></div></div>' +
+    '</div>';
+  }
+
+  function thp(nominal){
+    return Math.round(nominal * netFactor(nominal));
+  }
+
+  function gradeTableHtml(roles, ownerId){
+    const rows = roles.map((r, idx) => {
+      const overallMin = r.subLevels[0].min;
+      const overallMax = r.subLevels[r.subLevels.length - 1].max;
+      const midLevel = r.subLevels[Math.floor(r.subLevels.length / 2)];
+      let html = '<tr class="jobrole-row">' +
+        '<td class="muted">' + r.code + '</td>' +
+        '<td><div class="region-name-cell">' +
+          '<button class="region-expand-btn' + (r.expanded ? ' rotated' : '') + '" onclick="toggleRoleExpand(\'' + ownerId + '\', ' + idx + ')">' + icoChevronSm + '</button>' +
+          '<span>' + r.role + '</span>' +
+          (r.national ? '<span class="pph-tag nihil">Standar Nasional</span>' : '') +
+        '</div></td>' +
+        '<td style="text-align:right">' + fmtRp(overallMin) + ' – ' + fmtRp(overallMax) + '</td>' +
+        '<td style="text-align:right">' + fmtRp(thp(overallMin)) + '</td>' +
+        '<td style="text-align:right">' + fmtRp(thp(midLevel.mid)) + '</td>' +
+        '<td style="text-align:right">' + fmtRp(thp(overallMax)) + '</td>' +
+        '<td>✏️</td>' +
+      '</tr>';
+      html += '<tr class="sublevel-detail-row" style="display:' + (r.expanded ? 'table-row' : 'none') + '"><td colspan="7" style="padding:0;">' +
+        '<table class="sublevel-table"><thead><tr><th>Sub-Level</th><th style="text-align:right">Range Gaji Pokok</th><th style="text-align:right">THP Min</th><th style="text-align:right">THP Mid</th><th style="text-align:right">THP Max</th></tr></thead><tbody>' +
+        r.subLevels.map(sl =>
+          '<tr><td>' + sl.name + '</td>' +
+          '<td style="text-align:right">' + fmtRp(sl.min) + ' – ' + fmtRp(sl.max) + '</td>' +
+          '<td style="text-align:right">' + fmtRp(thp(sl.min)) + '</td>' +
+          '<td style="text-align:right">' + fmtRp(thp(sl.mid)) + '</td>' +
+          '<td style="text-align:right">' + fmtRp(thp(sl.max)) + '</td></tr>'
+        ).join('') +
+        '</tbody></table>' +
+      '</td></tr>';
+      return html;
+    }).join('');
+    return '<thead><tr><th>Grade</th><th>Job Role</th><th style="text-align:right">Range Gaji Pokok</th><th style="text-align:right">THP Min</th><th style="text-align:right">THP Mid</th><th style="text-align:right">THP Max</th><th>Aksi</th></tr></thead><tbody>' + rows + '</tbody>';
+  }
+
+  function getRoleGradesArray(ownerId){
+    return ownerId === 'ho' ? hoGroup.grades : findRegion(ownerId).grades;
+  }
+  function toggleRoleExpand(ownerId, idx){
+    const roles = getRoleGradesArray(ownerId);
+    roles[idx].expanded = !roles[idx].expanded;
+    if(ownerId === 'ho') renderHo(); else renderBranchTable();
+  }
+
+  // ---- Head Office (Kota Utama) ----
+  function renderHo(){
+    document.getElementById('ho-kota-label').textContent = '— ' + hoGroup.kotaLabel;
+    document.getElementById('ho-info').innerHTML = infoGridHtml(hoGroup);
+    document.getElementById('ho-grade-table').innerHTML = gradeTableHtml(hoGroup.grades, 'ho');
+    applyHoStatusUI();
+  }
+  function applyHoStatusUI(){
+    const badge = document.getElementById('ho-status-badge');
+    badge.className = 'status-badge ' + hoGroup.status;
+    badge.innerHTML = (hoGroup.status === 'aktif' ? 'Aktif' : 'Nonaktif') + ' ' + icoChevronSm;
+    document.getElementById('ho-card').classList.toggle('status-nonaktif', hoGroup.status !== 'aktif');
+  }
+  function toggleHoStatusMenu(event){
+    event.stopPropagation();
+    document.querySelectorAll('.status-menu.open').forEach(m => { if(m.id !== 'ho-status-menu') m.classList.remove('open'); });
+    document.getElementById('ho-status-menu').classList.toggle('open');
+  }
+  function setHoStatus(value){
+    hoGroup.status = value;
+    document.getElementById('ho-status-menu').classList.remove('open');
+    applyHoStatusUI();
+    refreshRemunGroupOptions();
+  }
+
+  // ---- Branch (Group UMK Kota) ----
+  function renderBranchTable(){
+    let rows = '';
+    branchKota.forEach(kota => {
+      kota.regions.forEach((region, idx) => {
+        const kotaCell = idx === 0
+          ? '<div class="kota-name">' + kota.label + '</div><div class="kota-sub">UMK ' + region.umkYear + ': ' + fmtRp(region.umk) + '</div>'
+          : '';
+        const isActive = region.status === 'aktif';
+        rows += '<tr class="region-row">' +
+          '<td>' + kotaCell + '</td>' +
+          '<td><div class="region-name-cell">' +
+            '<button class="region-expand-btn' + (region.expanded ? ' rotated' : '') + '" ' + (isActive ? '' : 'disabled style="opacity:.35;cursor:not-allowed;"') + ' onclick="toggleRegionExpand(\'' + region.key + '\')">' + icoChevronSm + '</button>' +
+            '<span>' + region.label + '</span>' +
+            (region.tipe || []).map(t => '<span class="region-tipe-tag ' + (t === 'Kota' ? 'kota' : 'kab') + '">' + t + '</span>').join('') +
+          '</div></td>' +
+          '<td style="text-align:right">' + fmtRp(region.umk) + '</td>' +
+          '<td style="text-align:right">' + region.costIndex.toFixed(2) + '</td>' +
+          '<td style="text-align:right">' + region.marketSalaryIndex.toFixed(2) + '</td>' +
+          '<td><span class="status-pill">' +
+            '<button class="status-badge ' + region.status + '" onclick="toggleRegionStatusMenu(\'' + region.key + '\', event)">' + (isActive ? 'Aktif' : 'Nonaktif') + ' ' + icoChevronSm + '</button>' +
+            '<div class="status-menu" id="status-menu-' + region.key + '">' +
+              '<button class="opt-aktif" onclick="setRegionStatus(\'' + region.key + '\', \'aktif\')"><i></i>Aktif</button>' +
+              '<button class="opt-nonaktif" onclick="setRegionStatus(\'' + region.key + '\', \'nonaktif\')"><i></i>Nonaktif</button>' +
+            '</div>' +
+          '</span></td>' +
+          '<td><div class="region-actions"><button class="icon-link-btn" title="Kelola Grade" onclick="openManageGrade(\'region\', \'' + region.key + '\')">' + icoGear + '</button></div></td>' +
+        '</tr>';
+
+        if(isActive){
+          const tipeNote = (region.tipe && region.tipe.length > 1)
+            ? 'Region ini mencakup irisan wilayah Kota &amp; Kabupaten — UMK yang berlaku (' + fmtRp(region.umk) + ') mengikuti penetapan setempat, namun rentang Grade B1-B5 tetap mengikuti Struktur &amp; Skala Upah korporat di atas.'
+            : 'UMK ' + region.label + ' (' + fmtRp(region.umk) + ') menjadi batas bawah (floor) Grade B1 — rentang Grade B1-B5 tetap mengikuti Struktur &amp; Skala Upah korporat di atas.';
+          rows += '<tr class="region-detail-row" style="display:' + (region.expanded ? 'table-row' : 'none') + '"><td colspan="7"><div class="region-detail">' +
+            infoGridHtml(region) +
+            '<table>' + gradeTableHtml(region.grades, region.key) + '</table>' +
+            '<div class="note-box" style="margin-top:12px;margin-bottom:0;">ℹ ' + tipeNote + '</div>' +
+            '<div class="form-panel" id="region-addgrade-' + region.key + '" style="display:' + (region.addGradeOpen ? 'block' : 'none') + ';margin-top:14px;">' +
+              '<div class="form-panel-title">+ Tambah Grade — ' + region.label + '</div>' +
+              '<div class="form-grid">' +
+                '<div class="form-field"><label>Kode Grade</label><input type="text" id="rg-code-' + region.key + '" placeholder="mis. B4"></div>' +
+                '<div class="form-field"><label>Job Role</label><input type="text" id="rg-name-' + region.key + '" placeholder="mis. Area Coordinator"></div>' +
+                '<div class="form-field"><label>Gaji Pokok Dasar (Level Dasar)</label><input type="number" id="rg-basemin-' + region.key + '" placeholder="3000000"></div>' +
+              '</div>' +
+              '<div class="module-intro" style="margin:2px 0 0;">5 sub-level (Dasar, Junior, Intermediate, Senior, Expert) akan dibuat otomatis berdasarkan Gaji Pokok Dasar di atas.</div>' +
+              '<div class="form-actions">' +
+                '<button class="btn btn-outline" onclick="closeManageGrade(\'region\', \'' + region.key + '\')">Batal</button>' +
+                '<button class="btn btn-blue" onclick="addGradeRow(\'region\', \'' + region.key + '\')">Simpan Grade</button>' +
+              '</div>' +
+            '</div>' +
+          '</div></td></tr>';
+        } else {
+          rows += '<tr class="region-detail-row"><td colspan="7"><div class="region-inactive-msg">Group UMK ' + region.label + ' nonaktif — klik status di atas untuk mengaktifkan kembali dan menampilkan struktur Grade-nya.</div></td></tr>';
+        }
+      });
+    });
+    document.getElementById('branch-table-body').innerHTML = rows;
+  }
+
+  function toggleRegionExpand(regionKey){
+    const region = findRegion(regionKey);
+    if(region.status !== 'aktif') return;
+    region.expanded = !region.expanded;
+    renderBranchTable();
+  }
+  function toggleRegionStatusMenu(regionKey, event){
+    event.stopPropagation();
+    document.querySelectorAll('.status-menu.open').forEach(m => { if(m.id !== 'status-menu-' + regionKey) m.classList.remove('open'); });
+    document.getElementById('status-menu-' + regionKey).classList.toggle('open');
+  }
+  function setRegionStatus(regionKey, value){
+    const region = findRegion(regionKey);
+    region.status = value;
+    if(value !== 'aktif'){ region.expanded = false; region.addGradeOpen = false; }
+    renderBranchTable();
+    refreshRemunGroupOptions();
+  }
+
+  document.addEventListener('click', function(){
+    document.querySelectorAll('.status-menu.open').forEach(m => m.classList.remove('open'));
+  });
+
+  // ---- Card collapse (whole section) ----
+  function toggleCardCollapse(id){
+    document.getElementById(id + '-card').classList.toggle('collapsed');
+    document.getElementById(id + '-chevron').classList.toggle('rotated');
+  }
+
+  // ---- Kelola Grade (add-grade forms) ----
+  function openManageGrade(scope, regionKey){
+    if(scope === 'ho'){
+      if(document.getElementById('ho-card').classList.contains('collapsed')) toggleCardCollapse('ho');
+      document.getElementById('ho-addgrade-panel').style.display = 'block';
+    } else {
+      const region = findRegion(regionKey);
+      if(region.status !== 'aktif') return;
+      region.expanded = true;
+      region.addGradeOpen = true;
+      renderBranchTable();
+    }
+  }
+  function closeManageGrade(scope, regionKey){
+    if(scope === 'ho'){
+      document.getElementById('ho-addgrade-panel').style.display = 'none';
+      ['hg-code','hg-name','hg-basemin'].forEach(id => document.getElementById(id).value = '');
+    } else {
+      const region = findRegion(regionKey);
+      region.addGradeOpen = false;
+      renderBranchTable();
+    }
+  }
+  function addGradeRow(scope, regionKey){
+    if(scope === 'ho'){
+      const code = document.getElementById('hg-code').value.trim();
+      const role = document.getElementById('hg-name').value.trim();
+      const baseMin = Number(document.getElementById('hg-basemin').value);
+      if(!code || !role || !baseMin) return;
+      hoGroup.grades.push({code, role, expanded:false, subLevels: buildSubLevels(baseMin)});
+      closeManageGrade('ho', null);
+      renderHo();
+    } else {
+      const region = findRegion(regionKey);
+      const code = document.getElementById('rg-code-' + regionKey).value.trim();
+      const role = document.getElementById('rg-name-' + regionKey).value.trim();
+      const baseMin = Number(document.getElementById('rg-basemin-' + regionKey).value);
+      if(!code || !role || !baseMin) return;
+      region.grades.push({code, role, expanded:false, subLevels: buildSubLevels(baseMin)});
+      region.addGradeOpen = false;
+      renderBranchTable();
+    }
+  }
+
+  // ---- Tambah Group UMK ----
+  function toggleAddGroupPanel(){
+    const panel = document.getElementById('add-group-panel');
+    const show = panel.style.display === 'none';
+    panel.style.display = show ? 'block' : 'none';
+    if(show){ populateAgKotaOptions(); panel.scrollIntoView({behavior:'smooth', block:'nearest'}); }
+  }
+  function populateAgKotaOptions(){
+    const sel = document.getElementById('ag-kota');
+    sel.innerHTML = ['<option value="__new__">+ Kota Baru…</option>']
+      .concat(branchKota.map(k => '<option value="' + k.key + '">' + k.label + '</option>'))
+      .join('');
+    onAgKotaChange();
+  }
+  function onAgKotaChange(){
+    document.getElementById('ag-newkota-field').style.display = document.getElementById('ag-kota').value === '__new__' ? 'block' : 'none';
+  }
+  function resetAddGroupForm(){
+    document.getElementById('ag-newkota').value = '';
+    document.getElementById('ag-region').value = '';
+    document.getElementById('ag-tipe').value = 'Kota';
+    document.getElementById('ag-umk').value = '';
+    document.getElementById('ag-tahun').value = '2026';
+    document.getElementById('ag-ci').value = '';
+    document.getElementById('ag-msi').value = '';
+    document.getElementById('ag-dasar').value = '';
+    document.getElementById('add-group-panel').style.display = 'none';
+  }
+  function slugify(s){
+    return s.toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+  }
+  function addGroupUmk(){
+    const kotaSel = document.getElementById('ag-kota').value;
+    const regionLabel = document.getElementById('ag-region').value.trim();
+    const tipe = document.getElementById('ag-tipe').value.split(',');
+    const umk = Number(document.getElementById('ag-umk').value);
+    const tahun = Number(document.getElementById('ag-tahun').value) || 2026;
+    const ci = Number(document.getElementById('ag-ci').value) || 0;
+    const msi = Number(document.getElementById('ag-msi').value) || 0;
+    const dasar = document.getElementById('ag-dasar').value.trim() || 'Belum ditentukan';
+
+    if(!regionLabel){ document.getElementById('ag-region').focus(); return; }
+    if(!umk){ document.getElementById('ag-umk').focus(); return; }
+
+    let kota;
+    if(kotaSel === '__new__'){
+      const newKotaLabel = document.getElementById('ag-newkota').value.trim();
+      if(!newKotaLabel){ document.getElementById('ag-newkota').focus(); return; }
+      kota = { key: slugify(newKotaLabel) || ('kota-' + Date.now()), label: newKotaLabel, regions: [] };
+      branchKota.push(kota);
+    } else {
+      kota = branchKota.find(k => k.key === kotaSel);
+    }
+
+    const regionKey = slugify(kota.label + '-' + regionLabel) || ('region-' + Date.now());
+    kota.regions.push({
+      key: regionKey, label: regionLabel, tipe: tipe, status: 'aktif', expanded: false, addGradeOpen: false,
+      umk: umk, umkYear: tahun, dasarLabel: dasar, dasarUrl: '#', costIndex: ci, marketSalaryIndex: msi,
+      grades: buildBranchGrades(Math.round(umk*1.02), Math.round(umk*1.38))
+    });
+
+    renderBranchTable();
+    resetAddGroupForm();
+    refreshRemunGroupOptions();
+  }
+
+  // ---- Screening & Kalkulator Remunerasi data source ----
+  function getAllGroups(){
+    const list = [{ id: 'ho', label: 'Head Office — ' + hoGroup.kotaLabel, status: hoGroup.status, grades: hoGroup.grades }];
+    branchKota.forEach(kota => {
+      kota.regions.forEach(region => {
+        list.push({ id: region.key, label: kota.label + ' — ' + region.label, status: region.status, grades: region.grades });
+      });
+    });
+    return list;
+  }
+
+  function refreshRemunGroupOptions(){
+    const sel = document.getElementById('remun-group');
+    const prevVal = sel.value;
+    const active = getAllGroups().filter(g => g.status === 'aktif');
+    if(active.length === 0){
+      sel.innerHTML = '<option value="">Tidak ada Group UMK aktif</option>';
+      document.getElementById('remun-grade').innerHTML = '';
+      document.getElementById('remun-min').textContent = 'Rp 0';
+      document.getElementById('remun-mid').textContent = 'Rp 0';
+      document.getElementById('remun-max').textContent = 'Rp 0';
+      return;
+    }
+    sel.innerHTML = active.map(g => '<option value="' + g.id + '">' + g.label + '</option>').join('');
+    sel.value = active.some(g => g.id === prevVal) ? prevVal : active[0].id;
+    updateRemunGrades();
+    calcRemun();
   }
 
   function updateRemunGrades(){
-    const key = document.getElementById('remun-group').value;
-    const g = gradeGroups[key];
-    document.getElementById('remun-grade').innerHTML = g.grades.map(gr =>
-      '<option value="' + gr.min + '|' + gr.mid + '|' + gr.max + '">' + gr.code + ' — ' + gr.name + '</option>'
-    ).join('');
+    const id = document.getElementById('remun-group').value;
+    const g = getAllGroups().find(x => x.id === id);
+    if(!g){ document.getElementById('remun-grade').innerHTML = ''; return; }
+    const opts = [];
+    g.grades.forEach(role => {
+      role.subLevels.forEach(sl => {
+        opts.push('<option value="' + sl.min + '|' + sl.mid + '|' + sl.max + '">' + role.code + ' — ' + role.role + ' (' + sl.name + ')</option>');
+      });
+    });
+    document.getElementById('remun-grade').innerHTML = opts.join('');
+  }
+
+  function initStrukturGrade(){
+    renderHo();
+    renderBranchTable();
   }
 
   let netGrossMode = 'gross';
@@ -1083,9 +1611,8 @@
     document.getElementById('remun-max').textContent = fmtRp(vMax);
   }
 
-  renderGradeGroup();
-  updateRemunGrades();
-  calcRemun();
+  initStrukturGrade();
+  refreshRemunGroupOptions();
 
   // ===== Modul 3: Asuransi Sosial — simulasi kalkulasi Basis > Cap/Floor > Potongan/Beban =====
   function calcBpjs(){

@@ -49,7 +49,20 @@
 
   /* TOPBAR */
   .main{flex:1;display:flex;flex-direction:column;min-width:0;}
-  .topbar{height:64px;background:#fff;border-bottom:1px solid var(--gray-border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;}
+  .topbar{min-height:64px;background:#fff;border-bottom:1px solid var(--gray-border);display:flex;align-items:center;justify-content:space-between;padding:10px 24px;gap:16px;flex-wrap:wrap;}
+
+  /* WORKSPACE SWITCHER */
+  .ws-switcher{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;min-width:280px;}
+  .ws-switcher-lbl{font-size:10px;color:var(--text-mid);font-weight:700;text-transform:uppercase;letter-spacing:.4px;}
+  .ws-tabs{display:flex;gap:5px;background:var(--gray-bg);border:1px solid var(--gray-border);border-radius:11px;padding:4px;}
+  .ws-tab{display:flex;align-items:center;gap:7px;padding:8px 13px;border-radius:8px;font-size:12px;font-weight:700;color:var(--text-mid);text-decoration:none;border:none;background:none;cursor:pointer;font-family:inherit;white-space:nowrap;}
+  .ws-tab svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;flex-shrink:0;}
+  .ws-tab.active{background:#fff;color:var(--blue);box-shadow:0 1px 3px rgba(16,24,40,.1);}
+  .ws-tab:not(.active):hover{color:var(--text-dark);}
+  @media(max-width:1180px){.ws-tab .ws-tab-text{display:none;} .ws-switcher-lbl{display:none;}}
+
+  .toast{position:fixed;bottom:24px;right:28px;background:var(--navy);color:#fff;padding:13px 18px;border-radius:10px;font-size:13.5px;font-weight:600;box-shadow:0 8px 24px rgba(16,24,40,.25);display:flex;align-items:center;gap:10px;z-index:100;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .2s,transform .2s;}
+  .toast.show{opacity:1;transform:translateY(0);}
   .topbar-left{display:flex;align-items:center;gap:10px;}
   .icon-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--gray-border);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-dark);flex-shrink:0;}
   .icon-btn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8;}
@@ -496,6 +509,7 @@
       <div class="menu-item" data-key="validasi" onclick="navSub('validasi', this)">Persetujuan Periode Gajian</div>
       <div class="menu-item" data-key="distribusi" onclick="navSub('distribusi', this)">Distribusi Gaji &amp; Slip Gaji</div>
       <div class="menu-item" data-key="kasbon" onclick="navSub('kasbon', this)">Kasbon</div>
+      <a class="menu-item" data-key="rekonsiliasi" href="rekonsiliasi-payroll.html">Rekonsiliasi Payroll</a>
     </div>
     <div class="menu-item" id="menu-jenispengajuan" onclick="navTop('jenispengajuan', this)">
       <svg viewBox="0 0 24 24"><path d="M6 2.5h9l4.5 4.5v14.5H6z"/><path d="M15 2.5V7h4.5M8.5 12.5h7M8.5 16h7"/></svg>
@@ -514,6 +528,26 @@
           <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h12M3 18h7"/></svg>
         </div>
       </div>
+
+      <!-- WORKSPACE SWITCHER -->
+      <div class="ws-switcher">
+        <span class="ws-switcher-lbl">Pilih Workspace</span>
+        <div class="ws-tabs">
+          <a class="ws-tab active" href="dashboard-hc.html">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            <span class="ws-tab-text">People &amp; Corporate Compliance</span>
+          </a>
+          <a class="ws-tab" href="../fat/dashboard-financial.html">
+            <svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1M9 13h1M14 9h1M14 13h1M9 21v-4h6v4"/></svg>
+            <span class="ws-tab-text">Finance, Tax &amp; Accounting</span>
+          </a>
+          <button class="ws-tab" onclick="showToast('Workspace Board of Directors segera hadir.')">
+            <svg viewBox="0 0 24 24"><path d="M20 7h-9M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
+            <span class="ws-tab-text">Board of Directors</span>
+          </button>
+        </div>
+      </div>
+
       <div style="display:flex;align-items:center;gap:14px">
         <div class="icon-btn" title="Mode Gelap">
           <svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"/></svg>
@@ -1474,7 +1508,17 @@
   </div>
 </div>
 
+<div class="toast" id="toast"></div>
+
 <script>
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(window.__toastTimer);
+    window.__toastTimer = setTimeout(()=>t.classList.remove('show'), 2600);
+  }
+
   // ===== Tren Jumlah Karyawan — data & interactive tooltip =====
   const trenMonths = ["Jul '23","Agu '23","Sep '23","Okt '23","Nov '23","Des '23","Jan '24","Feb '24","Mar '24","Apr '24","Mei '24","Jun '24"];
   const trenTotals = [186,193,201,209,215,221,227,232,236,240,244,248];

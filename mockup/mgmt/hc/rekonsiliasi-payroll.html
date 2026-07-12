@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dasaria HRIS — Rekonsiliasi Payroll</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0c3a87;
+    --navy-dark:#0a2e44;
+    --blue:#465fff;
+    --blue-light:#ecf3ff;
+    --chart-blue:#1f6af7;
+    --chart-light:#cfe0ff;
+    --green:#22c55e;
+    --green-dark:#16a34a;
+    --gray-bg:#f4f5f7;
+    --gray-border:#e4e6ea;
+    --text-dark:#1f2937;
+    --text-mid:#6b7280;
+    --peach:#fde3cf;
+    --peach-text:#c2622a;
+    --red-badge:#fde2e2;
+    --red-text:#c0392b;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Outfit','Segoe UI',Arial,sans-serif;background:var(--gray-bg);color:var(--text-dark);font-size:14px;}
+  .app{display:flex;min-height:100vh;}
+
+  /* SIDEBAR */
+  .sidebar{width:260px;background:#fff;border-right:1px solid var(--gray-border);flex-shrink:0;padding:20px 0;}
+  .brand{display:flex;align-items:center;gap:10px;padding:0 20px 20px 20px;}
+  .brand .logo{width:38px;height:38px;background:#fff;border:1.5px solid var(--gray-border);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(16,24,40,.08);color:var(--blue);font-size:11px;font-weight:800;letter-spacing:-.4px;flex-shrink:0;}
+  .brand .name{font-size:21px;font-weight:800;color:#101828;letter-spacing:-.3px;}
+  .menu-label{font-size:12px;font-weight:700;padding:4px 20px 8px;color:var(--text-mid);text-transform:uppercase;letter-spacing:.4px;}
+  .menu-item{display:flex;align-items:center;gap:10px;padding:9px 12px;margin:2px 12px;border-radius:8px;cursor:pointer;color:var(--text-dark);text-decoration:none;font-size:14px;}
+  .menu-item svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.7;flex-shrink:0;}
+  .menu-item .chev{margin-left:auto;width:14px;height:14px;transition:transform .15s;}
+  .menu-item.open .chev{transform:rotate(180deg);}
+  .menu-item:hover{background:#f7f8fa;}
+  .menu-item.active-parent{color:var(--blue);font-weight:600;background:var(--blue-light);}
+  .submenu{padding-left:14px;}
+  .submenu .menu-item{padding:7px 12px 7px 34px;font-size:13.5px;margin:1px 12px;}
+  .submenu .menu-item.active{color:var(--blue);font-weight:600;background:var(--blue-light);}
+
+  /* TOPBAR */
+  .main{flex:1;display:flex;flex-direction:column;min-width:0;}
+  .topbar{min-height:64px;background:#fff;border-bottom:1px solid var(--gray-border);display:flex;align-items:center;justify-content:space-between;padding:10px 24px;gap:16px;flex-wrap:wrap;}
+
+  /* WORKSPACE SWITCHER */
+  .ws-switcher{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;min-width:280px;}
+  .ws-switcher-lbl{font-size:10px;color:var(--text-mid);font-weight:700;text-transform:uppercase;letter-spacing:.4px;}
+  .ws-tabs{display:flex;gap:5px;background:var(--gray-bg);border:1px solid var(--gray-border);border-radius:11px;padding:4px;}
+  .ws-tab{display:flex;align-items:center;gap:7px;padding:8px 13px;border-radius:8px;font-size:12px;font-weight:700;color:var(--text-mid);text-decoration:none;border:none;background:none;cursor:pointer;font-family:inherit;white-space:nowrap;}
+  .ws-tab svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;flex-shrink:0;}
+  .ws-tab.active{background:#fff;color:var(--blue);box-shadow:0 1px 3px rgba(16,24,40,.1);}
+  .ws-tab:not(.active):hover{color:var(--text-dark);}
+  @media(max-width:1180px){.ws-tab .ws-tab-text{display:none;} .ws-switcher-lbl{display:none;}}
+  .topbar-left{display:flex;align-items:center;gap:10px;}
+  .icon-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--gray-border);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-dark);flex-shrink:0;}
+  .icon-btn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8;}
+  .icon-btn:hover{background:#f7f8fa;}
+  .topbar .user{display:flex;align-items:center;gap:8px;font-weight:600;cursor:pointer;padding:4px 8px 4px 4px;border-radius:20px;}
+  .topbar .user:hover{background:#f7f8fa;}
+  .topbar .user svg{width:14px;height:14px;stroke:var(--text-mid);fill:none;stroke-width:2;}
+  .avatar{width:32px;height:32px;border-radius:50%;background:#cbd5e1;display:flex;align-items:center;justify-content:center;font-size:12px;color:#334155;flex-shrink:0;overflow:hidden;}
+
+  .content{padding:24px 28px;overflow-x:auto;}
+  .page-header-v2{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;gap:14px;flex-wrap:wrap;}
+  .page-header-v2 h1{font-size:22px;margin:0 0 4px;}
+  .page-header-v2 .sub{font-size:13px;color:var(--text-mid);}
+  .breadcrumb{color:var(--text-mid);font-size:13px;}
+  .breadcrumb b{color:var(--text-dark);}
+  .header-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+
+  /* CARD/TABLE */
+  .card{background:#fff;border:1px solid var(--gray-border);border-radius:12px;padding:20px;margin-bottom:20px;}
+  .card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
+  .card-head h2{font-size:17px;margin:0;}
+  .card-head .sub{font-size:12.5px;color:var(--text-mid);margin-top:3px;font-weight:400;}
+  .btn{border:none;border-radius:8px;padding:9px 16px;font-weight:600;cursor:pointer;font-size:13.5px;display:inline-flex;align-items:center;gap:6px;font-family:inherit;}
+  .btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;}
+  .btn-green{background:var(--green);color:#fff;}
+  .btn-blue{background:var(--blue);color:#fff;}
+  .btn-outline{background:#fff;border:1px solid var(--gray-border);color:var(--text-dark);}
+  .btn-outline:hover{background:#f7f8fa;}
+  .btn:disabled{opacity:.5;cursor:not-allowed;}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  thead th{background:var(--navy);color:#fff;text-align:left;padding:12px 14px;font-weight:600;white-space:nowrap;}
+  thead th:first-child{border-top-left-radius:8px;}
+  thead th:last-child{border-top-right-radius:8px;}
+  tbody td{padding:12px 14px;border-bottom:1px solid var(--gray-border);vertical-align:top;}
+  tbody tr:hover{background:#fafbfc;}
+  .muted{color:var(--text-mid);}
+  .pill{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600;display:inline-block;white-space:nowrap;}
+  .pill-blue{background:var(--blue-light);color:var(--blue);}
+  .pill-peach{background:var(--peach);color:var(--peach-text);}
+  .pill-green{background:#dcfce7;color:var(--green-dark);}
+  .pill-red{background:var(--red-badge);color:var(--red-text);}
+  .note-box{background:#fff7ed;border:1px solid #fdba74;color:#9a3412;border-radius:10px;padding:12px 16px;font-size:13px;margin-bottom:16px;}
+
+  /* FILTER BAR */
+  .filter-bar-card{padding:16px 20px;margin-bottom:20px;}
+  .filter-bar-row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;}
+  .filter-bar-row .form-field{flex:1;min-width:130px;}
+  .filter-bar-row .form-field label{display:block;font-size:10.5px;font-weight:700;color:var(--text-mid);margin-bottom:6px;text-transform:uppercase;letter-spacing:.3px;}
+  .filter-bar-row .form-field select, .filter-bar-row .form-field input{width:100%;border:1px solid var(--gray-border);border-radius:8px;padding:9px 11px;font-size:12.5px;font-family:inherit;color:var(--text-dark);background:#fff;}
+  .filter-bar-row .form-field select:focus, .filter-bar-row .form-field input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(70,95,255,.12);}
+
+  /* SECTION LABEL */
+  .section-label{display:flex;align-items:center;gap:10px;margin:26px 0 12px;}
+  .section-label span{font-size:12px;font-weight:700;color:var(--text-mid);text-transform:uppercase;letter-spacing:.6px;white-space:nowrap;}
+  .section-label .line{flex:1;height:1px;background:var(--gray-border);}
+  .section-label:first-of-type{margin-top:0;}
+
+  /* EXECUTIVE KPI ROW */
+  .exec-kpi-row{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;margin-bottom:16px;}
+  .exec-kpi-card{background:#fff;border:1px solid var(--gray-border);border-radius:12px;padding:15px 14px;display:flex;flex-direction:column;gap:9px;}
+  .exec-kpi-card .eki-head{display:flex;align-items:center;gap:8px;}
+  .exec-kpi-circle{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .exec-kpi-circle svg{width:15px;height:15px;stroke-width:2;fill:none;}
+  .exec-kpi-card .eki-lbl{font-size:11px;color:var(--text-mid);font-weight:600;line-height:1.25;}
+  .exec-kpi-card .eki-val{font-size:17px;font-weight:800;color:var(--text-dark);line-height:1.2;}
+  .exec-kpi-card .eki-sub{font-size:10.5px;color:var(--text-mid);}
+  @media(max-width:1500px){.exec-kpi-row{grid-template-columns:repeat(4,1fr);}}
+  @media(max-width:820px){.exec-kpi-row{grid-template-columns:repeat(2,1fr);}}
+
+  /* STATUS STRIP */
+  .status-strip{display:flex;align-items:center;gap:26px;background:#fff;border:1px solid var(--gray-border);border-radius:12px;padding:14px 20px;margin-bottom:20px;flex-wrap:wrap;}
+  .status-strip-item{display:flex;align-items:center;gap:10px;font-size:13px;}
+  .status-strip-item b{font-weight:700;color:var(--text-dark);}
+
+  /* RECONCILIATION TABLE */
+  .recon-legend{display:flex;gap:20px;margin-top:14px;flex-wrap:wrap;}
+  .recon-legend span{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--text-mid);}
+  .recon-legend i{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .recon-detail-row td{padding:0;border-bottom:1px solid var(--gray-border);}
+  .recon-detail{padding:16px 20px;background:var(--gray-bg);}
+  .recon-detail table{background:#fff;border-radius:8px;overflow:hidden;}
+  .recon-detail thead th{background:#e9edf5;color:var(--text-dark);font-size:11.5px;text-transform:uppercase;letter-spacing:.2px;}
+  .eye-btn{background:none;border:none;cursor:pointer;color:var(--text-mid);display:inline-flex;padding:3px;border-radius:6px;}
+  .eye-btn:hover{background:var(--gray-bg);color:var(--blue);}
+  .eye-btn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8;}
+
+  /* VARIANCE ANALYSIS */
+  .variance-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px;}
+  .variance-stat{border:1px solid var(--gray-border);border-radius:12px;padding:16px 18px;}
+  .variance-stat .vs-lbl{font-size:12px;color:var(--text-mid);font-weight:600;margin-bottom:8px;}
+  .variance-stat .vs-val{font-size:22px;font-weight:800;color:var(--text-dark);}
+  .variance-stat .vs-delta{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;margin-left:8px;padding:3px 9px;border-radius:20px;}
+  .variance-stat .vs-delta.up{background:#dcfce7;color:var(--green-dark);}
+  .variance-chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:18px;}
+  .chart-legend-inline{display:flex;gap:16px;}
+  .chart-legend-inline span{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--text-mid);font-weight:600;}
+  .chart-legend-inline i{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
+
+  .top5-chart{display:flex;flex-direction:column;gap:15px;}
+  .top5-row-label{font-size:12.5px;font-weight:600;color:var(--text-dark);margin-bottom:5px;}
+  .top5-bar-line{display:flex;align-items:center;gap:9px;margin-bottom:3px;}
+  .top5-bar-track{flex:1;height:9px;background:var(--gray-bg);border-radius:5px;overflow:hidden;}
+  .top5-bar-fill{height:100%;border-radius:5px;}
+  .top5-bar-val{font-size:11px;color:var(--text-mid);width:96px;text-align:right;flex-shrink:0;}
+  .top5-axis{display:flex;justify-content:space-between;margin-top:6px;padding-left:0;font-size:10.5px;color:var(--text-mid);border-top:1px solid var(--gray-border);padding-top:8px;}
+
+  .wf-wrap{width:100%;overflow-x:auto;}
+  .wf-svg{width:100%;height:auto;display:block;min-width:420px;}
+  .wf-bar{cursor:pointer;}
+  .wf-bar:hover{opacity:.85;}
+
+  .insight-box{background:var(--blue-light);border:1px solid #c7d7ff;border-radius:10px;padding:14px 16px;margin-top:4px;}
+  .insight-box .ib-title{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+  .insight-box .ib-title svg{width:15px;height:15px;stroke:var(--navy);fill:none;stroke-width:2;}
+  .insight-box ul{margin:0;padding-left:18px;font-size:13px;color:var(--text-dark);line-height:1.7;}
+
+  /* EXCEPTION CENTER */
+  .exc-chip-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:18px;}
+  .exc-chip{border:1.5px solid var(--gray-border);border-radius:12px;padding:14px 16px;cursor:pointer;background:#fff;transition:border-color .12s,box-shadow .12s;}
+  .exc-chip:hover{box-shadow:0 2px 8px rgba(16,24,40,.06);}
+  .exc-chip.active{border-color:var(--blue);background:var(--blue-light);}
+  .exc-chip .ec-lbl{font-size:12px;font-weight:600;color:var(--text-mid);margin-bottom:8px;}
+  .exc-chip .ec-val{font-size:24px;font-weight:800;color:var(--red-text);}
+  .exc-chip.active .ec-lbl{color:var(--navy);}
+  @media(max-width:1100px){.exc-chip-row{grid-template-columns:repeat(3,1fr);}}
+
+  .cell-emp{display:flex;flex-direction:column;gap:2px;}
+  .cell-emp b{font-size:13.5px;}
+  .cell-emp small{color:var(--text-mid);font-size:11.5px;}
+  .foot{display:flex;justify-content:space-between;align-items:center;padding-top:14px;color:var(--text-mid);font-size:13px;}
+  .pg-btns{display:flex;gap:4px;}
+  .pg-btn{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12.5px;font-weight:600;color:var(--text-mid);}
+  .pg-btn:hover{background:var(--gray-bg);}
+  .pg-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.2;}
+
+  /* JOURNAL & AUDIT */
+  .journal-audit-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .audit-status-dot{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;}
+  .audit-status-dot i{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+
+  /* AI INSIGHT + OK STRIP */
+  .ai-insight-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:20px;margin-bottom:20px;align-items:stretch;}
+  .ai-card{background:linear-gradient(135deg,#eef3ff,#f7f9ff);border:1px solid #c7d7ff;border-radius:12px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start;}
+  .ai-card .ai-icon{width:38px;height:38px;border-radius:10px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .ai-card .ai-icon svg{width:19px;height:19px;stroke:#fff;fill:none;stroke-width:2;}
+  .ai-card h3{margin:0 0 6px;font-size:13.5px;color:var(--navy);}
+  .ai-card p{margin:0 0 6px;font-size:13px;line-height:1.6;color:var(--text-dark);}
+  .ai-card p:last-child{margin-bottom:0;}
+  .recon-ok-card{border-radius:12px;padding:18px 20px;display:flex;gap:12px;align-items:flex-start;border:1px solid;}
+  .recon-ok-card.ok{background:#f0fdf4;border-color:#86efac;}
+  .recon-ok-card.warn{background:#fff7ed;border-color:#fdba74;}
+  .recon-ok-card .roc-icon{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .recon-ok-card.ok .roc-icon{background:#dcfce7;color:var(--green-dark);}
+  .recon-ok-card.warn .roc-icon{background:#fdecd8;color:var(--peach-text);}
+  .recon-ok-card .roc-icon svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2.4;}
+  .recon-ok-card p{margin:0;font-size:13px;line-height:1.6;}
+  .recon-ok-card.ok p{color:#14532d;}
+  .recon-ok-card.warn p{color:#9a3412;}
+
+  /* BOTTOM ACTION BAR */
+  .action-bar{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;}
+  .action-bar .btn{padding:11px 18px;}
+  .lock-note{font-size:12.5px;color:var(--text-mid);display:flex;align-items:center;gap:6px;margin-right:auto;}
+
+  /* MORE MENU */
+  .more-menu-wrap{position:relative;}
+  .more-menu{display:none;position:absolute;top:calc(100% + 6px);right:0;background:#fff;border:1px solid var(--gray-border);border-radius:10px;box-shadow:0 8px 24px rgba(16,24,40,.12);padding:6px;min-width:200px;z-index:40;}
+  .more-menu.open{display:block;}
+  .more-menu button{width:100%;text-align:left;border:none;background:none;padding:9px 11px;border-radius:7px;font-size:13px;font-weight:600;color:var(--text-dark);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:8px;}
+  .more-menu button:hover{background:var(--gray-bg);}
+  .toast{position:fixed;bottom:24px;right:28px;background:var(--navy);color:#fff;padding:13px 18px;border-radius:10px;font-size:13.5px;font-weight:600;box-shadow:0 8px 24px rgba(16,24,40,.25);display:flex;align-items:center;gap:10px;z-index:100;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .2s,transform .2s;}
+  .toast.show{opacity:1;transform:translateY(0);}
+
+  /* FAT SCOPE (workspace Finance, Tax & Accounting: sembunyikan detail per-karyawan) */
+  body.fat-scope .fat-scope-hide{display:none !important;}
+  body.fat-scope .fat-scope-only{display:block !important;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="brand"><div class="logo">HRiS</div><div class="name">Dasaria</div></div>
+    <div class="menu-label">Menu</div>
+    <a class="menu-item" href="dashboard-hc.html">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      Dashboard
+    </a>
+    <a class="menu-item" href="dashboard-hc.html#struktur">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.2"/><circle cx="5" cy="19" r="2.2"/><circle cx="19" cy="19" r="2.2"/><path d="M12 7.2V12M12 12L5 16.8M12 12l7 4.8"/></svg>
+      Struktur dan Organisasi
+    </a>
+    <div class="menu-item" onclick="toggleSubmenu('sub-master', this)">
+      <svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2"/><circle cx="8.5" cy="12" r="2"/><path d="M13.5 10h4M13.5 14h4M5.5 16.3c.6-1.3 1.8-2 3-2s2.4.7 3 2"/></svg>
+      Data Master Karyawan
+      <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="submenu" id="sub-master" style="display:none">
+      <a class="menu-item" href="dashboard-hc.html#datakaryawan">Data Karyawan</a>
+      <a class="menu-item" href="dashboard-hc.html#perpanjangankontrak">Perpanjangan Kontrak</a>
+      <a class="menu-item" href="dashboard-hc.html#pengundurandiri">Pengunduran Diri</a>
+      <a class="menu-item" href="dashboard-hc.html#perubahanorganisasi">Perubahan Organisasi</a>
+    </div>
+    <div class="menu-item open active-parent" id="menu-penggajian" onclick="toggleSubmenu('sub-penggajian', this)">
+      <svg viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="13" rx="2.2"/><path d="M2.5 10h19"/><circle cx="17" cy="14.3" r="1.4"/></svg>
+      Penggajian
+      <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="submenu" id="sub-penggajian" style="display:block">
+      <a class="menu-item" href="dashboard-hc.html#payroll-dashboard">Dashboard Penggajian</a>
+      <a class="menu-item" href="konfigurasi-penggajian.html">Konfigurasi Penggajian</a>
+      <a class="menu-item" href="dashboard-hc.html#periode">Periode Gajian</a>
+      <a class="menu-item" href="dashboard-hc.html#validasi">Persetujuan Periode Gajian</a>
+      <a class="menu-item" href="dashboard-hc.html#distribusi">Distribusi Gaji &amp; Slip Gaji</a>
+      <a class="menu-item" href="dashboard-hc.html#kasbon">Kasbon</a>
+      <a class="menu-item active" href="rekonsiliasi-payroll.html">Rekonsiliasi Payroll</a>
+    </div>
+    <a class="menu-item" href="dashboard-hc.html#jenispengajuan">
+      <svg viewBox="0 0 24 24"><path d="M6 2.5h9l4.5 4.5v14.5H6z"/><path d="M15 2.5V7h4.5M8.5 12.5h7M8.5 16h7"/></svg>
+      Jenis Pengajuan
+    </a>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <a href="dashboard-hc.html" class="icon-btn" title="Kembali">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        </a>
+        <div class="icon-btn" style="border-radius:8px;width:38px;height:38px">
+          <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h12M3 18h7"/></svg>
+        </div>
+      </div>
+
+      <!-- WORKSPACE SWITCHER -->
+      <div class="ws-switcher">
+        <span class="ws-switcher-lbl">Pilih Workspace</span>
+        <div class="ws-tabs">
+          <a class="ws-tab active" href="dashboard-hc.html">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            <span class="ws-tab-text">People &amp; Corporate Compliance</span>
+          </a>
+          <a class="ws-tab" href="../fat/dashboard-financial.html">
+            <svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1M9 13h1M14 9h1M14 13h1M9 21v-4h6v4"/></svg>
+            <span class="ws-tab-text">Finance, Tax &amp; Accounting</span>
+          </a>
+          <button class="ws-tab" onclick="showToast('Workspace Board of Directors segera hadir.')">
+            <svg viewBox="0 0 24 24"><path d="M20 7h-9M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
+            <span class="ws-tab-text">Board of Directors</span>
+          </button>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:14px">
+        <div class="icon-btn" title="Notifikasi" style="position:relative;">
+          <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+          <span style="position:absolute;top:-3px;right:-3px;background:var(--red-text);color:#fff;font-size:9px;font-weight:800;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;">5</span>
+        </div>
+        <div class="icon-btn" title="Mode Gelap">
+          <svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"/></svg>
+        </div>
+        <div class="user">
+          <div class="avatar">T</div>
+          <div>Tes Admin</div>
+          <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="page-header-v2">
+        <div>
+          <h1>Rekonsiliasi Payroll</h1>
+          <div class="breadcrumb">Home &gt; Penggajian &gt; <b style="color:var(--blue)">Rekonsiliasi Payroll</b></div>
+          <div class="sub" style="margin-top:6px;">Pusat rekonsiliasi antara data Payroll HC, Finance, Accounting dan Tax.</div>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-outline" id="btn-generate" onclick="generateRekonsiliasi(this)">
+            <svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.5 9a9 9 0 0114.85-3.36L23 10M1 14l4.65 4.36A9 9 0 0020.5 15"/></svg>
+            Generate Rekonsiliasi
+          </button>
+          <button class="btn btn-green" onclick="showToast('Mengekspor rekonsiliasi ke Excel…')">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13l3 4 3-4M12 17V9"/></svg>
+            Export Excel
+          </button>
+          <button class="btn btn-outline" onclick="showToast('Menyiapkan rekonsiliasi dalam format PDF…')">
+            <svg viewBox="0 0 24 24" stroke="var(--red-text)"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+            Export PDF
+          </button>
+          <div class="more-menu-wrap">
+            <button class="icon-btn" onclick="toggleMoreMenu(event)" title="Lainnya">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg>
+            </button>
+            <div class="more-menu" id="more-menu">
+              <button onclick="showToast('Download jurnal payroll (Excel)…')">Download Journal</button>
+              <button onclick="showToast('Tautan rekonsiliasi disalin.')">Salin Tautan</button>
+              <button onclick="showToast('Riwayat rekonsiliasi dibuka.')">Riwayat Rekonsiliasi</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ FILTER BAR ============ -->
+      <div class="card filter-bar-card">
+        <div class="filter-bar-row">
+          <div class="form-field">
+            <label>Payroll Period</label>
+            <select id="f-periode" onchange="onPeriodeChange()">
+              <option value="2026-07">Juli 2026</option>
+              <option value="2026-06">Juni 2026</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Payroll Group</label>
+            <select id="f-group"><option>Semua</option><option>Head Office</option><option>Cabang</option></select>
+          </div>
+          <div class="form-field">
+            <label>Wilayah</label>
+            <select id="f-wilayah"><option>Semua Wilayah</option><option>Malang Raya</option><option>Kediri Raya</option><option>Blitar Raya</option><option>Tulungagung Raya</option><option>Probolinggo</option></select>
+          </div>
+          <div class="form-field">
+            <label>Branch</label>
+            <select id="f-branch"><option>Semua Branch</option><option>Malang</option><option>Kediri</option><option>Blitar</option><option>Tulungagung</option><option>Probolinggo</option></select>
+          </div>
+          <div class="form-field">
+            <label>Direktorat</label>
+            <select id="f-direktorat"><option>Semua</option><option>Direktorat Komersial</option><option>Direktorat Teknologi &amp; Jaringan</option><option>Direktorat Operasional &amp; Regional</option><option>Direktorat HC / Finance &amp; Corporate</option></select>
+          </div>
+          <div class="form-field">
+            <label>Departemen</label>
+            <select id="f-departemen"><option>Semua</option><option>HC Comben</option><option>Finance</option><option>Accounting</option><option>Tax</option><option>NOC</option></select>
+          </div>
+          <div class="form-field">
+            <label>Status Payroll</label>
+            <select id="f-statuspayroll"><option>Semua</option><option>Reconciled</option><option>Belum Selesai</option></select>
+          </div>
+          <div class="form-field">
+            <label>Status Rekonsiliasi</label>
+            <select id="f-statusrekon" onchange="filterReconTable()">
+              <option value="">Semua</option>
+              <option value="Match">Match</option>
+              <option value="Need Review">Need Review</option>
+              <option value="Not Match">Not Match</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Approval Status</label>
+            <select id="f-approval"><option>Semua</option><option>Belum Diajukan</option><option>Menunggu Approval</option><option>Approved</option></select>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ SECTION 1: PAYROLL EXECUTIVE SUMMARY ============ -->
+      <div class="section-label"><span>1. Payroll Executive Summary</span><div class="line"></div></div>
+      <div class="exec-kpi-row" id="exec-kpi-row"></div>
+      <div class="status-strip" id="status-strip"></div>
+
+      <!-- ============ SECTION 2: PAYROLL RECONCILIATION ============ -->
+      <div class="section-label"><span>2. Payroll Reconciliation</span><div class="line"></div></div>
+      <div class="note-box fat-scope-only" id="fat-scope-banner" style="display:none;">
+        ℹ Anda mengakses halaman ini dari workspace <b>Finance, Tax &amp; Accounting</b> — detail gaji &amp; THP per nama karyawan disembunyikan sesuai kebijakan akses. Hanya agregat per komponen/direktorat/wilayah yang ditampilkan.
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h2>Perbandingan Nilai Payroll Antar Sistem</h2>
+            <div class="sub">Membandingkan nilai payroll antara data HC, Finance, Accounting, dan Tax untuk periode berjalan.</div>
+          </div>
+          <button class="btn btn-outline fat-scope-hide" id="btn-detail-karyawan" onclick="showToast('Membuka rekonsiliasi tingkat karyawan…')">Lihat Detail Per Karyawan</button>
+        </div>
+        <table id="recon-table">
+          <thead><tr><th>Komponen Payroll</th><th style="text-align:right">Nilai HC (Rp)</th><th style="text-align:right">Nilai Finance (Rp)</th><th style="text-align:right">Nilai Accounting (Rp)</th><th style="text-align:right">Nilai Tax (Rp)</th><th style="text-align:right">Selisih (Rp)</th><th>Status</th><th class="fat-scope-hide">Aksi</th></tr></thead>
+          <tbody id="recon-tbody"></tbody>
+        </table>
+        <div class="recon-legend">
+          <span><i style="background:var(--green-dark)"></i>Match (Selisih = 0)</span>
+          <span><i style="background:var(--peach-text)"></i>Need Review (Selisih ≤ 1%)</span>
+          <span><i style="background:var(--red-text)"></i>Not Match (Selisih &gt; 1%)</span>
+        </div>
+      </div>
+
+      <!-- ============ SECTION 3: PAYROLL VARIANCE ANALYSIS ============ -->
+      <div class="section-label"><span>3. Payroll Variance Analysis</span><div class="line"></div></div>
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h2>Perbandingan Dengan Periode Sebelumnya</h2>
+          </div>
+        </div>
+        <div class="variance-stat-row" id="variance-stat-row"></div>
+        <div class="variance-chart-grid">
+          <div>
+            <div class="card-head" style="margin-bottom:12px;">
+              <h2 style="font-size:14.5px;">Perbandingan Komponen (Top 5)</h2>
+              <div class="chart-legend-inline">
+                <span><i style="background:var(--chart-light)"></i>Jun 2026</span>
+                <span><i style="background:var(--blue)"></i>Jul 2026</span>
+              </div>
+            </div>
+            <div class="top5-chart" id="top5-chart"></div>
+          </div>
+          <div>
+            <div class="card-head" style="margin-bottom:12px;">
+              <h2 style="font-size:14.5px;">Waterfall Analysis</h2>
+            </div>
+            <div class="wf-wrap"><svg class="wf-svg" id="wf-svg" viewBox="0 0 620 260"></svg></div>
+          </div>
+        </div>
+        <div class="insight-box">
+          <div class="ib-title">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+            Insight Otomatis
+          </div>
+          <ul id="variance-insight-list"></ul>
+        </div>
+      </div>
+
+      <!-- ============ SECTION 4: EXCEPTION CENTER ============ -->
+      <div class="section-label"><span>4. Exception Center</span><div class="line"></div></div>
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h2>Daftar Data Yang Memerlukan Perhatian</h2>
+          </div>
+          <button class="btn-detail-link" onclick="resetExceptionFilter()" style="background:none;border:none;color:var(--blue);font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;">Lihat Semua</button>
+        </div>
+        <div class="exc-chip-row" id="exc-chip-row"></div>
+        <table>
+          <thead><tr><th>Nama Karyawan</th><th>NIK</th><th>Jabatan</th><th>Branch</th><th>Jenis Error</th><th>Status</th><th>PIC</th><th>Target Selesai</th><th>Aksi</th></tr></thead>
+          <tbody id="exc-tbody"></tbody>
+        </table>
+        <div class="foot">
+          <span id="exc-count-label">Menampilkan 5 dari 16 data</span>
+          <div class="pg-btns">
+            <div class="pg-btn"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+            <div class="pg-btn active" style="background:var(--blue-light);color:var(--blue);">1</div>
+            <div class="pg-btn">2</div>
+            <div class="pg-btn">3</div>
+            <div class="pg-btn"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ SECTION 5: JOURNAL & AUDIT ============ -->
+      <div class="section-label"><span>5. Journal &amp; Audit</span><div class="line"></div></div>
+      <div class="journal-audit-grid">
+        <div class="card">
+          <div class="card-head">
+            <div><h2>Payroll Journal (Preview)</h2><div class="sub">COA, Debit/Credit, dan status posting per periode.</div></div>
+          </div>
+          <table>
+            <thead><tr><th>COA</th><th>Account Name</th><th style="text-align:right">Debit (Rp)</th><th style="text-align:right">Credit (Rp)</th><th>Status Posting</th></tr></thead>
+            <tbody id="journal-tbody"></tbody>
+          </table>
+          <div class="card-foot-link" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--gray-border);">
+            <button class="btn btn-outline" onclick="showToast('Mengunduh Payroll Journal (Excel)…')">
+              <svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 21h16"/></svg>
+              Download Journal (Excel)
+            </button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div><h2>Audit Trail</h2><div class="sub">Seluruh aktivitas rekonsiliasi tercatat otomatis.</div></div>
+            <button class="btn-detail-link" onclick="toggleAuditFull()" id="audit-toggle-btn" style="background:none;border:none;color:var(--blue);font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;">Lihat Semua</button>
+          </div>
+          <table>
+            <thead><tr><th>Tanggal &amp; Waktu</th><th>User</th><th>Role</th><th>Aktivitas</th><th>Status</th></tr></thead>
+            <tbody id="audit-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ============ AI PAYROLL INSIGHT ============ -->
+      <div class="section-label"><span>AI Payroll Insight</span><div class="line"></div></div>
+      <div class="ai-insight-grid">
+        <div class="ai-card">
+          <div class="ai-icon"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z"/></svg></div>
+          <div>
+            <h3>AI Payroll Insight</h3>
+            <p id="ai-insight-main">Payroll periode Juli 2026 meningkat sebesar <b>Rp115.000.000 (8,42%)</b> dibanding Juni 2026.</p>
+            <p>Penyebab terbesar berasal dari <b>62 juta penambahan karyawan baru</b>, <b>kenaikan UMK &amp; penyesuaian struktur upah Rp35 juta</b>, dan <b>bonus &amp; insentif sales Rp20 juta</b>, sedikit ditahan oleh efisiensi potongan Rp17 juta.</p>
+          </div>
+        </div>
+        <div class="recon-ok-card warn" id="recon-ok-card">
+          <div class="roc-icon"><svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L14.71 3.86a2 2 0 00-3.42 0z"/></svg></div>
+          <p>Ditemukan selisih <b>Rp1.500.000</b> pada komponen <b>Tunjangan Tidak Tetap</b> antara data HC/Finance/Accounting dan Tax — perlu divalidasi Tax sebelum payroll ditutup.</p>
+        </div>
+      </div>
+
+      <!-- ============ BOTTOM ACTION BAR ============ -->
+      <div class="card action-bar" id="action-bar-card">
+        <span class="lock-note" id="lock-note">
+          <svg viewBox="0 0 24 24" width="15" height="15" stroke="var(--text-mid)" fill="none" stroke-width="2"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
+          Periode Juli 2026 belum dikunci
+        </span>
+        <button class="btn btn-outline" onclick="syncSystem('Finance')">
+          <svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.5 9a9 9 0 0114.85-3.36L23 10M1 14l4.65 4.36A9 9 0 0020.5 15"/></svg>
+          Sync Finance
+        </button>
+        <button class="btn btn-outline" onclick="syncSystem('Accounting')">
+          <svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.5 9a9 9 0 0114.85-3.36L23 10M1 14l4.65 4.36A9 9 0 0020.5 15"/></svg>
+          Sync Accounting
+        </button>
+        <button class="btn btn-outline" id="btn-lock" onclick="lockPayroll()">
+          <svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
+          Lock Payroll
+        </button>
+        <button class="btn btn-blue" id="btn-approve" onclick="approvePayroll()">
+          <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+          Approve Payroll
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  function toggleSubmenu(id, el){
+    const sub = document.getElementById(id);
+    const open = sub.style.display === 'block';
+    sub.style.display = open ? 'none' : 'block';
+    el.classList.toggle('open', !open);
+  }
+
+  function toggleMoreMenu(e){
+    e.stopPropagation();
+    document.getElementById('more-menu').classList.toggle('open');
+  }
+  document.addEventListener('click', function(){ document.getElementById('more-menu').classList.remove('open'); });
+
+  let toastTimer = null;
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(()=>t.classList.remove('show'), 2600);
+  }
+
+  function fmtRp(n){
+    const neg = n < 0;
+    const s = Math.abs(Math.round(n)).toLocaleString('id-ID');
+    return (neg ? '-Rp ' : 'Rp ') + s;
+  }
+
+  // ===== DATASET PER PERIODE =====
+  const periodData = {
+    '2026-07': {
+      label: 'Juli 2026', range: '01 Jul – 31 Jul 2026',
+      totalProcessed: 262, totalPaid: 248,
+      grossPayroll: 1987450000, totalThp: 1624820000, companyCost: 2163820000,
+      payrollStatus: 'Reconciled', payrollStatusPct: '100% Selesai',
+      hcStatus: 'ok', financeStatus: 'ok', accountingStatus: 'ok', taxStatus: 'wait',
+      prevTotal: 1365570000,
+      recon: [
+        {name:'Gaji Pokok', hc:895250000, finance:895250000, accounting:895250000, tax:895250000},
+        {name:'Tunjangan Tetap', hc:412750000, finance:412750000, accounting:412750000, tax:412750000},
+        {name:'Tunjangan Tidak Tetap', hc:176350000, finance:176350000, accounting:176350000, tax:174850000,
+          detail:[{nama:'Ahmad Fauzi', nik:'DSR0231', komponen:'Uang Makan Lembur NOC', hc:1500000, tax:0, catatan:'Belum tervalidasi di sistem Tax periode ini'}]},
+        {name:'Lembur', hc:98650000, finance:98650000, accounting:98650000, tax:98650000},
+        {name:'Insentif', hc:120000000, finance:120000000, accounting:120000000, tax:120000000},
+        {name:'Bonus', hc:78000000, finance:78000000, accounting:78000000, tax:78000000},
+        {name:'THR', hc:0, finance:0, accounting:0, tax:0},
+        {name:'Potongan', hc:-156800000, finance:-156800000, accounting:-156800000, tax:-156800000},
+        {name:'BPJS Kesehatan', hc:-21350000, finance:-21350000, accounting:-21350000, tax:-21350000},
+        {name:'BPJS TK', hc:-37420000, finance:-37420000, accounting:-37420000, tax:-37420000},
+        {name:'PPh21', hc:-84860000, finance:-84860000, accounting:-84860000, tax:-84860000}
+      ],
+      top5: [
+        {name:'Gaji Pokok', jun:862000000, jul:895250000},
+        {name:'Tunjangan Tetap', jun:395000000, jul:412750000},
+        {name:'Tunjangan Tidak Tetap', jun:178000000, jul:176350000},
+        {name:'Lembur', jun:86000000, jul:98650000},
+        {name:'Insentif', jun:108000000, jul:120000000}
+      ],
+      waterfall: [
+        {label:'Jun 2026', value:1365570000},
+        {label:'Karyawan Baru', value:62000000},
+        {label:'UMK & Penyesuaian', value:35000000},
+        {label:'Bonus & Insentif', value:20000000},
+        {label:'Lembur', value:15000000},
+        {label:'Potongan & Lainnya', value:-17000000},
+        {label:'Jul 2026', value:1480570000}
+      ],
+      insights: [
+        'Total Payroll Juli 2026 meningkat Rp115.000.000 (8,42%) dibanding Juni 2026.',
+        'Penyebab utama: 18 karyawan baru, kenaikan UMK di beberapa wilayah, bonus sales, dan peningkatan lembur NOC.'
+      ]
+    },
+    '2026-06': {
+      label: 'Juni 2026', range: '01 Jun – 30 Jun 2026',
+      totalProcessed: 251, totalPaid: 240,
+      grossPayroll: 1780200000, totalThp: 1462400000, companyCost: 1942100000,
+      payrollStatus: 'Reconciled', payrollStatusPct: '100% Selesai',
+      hcStatus: 'ok', financeStatus: 'ok', accountingStatus: 'ok', taxStatus: 'ok',
+      prevTotal: 1289450000,
+      recon: [
+        {name:'Gaji Pokok', hc:862000000, finance:862000000, accounting:862000000, tax:862000000},
+        {name:'Tunjangan Tetap', hc:395000000, finance:395000000, accounting:395000000, tax:395000000},
+        {name:'Tunjangan Tidak Tetap', hc:178000000, finance:178000000, accounting:178000000, tax:178000000},
+        {name:'Lembur', hc:86000000, finance:86000000, accounting:86000000, tax:86000000},
+        {name:'Insentif', hc:108000000, finance:108000000, accounting:108000000, tax:108000000},
+        {name:'Bonus', hc:0, finance:0, accounting:0, tax:0},
+        {name:'THR', hc:0, finance:0, accounting:0, tax:0},
+        {name:'Potongan', hc:-148200000, finance:-148200000, accounting:-148200000, tax:-148200000},
+        {name:'BPJS Kesehatan', hc:-20100000, finance:-20100000, accounting:-20100000, tax:-20100000},
+        {name:'BPJS TK', hc:-35300000, finance:-35300000, accounting:-35300000, tax:-35300000},
+        {name:'PPh21', hc:-79950000, finance:-79950000, accounting:-79950000, tax:-79950000}
+      ],
+      top5: [
+        {name:'Gaji Pokok', jun:840000000, jul:862000000},
+        {name:'Tunjangan Tetap', jun:381000000, jul:395000000},
+        {name:'Tunjangan Tidak Tetap', jun:174000000, jul:178000000},
+        {name:'Lembur', jun:79000000, jul:86000000},
+        {name:'Insentif', jun:98000000, jul:108000000}
+      ],
+      waterfall: [
+        {label:'Mei 2026', value:1289450000},
+        {label:'Karyawan Baru', value:41000000},
+        {label:'UMK & Penyesuaian', value:12000000},
+        {label:'Bonus & Insentif', value:10000000},
+        {label:'Lembur', value:7000000},
+        {label:'Potongan & Lainnya', value:-3450000},
+        {label:'Jun 2026', value:1356000000}
+      ],
+      insights: [
+        'Total Payroll Juni 2026 meningkat Rp66.550.000 (5,2%) dibanding Mei 2026.',
+        'Tidak ditemukan selisih material antara data HC, Finance, Accounting, dan Tax pada periode ini.'
+      ]
+    }
+  };
+
+  const exceptionCategories = [
+    {key:'rekening', label:'Rekening Tidak Valid', count:2},
+    {key:'npwp', label:'NPWP Belum Lengkap', count:4},
+    {key:'bpjs', label:'BPJS Belum Sinkron', count:3},
+    {key:'grade', label:'Grade Belum Tersedia', count:5},
+    {key:'struktur', label:'Salary > Struktur', count:2}
+  ];
+  const exceptionRows = [
+    {nama:'Budi Santoso', nik:'DSR0089', jabatan:'Teknisi FTTH', branch:'Malang', cat:'rekening', jenis:'Rekening Tidak Valid', status:'Open', pic:'Payroll', target:'25 Jul 2026'},
+    {nama:'Siti Rahayu', nik:'DSR0114', jabatan:'Account Executive', branch:'Kediri', cat:'npwp', jenis:'NPWP Belum Lengkap', status:'Open', pic:'HC Admin', target:'24 Jul 2026'},
+    {nama:'Ahmad Fauzi', nik:'DSR0231', jabatan:'NOC Engineer', branch:'Blitar', cat:'bpjs', jenis:'BPJS Belum Sinkron', status:'In Progress', pic:'HC Admin', target:'26 Jul 2026'},
+    {nama:'Dewi Anggraini', nik:'DSR0177', jabatan:'Account Executive', branch:'Tulungagung', cat:'grade', jenis:'Grade Belum Tersedia', status:'Open', pic:'Comp&Ben', target:'27 Jul 2026'},
+    {nama:'Rendra Wibisono', nik:'DSR0198', jabatan:'Branch Leader', branch:'Probolinggo', cat:'struktur', jenis:'Salary > Struktur Upah', status:'Open', pic:'Comp&Ben', target:'26 Jul 2026'}
+  ];
+
+  const journalRows = [
+    {coa:'6100-01', name:'Salary Expense', debit:1987450000, credit:0, status:'Belum Posting'},
+    {coa:'2150-01', name:'Salary Payable', debit:0, credit:1624820000, status:'Belum Posting'},
+    {coa:'2160-02', name:'PPh21 Payable', debit:0, credit:84860000, status:'Belum Posting'},
+    {coa:'6200-02', name:'BPJS Kesehatan Expense', debit:21350000, credit:0, status:'Belum Posting'},
+    {coa:'6200-03', name:'BPJS TK Expense', debit:37420000, credit:0, status:'Belum Posting'}
+  ];
+
+  const auditRowsBase = [
+    {waktu:'23 Jul 2026 09:12', user:'Payroll Staff', role:'Payroll', aktivitas:'Generate Payroll', status:'ok'},
+    {waktu:'23 Jul 2026 10:35', user:'HC Comben', role:'HC', aktivitas:'Review HC', status:'ok'},
+    {waktu:'23 Jul 2026 11:42', user:'Finance Manager', role:'Finance', aktivitas:'Review Finance', status:'ok'},
+    {waktu:'23 Jul 2026 13:05', user:'Accounting Staff', role:'Accounting', aktivitas:'Review Accounting', status:'ok'},
+    {waktu:'23 Jul 2026 14:20', user:'Tax Officer', role:'Tax', aktivitas:'Validasi PPh21 & BPJS', status:'pending'},
+    {waktu:'—', user:'Direktur FAT', role:'FAT Director', aktivitas:'Approval Final', status:'pending'}
+  ];
+  const auditRowsExtra = [
+    {waktu:'22 Jul 2026 17:40', user:'Payroll Staff', role:'Payroll', aktivitas:'Lock Periode Juni 2026', status:'ok'},
+    {waktu:'22 Jul 2026 16:05', user:'Direktur FAT', role:'FAT Director', aktivitas:'Approval Final Juni 2026', status:'ok'},
+    {waktu:'22 Jul 2026 15:10', user:'Accounting Staff', role:'Accounting', aktivitas:'Posting Journal Juni 2026', status:'ok'}
+  ];
+
+  let currentPeriode = '2026-07';
+  let activeExceptionCat = '';
+  let auditExpanded = false;
+
+  function kpiIcon(bg, color, path){
+    return '<div class="exec-kpi-circle" style="background:' + bg + ';color:' + color + '"><svg viewBox="0 0 24 24" stroke="currentColor">' + path + '</svg></div>';
+  }
+
+  function renderExecKpi(){
+    const d = periodData[currentPeriode];
+    const cards = [
+      {icon:kpiIcon('#EBF3FF','#2563EB','<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/>'), lbl:'Payroll Period', val:d.label, sub:d.range},
+      {icon:kpiIcon('#F3EAFB','#9333EA','<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>'), lbl:'Total Employee Processed', val:d.totalProcessed.toLocaleString('id-ID'), sub:'orang'},
+      {icon:kpiIcon('#E6F7EC','#16A34A','<path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>'), lbl:'Total Employee Paid', val:d.totalPaid.toLocaleString('id-ID'), sub:'orang'},
+      {icon:kpiIcon('#FEF1E1','#D97706','<path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>'), lbl:'Gross Payroll', val:fmtRp(d.grossPayroll), sub:''},
+      {icon:kpiIcon('#EBF3FF','#2563EB','<path d="M20 12V8H6a2 2 0 010-4h12v4"/><path d="M4 6v12a2 2 0 002 2h14v-4"/><path d="M18 12h.01"/>'), lbl:'Total Take Home Pay', val:fmtRp(d.totalThp), sub:''},
+      {icon:kpiIcon('#F3EAFB','#9333EA','<path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1M9 13h1M14 9h1M14 13h1M9 21v-4h6v4"/>'), lbl:'Company Payroll Cost', val:fmtRp(d.companyCost), sub:''},
+      {icon:kpiIcon('#E6F7EC','#16A34A','<path d="M20 6L9 17l-5-5"/>'), lbl:'Payroll Status', val:d.payrollStatus, sub:d.payrollStatusPct}
+    ];
+    document.getElementById('exec-kpi-row').innerHTML = cards.map(c =>
+      '<div class="exec-kpi-card"><div class="eki-head">' + c.icon + '<div class="eki-lbl">' + c.lbl + '</div></div><div class="eki-val">' + c.val + '</div>' + (c.sub ? '<div class="eki-sub">' + c.sub + '</div>' : '') + '</div>'
+    ).join('');
+  }
+
+  function statusPill(state){
+    if(state === 'ok') return '<span class="pill pill-green">✓ Match</span>';
+    if(state === 'wait') return '<span class="pill pill-peach">⏳ Waiting Validation</span>';
+    return '<span class="pill pill-red">✕ Not Match</span>';
+  }
+  function renderStatusStrip(){
+    const d = periodData[currentPeriode];
+    const items = [
+      {lbl:'HC', st:d.hcStatus}, {lbl:'Finance', st:d.financeStatus},
+      {lbl:'Accounting', st:d.accountingStatus}, {lbl:'Tax', st:d.taxStatus}
+    ];
+    document.getElementById('status-strip').innerHTML = items.map(it =>
+      '<div class="status-strip-item"><b>' + it.lbl + '</b>' + statusPill(it.st) + '</div>'
+    ).join('');
+  }
+
+  function reconStatus(hc, tax){
+    const selisih = tax - hc;
+    if(selisih === 0) return 'Match';
+    const base = hc !== 0 ? Math.abs(selisih / hc) : 1;
+    return base <= 0.01 ? 'Need Review' : 'Not Match';
+  }
+  function reconStatusPill(status){
+    if(status === 'Match') return '<span class="pill pill-green">Match</span>';
+    if(status === 'Need Review') return '<span class="pill pill-peach">Need Review</span>';
+    return '<span class="pill pill-red">Not Match</span>';
+  }
+
+  function renderReconTable(){
+    const d = periodData[currentPeriode];
+    const rows = d.recon;
+    let totalHc=0, totalFinance=0, totalAccounting=0, totalTax=0;
+    let html = '';
+    rows.forEach((r, idx) => {
+      totalHc += r.hc; totalFinance += r.finance; totalAccounting += r.accounting; totalTax += r.tax;
+      const selisih = r.tax - r.hc;
+      const status = reconStatus(r.hc, r.tax);
+      const rid = 'recon-' + idx;
+      html += '<tr class="recon-row" data-status="' + status + '">' +
+        '<td><b>' + r.name + '</b></td>' +
+        '<td style="text-align:right">' + fmtRp(r.hc) + '</td>' +
+        '<td style="text-align:right">' + fmtRp(r.finance) + '</td>' +
+        '<td style="text-align:right">' + fmtRp(r.accounting) + '</td>' +
+        '<td style="text-align:right">' + fmtRp(r.tax) + '</td>' +
+        '<td style="text-align:right' + (selisih !== 0 ? ';color:var(--red-text);font-weight:700' : '') + '">' + (selisih === 0 ? '0' : fmtRp(selisih)) + '</td>' +
+        '<td>' + reconStatusPill(status) + '</td>' +
+        '<td class="fat-scope-hide"><button class="eye-btn" onclick="toggleReconDetail(\'' + rid + '\')" title="Lihat detail"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>' +
+      '</tr>';
+      html += '<tr class="recon-detail-row" id="' + rid + '" style="display:none;" data-status="' + status + '"><td colspan="8"><div class="recon-detail">' +
+        (r.detail && r.detail.length ?
+          '<table><thead><tr><th>Nama Karyawan</th><th>NIK</th><th>Komponen</th><th style="text-align:right">Nilai HC</th><th style="text-align:right">Nilai Tax</th><th>Catatan</th></tr></thead><tbody>' +
+          r.detail.map(x => '<tr><td>' + x.nama + '</td><td class="muted">' + x.nik + '</td><td>' + x.komponen + '</td><td style="text-align:right">' + fmtRp(x.hc) + '</td><td style="text-align:right">' + fmtRp(x.tax) + '</td><td class="muted">' + x.catatan + '</td></tr>').join('') +
+          '</tbody></table>'
+          : '<span class="muted">Tidak ada selisih pada komponen ini — seluruh sistem (HC, Finance, Accounting, Tax) menunjukkan nilai yang sama.</span>') +
+      '</div></td></tr>';
+    });
+    const totalSelisih = totalTax - totalHc;
+    const totalStatus = reconStatus(totalHc, totalTax);
+    html += '<tr class="recon-row" data-status="' + totalStatus + '" style="font-weight:800;background:#fafbfc;">' +
+      '<td>Total Payroll</td>' +
+      '<td style="text-align:right">' + fmtRp(totalHc) + '</td>' +
+      '<td style="text-align:right">' + fmtRp(totalFinance) + '</td>' +
+      '<td style="text-align:right">' + fmtRp(totalAccounting) + '</td>' +
+      '<td style="text-align:right">' + fmtRp(totalTax) + '</td>' +
+      '<td style="text-align:right' + (totalSelisih !== 0 ? ';color:var(--red-text)' : '') + '">' + (totalSelisih === 0 ? '0' : fmtRp(totalSelisih)) + '</td>' +
+      '<td>' + reconStatusPill(totalStatus) + '</td><td class="fat-scope-hide"></td>' +
+    '</tr>';
+    document.getElementById('recon-tbody').innerHTML = html;
+  }
+  function toggleReconDetail(rid){
+    const row = document.getElementById(rid);
+    row.style.display = row.style.display === 'none' ? 'table-row' : 'none';
+  }
+  function filterReconTable(){
+    const val = document.getElementById('f-statusrekon').value;
+    document.querySelectorAll('#recon-tbody tr').forEach(tr => {
+      const st = tr.getAttribute('data-status');
+      const isDetail = tr.classList.contains('recon-detail-row');
+      if(!val){ tr.style.display = isDetail ? 'none' : ''; return; }
+      if(isDetail){ tr.style.display = 'none'; return; }
+      tr.style.display = (st === val) ? '' : 'none';
+    });
+  }
+
+  function renderVarianceStat(){
+    const d = periodData[currentPeriode];
+    const totalNow = d.recon.reduce((s,r)=>s+r.hc,0);
+    const delta = totalNow - d.prevTotal;
+    const pct = (delta / d.prevTotal * 100).toFixed(2);
+    document.getElementById('variance-stat-row').innerHTML =
+      '<div class="variance-stat"><div class="vs-lbl">Total Payroll Bulan Lalu</div><div class="vs-val">' + fmtRp(d.prevTotal) + '</div></div>' +
+      '<div class="variance-stat"><div class="vs-lbl">Total Payroll Bulan Ini</div><div class="vs-val">' + fmtRp(totalNow) + '</div></div>' +
+      '<div class="variance-stat"><div class="vs-lbl">Selisih</div><div class="vs-val">' + fmtRp(Math.abs(delta)) + '<span class="vs-delta up">' + (delta>=0?'↑':'↓') + ' ' + Math.abs(pct) + '%</span></div></div>';
+  }
+
+  function renderTop5(){
+    const d = periodData[currentPeriode];
+    const max = Math.max(...d.top5.map(r => Math.max(r.jun, r.jul))) * 1.08;
+    document.getElementById('top5-chart').innerHTML = d.top5.map(r => {
+      const junPct = (r.jun / max * 100).toFixed(1);
+      const julPct = (r.jul / max * 100).toFixed(1);
+      return '<div>' +
+        '<div class="top5-row-label">' + r.name + '</div>' +
+        '<div class="top5-bar-line" title="Jun 2026: ' + fmtRp(r.jun) + '"><div class="top5-bar-track"><div class="top5-bar-fill" style="width:' + junPct + '%;background:var(--chart-light)"></div></div><div class="top5-bar-val">' + fmtRp(r.jun) + '</div></div>' +
+        '<div class="top5-bar-line" title="Jul 2026: ' + fmtRp(r.jul) + '"><div class="top5-bar-track"><div class="top5-bar-fill" style="width:' + julPct + '%;background:var(--blue)"></div></div><div class="top5-bar-val">' + fmtRp(r.jul) + '</div></div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function shortRp(n){
+    const abs = Math.abs(n);
+    if(abs >= 1000000000) return (n/1000000000).toFixed(2).replace(/\.00$/,'') + ' M';
+    if(abs >= 1000000) return (n/1000000).toFixed(0) + ' jt';
+    return n.toLocaleString('id-ID');
+  }
+
+  function renderWaterfall(){
+    const d = periodData[currentPeriode];
+    const data = d.waterfall;
+    let running = data[0].value;
+    const bars = [{label:data[0].label, type:'total', to:running}];
+    for(let i=1;i<data.length-1;i++){
+      const val = data[i].value;
+      const from = running;
+      running += val;
+      bars.push({label:data[i].label, type:'delta', from:Math.min(from,running), to:Math.max(from,running), value:val});
+    }
+    bars.push({label:data[data.length-1].label, type:'total', to:running});
+
+    const totalStart = bars[0].to, totalEnd = bars[bars.length - 1].to;
+    const deltaBars = bars.filter(b => b.type === 'delta');
+    let axisMin = Math.min(totalStart, totalEnd, ...deltaBars.map(b => b.from));
+    let axisMax = Math.max(totalStart, totalEnd, ...deltaBars.map(b => b.to));
+    const pad = (axisMax - axisMin) * 0.18 || axisMax * 0.05;
+    axisMin -= pad; axisMax += pad;
+
+    const W = 620, H = 260, padL = 66, padR = 16, padT = 26, padB = 46;
+    const plotW = W - padL - padR, plotH = H - padT - padB;
+    const n = bars.length;
+    const bw = plotW / n * 0.52;
+    const gap = plotW / n;
+    function y(v){ return padT + plotH - ((v - axisMin) / (axisMax - axisMin)) * plotH; }
+    function x(i){ return padL + gap * i + (gap - bw) / 2; }
+
+    let svg = '';
+    // gridlines
+    const gridSteps = 5;
+    for(let g=0; g<=gridSteps; g++){
+      const v = axisMin + (axisMax - axisMin) * g / gridSteps;
+      const yy = y(v);
+      svg += '<line x1="' + padL + '" y1="' + yy.toFixed(1) + '" x2="' + (W-padR) + '" y2="' + yy.toFixed(1) + '" stroke="var(--gray-border)" stroke-width="1"/>';
+      svg += '<text x="' + (padL-10) + '" y="' + (yy+4).toFixed(1) + '" font-size="10" fill="var(--text-mid)" text-anchor="end">' + shortRp(v) + '</text>';
+    }
+    // connector lines
+    for(let i=0;i<n-1;i++){
+      const b1 = bars[i], b2 = bars[i+1];
+      const yTop = y(b1.type==='total' ? b1.to : b1.to);
+      svg += '<line x1="' + (x(i)+bw).toFixed(1) + '" y1="' + yTop.toFixed(1) + '" x2="' + x(i+1).toFixed(1) + '" y2="' + yTop.toFixed(1) + '" stroke="#c9ccd1" stroke-width="1.2" stroke-dasharray="3,3"/>';
+    }
+    // bars
+    bars.forEach((b, i) => {
+      const xi = x(i);
+      let yTop, hgt, fill;
+      if(b.type === 'total'){
+        yTop = y(b.to); hgt = y(axisMin) - yTop; fill = 'var(--navy)';
+      } else {
+        yTop = y(b.to); hgt = Math.max(y(b.from) - y(b.to), 2); fill = b.value >= 0 ? 'var(--green-dark)' : 'var(--red-text)';
+      }
+      const labelVal = b.type === 'total' ? shortRp(b.to) : (b.value >= 0 ? '+' : '') + shortRp(b.value);
+      svg += '<rect class="wf-bar" x="' + xi.toFixed(1) + '" y="' + yTop.toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + hgt.toFixed(1) + '" rx="4" fill="' + fill + '"><title>' + b.label + ': ' + (b.type==='total'?fmtRp(b.to):(b.value>=0?'+':'')+fmtRp(b.value)) + '</title></rect>';
+      svg += '<text x="' + (xi+bw/2).toFixed(1) + '" y="' + (yTop-8).toFixed(1) + '" font-size="10.5" font-weight="700" fill="' + fill + '" text-anchor="middle">' + labelVal + '</text>';
+      svg += '<text x="' + (xi+bw/2).toFixed(1) + '" y="' + (H-padB+18).toFixed(1) + '" font-size="10" fill="var(--text-mid)" text-anchor="middle">' + b.label + '</text>';
+    });
+    document.getElementById('wf-svg').setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    document.getElementById('wf-svg').innerHTML = svg;
+  }
+
+  function renderInsights(){
+    const d = periodData[currentPeriode];
+    document.getElementById('variance-insight-list').innerHTML = d.insights.map(t => '<li>' + t + '</li>').join('');
+  }
+
+  function renderExceptionChips(){
+    document.getElementById('exc-chip-row').innerHTML = exceptionCategories.map(c =>
+      '<div class="exc-chip' + (activeExceptionCat===c.key?' active':'') + '" onclick="setExceptionFilter(\'' + c.key + '\')"><div class="ec-lbl">' + c.label + '</div><div class="ec-val">' + c.count + '</div></div>'
+    ).join('');
+  }
+  function setExceptionFilter(key){
+    activeExceptionCat = activeExceptionCat === key ? '' : key;
+    renderExceptionChips();
+    renderExceptionTable();
+  }
+  function resetExceptionFilter(){
+    activeExceptionCat = '';
+    renderExceptionChips();
+    renderExceptionTable();
+  }
+  function renderExceptionTable(){
+    const rows = activeExceptionCat ? exceptionRows.filter(r => r.cat === activeExceptionCat) : exceptionRows;
+    document.getElementById('exc-tbody').innerHTML = rows.map(r =>
+      '<tr><td><div class="cell-emp"><b>' + r.nama + '</b><small>' + r.nik + '</small></div></td>' +
+      '<td class="muted">' + r.nik + '</td>' +
+      '<td>' + r.jabatan + '</td>' +
+      '<td>' + r.branch + '</td>' +
+      '<td>' + r.jenis + '</td>' +
+      '<td>' + (r.status==='Open' ? '<span class="pill pill-red">Open</span>' : '<span class="pill pill-peach">In Progress</span>') + '</td>' +
+      '<td>' + r.pic + '</td>' +
+      '<td>' + r.target + '</td>' +
+      '<td><button class="eye-btn" onclick="showToast(\'Membuka detail perbaikan data ' + r.nama + '…\')" title="Detail"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td></tr>'
+    ).join('');
+    const totalCount = exceptionCategories.reduce((s,c)=>s+c.count,0);
+    document.getElementById('exc-count-label').textContent = 'Menampilkan ' + rows.length + ' dari ' + totalCount + ' data';
+  }
+
+  function renderJournal(){
+    document.getElementById('journal-tbody').innerHTML = journalRows.map(r =>
+      '<tr><td class="muted">' + r.coa + '</td><td>' + r.name + '</td>' +
+      '<td style="text-align:right">' + (r.debit ? fmtRp(r.debit) : '-') + '</td>' +
+      '<td style="text-align:right">' + (r.credit ? fmtRp(r.credit) : '-') + '</td>' +
+      '<td><span class="pill pill-peach">' + r.status + '</span></td></tr>'
+    ).join('');
+  }
+
+  function renderAudit(){
+    const rows = auditExpanded ? auditRowsBase.concat(auditRowsExtra) : auditRowsBase;
+    document.getElementById('audit-tbody').innerHTML = rows.map(r =>
+      '<tr><td class="muted">' + r.waktu + '</td><td>' + r.user + '</td><td>' + r.role + '</td><td>' + r.aktivitas + '</td>' +
+      '<td>' + (r.status==='ok' ? '<span class="audit-status-dot" style="color:var(--green-dark)"><i style="background:var(--green-dark)"></i>Selesai</span>' : '<span class="audit-status-dot" style="color:var(--peach-text)"><i style="background:var(--peach-text)"></i>Pending</span>') + '</td></tr>'
+    ).join('');
+  }
+  function toggleAuditFull(){
+    auditExpanded = !auditExpanded;
+    document.getElementById('audit-toggle-btn').textContent = auditExpanded ? 'Sembunyikan' : 'Lihat Semua';
+    renderAudit();
+  }
+
+  function renderReconOkCard(){
+    const d = periodData[currentPeriode];
+    const hasIssue = d.recon.some(r => reconStatus(r.hc, r.tax) !== 'Match');
+    const card = document.getElementById('recon-ok-card');
+    if(hasIssue){
+      card.className = 'recon-ok-card warn';
+      card.querySelector('p').innerHTML = 'Ditemukan selisih <b>Rp1.500.000</b> pada komponen <b>Tunjangan Tidak Tetap</b> antara data HC/Finance/Accounting dan Tax — perlu divalidasi Tax sebelum payroll ditutup.';
+    } else {
+      card.className = 'recon-ok-card ok';
+      card.querySelector('p').innerHTML = 'Tidak ditemukan selisih material antara data HC, Finance, Accounting dan Tax.';
+    }
+  }
+
+  function renderAll(){
+    renderExecKpi();
+    renderStatusStrip();
+    renderReconTable();
+    renderVarianceStat();
+    renderTop5();
+    renderWaterfall();
+    renderInsights();
+    renderExceptionChips();
+    renderExceptionTable();
+    renderJournal();
+    renderAudit();
+    renderReconOkCard();
+  }
+
+  function onPeriodeChange(){
+    currentPeriode = document.getElementById('f-periode').value;
+    document.getElementById('f-statusrekon').value = '';
+    renderAll();
+  }
+
+  function generateRekonsiliasi(btn){
+    const original = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = 'Menghitung ulang…';
+    setTimeout(() => {
+      renderAll();
+      btn.disabled = false;
+      btn.innerHTML = original;
+      showToast('Rekonsiliasi berhasil di-generate ulang untuk ' + periodData[currentPeriode].label + '.');
+    }, 700);
+  }
+
+  let payrollLocked = false;
+  function lockPayroll(){
+    if(payrollLocked) return;
+    payrollLocked = true;
+    document.getElementById('lock-note').innerHTML = '<svg viewBox="0 0 24 24" width="15" height="15" stroke="var(--green-dark)" fill="none" stroke-width="2"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg> Periode ' + periodData[currentPeriode].label + ' terkunci';
+    document.getElementById('btn-lock').disabled = true;
+    document.querySelectorAll('#f-periode, #f-group, #f-wilayah, #f-branch').forEach(el => el.disabled = true);
+    showToast('Payroll periode ' + periodData[currentPeriode].label + ' telah dikunci — tidak dapat diubah lagi.');
+  }
+  function approvePayroll(){
+    document.getElementById('btn-approve').innerHTML = '<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Approved';
+    document.getElementById('btn-approve').disabled = true;
+    showToast('Payroll periode ' + periodData[currentPeriode].label + ' disetujui oleh Direktur FAT.');
+  }
+  function syncSystem(name){
+    showToast('Sinkronisasi data dengan ' + name + ' dijalankan…');
+  }
+
+  function applyFatScope(){
+    const scope = new URLSearchParams(location.search).get('scope');
+    if(scope === 'fat'){
+      document.body.classList.add('fat-scope');
+    }
+  }
+
+  renderAll();
+  applyFatScope();
+</script>
+</body>
+</html>

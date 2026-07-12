@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dasaria HRIS — Finance, Tax &amp; Accounting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0c3a87;
+    --navy-dark:#0a2e44;
+    --blue:#465fff;
+    --blue-light:#ecf3ff;
+    --chart-blue:#1f6af7;
+    --chart-light:#cfe0ff;
+    --green:#22c55e;
+    --green-dark:#16a34a;
+    --gray-bg:#f4f5f7;
+    --gray-border:#e4e6ea;
+    --text-dark:#1f2937;
+    --text-mid:#6b7280;
+    --peach:#fde3cf;
+    --peach-text:#c2622a;
+    --red-badge:#fde2e2;
+    --red-text:#c0392b;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Outfit','Segoe UI',Arial,sans-serif;background:var(--gray-bg);color:var(--text-dark);font-size:14px;}
+  .app{display:flex;min-height:100vh;}
+
+  /* SIDEBAR */
+  .sidebar{width:262px;background:#fff;border-right:1px solid var(--gray-border);flex-shrink:0;padding:20px 0;height:100vh;overflow-y:auto;position:sticky;top:0;}
+  .brand{display:flex;align-items:center;gap:10px;padding:0 20px 18px 20px;}
+  .brand .logo{width:38px;height:38px;background:var(--blue);color:#fff;border:none;border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(16,24,40,.08);font-size:16px;font-weight:800;flex-shrink:0;}
+  .brand .name{font-size:16.5px;font-weight:800;color:#101828;letter-spacing:-.2px;line-height:1.25;}
+  .brand .name-sub{font-size:10.5px;color:var(--text-mid);font-weight:600;}
+  .menu-label{font-size:11px;font-weight:700;padding:14px 20px 8px;color:var(--text-mid);text-transform:uppercase;letter-spacing:.4px;}
+  .menu-label:first-of-type{padding-top:4px;}
+  .menu-item{display:flex;align-items:center;gap:10px;padding:8px 12px;margin:1px 12px;border-radius:8px;cursor:pointer;color:var(--text-dark);text-decoration:none;font-size:13.5px;}
+  .menu-item svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.7;flex-shrink:0;}
+  .menu-item:hover{background:#f7f8fa;}
+  .menu-item.active-parent{color:var(--blue);font-weight:700;background:var(--blue-light);}
+  .menu-item.active{color:var(--blue);font-weight:700;background:var(--blue-light);}
+  .sidebar-collapse{display:flex;align-items:center;gap:8px;padding:9px 20px;margin-top:14px;color:var(--text-mid);font-size:13px;font-weight:600;cursor:pointer;border-top:1px solid var(--gray-border);padding-top:16px;}
+  .sidebar-collapse svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;}
+
+  /* TOPBAR */
+  .main{flex:1;display:flex;flex-direction:column;min-width:0;}
+  .topbar{min-height:64px;background:#fff;border-bottom:1px solid var(--gray-border);display:flex;align-items:center;justify-content:space-between;padding:10px 24px;gap:16px;flex-wrap:wrap;}
+  .topbar-left{display:flex;align-items:center;gap:10px;}
+  .icon-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--gray-border);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-dark);flex-shrink:0;}
+  .icon-btn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8;}
+  .icon-btn:hover{background:#f7f8fa;}
+  .topbar .user{display:flex;align-items:center;gap:9px;font-weight:600;cursor:pointer;padding:4px 8px 4px 4px;border-radius:20px;}
+  .topbar .user:hover{background:#f7f8fa;}
+  .topbar .user svg{width:14px;height:14px;stroke:var(--text-mid);fill:none;stroke-width:2;}
+  .topbar .user .u-name{font-size:13.5px;line-height:1.3;}
+  .topbar .user .u-role{font-size:11px;color:var(--text-mid);font-weight:600;}
+  .avatar{width:32px;height:32px;border-radius:50%;background:#cbd5e1;display:flex;align-items:center;justify-content:center;font-size:12px;color:#334155;flex-shrink:0;overflow:hidden;}
+
+  /* WORKSPACE SWITCHER */
+  .ws-switcher{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;min-width:280px;}
+  .ws-switcher-lbl{font-size:10px;color:var(--text-mid);font-weight:700;text-transform:uppercase;letter-spacing:.4px;}
+  .ws-tabs{display:flex;gap:5px;background:var(--gray-bg);border:1px solid var(--gray-border);border-radius:11px;padding:4px;}
+  .ws-tab{display:flex;align-items:center;gap:7px;padding:8px 13px;border-radius:8px;font-size:12px;font-weight:700;color:var(--text-mid);text-decoration:none;border:none;background:none;cursor:pointer;font-family:inherit;white-space:nowrap;}
+  .ws-tab svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;flex-shrink:0;}
+  .ws-tab.active{background:#fff;color:var(--blue);box-shadow:0 1px 3px rgba(16,24,40,.1);}
+  .ws-tab:not(.active):hover{color:var(--text-dark);}
+  @media(max-width:1180px){.ws-tab .ws-tab-text{display:none;} .ws-switcher-lbl{display:none;}}
+
+  .content{padding:24px 28px;overflow-x:auto;}
+  .page-header-v2{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;gap:14px;flex-wrap:wrap;}
+  .page-header-v2 h1{font-size:22px;margin:0 0 4px;display:flex;align-items:center;gap:8px;}
+  .page-header-v2 h1 svg{width:18px;height:18px;stroke:var(--text-mid);fill:none;stroke-width:2;cursor:help;}
+  .page-header-v2 .sub{font-size:13px;color:var(--text-mid);}
+
+  /* CARD/TABLE */
+  .card{background:#fff;border:1px solid var(--gray-border);border-radius:12px;padding:20px;margin-bottom:20px;}
+  .card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
+  .card-head h2{font-size:15.5px;margin:0;}
+  .btn{border:none;border-radius:8px;padding:9px 16px;font-weight:600;cursor:pointer;font-size:13.5px;display:inline-flex;align-items:center;gap:6px;font-family:inherit;}
+  .btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;}
+  .btn-blue{background:var(--blue);color:#fff;}
+  .btn-outline{background:#fff;border:1px solid var(--gray-border);color:var(--text-dark);}
+  .btn-outline:hover{background:#f7f8fa;}
+  .pill{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600;display:inline-block;white-space:nowrap;}
+  .pill-blue{background:var(--blue-light);color:var(--blue);}
+  .pill-peach{background:var(--peach);color:var(--peach-text);}
+  .pill-green{background:#dcfce7;color:var(--green-dark);}
+  .pill-red{background:var(--red-badge);color:var(--red-text);}
+  .pill-gray{background:var(--gray-border);color:var(--text-mid);}
+  .muted{color:var(--text-mid);}
+  .link-arrow{font-size:12.5px;font-weight:700;color:var(--blue);text-decoration:none;display:inline-flex;align-items:center;gap:4px;}
+  .card-foot-link{margin-top:14px;padding-top:14px;border-top:1px solid var(--gray-border);display:flex;justify-content:flex-end;}
+
+  /* KPI ROW */
+  .exec-kpi-row{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;margin-bottom:20px;}
+  .exec-kpi-card{background:#fff;border:1px solid var(--gray-border);border-radius:12px;padding:15px 14px;display:flex;flex-direction:column;gap:9px;}
+  .exec-kpi-card .eki-head{display:flex;align-items:center;gap:8px;}
+  .exec-kpi-circle{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .exec-kpi-circle svg{width:15px;height:15px;stroke-width:2;fill:none;}
+  .exec-kpi-card .eki-lbl{font-size:11px;color:var(--text-mid);font-weight:600;line-height:1.25;}
+  .exec-kpi-card .eki-val{font-size:17px;font-weight:800;color:var(--text-dark);line-height:1.2;}
+  .exec-kpi-card .eki-sub{font-size:10.5px;color:var(--text-mid);}
+  .exec-kpi-card .eki-delta{font-size:10.5px;font-weight:700;color:var(--green-dark);}
+  .exec-kpi-card .eki-bar{height:6px;background:var(--gray-bg);border-radius:4px;overflow:hidden;margin-top:2px;}
+  .exec-kpi-card .eki-bar > div{height:100%;background:var(--blue);}
+  @media(max-width:1550px){.exec-kpi-row{grid-template-columns:repeat(4,1fr);}}
+  @media(max-width:820px){.exec-kpi-row{grid-template-columns:repeat(2,1fr);}}
+
+  /* GRID LAYOUTS */
+  .fat-row-3{display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:20px;align-items:stretch;margin-bottom:20px;}
+  .fat-row-2{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;align-items:stretch;margin-bottom:20px;}
+  .fat-row-3b{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;align-items:stretch;}
+  @media(max-width:1300px){.fat-row-3,.fat-row-2,.fat-row-3b{grid-template-columns:1fr;}}
+
+  /* DONUT */
+  .donut-wrap{display:flex;align-items:center;gap:18px;}
+  .donut-legend{display:flex;flex-direction:column;gap:8px;font-size:12px;color:var(--text-mid);flex:1;}
+  .dl-row{display:flex;align-items:center;gap:7px;white-space:nowrap;}
+  .dl-row b{color:var(--text-dark);font-size:12.5px;margin-left:2px;}
+  .dl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .dl-val{margin-left:auto;font-size:11px;color:var(--text-mid);}
+
+  /* BUDGET VS ACTUAL */
+  .ba-legend{display:flex;gap:16px;margin-bottom:8px;}
+  .ba-legend span{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text-mid);font-weight:600;}
+  .ba-legend i{width:11px;height:11px;border-radius:3px;flex-shrink:0;}
+  .ba-var-row{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:10px;border-top:1px solid var(--gray-border);padding-top:10px;}
+  .ba-var-col{text-align:center;}
+  .ba-var-lbl{font-size:9.5px;color:var(--text-mid);text-transform:uppercase;}
+  .ba-var-rp{font-size:11px;font-weight:700;color:var(--red-text);}
+  .ba-var-pct{font-size:10px;color:var(--red-text);}
+
+  /* PAYROLL TREND */
+  .pt-legend{display:flex;gap:16px;}
+  .pt-legend span{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text-mid);font-weight:600;}
+  .pt-legend i{width:11px;height:3px;border-radius:2px;flex-shrink:0;}
+  .pt-legend i.dot{width:8px;height:8px;border-radius:50%;}
+  .pt-months{display:flex;justify-content:space-between;margin-top:2px;padding:0 6px;}
+  .pt-months span{font-size:8.5px;color:var(--text-mid);flex:1;text-align:center;}
+  .pt-stat-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;border-top:1px solid var(--gray-border);padding-top:14px;}
+  .pt-stat{text-align:center;}
+  .pt-stat .lbl{font-size:11px;color:var(--text-mid);margin-bottom:4px;}
+  .pt-stat .val{font-size:16px;font-weight:800;color:var(--text-dark);}
+  .pt-stat .val small{font-size:11px;font-weight:700;color:var(--green-dark);margin-left:5px;}
+
+  /* CASH REQUIREMENT */
+  .cash-row{display:flex;justify-content:space-between;font-size:13px;padding:8px 0;border-bottom:1px dashed var(--gray-border);}
+  .cash-row.total{border-bottom:none;border-top:1.5px solid var(--gray-border);margin-top:4px;padding-top:12px;font-weight:700;}
+  .cash-row.grand{background:var(--blue-light);border-radius:8px;padding:12px 12px;margin-top:8px;font-weight:800;color:var(--navy);}
+
+  /* COMPLIANCE STATUS */
+  .compliance-list{display:flex;flex-direction:column;gap:2px;}
+  .compliance-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--gray-border);font-size:13px;}
+  .compliance-row:last-child{border-bottom:none;}
+
+  /* INSIGHT / APPROVAL / OK BOX */
+  .insight-box{background:var(--blue-light);border:1px solid #c7d7ff;border-radius:10px;padding:14px 16px;}
+  .insight-box .ib-title{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+  .insight-box .ib-title svg{width:15px;height:15px;stroke:var(--navy);fill:none;stroke-width:2;}
+  .insight-box ul{margin:0;padding-left:18px;font-size:13px;color:var(--text-dark);line-height:1.7;}
+  .approval-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:12px;}
+  .approval-stat{text-align:left;}
+  .approval-stat .lbl{font-size:11px;color:var(--text-mid);margin-bottom:5px;}
+  .approval-stat .val{font-size:15px;font-weight:800;color:var(--text-dark);}
+  .approval-status-row{display:flex;align-items:center;gap:6px;font-size:12.5px;}
+  .approval-status-row svg{width:14px;height:14px;stroke:var(--green-dark);fill:none;stroke-width:2.4;}
+  .approval-actions{display:flex;flex-direction:column;gap:10px;}
+  .approval-actions .btn{width:100%;justify-content:center;padding:12px;}
+
+  .toast{position:fixed;bottom:24px;right:28px;background:var(--navy);color:#fff;padding:13px 18px;border-radius:10px;font-size:13.5px;font-weight:600;box-shadow:0 8px 24px rgba(16,24,40,.25);display:flex;align-items:center;gap:10px;z-index:100;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .2s,transform .2s;}
+  .toast.show{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="brand"><div class="logo">D</div><div><div class="name">Dasaria</div><div class="name-sub">Enterprise HRIS</div></div></div>
+
+    <div class="menu-label">Finance, Tax &amp; Accounting</div>
+    <a class="menu-item active-parent" href="dashboard-financial.html">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      Dashboard Financial
+    </a>
+
+    <div class="menu-label">Payroll Financial Control</div>
+    <a class="menu-item active" href="dashboard-financial.html">
+      <svg viewBox="0 0 24 24"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z"/></svg>
+      Executive Dashboard
+    </a>
+    <div class="menu-item" onclick="comingSoon('Budget vs Actual')">
+      <svg viewBox="0 0 24 24"><path d="M3 21h18M6 21V10M12 21V6M18 21v-8"/></svg>
+      Budget vs Actual
+    </div>
+    <div class="menu-item" onclick="comingSoon('Payroll Cost Analysis')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.5 3.8"/></svg>
+      Payroll Cost Analysis
+    </div>
+    <div class="menu-item" onclick="comingSoon('Cash Requirement')">
+      <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="13" rx="2"/><circle cx="12" cy="12.5" r="3"/><path d="M6 6V5a2 2 0 012-2h8a2 2 0 012 2v1"/></svg>
+      Cash Requirement
+    </div>
+    <a class="menu-item" href="../hc/rekonsiliasi-payroll.html?scope=fat">
+      <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      Payroll Reconciliation
+    </a>
+    <div class="menu-item" onclick="comingSoon('Journal Posting')">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>
+      Journal Posting
+    </div>
+    <div class="menu-item" onclick="comingSoon('Tax Compliance')">
+      <svg viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/></svg>
+      Tax Compliance
+    </div>
+    <div class="menu-item" onclick="comingSoon('BPJS Compliance')">
+      <svg viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+      BPJS Compliance
+    </div>
+    <div class="menu-item" onclick="comingSoon('Payroll Closing')">
+      <svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
+      Payroll Closing
+    </div>
+
+    <div class="menu-label">Accounting</div>
+    <div class="menu-item" onclick="comingSoon('Journal &amp; GL Monitoring')">
+      <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+      Journal &amp; GL Monitoring
+    </div>
+    <div class="menu-item" onclick="comingSoon('COA Mapping')">
+      <svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+      COA Mapping
+    </div>
+    <div class="menu-item" onclick="comingSoon('Closing Period')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><path d="M9 14l2 2 4-4"/></svg>
+      Closing Period
+    </div>
+
+    <div class="menu-label">Tax</div>
+    <div class="menu-item" onclick="comingSoon('PPh21 Monitoring')">
+      <svg viewBox="0 0 24 24"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
+      PPh21 Monitoring
+    </div>
+    <div class="menu-item" onclick="comingSoon('Tax Payment')">
+      <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      Tax Payment
+    </div>
+    <div class="menu-item" onclick="comingSoon('Coretax Reporting')">
+      <svg viewBox="0 0 24 24"><path d="M12 19V6M5 12l7-7 7 7"/></svg>
+      Coretax Reporting
+    </div>
+
+    <div class="menu-label">Budgeting</div>
+    <div class="menu-item" onclick="comingSoon('Payroll Budgeting')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>
+      Payroll Budgeting
+    </div>
+    <div class="menu-item" onclick="comingSoon('Budget Scenario')">
+      <svg viewBox="0 0 24 24"><path d="M12 2l9 5-9 5-9-5z"/><path d="M3 12l9 5 9-5M3 17l9 5 9-5"/></svg>
+      Budget Scenario
+    </div>
+
+    <div class="menu-label">Reports</div>
+    <div class="menu-item" onclick="comingSoon('Financial Reports')">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 15l2-2 2 2 3-4"/></svg>
+      Financial Reports
+    </div>
+    <div class="menu-item" onclick="comingSoon('Management Reports')">
+      <svg viewBox="0 0 24 24"><path d="M9 2h6a1 1 0 011 1v2H8V3a1 1 0 011-1z"/><path d="M8 4H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2"/><path d="M9 12h6M9 16h6"/></svg>
+      Management Reports
+    </div>
+
+    <div class="menu-label">Master Finance</div>
+    <div class="menu-item" onclick="comingSoon('Payroll Group')">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      Payroll Group
+    </div>
+    <div class="menu-item" onclick="comingSoon('Cost Center')">
+      <svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1M9 13h1M14 9h1M14 13h1M9 21v-4h6v4"/></svg>
+      Cost Center
+    </div>
+    <div class="menu-item" onclick="comingSoon('Bank &amp; Payment Method')">
+      <svg viewBox="0 0 24 24"><path d="M3 10l9-6 9 6"/><rect x="4" y="10" width="16" height="9" rx="1"/><path d="M2 19h20"/></svg>
+      Bank &amp; Payment Method
+    </div>
+
+    <div class="menu-label">Settings</div>
+    <div class="menu-item" onclick="comingSoon('User &amp; Access')">
+      <svg viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><circle cx="12" cy="10" r="2.3"/></svg>
+      User &amp; Access
+    </div>
+    <div class="menu-item" onclick="comingSoon('Approval Flow')">
+      <svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="12" r="2.5"/><path d="M6 8.5V15.5M8.3 7l7.4 3.5M8.3 17l7.4-3.5"/></svg>
+      Approval Flow
+    </div>
+    <div class="menu-item" onclick="comingSoon('Configuration')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.6a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      Configuration
+    </div>
+
+    <div class="sidebar-collapse" onclick="showToast('Sidebar collapse belum tersedia di mockup ini.')">
+      <svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Collapse
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <div class="icon-btn" style="border-radius:8px;width:38px;height:38px" onclick="showToast('Sidebar toggle belum tersedia di mockup ini.')">
+          <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h12M3 18h7"/></svg>
+        </div>
+      </div>
+
+      <!-- WORKSPACE SWITCHER -->
+      <div class="ws-switcher">
+        <span class="ws-switcher-lbl">Pilih Workspace</span>
+        <div class="ws-tabs">
+          <a class="ws-tab" href="../hc/dashboard-hc.html">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            <span class="ws-tab-text">People &amp; Corporate Compliance</span>
+          </a>
+          <a class="ws-tab active" href="dashboard-financial.html">
+            <svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1M9 13h1M14 9h1M14 13h1M9 21v-4h6v4"/></svg>
+            <span class="ws-tab-text">Finance, Tax &amp; Accounting</span>
+          </a>
+          <button class="ws-tab" onclick="showToast('Workspace Board of Directors segera hadir.')">
+            <svg viewBox="0 0 24 24"><path d="M20 7h-9M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
+            <span class="ws-tab-text">Board of Directors</span>
+          </button>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:14px">
+        <div class="icon-btn" title="Notifikasi" style="position:relative;">
+          <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+          <span style="position:absolute;top:-3px;right:-3px;background:var(--gray-border);color:var(--text-mid);font-size:9px;font-weight:800;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;">0</span>
+        </div>
+        <div class="user">
+          <div class="avatar">T</div>
+          <div>
+            <div class="u-name">Tes Admin</div>
+            <div class="u-role">FAT Director</div>
+          </div>
+          <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="page-header-v2">
+        <div>
+          <h1>Payroll Financial Control Dashboard
+            <svg viewBox="0 0 24 24" title="Ringkasan pengendalian biaya payroll dan status rekonsiliasi periode berjalan."><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+          </h1>
+          <div class="sub">Ringkasan pengendalian biaya payroll dan status rekonsiliasi periode berjalan.</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <label style="font-size:10.5px;font-weight:700;color:var(--text-mid);text-transform:uppercase;letter-spacing:.3px;">Periode Payroll</label>
+            <select id="f-periode" onchange="onPeriodeChange()" style="border:1px solid var(--gray-border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;background:#fff;">
+              <option value="2026-07">Juli 2026</option>
+              <option value="2026-06">Juni 2026</option>
+            </select>
+          </div>
+          <button class="btn btn-outline" onclick="showToast('Filter lanjutan (Direktorat, Wilayah, Cost Center) segera hadir.')" style="margin-top:20px;">
+            <svg viewBox="0 0 24 24"><path d="M22 3H2l8 9.46V19l4 2v-8.54z"/></svg>
+            Filter
+          </button>
+          <button class="btn btn-outline" onclick="toggleExportMenu(event)" style="margin-top:20px;position:relative;">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg>
+            Export
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI ROW -->
+      <div class="exec-kpi-row" id="exec-kpi-row"></div>
+
+      <!-- ROW: Donut / Budget vs Actual / Payroll Trend -->
+      <div class="fat-row-3">
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-head"><h2>Payroll Cost Composition</h2></div>
+          <div class="donut-wrap">
+            <div id="donut-chart"></div>
+            <div class="donut-legend" id="donut-legend"></div>
+          </div>
+          <div class="card-foot-link" style="justify-content:flex-start;">
+            <a class="link-arrow" href="#" onclick="showToast('Membuka detail komponen payroll cost…');return false;">Lihat Detail Komponen <svg viewBox="0 0 24 24" width="12" height="12" stroke="var(--blue)" fill="none" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-head"><h2>Budget vs Actual (YTD)</h2><span class="muted" style="font-size:11.5px;">(dalam Juta Rupiah)</span></div>
+          <div class="ba-legend">
+            <span><i style="background:#fff;border:1.6px dashed var(--chart-blue);"></i>Budget</span>
+            <span><i style="background:var(--blue)"></i>Actual</span>
+          </div>
+          <svg id="budget-actual-svg" viewBox="0 0 560 230" style="width:100%;height:auto;display:block;"></svg>
+          <div class="ba-var-row" id="budget-actual-variance"></div>
+          <div class="card-foot-link">
+            <a class="link-arrow" href="#" onclick="showToast('Membuka detail Budget vs Actual…');return false;">Lihat Detail Budget <svg viewBox="0 0 24 24" width="12" height="12" stroke="var(--blue)" fill="none" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-head">
+            <h2>Payroll Trend (12 Bulan)</h2>
+            <a class="link-arrow" href="#" onclick="showToast('Membuka tren payroll lengkap…');return false;">Lihat Detail</a>
+          </div>
+          <div class="pt-legend" style="margin-bottom:6px;">
+            <span><i style="background:var(--blue)"></i>Payroll Cost (Rp)</span>
+            <span><i class="dot" style="background:var(--green-dark)"></i>Headcount</span>
+          </div>
+          <div id="pt-bar-chart"></div>
+          <div id="pt-line-chart"></div>
+          <div class="pt-months" id="pt-months"></div>
+          <div class="pt-stat-row">
+            <div class="pt-stat"><div class="lbl">Avg Cost per Employee</div><div class="val" id="pt-avgcost">—</div></div>
+            <div class="pt-stat"><div class="lbl">Headcount</div><div class="val" id="pt-headcount">—</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROW: Variance Driver / Cash Requirement / Compliance Status -->
+      <div class="fat-row-3">
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-head"><h2 id="variance-title">Variance Driver (vs Jun 2026)</h2></div>
+          <div class="wf-wrap" style="width:100%;overflow-x:auto;">
+            <svg id="wf-svg" viewBox="0 0 460 240" style="width:100%;height:auto;display:block;min-width:340px;"></svg>
+          </div>
+          <div class="card-foot-link">
+            <a class="link-arrow" href="#" onclick="showToast('Membuka analisis varians lengkap…');return false;">Lihat Detail Analisis <svg viewBox="0 0 24 24" width="12" height="12" stroke="var(--blue)" fill="none" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-head"><h2>Cash Requirement Breakdown</h2></div>
+          <div id="cash-breakdown"></div>
+          <div class="card-foot-link">
+            <a class="link-arrow" href="#" onclick="showToast('Membuka proyeksi cash flow…');return false;">Lihat Cash Forecast <svg viewBox="0 0 24 24" width="12" height="12" stroke="var(--blue)" fill="none" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-head"><h2>Compliance &amp; Reconciliation Status</h2></div>
+          <div class="compliance-list" id="compliance-list"></div>
+          <div class="card-foot-link">
+            <a class="link-arrow" href="#" onclick="showToast('Membuka detail status compliance…');return false;">Lihat Detail Status <svg viewBox="0 0 24 24" width="12" height="12" stroke="var(--blue)" fill="none" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROW: Financial Insight / Approval Summary / Persetujuan Payroll -->
+      <div class="fat-row-3b">
+        <div class="card" style="margin-bottom:0;">
+          <div class="insight-box">
+            <div class="ib-title">
+              <svg viewBox="0 0 24 24"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z"/></svg>
+              Financial Insight
+            </div>
+            <ul id="financial-insight-list"></ul>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-head"><h2>Approval Summary</h2></div>
+          <div class="approval-stat-row" id="approval-stat-row"></div>
+          <div class="approval-stat-row" id="approval-status-list" style="grid-template-columns:repeat(4,1fr);margin-bottom:0;"></div>
+        </div>
+
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-head"><h2>Persetujuan Payroll</h2></div>
+          <div class="approval-actions">
+            <button class="btn btn-blue" id="btn-approve" onclick="approvePayroll()">
+              <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+              Approve Payroll
+            </button>
+            <button class="btn btn-outline" onclick="returnToHc()">
+              <svg viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h10.5A5.5 5.5 0 0120 14.5v0A5.5 5.5 0 0114.5 20H11"/></svg>
+              Return to HC
+            </button>
+            <button class="btn btn-outline" onclick="showToast('Payroll ditolak dan dikembalikan ke HC dengan catatan.')" style="color:var(--red-text);">
+              <svg viewBox="0 0 24 24" stroke="var(--red-text)"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              Reject Payroll
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(window.__toastTimer);
+    window.__toastTimer = setTimeout(()=>t.classList.remove('show'), 2600);
+  }
+  function comingSoon(name){ showToast('Modul "' + name + '" segera hadir.'); }
+  function toggleExportMenu(e){ e.stopPropagation(); showToast('Menyiapkan menu export (Excel/PDF)…'); }
+
+  function fmtRp(n){
+    const neg = n < 0;
+    return (neg?'-Rp ':'Rp ') + Math.abs(Math.round(n)).toLocaleString('id-ID');
+  }
+  function fmtJt(n){ return n.toLocaleString('id-ID'); }
+
+  const periodData = {
+    '2026-07': {
+      label:'Juli 2026', prevLabel:'Juni 2026',
+      totalPaid:248, totalPaidDelta:12,
+      grossPayroll:1987450000, grossDelta:8.42,
+      thp:1624820000, thpDelta:8.10,
+      totalCost:2163820000, costDelta:7.89,
+      cashRequirement:2054320000,
+      budgetUtil:83.2,
+      donut:[
+        {name:'Gaji Pokok', val:1219250000, color:'#2563EB'},
+        {name:'Tunjangan Tetap', val:341520000, color:'#16A34A'},
+        {name:'Tunjangan Tidak Tetap', val:164750000, color:'#0EA5E9'},
+        {name:'Lembur', val:110520000, color:'#F59E0B'},
+        {name:'Insentif', val:90850000, color:'#9333EA'},
+        {name:'Bonus', val:78000000, color:'#DC2626'},
+        {name:'THR', val:45500000, color:'#EC4899'},
+        {name:'BPJS (Perusahaan)', val:67430000, color:'#0C3A87'},
+        {name:'Payroll (Ditanggung)', val:45000000, color:'#6B7280'}
+      ],
+      budgetActual:[
+        {name:'Gaji Pokok', budget:1350, actual:1219},
+        {name:'Tunjangan', budget:620, actual:506},
+        {name:'Lembur', budget:145, actual:111},
+        {name:'Bonus', budget:95, actual:78},
+        {name:'BPJS', budget:82, actual:67},
+        {name:'PPh21', budget:100, actual:85}
+      ],
+      trendMonths:['Agu 25','Sep 25','Okt 25','Nov 25','Des 25','Jan 26','Feb 26','Mar 26','Apr 26','Mei 26','Jun 26','Jul 26'],
+      trendCost:[1450,1490,1540,1580,1630,1680,1730,1790,1850,1920,2006,2164],
+      trendHeadcount:[216,219,221,223,225,227,229,231,233,234,236,248],
+      waterfall:[
+        {label:'Jun 2026', value:2006000000},
+        {label:'Karyawan Baru', value:85000000},
+        {label:'Kenaikan UMK', value:65000000},
+        {label:'Bonus Sales', value:40000000},
+        {label:'Lembur NOC', value:26000000},
+        {label:'Resign', value:-38000000},
+        {label:'Lainnya', value:-20000000},
+        {label:'Jul 2026', value:2164000000}
+      ],
+      cash:[
+        {lbl:'Total Payroll Cost', val:2163820000, type:'base'},
+        {lbl:'PPh21 (Karyawan & Perusahaan)', val:-72450000, type:'ded'},
+        {lbl:'BPJS (Kesehatan & TK)', val:-85950000, type:'ded'},
+        {lbl:'Kasbon / Potongan Lainnya', val:-18100000, type:'ded'},
+        {lbl:'Net Transfer Payroll', val:1987320000, type:'sub'},
+        {lbl:'Cash Requirement', val:2054320000, type:'grand'}
+      ],
+      compliance:[
+        {lbl:'Payroll Reconciliation (HC vs Finance vs Accounting)', st:'Match', color:'green'},
+        {lbl:'Journal Posting', st:'Ready', color:'blue'},
+        {lbl:'PPh21 Validation', st:'Validated', color:'green'},
+        {lbl:'BPJS Validation', st:'Validated', color:'green'},
+        {lbl:'Bank Transfer', st:'Waiting', color:'peach'},
+        {lbl:'Payroll Lock', st:'Pending', color:'gray'}
+      ],
+      insights:[
+        'Payroll Juli 2026 meningkat Rp158.000.000 (7,89%) dibanding Juni 2026.',
+        'Penyebab utama peningkatan: penambahan 12 karyawan baru, kenaikan UMK di 3 wilayah, bonus sales, dan kenaikan lembur NOC.',
+        'Budget utilization saat ini 83,2%. Diproyeksikan over budget Rp1,2 Miliar pada akhir tahun jika tren ini berlanjut.'
+      ],
+      approvalStatus:[
+        {lbl:'Cash Availability', ready:true},
+        {lbl:'Journal Status', ready:true},
+        {lbl:'Tax Status', ready:true},
+        {lbl:'BPJS Status', ready:true}
+      ]
+    },
+    '2026-06': {
+      label:'Juni 2026', prevLabel:'Mei 2026',
+      totalPaid:236, totalPaidDelta:8,
+      grossPayroll:1832400000, grossDelta:6.10,
+      thp:1503600000, thpDelta:5.95,
+      totalCost:2006000000, costDelta:6.55,
+      cashRequirement:1901200000,
+      budgetUtil:77.1,
+      donut:[
+        {name:'Gaji Pokok', val:1134000000, color:'#2563EB'},
+        {name:'Tunjangan Tetap', val:317800000, color:'#16A34A'},
+        {name:'Tunjangan Tidak Tetap', val:152300000, color:'#0EA5E9'},
+        {name:'Lembur', val:84500000, color:'#F59E0B'},
+        {name:'Insentif', val:78200000, color:'#9333EA'},
+        {name:'Bonus', val:52000000, color:'#DC2626'},
+        {name:'THR', val:0, color:'#EC4899'},
+        {name:'BPJS (Perusahaan)', val:62100000, color:'#0C3A87'},
+        {name:'Payroll (Ditanggung)', val:41000000, color:'#6B7280'}
+      ],
+      budgetActual:[
+        {name:'Gaji Pokok', budget:1300, actual:1134},
+        {name:'Tunjangan', budget:590, actual:470},
+        {name:'Lembur', budget:130, actual:85},
+        {name:'Bonus', budget:80, actual:52},
+        {name:'BPJS', budget:78, actual:62},
+        {name:'PPh21', budget:92, actual:76}
+      ],
+      trendMonths:['Jul 25','Agu 25','Sep 25','Okt 25','Nov 25','Des 25','Jan 26','Feb 26','Mar 26','Apr 26','Mei 26','Jun 26'],
+      trendCost:[1400,1450,1490,1540,1580,1630,1680,1730,1790,1850,1920,2006],
+      trendHeadcount:[210,216,219,221,223,225,227,229,231,233,234,236],
+      waterfall:[
+        {label:'Mei 2026', value:1882000000},
+        {label:'Karyawan Baru', value:52000000},
+        {label:'Kenaikan UMK', value:38000000},
+        {label:'Bonus Sales', value:22000000},
+        {label:'Lembur NOC', value:18000000},
+        {label:'Resign', value:-6000000},
+        {label:'Lainnya', value:0},
+        {label:'Jun 2026', value:2006000000}
+      ],
+      cash:[
+        {lbl:'Total Payroll Cost', val:2006000000, type:'base'},
+        {lbl:'PPh21 (Karyawan & Perusahaan)', val:-64200000, type:'ded'},
+        {lbl:'BPJS (Kesehatan & TK)', val:-79800000, type:'ded'},
+        {lbl:'Kasbon / Potongan Lainnya', val:-14700000, type:'ded'},
+        {lbl:'Net Transfer Payroll', val:1847300000, type:'sub'},
+        {lbl:'Cash Requirement', val:1901200000, type:'grand'}
+      ],
+      compliance:[
+        {lbl:'Payroll Reconciliation (HC vs Finance vs Accounting)', st:'Match', color:'green'},
+        {lbl:'Journal Posting', st:'Posted', color:'green'},
+        {lbl:'PPh21 Validation', st:'Validated', color:'green'},
+        {lbl:'BPJS Validation', st:'Validated', color:'green'},
+        {lbl:'Bank Transfer', st:'Selesai', color:'green'},
+        {lbl:'Payroll Lock', st:'Locked', color:'green'}
+      ],
+      insights:[
+        'Payroll Juni 2026 meningkat Rp124.000.000 (6,55%) dibanding Mei 2026.',
+        'Tidak ditemukan selisih material antara data HC, Finance, Accounting, dan Tax pada periode ini.',
+        'Budget utilization periode ini 77,1% — masih dalam batas aman terhadap budget tahunan.'
+      ],
+      approvalStatus:[
+        {lbl:'Cash Availability', ready:true},
+        {lbl:'Journal Status', ready:true},
+        {lbl:'Tax Status', ready:true},
+        {lbl:'BPJS Status', ready:true}
+      ]
+    }
+  };
+
+  let currentPeriode = '2026-07';
+
+  function kpiIcon(bg, color, path){
+    return '<div class="exec-kpi-circle" style="background:' + bg + ';color:' + color + '"><svg viewBox="0 0 24 24" stroke="currentColor">' + path + '</svg></div>';
+  }
+  function renderExecKpi(){
+    const d = periodData[currentPeriode];
+    const cards = [
+      {icon:kpiIcon('#E6F7EC','#16A34A','<path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>'), lbl:'Total Employee Paid', val:d.totalPaid.toLocaleString('id-ID'), sub:'orang', delta:'↑ ' + d.totalPaidDelta + ' vs ' + d.prevLabel},
+      {icon:kpiIcon('#EBF3FF','#2563EB','<path d="M20 7H4a2 2 0 00-2 2v9a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>'), lbl:'Gross Payroll', val:fmtRp(d.grossPayroll), sub:'', delta:'↑ ' + d.grossDelta.toFixed(2).replace('.',',') + '% vs ' + d.prevLabel},
+      {icon:kpiIcon('#F3EAFB','#9333EA','<path d="M20 12V8H6a2 2 0 010-4h12v4"/><path d="M4 6v12a2 2 0 002 2h14v-4"/><path d="M18 12h.01"/>'), lbl:'Take Home Pay', val:fmtRp(d.thp), sub:'', delta:'↑ ' + d.thpDelta.toFixed(2).replace('.',',') + '% vs ' + d.prevLabel},
+      {icon:kpiIcon('#FEF1E1','#D97706','<path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>'), lbl:'Total Payroll Cost', val:fmtRp(d.totalCost), sub:'', delta:'↑ ' + d.costDelta.toFixed(2).replace('.',',') + '% vs ' + d.prevLabel},
+      {icon:kpiIcon('#FEF1E1','#D97706','<rect x="2" y="6" width="20" height="13" rx="2"/><circle cx="12" cy="12.5" r="3"/><path d="M6 6V5a2 2 0 012-2h8a2 2 0 012 2v1"/>'), lbl:'Cash Requirement', val:fmtRp(d.cashRequirement), sub:'Tersedia'},
+      {icon:kpiIcon('#FDECEC','#DC2626','<circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.5 3.8"/>'), lbl:'Budget Utilization', val:d.budgetUtil.toFixed(1).replace('.',',') + '%', sub:'Budget Tahunan', bar:d.budgetUtil},
+      {icon:kpiIcon('#E6F7EC','#16A34A','<path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/>'), lbl:'Payroll Status', val:'Ready for Approval', sub:'Semua validasi selesai'}
+    ];
+    document.getElementById('exec-kpi-row').innerHTML = cards.map(c =>
+      '<div class="exec-kpi-card"><div class="eki-head">' + c.icon + '<div class="eki-lbl">' + c.lbl + '</div></div><div class="eki-val">' + c.val + '</div>' +
+      (c.sub ? '<div class="eki-sub">' + c.sub + '</div>' : '') +
+      (c.delta ? '<div class="eki-delta">' + c.delta + '</div>' : '') +
+      (c.bar !== undefined ? '<div class="eki-bar"><div style="width:' + c.bar + '%"></div></div>' : '') +
+      '</div>'
+    ).join('');
+  }
+
+  function renderDonut(){
+    const d = periodData[currentPeriode];
+    const data = d.donut;
+    const total = data.reduce((s,x)=>s+x.val,0);
+    const R = 50, C = 2 * Math.PI * R;
+    let offsetAcc = 0, circles = '';
+    data.forEach(x => {
+      const frac = total ? x.val / total : 0;
+      const len = frac * C;
+      circles += '<circle cx="65" cy="65" r="' + R + '" fill="none" stroke="' + x.color + '" stroke-width="17" stroke-dasharray="' + len.toFixed(2) + ' ' + C.toFixed(2) + '" stroke-dashoffset="' + (-offsetAcc).toFixed(2) + '" transform="rotate(-90 65 65)"><title>' + x.name + ': ' + fmtRp(x.val) + ' (' + (frac*100).toFixed(1) + '%)</title></circle>';
+      offsetAcc += len;
+    });
+    document.getElementById('donut-chart').innerHTML =
+      '<svg viewBox="0 0 130 130" style="width:150px;height:150px;flex-shrink:0;">' +
+        '<circle cx="65" cy="65" r="' + R + '" fill="none" stroke="#e4e6ea" stroke-width="17"/>' + circles +
+        '<text x="65" y="60" text-anchor="middle" font-size="10.5" fill="var(--text-mid)" font-weight="700">Total Cost</text>' +
+        '<text x="65" y="77" text-anchor="middle" font-size="14.5" fill="var(--text-dark)" font-weight="800">Rp' + (total/1000000000).toFixed(3) + ' M</text>' +
+      '</svg>';
+    document.getElementById('donut-legend').innerHTML = data.map(x =>
+      '<div class="dl-row"><span class="dl-dot" style="background:' + x.color + '"></span>' + x.name + ' <b>' + (total ? (x.val/total*100).toFixed(1) : '0.0') + '%</b><span class="dl-val">' + fmtRp(x.val) + '</span></div>'
+    ).join('');
+  }
+
+  function renderBudgetActual(){
+    const d = periodData[currentPeriode];
+    const data = d.budgetActual;
+    const max = Math.max(...data.map(x => x.budget)) * 1.18;
+    const W = 560, H = 230, padL = 40, padR = 10, padT = 20, padB = 40;
+    const plotW = W - padL - padR, plotH = H - padT - padB;
+    const n = data.length, slot = plotW / n, bw = slot * 0.30, gapBetween = 6;
+    function y(v){ return padT + plotH - (v / max) * plotH; }
+    let svg = '';
+    const steps = 5;
+    for(let g=0; g<=steps; g++){
+      const v = max * g / steps;
+      const yy = y(v);
+      svg += '<line x1="' + padL + '" y1="' + yy.toFixed(1) + '" x2="' + (W-padR) + '" y2="' + yy.toFixed(1) + '" stroke="var(--gray-border)" stroke-width="1"/>';
+      svg += '<text x="' + (padL-8) + '" y="' + (yy+3).toFixed(1) + '" font-size="9.5" fill="var(--text-mid)" text-anchor="end">' + Math.round(v) + '</text>';
+    }
+    data.forEach((x, i) => {
+      const cx = padL + slot * i + slot / 2;
+      const bx1 = cx - gapBetween / 2 - bw;
+      const bx2 = cx + gapBetween / 2;
+      svg += '<rect x="' + bx1.toFixed(1) + '" y="' + y(x.budget).toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + (plotH - (y(x.budget) - padT)).toFixed(1) + '" rx="3" fill="none" stroke="var(--chart-blue)" stroke-width="1.6" stroke-dasharray="3,2"><title>Budget ' + x.name + ': Rp' + fmtJt(x.budget) + ' jt</title></rect>';
+      svg += '<rect x="' + bx2.toFixed(1) + '" y="' + y(x.actual).toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + (plotH - (y(x.actual) - padT)).toFixed(1) + '" rx="3" fill="var(--blue)"><title>Actual ' + x.name + ': Rp' + fmtJt(x.actual) + ' jt</title></rect>';
+      svg += '<text x="' + cx.toFixed(1) + '" y="' + (H-padB+16).toFixed(1) + '" font-size="10" fill="var(--text-mid)" text-anchor="middle">' + x.name + '</text>';
+    });
+    document.getElementById('budget-actual-svg').innerHTML = svg;
+
+    document.getElementById('budget-actual-variance').innerHTML = data.map(x => {
+      const varRp = x.actual - x.budget;
+      const varPct = (varRp / x.budget * 100).toFixed(1);
+      return '<div class="ba-var-col"><div class="ba-var-lbl">' + x.name + '</div><div class="ba-var-rp">' + fmtJt(varRp) + '</div><div class="ba-var-pct">' + varPct + '%</div></div>';
+    }).join('');
+  }
+
+  function miniBarSvg(values, months, color, w, h){
+    const max = Math.max(...values) * 1.08;
+    const padL = 4, padR = 4, padT = 6, padB = 2;
+    const plotW = w - padL - padR, plotH = h - padT - padB;
+    const bw = plotW / values.length * 0.55, gap = plotW / values.length;
+    let svg = '';
+    values.forEach((v,i) => {
+      const bh = (v / max) * plotH;
+      const x = padL + gap * i + (gap - bw) / 2;
+      const y = padT + plotH - bh;
+      svg += '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + Math.max(bh,1).toFixed(1) + '" rx="2" fill="' + color + '"><title>' + months[i] + ': Rp' + fmtJt(v) + ' jt</title></rect>';
+    });
+    return '<svg viewBox="0 0 ' + w + ' ' + h + '" style="width:100%;height:' + h + 'px;display:block;">' + svg + '</svg>';
+  }
+  function miniLineSvg(values, months, color, w, h){
+    const max = Math.max(...values) * 1.05, min = Math.min(...values) * 0.94;
+    const padL = 6, padR = 6, padT = 6, padB = 6;
+    const plotW = w - padL - padR, plotH = h - padT - padB;
+    const stepX = values.length > 1 ? plotW / (values.length - 1) : 0;
+    function y(v){ return padT + plotH - ((v - min) / (max - min || 1)) * plotH; }
+    const pts = values.map((v,i) => (padL + stepX * i).toFixed(1) + ',' + y(v).toFixed(1));
+    let svg = '<polyline points="' + pts.join(' ') + '" fill="none" stroke="' + color + '" stroke-width="2"/>';
+    values.forEach((v,i) => {
+      const cx = (padL + stepX * i).toFixed(1), cy = y(v).toFixed(1);
+      svg += '<circle cx="' + cx + '" cy="' + cy + '" r="3" fill="' + color + '"><title>' + months[i] + ': ' + v + ' orang</title></circle>';
+    });
+    return '<svg viewBox="0 0 ' + w + ' ' + h + '" style="width:100%;height:' + h + 'px;display:block;">' + svg + '</svg>';
+  }
+  function renderPayrollTrend(){
+    const d = periodData[currentPeriode];
+    document.getElementById('pt-bar-chart').innerHTML = miniBarSvg(d.trendCost, d.trendMonths, 'var(--blue)', 300, 70);
+    document.getElementById('pt-line-chart').innerHTML = miniLineSvg(d.trendHeadcount, d.trendMonths, 'var(--green-dark)', 300, 46);
+    document.getElementById('pt-months').innerHTML = d.trendMonths.map(m => '<span>' + m.replace(' ','') + '</span>').join('');
+    const avgCost = d.totalCost / d.totalPaid;
+    document.getElementById('pt-avgcost').innerHTML = fmtRp(avgCost) + '<small>↑ 3,2%</small>';
+    document.getElementById('pt-headcount').innerHTML = d.totalPaid + ' Orang<small>↑ ' + ((d.totalPaidDelta / (d.totalPaid - d.totalPaidDelta)) * 100).toFixed(1).replace('.',',') + '%</small>';
+  }
+
+  function shortRp(n){
+    const abs = Math.abs(n);
+    if(abs >= 1000000000) return (n/1000000000).toFixed(2).replace(/\.00$/,'') + ' M';
+    if(abs >= 1000000) return (n/1000000).toFixed(0) + ' jt';
+    return n.toLocaleString('id-ID');
+  }
+  function renderWaterfall(){
+    const d = periodData[currentPeriode];
+    document.getElementById('variance-title').textContent = 'Variance Driver (vs ' + d.prevLabel + ')';
+    const data = d.waterfall;
+    let running = data[0].value;
+    const bars = [{label:data[0].label, type:'total', to:running}];
+    for(let i=1;i<data.length-1;i++){
+      const val = data[i].value;
+      const from = running;
+      running += val;
+      bars.push({label:data[i].label, type:'delta', from:Math.min(from,running), to:Math.max(from,running), value:val});
+    }
+    bars.push({label:data[data.length-1].label, type:'total', to:running});
+
+    const totalStart = bars[0].to, totalEnd = bars[bars.length-1].to;
+    const deltaBars = bars.filter(b => b.type === 'delta');
+    let axisMin = Math.min(totalStart, totalEnd, ...deltaBars.map(b => b.from));
+    let axisMax = Math.max(totalStart, totalEnd, ...deltaBars.map(b => b.to));
+    const pad = (axisMax - axisMin) * 0.18 || axisMax * 0.05;
+    axisMin -= pad; axisMax += pad;
+
+    const W = 460, H = 240, padL = 54, padR = 12, padT = 22, padB = 42;
+    const plotW = W - padL - padR, plotH = H - padT - padB;
+    const n = bars.length;
+    const bw = plotW / n * 0.5;
+    const gap = plotW / n;
+    function y(v){ return padT + plotH - ((v - axisMin) / (axisMax - axisMin)) * plotH; }
+    function x(i){ return padL + gap * i + (gap - bw) / 2; }
+
+    let svg = '';
+    const gridSteps = 4;
+    for(let g=0; g<=gridSteps; g++){
+      const v = axisMin + (axisMax - axisMin) * g / gridSteps;
+      const yy = y(v);
+      svg += '<line x1="' + padL + '" y1="' + yy.toFixed(1) + '" x2="' + (W-padR) + '" y2="' + yy.toFixed(1) + '" stroke="var(--gray-border)" stroke-width="1"/>';
+      svg += '<text x="' + (padL-8) + '" y="' + (yy+4).toFixed(1) + '" font-size="9.5" fill="var(--text-mid)" text-anchor="end">' + shortRp(v) + '</text>';
+    }
+    for(let i=0;i<n-1;i++){
+      const yTop = y(bars[i].to);
+      svg += '<line x1="' + (x(i)+bw).toFixed(1) + '" y1="' + yTop.toFixed(1) + '" x2="' + x(i+1).toFixed(1) + '" y2="' + yTop.toFixed(1) + '" stroke="#c9ccd1" stroke-width="1.2" stroke-dasharray="3,3"/>';
+    }
+    bars.forEach((b, i) => {
+      const xi = x(i);
+      let yTop, hgt, fill;
+      if(b.type === 'total'){
+        yTop = y(b.to); hgt = y(axisMin) - yTop; fill = 'var(--navy)';
+      } else {
+        yTop = y(b.to); hgt = Math.max(y(b.from) - y(b.to), 2); fill = b.value >= 0 ? 'var(--green-dark)' : 'var(--red-text)';
+      }
+      const labelVal = b.type === 'total' ? shortRp(b.to) : (b.value >= 0 ? '+' : '') + shortRp(b.value);
+      svg += '<rect x="' + xi.toFixed(1) + '" y="' + yTop.toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + hgt.toFixed(1) + '" rx="3" fill="' + fill + '"><title>' + b.label + ': ' + (b.type==='total'?fmtRp(b.to):(b.value>=0?'+':'')+fmtRp(b.value)) + '</title></rect>';
+      svg += '<text x="' + (xi+bw/2).toFixed(1) + '" y="' + (yTop-7).toFixed(1) + '" font-size="9.5" font-weight="700" fill="' + fill + '" text-anchor="middle">' + labelVal + '</text>';
+      svg += '<text x="' + (xi+bw/2).toFixed(1) + '" y="' + (H-padB+16).toFixed(1) + '" font-size="9" fill="var(--text-mid)" text-anchor="middle">' + b.label + '</text>';
+    });
+    document.getElementById('wf-svg').setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    document.getElementById('wf-svg').innerHTML = svg;
+  }
+
+  function renderCashBreakdown(){
+    const d = periodData[currentPeriode];
+    document.getElementById('cash-breakdown').innerHTML = d.cash.map(r => {
+      const cls = r.type === 'sub' ? 'total' : (r.type === 'grand' ? 'grand' : '');
+      const valTxt = r.type === 'ded' ? '(-) ' + fmtRp(Math.abs(r.val)) : fmtRp(r.val);
+      return '<div class="cash-row ' + cls + '"><span>' + r.lbl + '</span><span>' + valTxt + '</span></div>';
+    }).join('');
+  }
+
+  function renderCompliance(){
+    const d = periodData[currentPeriode];
+    document.getElementById('compliance-list').innerHTML = d.compliance.map(r =>
+      '<div class="compliance-row"><span>' + r.lbl + '</span><span class="pill pill-' + r.color + '">' + r.st + '</span></div>'
+    ).join('');
+  }
+
+  function renderInsights(){
+    const d = periodData[currentPeriode];
+    document.getElementById('financial-insight-list').innerHTML = d.insights.map(t => '<li>' + t + '</li>').join('');
+  }
+
+  function renderApproval(){
+    const d = periodData[currentPeriode];
+    document.getElementById('approval-stat-row').innerHTML =
+      '<div class="approval-stat"><div class="lbl">Total Payroll Cost</div><div class="val">' + fmtRp(d.totalCost) + '</div></div>' +
+      '<div class="approval-stat"><div class="lbl">Budget Impact</div><div class="val">' + d.budgetUtil.toFixed(1).replace('.',',') + '%</div></div>' +
+      '<div class="approval-stat"><div class="lbl">Payroll Period</div><div class="val">' + d.label + '</div></div>';
+    document.getElementById('approval-status-list').innerHTML = d.approvalStatus.map(s =>
+      '<div class="approval-stat"><div class="lbl">' + s.lbl + '</div><div class="approval-status-row">' +
+        (s.ready ? '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg><b style="color:var(--green-dark)">Ready</b>' : '<span class="pill pill-peach">Belum Siap</span>') +
+      '</div></div>'
+    ).join('');
+  }
+
+  function renderAll(){
+    renderExecKpi();
+    renderDonut();
+    renderBudgetActual();
+    renderPayrollTrend();
+    renderWaterfall();
+    renderCashBreakdown();
+    renderCompliance();
+    renderInsights();
+    renderApproval();
+  }
+
+  function onPeriodeChange(){
+    currentPeriode = document.getElementById('f-periode').value;
+    renderAll();
+  }
+
+  function approvePayroll(){
+    document.getElementById('btn-approve').innerHTML = '<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Approved';
+    document.getElementById('btn-approve').disabled = true;
+    showToast('Payroll periode ' + periodData[currentPeriode].label + ' disetujui oleh Direktur FAT.');
+  }
+  function returnToHc(){
+    showToast('Payroll dikembalikan ke workspace HC untuk perbaikan.');
+  }
+
+  renderAll();
+</script>
+</body>
+</html>

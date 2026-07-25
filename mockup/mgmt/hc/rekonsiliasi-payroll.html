@@ -31,9 +31,9 @@
   .app{display:flex;min-height:100vh;}
 
   /* SIDEBAR */
-  .sidebar{width:260px;background:#fff;border-right:1px solid var(--gray-border);flex-shrink:0;padding:20px 0;}
+  .sidebar{width:260px;background:#fff;border-right:1px solid var(--gray-border);flex-shrink:0;padding:20px 0;position:sticky;top:0;height:100vh;overflow-y:auto;}
   .brand{display:flex;align-items:center;gap:10px;padding:0 20px 20px 20px;}
-  .brand .logo{width:38px;height:38px;background:#fff;border:1.5px solid var(--gray-border);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(16,24,40,.08);color:var(--blue);font-size:11px;font-weight:800;letter-spacing:-.4px;flex-shrink:0;}
+  .brand .logo{width:38px;height:38px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
   .brand .name{font-size:21px;font-weight:800;color:#101828;letter-spacing:-.3px;}
   .menu-label{font-size:12px;font-weight:700;padding:4px 20px 8px;color:var(--text-mid);text-transform:uppercase;letter-spacing:.4px;}
   .menu-item{display:flex;align-items:center;gap:10px;padding:9px 12px;margin:2px 12px;border-radius:8px;cursor:pointer;color:var(--text-dark);text-decoration:none;font-size:14px;}
@@ -242,7 +242,17 @@
 
   <!-- SIDEBAR -->
   <div class="sidebar">
-    <div class="brand"><div class="logo">HRiS</div><div class="name">Dasaria</div></div>
+    <div class="brand">
+      <div class="logo">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+          <circle cx="13" cy="13" r="12" fill="#10b981"/>
+          <circle cx="25" cy="13" r="12" fill="#3b82f6" opacity="0.85"/>
+          <circle cx="13" cy="25" r="12" fill="#f97316" opacity="0.85"/>
+          <circle cx="25" cy="25" r="12" fill="#8b5cf6" opacity="0.85"/>
+        </svg>
+      </div>
+      <div class="name">Dasaria</div>
+    </div>
     <div class="menu-label">Menu</div>
     <a class="menu-item" href="dashboard-hc.html">
       <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
@@ -281,39 +291,30 @@
       <svg viewBox="0 0 24 24"><path d="M6 2.5h9l4.5 4.5v14.5H6z"/><path d="M15 2.5V7h4.5M8.5 12.5h7M8.5 16h7"/></svg>
       Jenis Pengajuan
     </a>
+    <div class="menu-item" onclick="toggleSubmenu('sub-rekrutmen', this)">
+      <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+      Rekrutmen
+      <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="submenu" id="sub-rekrutmen" style="display:none">
+      <a class="menu-item" href="dashboard-hc.html#lowongan">Daftar Lowongan</a>
+      <a class="menu-item" href="dashboard-hc.html#pipeline">Pipeline Kandidat</a>
+      <a class="menu-item" href="dashboard-hc.html#seleksi">Proses Seleksi</a>
+    </div>
+    <a class="menu-item" href="#">
+      <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      Hak Akses
+    </a>
   </div>
 
   <!-- MAIN -->
   <div class="main">
     <div class="topbar">
       <div class="topbar-left">
-        <a href="dashboard-hc.html" class="icon-btn" title="Kembali">
-          <svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-        </a>
-        <div class="icon-btn" style="border-radius:8px;width:38px;height:38px">
+        <div class="icon-btn" style="border-radius:8px;width:38px;height:38px" title="Menu">
           <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h12M3 18h7"/></svg>
         </div>
       </div>
-
-      <!-- WORKSPACE SWITCHER -->
-      <div class="ws-switcher">
-        <span class="ws-switcher-lbl">Pilih Workspace</span>
-        <div class="ws-tabs">
-          <a class="ws-tab active" href="dashboard-hc.html">
-            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-            <span class="ws-tab-text">People &amp; Corporate Compliance</span>
-          </a>
-          <a class="ws-tab" href="../fat/dashboard-financial.html">
-            <svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1M9 13h1M14 9h1M14 13h1M9 21v-4h6v4"/></svg>
-            <span class="ws-tab-text">Finance, Tax &amp; Accounting</span>
-          </a>
-          <button class="ws-tab" onclick="showToast('Workspace Board of Directors segera hadir.')">
-            <svg viewBox="0 0 24 24"><path d="M20 7h-9M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
-            <span class="ws-tab-text">Board of Directors</span>
-          </button>
-        </div>
-      </div>
-
       <div style="display:flex;align-items:center;gap:14px">
         <div class="icon-btn" title="Notifikasi" style="position:relative;">
           <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
@@ -323,7 +324,7 @@
           <svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"/></svg>
         </div>
         <div class="user">
-          <div class="avatar">T</div>
+          <div class="avatar" style="background:#d1fae5;color:#065f46;">T</div>
           <div>Tes Admin</div>
           <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
         </div>

@@ -31,9 +31,9 @@
   .app{display:flex;min-height:100vh;}
 
   /* SIDEBAR */
-  .sidebar{width:260px;background:#fff;border-right:1px solid var(--gray-border);flex-shrink:0;padding:20px 0;}
+  .sidebar{width:260px;background:#fff;border-right:1px solid var(--gray-border);flex-shrink:0;padding:20px 0;position:sticky;top:0;height:100vh;overflow-y:auto;}
   .brand{display:flex;align-items:center;gap:10px;padding:0 20px 20px 20px;}
-  .brand .logo{width:38px;height:38px;background:#fff;border:1.5px solid var(--gray-border);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(16,24,40,.08);color:var(--blue);font-size:11px;font-weight:800;letter-spacing:-.4px;flex-shrink:0;}
+  .brand .logo{width:38px;height:38px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
   .brand .name{font-size:21px;font-weight:800;color:#101828;letter-spacing:-.3px;}
   .menu-label{font-size:12px;font-weight:700;padding:4px 20px 8px;color:var(--text-mid);text-transform:uppercase;letter-spacing:.4px;}
   .menu-item{display:flex;align-items:center;gap:10px;padding:9px 12px;margin:2px 12px;border-radius:8px;cursor:pointer;color:var(--text-dark);text-decoration:none;font-size:14px;}
@@ -50,6 +50,9 @@
   /* TOPBAR */
   .main{flex:1;display:flex;flex-direction:column;min-width:0;}
   .topbar{min-height:64px;background:#fff;border-bottom:1px solid var(--gray-border);display:flex;align-items:center;justify-content:space-between;padding:10px 24px;gap:16px;flex-wrap:wrap;}
+  .page-top-area{padding:24px 28px 0;}
+  .sub-header-bar{position:sticky;top:0;z-index:50;background:var(--gray-bg);padding:12px 28px 0;border-bottom:1px solid var(--gray-border);}
+  .sub-header-bar .tabbar{margin-bottom:0;}
 
   /* WORKSPACE SWITCHER */
   .ws-switcher{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;min-width:280px;}
@@ -465,6 +468,7 @@
   .info-icon.ii-blue{background:var(--blue-light);} .info-icon.ii-blue svg{stroke:var(--blue);}
   .info-icon.ii-teal{background:#d7f6ec;} .info-icon.ii-teal svg{stroke:#0f9d78;}
   .info-icon.ii-purple{background:#ede9fe;} .info-icon.ii-purple svg{stroke:#7c3aed;}
+  .info-icon.ii-orange{background:#fff7ed;} .info-icon.ii-orange svg{stroke:#ea580c;}
   .info-card-lbl{font-size:11.5px;color:var(--text-mid);font-weight:600;margin-bottom:3px;}
   .info-card-val{font-size:16px;font-weight:800;color:var(--text-dark);line-height:1.25;}
   .info-card-sub{font-size:11px;color:var(--text-mid);margin-top:2px;}
@@ -530,7 +534,17 @@
 
   <!-- SIDEBAR -->
   <div class="sidebar">
-    <div class="brand"><div class="logo">HRiS</div><div class="name">Dasaria</div></div>
+    <div class="brand">
+      <div class="logo">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+          <circle cx="13" cy="13" r="12" fill="#10b981"/>
+          <circle cx="25" cy="13" r="12" fill="#3b82f6" opacity="0.85"/>
+          <circle cx="13" cy="25" r="12" fill="#f97316" opacity="0.85"/>
+          <circle cx="25" cy="25" r="12" fill="#8b5cf6" opacity="0.85"/>
+        </svg>
+      </div>
+      <div class="name">Dasaria</div>
+    </div>
     <div class="menu-label">Menu</div>
     <a class="menu-item" id="menu-dashboard" href="dashboard-hc.html">
       <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
@@ -569,58 +583,50 @@
       <svg viewBox="0 0 24 24"><path d="M6 2.5h9l4.5 4.5v14.5H6z"/><path d="M15 2.5V7h4.5M8.5 12.5h7M8.5 16h7"/></svg>
       Jenis Pengajuan
     </a>
+    <div class="menu-item" onclick="toggleSubmenu('sub-rekrutmen', this)">
+      <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+      Rekrutmen
+      <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="submenu" id="sub-rekrutmen" style="display:none">
+      <a class="menu-item" href="#">Daftar Lowongan</a>
+      <a class="menu-item" href="#">Pipeline Kandidat</a>
+      <a class="menu-item" href="#">Proses Seleksi</a>
+    </div>
+    <a class="menu-item" href="#">
+      <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      Hak Akses
+    </a>
   </div>
 
   <!-- MAIN -->
   <div class="main">
     <div class="topbar">
       <div class="topbar-left">
-        <a href="../../index.html" class="icon-btn" title="Kembali ke ESS">
-          <svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-        </a>
-        <div class="icon-btn" style="border-radius:8px;width:38px;height:38px">
+        <div class="icon-btn" style="border-radius:8px;width:38px;height:38px" title="Menu">
           <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h12M3 18h7"/></svg>
         </div>
       </div>
-
-      <!-- WORKSPACE SWITCHER -->
-      <div class="ws-switcher">
-        <span class="ws-switcher-lbl">Pilih Workspace</span>
-        <div class="ws-tabs">
-          <a class="ws-tab active" href="dashboard-hc.html">
-            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-            <span class="ws-tab-text">People &amp; Corporate Compliance</span>
-          </a>
-          <a class="ws-tab" href="../fat/dashboard-financial.html">
-            <svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1M9 13h1M14 9h1M14 13h1M9 21v-4h6v4"/></svg>
-            <span class="ws-tab-text">Finance, Tax &amp; Accounting</span>
-          </a>
-          <button class="ws-tab" onclick="showToast('Workspace Board of Directors segera hadir.')">
-            <svg viewBox="0 0 24 24"><path d="M20 7h-9M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
-            <span class="ws-tab-text">Board of Directors</span>
-          </button>
-        </div>
-      </div>
-
       <div style="display:flex;align-items:center;gap:14px">
         <div class="icon-btn" title="Mode Gelap">
           <svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"/></svg>
         </div>
         <div class="user">
-          <div class="avatar">T</div>
+          <div class="avatar" style="background:#d1fae5;color:#065f46;">T</div>
           <div>Tes Admin</div>
           <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
         </div>
       </div>
     </div>
 
-    <div class="content">
-
+    <div class="page-top-area">
       <div class="page-header">
         <h1>Konfigurasi Penggajian</h1>
         <div class="breadcrumb">Home &gt; Penggajian &gt; <b id="konf-crumb">Komponen Gaji</b></div>
       </div>
+    </div>
 
+    <div class="sub-header-bar">
       <div class="tabbar" id="konf-tabbar">
         <div class="tab active" data-tab="komponen">Komponen Gaji</div>
         <div class="tab" data-tab="grade">Struktur &amp; Skala Upah</div>
@@ -628,6 +634,9 @@
         <div class="tab" data-tab="pph21">PPh21 Setting</div>
         <div class="tab" data-tab="thr">THR</div>
       </div>
+    </div>
+
+    <div class="content">
 
       <!-- ============ MODUL 1: KOMPONEN GAJI ============ -->
       <div class="subtab-panel active" id="konf-komponen">
@@ -779,7 +788,7 @@
                 <input type="number" step="0.01" id="ag-msi" placeholder="mis. 0.98">
               </div>
               <div class="form-field" style="grid-column:1/-1;">
-                <label>Dasar Penetapan UMK</label>
+                <label>Regulasi UMK Pemerintah</label>
                 <input type="text" id="ag-dasar" placeholder="mis. Keputusan Gubernur Jawa Timur No. ... Tahun 2025">
               </div>
             </div>
@@ -1234,6 +1243,8 @@
     dasarUrl: '#',
     costIndex: 101.20,
     marketSalaryIndex: 1.08,
+    regulasiInternalLabel: 'SK Struktur Skala Upah Internal 2026',
+    regulasiInternalUrl: '#',
     grades: [
       {code:'G1', role:'Entry Level', expanded:false, subLevels: buildSubLevels(4000000)},
       {code:'G2', role:'Officer', expanded:false, subLevels: buildSubLevels(4000000)},
@@ -1253,6 +1264,7 @@
           umk: 3700000, umkYear: 2026,
           dasarLabel: 'Keputusan Gubernur Jawa Timur No. 188/45 Tahun 2025', dasarUrl: '#',
           costIndex: 99.50, marketSalaryIndex: 1.02,
+          regulasiInternalLabel: 'SK Struktur Skala Upah Internal 2026', regulasiInternalUrl: '#',
           grades: buildBranchGrades(3750000, 5000000)
         }
       ]
@@ -1265,6 +1277,7 @@
           umk: 2617000, umkYear: 2026,
           dasarLabel: 'Keputusan Gubernur Jawa Timur No. 188/50 Tahun 2025', dasarUrl: '#',
           costIndex: 95.80, marketSalaryIndex: 0.94,
+          regulasiInternalLabel: 'SK Struktur Skala Upah Internal 2026', regulasiInternalUrl: '#',
           grades: buildBranchGrades(2650000, 3600000)
         },
         {
@@ -1272,6 +1285,7 @@
           umk: 2540000, umkYear: 2026,
           dasarLabel: 'Keputusan Gubernur Jawa Timur No. 188/51 Tahun 2025', dasarUrl: '#',
           costIndex: 94.10, marketSalaryIndex: 0.91,
+          regulasiInternalLabel: 'SK Struktur Skala Upah Internal 2026', regulasiInternalUrl: '#',
           grades: buildBranchGrades(2570000, 3480000)
         }
       ]
@@ -1290,20 +1304,26 @@
   const icoDoc = '<svg viewBox="0 0 24 24" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>';
   const icoTrend = '<svg viewBox="0 0 24 24" stroke-width="2"><path d="M3 17l6-6 4 4 8-8M21 7v6h-6"/></svg>';
   const icoPie = '<svg viewBox="0 0 24 24" stroke-width="2"><path d="M21.21 15.89A10 10 0 118 2.83"/><path d="M22 12A10 10 0 0012 2v10z"/></svg>';
+  const icoShield = '<svg viewBox="0 0 24 24" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>';
   const icoChevronSm = '<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>';
   const icoExtLink = '<svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>';
   const icoGear = '<svg viewBox="0 0 24 24" width="13" height="13" stroke="var(--blue)" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.6a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>';
 
   function infoGridHtml(d){
+    const regulasiInternal = d.regulasiInternalUrl
+      ? '<div class="info-card"><div class="info-icon ii-orange">' + icoShield + '</div>' +
+          '<div><div class="info-card-lbl">Regulasi UMK Internal</div><a class="info-card-link" href="' + d.regulasiInternalUrl + '" target="_blank" rel="noopener">' + (d.regulasiInternalLabel || 'SK Struktur Skala Upah Internal') + icoExtLink + '</a></div></div>'
+      : '';
     return '<div class="info-grid">' +
       '<div class="info-card"><div class="info-icon ii-green">' + icoUmk + '</div>' +
         '<div><div class="info-card-lbl">Nominal UMK</div><div class="info-card-val">' + fmtRp(d.umk) + '</div><div class="info-card-sub">Tahun ' + d.umkYear + '</div></div></div>' +
       '<div class="info-card"><div class="info-icon ii-blue">' + icoDoc + '</div>' +
-        '<div><div class="info-card-lbl">Dasar Penetapan UMK</div><a class="info-card-link" href="' + d.dasarUrl + '" target="_blank" rel="noopener">' + d.dasarLabel + icoExtLink + '</a></div></div>' +
+        '<div><div class="info-card-lbl">Regulasi UMK Pemerintah</div><a class="info-card-link" href="' + d.dasarUrl + '" target="_blank" rel="noopener">' + d.dasarLabel + icoExtLink + '</a></div></div>' +
       '<div class="info-card"><div class="info-icon ii-teal">' + icoTrend + '</div>' +
         '<div><div class="info-card-lbl">Cost Index</div><div class="info-card-val">' + d.costIndex.toFixed(2) + '</div><div class="info-card-sub">Tahun ' + d.umkYear + '</div></div></div>' +
       '<div class="info-card"><div class="info-icon ii-purple">' + icoPie + '</div>' +
         '<div><div class="info-card-lbl">Market Salary Index</div><div class="info-card-val">' + d.marketSalaryIndex.toFixed(2) + '</div><div class="info-card-sub">Tahun ' + d.umkYear + '</div></div></div>' +
+      regulasiInternal +
     '</div>';
   }
 

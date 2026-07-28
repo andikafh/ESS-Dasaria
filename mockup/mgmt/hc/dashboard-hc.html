@@ -675,19 +675,52 @@
       <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="submenu" id="sub-penggajian" style="display:none">
+      <a class="menu-item" data-key="camd" href="camd.html">Compensation Architecture (CAMD)</a>
+      <a class="menu-item" data-key="konfigurasi" href="konfigurasi-penggajian.html">Payroll Configuration</a>
+      <a class="menu-item" data-key="pph2126" href="pph21-pph26-setting.html">PPh21 &amp; 26 Setting</a>
       <div class="menu-item" data-key="payroll-dashboard" onclick="navSub('payroll-dashboard', this)">Dashboard Penggajian</div>
-      <a class="menu-item" data-key="konfigurasi" href="konfigurasi-penggajian.html">Konfigurasi Penggajian</a>
       <div class="menu-item" data-key="periode" onclick="navSub('periode', this)">Periode Gajian</div>
       <div class="menu-item" data-key="validasi" onclick="navSub('validasi', this)">Persetujuan Periode Gajian</div>
       <div class="menu-item" data-key="distribusi" onclick="navSub('distribusi', this)">Distribusi Gaji &amp; Slip Gaji</div>
       <div class="menu-item" data-key="kasbon" onclick="navSub('kasbon', this)">Kasbon</div>
       <a class="menu-item" data-key="rekonsiliasi" href="rekonsiliasi-payroll.html">Rekonsiliasi Payroll</a>
     </div>
-    <div class="menu-item" id="menu-jenispengajuan" onclick="navTop('jenispengajuan', this)">
+    <div class="menu-item" id="menu-jenispengajuan" onclick="toggleSubmenu('sub-jenispengajuan', this)">
       <svg viewBox="0 0 24 24"><path d="M6 2.5h9l4.5 4.5v14.5H6z"/><path d="M15 2.5V7h4.5M8.5 12.5h7M8.5 16h7"/></svg>
-      Jenis Pengajuan
+      Pengajuan &amp; Persetujuan
+      <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
     </div>
-    <div class="menu-item" onclick="toggleSubmenu('sub-rekrutmen', this)">
+    <div class="submenu" id="sub-jenispengajuan" style="display:none">
+      <a class="menu-item" href="pengajuan-persetujuan.html#dashboard">Dashboard</a>
+      <a class="menu-item" href="pengajuan-persetujuan.html#pengajuan">Pengajuan</a>
+      <a class="menu-item" href="pengajuan-persetujuan.html#persetujuan">Persetujuan</a>
+      <a class="menu-item" href="pengajuan-persetujuan.html#riwayat">Riwayat</a>
+    </div>
+    <div class="menu-item" id="menu-attendance" onclick="toggleSubmenu('sub-attendance', this)">
+      <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      Jadwal &amp; Kehadiran
+      <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="submenu" id="sub-attendance" style="display:none">
+      <a class="menu-item" href="attendance-schedule.html#dashboard">Dashboard</a>
+      <a class="menu-item" href="attendance-schedule.html#kehadiran">Kehadiran</a>
+      <a class="menu-item" href="attendance-schedule.html#jadwal">Jadwal Kerja</a>
+      <a class="menu-item" href="attendance-schedule.html#shift">Shift Management</a>
+      <a class="menu-item" href="attendance-schedule.html#kalender">Kalender Kerja</a>
+      <a class="menu-item" href="attendance-schedule.html#monitoring">Monitoring</a>
+    </div>
+    <div class="menu-item" id="menu-document" onclick="toggleSubmenu('sub-document', this)">
+      <svg viewBox="0 0 24 24"><path d="M2 20h20M4 20V10l4-3 4 3v10M12 20V6l4-3 4 3v14"/></svg>
+      Dokumen
+      <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="submenu" id="sub-document" style="display:none">
+      <a class="menu-item" href="document.html#factory">Document Factory</a>
+      <a class="menu-item" href="document.html#control">Document Control</a>
+      <a class="menu-item" href="document.html#template">Template</a>
+      <a class="menu-item" href="document.html#repository">Repository</a>
+    </div>
+    <div class="menu-item" id="menu-rekrutmen" onclick="toggleSubmenu('sub-rekrutmen', this)">
       <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
       Rekrutmen
       <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
@@ -697,7 +730,7 @@
       <div class="menu-item" onclick="navSub('pipeline', this)">Pipeline Kandidat</div>
       <div class="menu-item" onclick="navSub('seleksi', this)">Proses Seleksi</div>
     </div>
-    <div class="menu-item" onclick="navTop('hakakses', this)">
+    <div class="menu-item" id="menu-hakakses" onclick="navTop('hakakses', this)">
       <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
       Hak Akses
     </div>
@@ -2341,14 +2374,18 @@
 
   const placeholderMeta = {
     struktur: {icon:'🏢', title:'Struktur dan Organisasi', desc:'Halaman ini menunggu detail desain untuk modul Struktur dan Organisasi.'},
-    jenispengajuan: {icon:'📄', title:'Jenis Pengajuan', desc:'Halaman ini menunggu detail desain untuk modul Jenis Pengajuan.'},
     distribusi: {icon:'💸', title:'Distribusi Gaji & Slip Gaji', desc:'Halaman ini menunggu detail desain untuk modul Distribusi Gaji & Slip Gaji.'},
     kasbon: {icon:'💳', title:'Kasbon', desc:'Halaman ini menunggu detail desain untuk modul Kasbon.'},
     perpanjangankontrak: {icon:'📑', title:'Perpanjangan Kontrak', desc:'Halaman ini menunggu detail desain untuk modul Perpanjangan Kontrak.'},
     pengundurandiri: {icon:'🚪', title:'Pengunduran Diri', desc:'Halaman ini menunggu detail desain untuk modul Pengunduran Diri.'},
-    perubahanorganisasi: {icon:'🔀', title:'Perubahan Organisasi', desc:'Halaman ini menunggu detail desain untuk modul Perubahan Organisasi.'}
+    perubahanorganisasi: {icon:'🔀', title:'Perubahan Organisasi', desc:'Halaman ini menunggu detail desain untuk modul Perubahan Organisasi.'},
+    lowongan: {icon:'📋', title:'Daftar Lowongan', desc:'Halaman ini menunggu detail desain untuk modul Daftar Lowongan.'},
+    pipeline: {icon:'🧑‍💼', title:'Pipeline Kandidat', desc:'Halaman ini menunggu detail desain untuk modul Pipeline Kandidat.'},
+    seleksi: {icon:'✅', title:'Proses Seleksi', desc:'Halaman ini menunggu detail desain untuk modul Proses Seleksi.'},
+    hakakses: {icon:'🔒', title:'Hak Akses', desc:'Halaman ini menunggu detail desain untuk modul Hak Akses.'}
   };
   const masterKeys = ['datakaryawan','perpanjangankontrak','pengundurandiri','perubahanorganisasi'];
+  const rekrutmenKeys = ['lowongan','pipeline','seleksi'];
 
   function clearActive(){
     document.querySelectorAll('.sidebar .menu-item').forEach(m=>{
@@ -2377,7 +2414,7 @@
     el.classList.toggle('open', !open);
   }
 
-  // Top-level sidebar items (Dashboard, Struktur, Master, Hak Akses, Jenis Pengajuan)
+  // Top-level sidebar items (Dashboard, Struktur, Master, Hak Akses)
   function navTop(key, el){
     clearActive();
     el.classList.add('active-parent');
@@ -2391,7 +2428,7 @@
   // Penggajian / Data Master Karyawan submenu items
   function navSub(key, el){
     clearActive();
-    const parentId = masterKeys.includes(key) ? 'menu-master' : 'menu-penggajian';
+    const parentId = masterKeys.includes(key) ? 'menu-master' : rekrutmenKeys.includes(key) ? 'menu-rekrutmen' : 'menu-penggajian';
     document.getElementById(parentId).classList.add('active-parent');
     el.classList.add('active');
     if(placeholderMeta[key]){

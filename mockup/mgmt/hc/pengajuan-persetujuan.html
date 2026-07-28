@@ -1,0 +1,2013 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dasaria HRIS — Pengajuan & Persetujuan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#2563EB;
+    --primary-dark:#1D4ED8;
+    --primary-light:#EFF6FF;
+    --primary-100:#DBEAFE;
+    --gray-50:#F8FAFC;
+    --gray-100:#F1F5F9;
+    --gray-200:#E2E8F0;
+    --gray-300:#CBD5E1;
+    --gray-400:#94A3B8;
+    --gray-500:#64748B;
+    --gray-600:#475569;
+    --gray-700:#334155;
+    --gray-800:#1E293B;
+    --gray-900:#0F172A;
+    --green:#16A34A; --green-bg:#DCFCE7;
+    --amber:#D97706; --amber-bg:#FEF3C7;
+    --red:#DC2626; --red-bg:#FEE2E2;
+    --purple:#7C3AED; --purple-bg:#EDE9FE;
+    --radius:12px;
+    --radius-sm:8px;
+    --shadow-sm:0 1px 2px rgba(15,23,42,.06);
+    --shadow-md:0 4px 12px rgba(15,23,42,.08);
+    --shadow-lg:0 12px 32px rgba(15,23,42,.14);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Inter','Segoe UI',Arial,sans-serif;background:var(--gray-50);color:var(--gray-800);font-size:14px;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;}
+  .app{display:flex;min-height:100vh;}
+
+  /* ===== SIDEBAR (shared across all HC modules — see dashboard-hc.html) ===== */
+  .sidebar{width:260px;background:#fff;border-right:1px solid var(--gray-200);flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;font-family:'Outfit','Segoe UI',Arial,sans-serif;}
+  .brand{display:flex;align-items:center;gap:10px;padding:20px 20px 16px;}
+  .brand .logo{width:34px;height:34px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+  .brand .name{font-size:19px;font-weight:800;color:#101828;letter-spacing:-.3px;}
+  .menu-label{font-size:12px;font-weight:700;padding:4px 20px 8px;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;}
+  .menu-item{display:flex;align-items:center;gap:10px;padding:9px 12px;margin:2px 12px;border-radius:8px;cursor:pointer;color:#1f2937;text-decoration:none;font-size:14px;}
+  .menu-item svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.7;flex-shrink:0;}
+  .menu-item .chev{margin-left:auto;width:14px;height:14px;transition:transform .15s;}
+  .menu-item.open .chev{transform:rotate(180deg);}
+  .menu-item:hover{background:#f7f8fa;}
+  .menu-item.active-parent{color:#465fff;font-weight:600;background:#ecf3ff;}
+  .submenu{padding-left:14px;}
+  .submenu .menu-item{padding:7px 12px 7px 34px;font-size:13.5px;margin:1px 12px;}
+  .submenu .menu-item.active{color:#465fff;font-weight:600;background:#ecf3ff;}
+  .sidebar-foot{margin-top:auto;padding:16px 20px;border-top:1px solid var(--gray-200);font-family:'Inter','Segoe UI',Arial,sans-serif;}
+  .sidebar-user{display:flex;align-items:center;gap:10px;}
+  .sidebar-user .avatar{width:34px;height:34px;border-radius:50%;background:var(--primary-100);color:var(--primary-dark);display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;flex-shrink:0;}
+  .sidebar-user .u-name{font-size:12.5px;font-weight:700;color:var(--gray-800);}
+  .sidebar-user .u-role{font-size:11px;color:var(--gray-500);}
+
+  /* ===== MAIN / TOPBAR ===== */
+  .main{flex:1;display:flex;flex-direction:column;min-width:0;}
+  .topbar{min-height:64px;background:#fff;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;justify-content:space-between;padding:0 24px;gap:16px;flex-wrap:wrap;position:sticky;top:0;z-index:60;}
+  .topbar-search{display:flex;align-items:center;gap:8px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-sm);padding:8px 12px;min-width:280px;color:var(--gray-400);}
+  .topbar-search input{border:none;background:transparent;outline:none;font-family:inherit;font-size:13px;width:100%;color:var(--gray-800);}
+  .topbar-search svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;}
+  .topbar-right{display:flex;align-items:center;gap:12px;}
+  .icon-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--gray-200);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gray-600);flex-shrink:0;position:relative;}
+  .icon-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.9;}
+  .icon-btn:hover{background:var(--gray-50);}
+  .icon-btn:disabled{opacity:.4;cursor:not-allowed;}
+  .icon-btn:disabled:hover{background:#fff;}
+  .icon-btn .dot{position:absolute;top:6px;right:7px;width:8px;height:8px;border-radius:50%;background:var(--red);border:1.5px solid #fff;}
+  .topbar-user{display:flex;align-items:center;gap:8px;cursor:pointer;padding:4px 8px 4px 4px;border-radius:20px;}
+  .topbar-user:hover{background:var(--gray-50);}
+  .avatar{width:32px;height:32px;border-radius:50%;background:var(--primary-100);color:var(--primary-dark);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+
+  .loading-bar{position:fixed;top:0;left:0;height:2.5px;background:var(--primary);width:0;z-index:300;opacity:0;transition:width .28s ease, opacity .15s ease;}
+  .loading-bar.show{opacity:1;}
+  .breadcrumb-trail{font-size:12.5px;color:var(--gray-500);margin-bottom:14px;}
+  .breadcrumb-trail b{color:var(--gray-800);font-weight:600;}
+
+  .empty-state{text-align:center;padding:56px 20px;color:var(--gray-400);}
+  .empty-state svg{width:40px;height:40px;stroke:var(--gray-300);fill:none;stroke-width:1.5;margin-bottom:12px;}
+  .empty-state .es-title{font-size:13.5px;font-weight:700;color:var(--gray-600);margin-bottom:4px;}
+  .empty-state .es-desc{font-size:12.5px;color:var(--gray-400);}
+
+  .skeleton{background:linear-gradient(90deg, var(--gray-100) 25%, var(--gray-200) 37%, var(--gray-100) 63%);background-size:400% 100%;animation:skeleton-shimmer 1.4s ease infinite;border-radius:6px;}
+  @keyframes skeleton-shimmer{0%{background-position:100% 50%;}100%{background-position:0 50%;}}
+  .skeleton-row td{padding:14px;}
+  .skeleton-line{height:12px;border-radius:4px;}
+
+  .content{padding:24px;flex:1;position:relative;}
+  .page{display:none;}
+  .page.active{display:block;}
+
+  .page-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;gap:16px;flex-wrap:wrap;}
+  .page-head h1{font-size:20px;font-weight:800;margin:0 0 4px;color:var(--gray-900);letter-spacing:-.2px;}
+  .page-head .sub{font-size:13px;color:var(--gray-500);}
+
+  /* ===== 12-COL GRID ===== */
+  .grid-12{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;}
+  .col-3{grid-column:span 3;} .col-4{grid-column:span 4;} .col-5{grid-column:span 5;}
+  .col-6{grid-column:span 6;} .col-7{grid-column:span 7;} .col-8{grid-column:span 8;}
+  .col-9{grid-column:span 9;} .col-12{grid-column:span 12;}
+  @media (max-width:1300px){ .col-3,.col-4{grid-column:span 6;} .col-8,.col-9,.col-7,.col-5{grid-column:span 12;} }
+
+  /* ===== CARD ===== */
+  .card{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-sm);}
+  .card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;}
+  .card-head h2{font-size:14.5px;font-weight:700;margin:0;color:var(--gray-900);}
+  .card-head .sub{font-size:12px;color:var(--gray-500);margin-top:2px;}
+
+  /* ===== KPI CARD ===== */
+  .kpi-card{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow-sm);}
+  .kpi-card .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .kpi-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .kpi-icon svg{width:18px;height:18px;stroke-width:1.9;fill:none;}
+  .kpi-card .lbl{font-size:12.5px;color:var(--gray-500);font-weight:600;margin-bottom:6px;}
+  .kpi-card .val{font-size:26px;font-weight:800;color:var(--gray-900);line-height:1;}
+  .kpi-delta{font-size:11.5px;font-weight:700;display:inline-flex;align-items:center;gap:3px;margin-top:8px;}
+  .kpi-delta.up{color:var(--green);} .kpi-delta.down{color:var(--red);} .kpi-delta.flat{color:var(--gray-400);}
+  .kpi-delta svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:3;}
+
+  /* ===== BUTTONS ===== */
+  .btn{border:none;border-radius:var(--radius-sm);padding:9px 16px;font-weight:600;cursor:pointer;font-size:13px;display:inline-flex;align-items:center;gap:6px;font-family:inherit;white-space:nowrap;}
+  .btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.2;flex-shrink:0;}
+  .btn-primary{background:var(--primary);color:#fff;}
+  .btn-primary:hover{background:var(--primary-dark);}
+  .btn-outline{background:#fff;border:1px solid var(--gray-300);color:var(--gray-700);}
+  .btn-outline:hover{background:var(--gray-50);}
+  .btn-ghost{background:transparent;color:var(--gray-600);}
+  .btn-ghost:hover{background:var(--gray-100);}
+  .btn-danger{background:var(--red);color:#fff;}
+  .btn-danger:hover{background:#B91C1C;}
+  .btn-sm{padding:6px 12px;font-size:12px;}
+  .btn:disabled{opacity:.45;cursor:not-allowed;}
+
+  .fab{position:fixed;bottom:28px;right:32px;background:var(--primary);color:#fff;border:none;border-radius:50px;padding:14px 22px;font-weight:700;font-size:13.5px;box-shadow:var(--shadow-lg);cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:inherit;z-index:40;}
+  .fab:hover{background:var(--primary-dark);}
+  .fab svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2.4;}
+
+  /* ===== CHIPS ===== */
+  .chip{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11.5px;font-weight:700;white-space:nowrap;}
+  .chip i{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+  .chip-green{background:var(--green-bg);color:#166534;} .chip-green i{background:var(--green);}
+  .chip-amber{background:var(--amber-bg);color:#92400E;} .chip-amber i{background:var(--amber);}
+  .chip-red{background:var(--red-bg);color:#991B1B;} .chip-red i{background:var(--red);}
+  .chip-blue{background:var(--primary-100);color:var(--primary-dark);} .chip-blue i{background:var(--primary);}
+  .chip-purple{background:var(--purple-bg);color:#5B21B6;} .chip-purple i{background:var(--purple);}
+  .chip-gray{background:var(--gray-100);color:var(--gray-600);} .chip-gray i{background:var(--gray-400);}
+
+  /* ===== TABLE ===== */
+  .table-wrap{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  thead th{background:var(--gray-50);color:var(--gray-500);text-align:left;padding:11px 14px;font-weight:700;white-space:nowrap;font-size:11px;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--gray-200);}
+  tbody td{padding:13px 14px;border-bottom:1px solid var(--gray-100);vertical-align:middle;color:var(--gray-700);}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:var(--gray-50);}
+  .muted{color:var(--gray-500);}
+  .mono{font-family:'SF Mono',Consolas,monospace;font-size:12.5px;}
+  .req-subject{font-weight:600;color:var(--gray-900);}
+  .req-number{font-weight:700;color:var(--primary);}
+
+  /* ===== FORM ===== */
+  .form-field label{display:block;font-size:12px;font-weight:600;color:var(--gray-600);margin-bottom:6px;}
+  .form-field select, .form-field input[type=text], .form-field input[type=number], .form-field input[type=date], .form-field textarea{width:100%;border:1px solid var(--gray-300);border-radius:var(--radius-sm);padding:9px 12px;font-size:13px;font-family:inherit;color:var(--gray-800);background:#fff;}
+  .form-field select:focus, .form-field input:focus, .form-field textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.12);}
+  .form-field textarea{resize:vertical;min-height:80px;}
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;}
+
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--gray-900);color:#fff;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:10px;z-index:200;opacity:0;pointer-events:none;transition:opacity .2s, transform .2s;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(-6px);}
+
+  /* ===== SECTION LABEL ===== */
+  .section-label{font-size:11px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.6px;margin:0 0 12px;}
+
+  /* ===== TOOLBAR / FILTER BAR ===== */
+  .toolbar-card{padding:14px 16px;}
+  .toolbar-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  .toolbar-row .form-field{min-width:150px;flex:1;}
+  .toolbar-row select, .toolbar-row input{padding:8px 11px;font-size:12.5px;}
+
+  /* ===== SIMPLE SVG CHART HELPERS ===== */
+  .chart-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;}
+  .chart-legend span{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--gray-500);}
+  .chart-legend i{width:9px;height:9px;border-radius:3px;display:inline-block;}
+
+  /* ===== MODAL / WIZARD ===== */
+  .modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);display:none;align-items:center;justify-content:center;z-index:150;padding:24px;}
+  .modal-overlay.show{display:flex;}
+  .modal-box{background:#fff;border-radius:16px;width:100%;max-width:720px;max-height:88vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);}
+  .modal-head{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--gray-200);}
+  .modal-head h2{font-size:16px;font-weight:800;margin:0;color:var(--gray-900);}
+  .modal-close{width:32px;height:32px;border-radius:50%;border:none;background:var(--gray-100);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gray-500);}
+  .modal-close svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;}
+  .modal-steps{display:flex;padding:18px 24px 0;gap:6px;}
+  .modal-step{flex:1;text-align:center;}
+  .modal-step .dot{width:28px;height:28px;border-radius:50%;background:var(--gray-100);color:var(--gray-400);display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;margin:0 auto 6px;}
+  .modal-step.active .dot{background:var(--primary);color:#fff;}
+  .modal-step.done .dot{background:var(--green);color:#fff;}
+  .modal-step .lbl{font-size:10.5px;font-weight:600;color:var(--gray-400);}
+  .modal-step.active .lbl{color:var(--primary);}
+  .modal-step.done .lbl{color:var(--green);}
+  .modal-step-line{flex:1;height:2px;background:var(--gray-200);margin-top:14px;}
+  .modal-step-line.done{background:var(--green);}
+  .modal-body{padding:22px 24px;overflow-y:auto;flex:1;}
+  .modal-foot{display:flex;justify-content:space-between;padding:16px 24px;border-top:1px solid var(--gray-200);}
+  .wizard-panel{display:none;}
+  .wizard-panel.active{display:block;}
+
+  .type-card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+  .type-card{border:1.5px solid var(--gray-200);border-radius:var(--radius);padding:16px 14px;cursor:pointer;text-align:center;}
+  .type-card:hover{border-color:var(--primary);background:var(--primary-light);}
+  .type-card.selected{border-color:var(--primary);background:var(--primary-light);}
+  .type-card .ic{width:38px;height:38px;border-radius:10px;background:var(--primary-100);color:var(--primary-dark);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;}
+  .type-card .ic svg{width:18px;height:18px;stroke-width:1.9;fill:none;}
+  .type-card .t-name{font-size:12.5px;font-weight:700;color:var(--gray-800);}
+  .type-card .t-cat{font-size:10.5px;color:var(--gray-500);margin-top:2px;}
+
+  .review-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px dashed var(--gray-200);font-size:13px;}
+  .review-row:last-child{border-bottom:none;}
+  .review-row .rl{color:var(--gray-500);}
+  .review-row .rv{font-weight:600;color:var(--gray-800);text-align:right;}
+
+  /* ===== SPLIT VIEW (Persetujuan) ===== */
+  .split-view{display:grid;grid-template-columns:380px 1fr;gap:16px;align-items:start;}
+  .split-list{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius);overflow:hidden;max-height:calc(100vh - 240px);display:flex;flex-direction:column;}
+  .split-list-head{padding:14px 16px;border-bottom:1px solid var(--gray-200);}
+  .split-list-items{overflow-y:auto;flex:1;}
+  .split-item{padding:14px 16px;border-bottom:1px solid var(--gray-100);cursor:pointer;}
+  .split-item:hover{background:var(--gray-50);}
+  .split-item.active{background:var(--primary-light);border-left:3px solid var(--primary);}
+  .split-item .si-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+  .split-item .si-num{font-size:11px;font-weight:700;color:var(--primary);}
+  .split-item .si-subject{font-size:13px;font-weight:600;color:var(--gray-900);margin-bottom:3px;}
+  .split-item .si-meta{font-size:11.5px;color:var(--gray-500);}
+  .split-detail{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius);display:flex;flex-direction:column;max-height:calc(100vh - 240px);}
+  .split-detail-body{padding:22px;overflow-y:auto;flex:1;}
+  .split-detail-foot{position:sticky;bottom:0;background:#fff;border-top:1px solid var(--gray-200);padding:14px 22px;display:flex;justify-content:flex-end;gap:10px;border-radius:0 0 var(--radius) var(--radius);}
+  .detail-section{margin-bottom:22px;}
+  .detail-section:last-child{margin-bottom:0;}
+  .detail-section h3{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--gray-400);margin:0 0 12px;}
+  .detail-kv{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .detail-kv .k{font-size:11.5px;color:var(--gray-500);margin-bottom:2px;}
+  .detail-kv .v{font-size:13px;font-weight:600;color:var(--gray-800);}
+  .emp-profile{display:flex;align-items:center;gap:12px;}
+  .emp-profile .avatar{width:46px;height:46px;font-size:15px;}
+  .emp-profile .e-name{font-size:14px;font-weight:700;color:var(--gray-900);}
+  .emp-profile .e-role{font-size:12px;color:var(--gray-500);}
+
+  .attach-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid var(--gray-200);border-radius:var(--radius-sm);margin-bottom:8px;font-size:12.5px;}
+  .attach-row:last-child{margin-bottom:0;}
+  .attach-row svg{width:16px;height:16px;stroke:var(--gray-500);fill:none;stroke-width:1.9;flex-shrink:0;}
+  .attach-row .a-name{flex:1;font-weight:600;color:var(--gray-800);}
+  .attach-row .a-size{color:var(--gray-400);font-size:11px;}
+
+  .approval-tl{position:relative;padding-left:28px;}
+  .approval-tl-item{position:relative;padding-bottom:20px;}
+  .approval-tl-item:last-child{padding-bottom:0;}
+  .approval-tl-item::before{content:'';position:absolute;left:-22px;top:22px;bottom:-2px;width:2px;background:var(--gray-200);}
+  .approval-tl-item:last-child::before{display:none;}
+  .approval-tl-item.done::before{background:var(--green);}
+  .approval-tl-dot{position:absolute;left:-30px;top:0;width:16px;height:16px;border-radius:50%;background:var(--gray-200);display:flex;align-items:center;justify-content:center;}
+  .approval-tl-item.done .approval-tl-dot{background:var(--green);}
+  .approval-tl-item.current .approval-tl-dot{background:var(--primary);box-shadow:0 0 0 3px var(--primary-100);}
+  .approval-tl-dot svg{width:9px;height:9px;stroke:#fff;fill:none;stroke-width:3;}
+  .approval-tl-item .tl-stage{font-size:12.5px;font-weight:700;color:var(--gray-900);}
+  .approval-tl-item .tl-meta{font-size:11.5px;color:var(--gray-500);margin-top:2px;}
+  .approval-tl-item .tl-note{font-size:12px;color:var(--gray-600);margin-top:6px;background:var(--gray-50);padding:8px 10px;border-radius:8px;}
+
+  .comment-row{display:flex;gap:10px;margin-bottom:14px;}
+  .comment-row:last-child{margin-bottom:0;}
+  .comment-row .c-body{flex:1;background:var(--gray-50);border-radius:10px;padding:10px 12px;}
+  .comment-row .c-name{font-size:12.5px;font-weight:700;color:var(--gray-800);}
+  .comment-row .c-time{font-size:10.5px;color:var(--gray-400);margin-left:6px;font-weight:500;}
+  .comment-row .c-text{font-size:12.5px;color:var(--gray-700);margin-top:3px;}
+
+  /* ===== TIMELINE (Riwayat) ===== */
+  .history-tl{position:relative;}
+  .history-tl-item{display:flex;gap:16px;margin-bottom:4px;}
+  .history-tl-marker{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:16px;}
+  .history-tl-marker .dot{width:12px;height:12px;border-radius:50%;background:var(--primary);flex-shrink:0;margin-top:4px;}
+  .history-tl-marker .line{width:2px;flex:1;background:var(--gray-200);margin-top:4px;}
+  .history-tl-body{padding-bottom:20px;flex:1;}
+
+  /* ===== DRAWER ===== */
+  .drawer-overlay{position:fixed;inset:0;background:rgba(15,23,42,.4);display:none;z-index:150;}
+  .drawer-overlay.show{display:block;}
+  .drawer{position:fixed;top:0;right:-460px;width:460px;max-width:92vw;height:100vh;background:#fff;box-shadow:var(--shadow-lg);z-index:151;transition:right .22s ease;display:flex;flex-direction:column;}
+  .drawer.show{right:0;}
+  .drawer-head{display:flex;justify-content:space-between;align-items:center;padding:20px 22px;border-bottom:1px solid var(--gray-200);}
+  .drawer-head h2{font-size:16px;font-weight:800;margin:0;}
+  .drawer-body{padding:22px;overflow-y:auto;flex:1;}
+  .drawer-foot{padding:16px 22px;border-top:1px solid var(--gray-200);display:flex;justify-content:flex-end;gap:10px;}
+  .drawer-tabs{display:flex;flex-direction:column;gap:2px;margin-bottom:18px;background:var(--gray-50);border-radius:10px;padding:4px;}
+  .drawer-tab{padding:9px 12px;border-radius:7px;font-size:12.5px;font-weight:600;color:var(--gray-500);cursor:pointer;}
+  .drawer-tab.active{background:#fff;color:var(--primary);box-shadow:var(--shadow-sm);}
+  .drawer-tab-panel{display:none;}
+  .drawer-tab-panel.active{display:block;}
+
+  /* ===== WORKFLOW BUILDER ===== */
+  .wf-builder{display:grid;grid-template-columns:220px 1fr;gap:16px;}
+  .wf-palette-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--gray-200);border-radius:var(--radius-sm);margin-bottom:8px;font-size:12.5px;font-weight:600;color:var(--gray-700);cursor:pointer;}
+  .wf-palette-item:hover{border-color:var(--primary);color:var(--primary);}
+  .wf-palette-item svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.9;flex-shrink:0;}
+  .wf-canvas{background:var(--gray-50);border:1.5px dashed var(--gray-300);border-radius:var(--radius);padding:32px 24px;min-height:520px;overflow-x:auto;}
+  .wf-flow{display:flex;align-items:flex-start;gap:0;min-width:max-content;}
+  .wf-node{background:#fff;border:1.5px solid var(--gray-200);border-radius:var(--radius);padding:14px 16px;width:190px;box-shadow:var(--shadow-sm);position:relative;flex-shrink:0;}
+  .wf-node.start{border-color:var(--green);background:#F0FDF4;}
+  .wf-node.end{border-color:var(--gray-400);}
+  .wf-node .wf-type{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:var(--primary);margin-bottom:6px;}
+  .wf-node .wf-title{font-size:13px;font-weight:700;color:var(--gray-900);margin-bottom:3px;}
+  .wf-node .wf-sub{font-size:11px;color:var(--gray-500);}
+  .wf-node .wf-actions{position:absolute;top:8px;right:8px;display:flex;gap:3px;}
+  .wf-node .wf-actions button{width:20px;height:20px;border:none;background:var(--gray-100);border-radius:5px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gray-500);}
+  .wf-node .wf-actions button svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.2;}
+  .wf-arrow{display:flex;align-items:center;flex-shrink:0;width:44px;justify-content:center;color:var(--gray-300);align-self:center;margin-top:34px;}
+  .wf-arrow svg{width:28px;height:14px;stroke:currentColor;fill:none;stroke-width:2;}
+  .wf-branch{display:flex;flex-direction:column;gap:12px;justify-content:center;}
+  .wf-branch-lbl{font-size:9.5px;font-weight:700;color:var(--gray-400);text-align:center;text-transform:uppercase;}
+
+  /* ===== FORM BUILDER ===== */
+  .fb-builder{display:grid;grid-template-columns:210px 1fr 300px;gap:16px;align-items:start;}
+  .fb-comp-item{display:flex;align-items:center;gap:10px;padding:9px 11px;border:1px solid var(--gray-200);border-radius:var(--radius-sm);margin-bottom:7px;font-size:12px;font-weight:600;color:var(--gray-700);cursor:pointer;}
+  .fb-comp-item:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light);}
+  .fb-comp-item svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.9;flex-shrink:0;}
+  .fb-canvas{background:var(--gray-50);border:1.5px dashed var(--gray-300);border-radius:var(--radius);padding:16px;min-height:520px;}
+  .fb-field{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:10px;}
+  .fb-field-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+  .fb-field-top .ft-label{font-size:12.5px;font-weight:700;color:var(--gray-800);}
+  .fb-field-top .ft-type{font-size:10px;font-weight:700;color:var(--primary);background:var(--primary-light);padding:2px 7px;border-radius:10px;text-transform:uppercase;}
+  .fb-field-actions{display:flex;gap:4px;}
+  .fb-field-actions button{width:22px;height:22px;border:none;background:var(--gray-100);border-radius:5px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gray-500);}
+  .fb-field-actions button svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.2;}
+  .fb-field .ft-preview-mock{height:32px;border:1px solid var(--gray-200);border-radius:6px;background:var(--gray-50);}
+  .fb-empty{text-align:center;padding:60px 20px;color:var(--gray-400);font-size:12.5px;}
+  .fb-preview-phone{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius);padding:18px;position:sticky;top:80px;}
+
+  /* ===== PERMISSION MATRIX ===== */
+  .perm-table th, .perm-table td{text-align:center;}
+  .perm-table th:first-child, .perm-table td:first-child{text-align:left;}
+  .perm-check{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--gray-300);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;background:#fff;}
+  .perm-check.on{background:var(--primary);border-color:var(--primary);}
+  .perm-check.on svg{width:11px;height:11px;stroke:#fff;fill:none;stroke-width:3;}
+  .role-head{display:flex;flex-direction:column;align-items:center;gap:4px;}
+  .role-head .rh-icon{width:26px;height:26px;border-radius:7px;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;}
+  .role-head .rh-icon svg{width:13px;height:13px;stroke-width:2;stroke:currentColor;fill:none;}
+
+  .pagination{display:flex;align-items:center;justify-content:space-between;padding-top:16px;font-size:12.5px;color:var(--gray-500);flex-wrap:wrap;gap:10px;}
+  .pg-btns{display:flex;align-items:center;gap:6px;}
+  .pg-btn{width:28px;height:28px;border:1px solid var(--gray-200);border-radius:7px;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gray-500);font-size:12px;}
+  .pg-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);font-weight:700;}
+
+  @media (max-width:1200px){
+    .split-view{grid-template-columns:1fr;}
+    .wf-builder{grid-template-columns:1fr;}
+    .fb-builder{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <div class="sidebar">
+    <div class="brand">
+      <div class="logo">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+          <circle cx="13" cy="13" r="12" fill="#10b981"/>
+          <circle cx="25" cy="13" r="12" fill="#3b82f6" opacity="0.85"/>
+          <circle cx="13" cy="25" r="12" fill="#f97316" opacity="0.85"/>
+          <circle cx="25" cy="25" r="12" fill="#8b5cf6" opacity="0.85"/>
+        </svg>
+      </div>
+      <div class="name">Dasaria</div>
+    </div>
+    <div class="menu-label">Menu</div>
+    <a class="menu-item" href="dashboard-hc.html">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      Dashboard
+    </a>
+    <a class="menu-item" href="dashboard-hc.html">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.2"/><circle cx="5" cy="19" r="2.2"/><circle cx="19" cy="19" r="2.2"/><path d="M12 7.2V12M12 12L5 16.8M12 12l7 4.8"/></svg>
+      Struktur dan Organisasi
+    </a>
+    <div class="menu-item" onclick="toggleSubmenu('sub-master', this)">
+      <svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2"/><circle cx="8.5" cy="12" r="2"/><path d="M13.5 10h4M13.5 14h4M5.5 16.3c.6-1.3 1.8-2 3-2s2.4.7 3 2"/></svg>
+      Data Master Karyawan
+      <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="submenu" id="sub-master" style="display:none">
+      <a class="menu-item" href="dashboard-hc.html">Data Karyawan</a>
+      <a class="menu-item" href="dashboard-hc.html">Perpanjangan Kontrak</a>
+      <a class="menu-item" href="dashboard-hc.html">Pengunduran Diri</a>
+      <a class="menu-item" href="dashboard-hc.html">Perubahan Organisasi</a>
+    </div>
+    <div class="menu-item" onclick="toggleSubmenu('sub-penggajian', this)">
+      <svg viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="13" rx="2.2"/><path d="M2.5 10h19"/><circle cx="17" cy="14.3" r="1.4"/></svg>
+      Penggajian
+      <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="submenu" id="sub-penggajian" style="display:none">
+      <a class="menu-item" href="camd.html">Compensation Architecture (CAMD)</a>
+      <a class="menu-item" href="konfigurasi-penggajian.html">Payroll Configuration</a>
+      <a class="menu-item" href="pph21-pph26-setting.html">PPh21 &amp; 26 Setting</a>
+      <a class="menu-item" href="dashboard-hc.html#payroll-dashboard">Dashboard Penggajian</a>
+      <a class="menu-item" href="dashboard-hc.html#periode">Periode Gajian</a>
+      <a class="menu-item" href="dashboard-hc.html#validasi">Persetujuan Periode Gajian</a>
+      <a class="menu-item" href="dashboard-hc.html#distribusi">Distribusi Gaji &amp; Slip Gaji</a>
+      <a class="menu-item" href="dashboard-hc.html#kasbon">Kasbon</a>
+      <a class="menu-item" href="rekonsiliasi-payroll.html">Rekonsiliasi Payroll</a>
+    </div>
+    <div class="menu-item open active-parent" onclick="toggleSubmenu('sub-jenispengajuan', this)">
+      <svg viewBox="0 0 24 24"><path d="M6 2.5h9l4.5 4.5v14.5H6z"/><path d="M15 2.5V7h4.5M8.5 12.5h7M8.5 16h7"/></svg>
+      Pengajuan &amp; Persetujuan
+      <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="submenu" id="sub-jenispengajuan" style="display:block">
+      <div class="menu-item active" data-page="dashboard" onclick="goPage('dashboard', this)">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        Dashboard
+      </div>
+      <div class="menu-item" data-page="pengajuan" onclick="goPage('pengajuan', this)">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>
+        Pengajuan
+      </div>
+      <div class="menu-item" data-page="persetujuan" onclick="goPage('persetujuan', this)">
+        <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+        Persetujuan
+        <span id="nav-approval-count" style="margin-left:auto;font-size:10.5px;font-weight:700;background:#e4e6ea;color:#6b7280;padding:1px 7px;border-radius:20px;">6</span>
+      </div>
+      <div class="menu-item" data-page="riwayat" onclick="goPage('riwayat', this)">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        Riwayat
+      </div>
+    </div>
+    <div class="menu-item" onclick="toggleSubmenu('sub-attendance', this)">
+      <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      Jadwal &amp; Kehadiran
+      <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="submenu" id="sub-attendance" style="display:none">
+      <a class="menu-item" href="attendance-schedule.html#dashboard">Dashboard</a>
+      <a class="menu-item" href="attendance-schedule.html#kehadiran">Kehadiran</a>
+      <a class="menu-item" href="attendance-schedule.html#jadwal">Jadwal Kerja</a>
+      <a class="menu-item" href="attendance-schedule.html#shift">Shift Management</a>
+      <a class="menu-item" href="attendance-schedule.html#kalender">Kalender Kerja</a>
+      <a class="menu-item" href="attendance-schedule.html#monitoring">Monitoring</a>
+    </div>
+    <div class="menu-item" onclick="toggleSubmenu('sub-document', this)">
+      <svg viewBox="0 0 24 24"><path d="M2 20h20M4 20V10l4-3 4 3v10M12 20V6l4-3 4 3v14"/></svg>
+      Dokumen
+      <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="submenu" id="sub-document" style="display:none">
+      <a class="menu-item" href="document.html#factory">Document Factory</a>
+      <a class="menu-item" href="document.html#control">Document Control</a>
+      <a class="menu-item" href="document.html#template">Template</a>
+      <a class="menu-item" href="document.html#repository">Repository</a>
+    </div>
+    <div class="menu-item" onclick="toggleSubmenu('sub-rekrutmen', this)">
+      <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+      Rekrutmen
+      <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="submenu" id="sub-rekrutmen" style="display:none">
+      <a class="menu-item" href="dashboard-hc.html">Daftar Lowongan</a>
+      <a class="menu-item" href="dashboard-hc.html">Pipeline Kandidat</a>
+      <a class="menu-item" href="dashboard-hc.html">Proses Seleksi</a>
+    </div>
+    <a class="menu-item" href="dashboard-hc.html">
+      <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      Hak Akses
+    </a>
+
+    <div class="sidebar-foot">
+      <div class="sidebar-user">
+        <div class="avatar">TA</div>
+        <div>
+          <div class="u-name">Tes Admin</div>
+          <div class="u-role">Head of Human Capital</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MAIN ============ -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" placeholder="Cari nomor pengajuan, subjek, atau nama karyawan...">
+      </div>
+      <div class="topbar-right">
+        <div class="form-field" style="min-width:0;">
+          <select id="role-switcher" onchange="setRole(this.value)" title="Simulasi hak akses per role" style="border:1px solid var(--gray-200);border-radius:20px;padding:7px 12px;font-size:12px;font-weight:600;font-family:inherit;color:var(--gray-600);background:var(--gray-50);">
+            <option value="Employee">Role: Employee</option>
+            <option value="Supervisor">Role: Supervisor</option>
+            <option value="Manager">Role: Manager</option>
+            <option value="HR" selected>Role: HR</option>
+            <option value="Finance">Role: Finance</option>
+            <option value="Director">Role: Director</option>
+            <option value="System Administrator">Role: System Administrator</option>
+          </select>
+        </div>
+        <div class="icon-btn" title="Notifikasi"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg><span class="dot"></span></div>
+        <div class="icon-btn" title="Bantuan"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 015 .5c0 1.5-2 1.5-2 3.5"/><path d="M12 17h.01"/></svg></div>
+        <div class="topbar-user">
+          <div class="avatar">TA</div>
+          <svg viewBox="0 0 24 24" width="13" height="13" stroke="var(--gray-400)" fill="none" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="loading-bar" id="loading-bar"></div>
+    <div class="content">
+
+      <div class="breadcrumb-trail" id="breadcrumb-trail">Home / Pengajuan &amp; Persetujuan / <b>Dashboard</b></div>
+
+      <!-- ============================================================ -->
+      <!-- PAGE 1: DASHBOARD -->
+      <!-- ============================================================ -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-head">
+          <div>
+            <h1>Dashboard</h1>
+            <div class="sub">Ringkasan pengajuan &amp; persetujuan seluruh perusahaan</div>
+          </div>
+          <button class="btn btn-outline"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg> Juli 2026</button>
+        </div>
+
+        <div class="grid-12" style="margin-bottom:16px;">
+          <div class="col-4 kpi-card">
+            <div class="top"><div class="kpi-icon" style="background:var(--primary-light);color:var(--primary)"><svg viewBox="0 0 24 24" stroke="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg></div></div>
+            <div class="lbl">Total Requests</div>
+            <div class="val">1.284</div>
+            <div class="kpi-delta up"><svg viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg> 8,4% vs bulan lalu</div>
+          </div>
+          <div class="col-4 kpi-card">
+            <div class="top"><div class="kpi-icon" style="background:var(--amber-bg);color:var(--amber)"><svg viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div></div>
+            <div class="lbl">My Pending Requests</div>
+            <div class="val">3</div>
+            <div class="kpi-delta flat">Menunggu diproses approver</div>
+          </div>
+          <div class="col-4 kpi-card">
+            <div class="top"><div class="kpi-icon" style="background:var(--primary-100);color:var(--primary-dark)"><svg viewBox="0 0 24 24" stroke="currentColor"><path d="M20 6L9 17l-5-5"/></svg></div></div>
+            <div class="lbl">Requests Waiting My Approval</div>
+            <div class="val">6</div>
+            <div class="kpi-delta down">2 melewati SLA</div>
+          </div>
+          <div class="col-4 kpi-card">
+            <div class="top"><div class="kpi-icon" style="background:var(--green-bg);color:var(--green)"><svg viewBox="0 0 24 24" stroke="currentColor"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div></div>
+            <div class="lbl">Completed This Month</div>
+            <div class="val">217</div>
+            <div class="kpi-delta up"><svg viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg> 12,1% vs bulan lalu</div>
+          </div>
+          <div class="col-4 kpi-card">
+            <div class="top"><div class="kpi-icon" style="background:var(--purple-bg);color:var(--purple)"><svg viewBox="0 0 24 24" stroke="currentColor"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg></div></div>
+            <div class="lbl">Average Approval SLA</div>
+            <div class="val">1,6 hari</div>
+            <div class="kpi-delta up"><svg viewBox="0 0 24 24"><path d="M6 9l6-6 6 6"/></svg> membaik dari 2,1 hari</div>
+          </div>
+          <div class="col-4 kpi-card" style="display:flex;flex-direction:column;justify-content:center;">
+            <div class="lbl" style="margin-bottom:10px;">SLA Compliance Rate</div>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="flex:1;height:8px;background:var(--gray-100);border-radius:6px;overflow:hidden;"><div style="width:91%;height:100%;background:var(--green);"></div></div>
+              <b style="font-size:15px;color:var(--gray-900);">91%</b>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-12" style="margin-bottom:16px;">
+          <div class="col-8 card">
+            <div class="card-head"><h2>Monthly Request Trend</h2><span class="muted" style="font-size:12px;">12 bulan terakhir</span></div>
+            <svg viewBox="0 0 1000 220" style="width:100%;height:auto;display:block;">
+              <defs><linearGradient id="reqTrendGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2563EB" stop-opacity=".18"/><stop offset="100%" stop-color="#2563EB" stop-opacity="0"/></linearGradient></defs>
+              <g stroke="#E2E8F0" stroke-width="1"><line x1="40" y1="180" x2="980" y2="180"/><line x1="40" y1="135" x2="980" y2="135"/><line x1="40" y1="90" x2="980" y2="90"/><line x1="40" y1="45" x2="980" y2="45"/></g>
+              <polygon points="80,140 165,132 250,125 335,110 420,118 505,95 590,88 675,70 760,78 845,60 930,50 930,180 80,180" fill="url(#reqTrendGrad)"/>
+              <polyline points="80,140 165,132 250,125 335,110 420,118 505,95 590,88 675,70 760,78 845,60 930,50" fill="none" stroke="#2563EB" stroke-width="2.5"/>
+              <g fill="#2563EB">
+                <circle cx="80" cy="140" r="3.5"/><circle cx="165" cy="132" r="3.5"/><circle cx="250" cy="125" r="3.5"/><circle cx="335" cy="110" r="3.5"/><circle cx="420" cy="118" r="3.5"/><circle cx="505" cy="95" r="3.5"/><circle cx="590" cy="88" r="3.5"/><circle cx="675" cy="70" r="3.5"/><circle cx="760" cy="78" r="3.5"/><circle cx="845" cy="60" r="3.5"/><circle cx="930" cy="50" r="3.5"/>
+              </g>
+              <g font-size="11" fill="#94A3B8" text-anchor="middle" font-family="Inter, sans-serif">
+                <text x="80" y="200">Ags</text><text x="165" y="200">Sep</text><text x="250" y="200">Okt</text><text x="335" y="200">Nov</text><text x="420" y="200">Des</text><text x="505" y="200">Jan</text><text x="590" y="200">Feb</text><text x="675" y="200">Mar</text><text x="760" y="200">Apr</text><text x="845" y="200">Mei</text><text x="930" y="200">Jun</text>
+              </g>
+            </svg>
+          </div>
+          <div class="col-4 card">
+            <div class="card-head"><h2>Request by Type</h2></div>
+            <div style="display:flex;align-items:center;gap:20px;">
+              <svg viewBox="0 0 130 130" style="width:120px;height:120px;flex-shrink:0;">
+                <circle cx="65" cy="65" r="50" fill="none" stroke="#E2E8F0" stroke-width="17"/>
+                <circle cx="65" cy="65" r="50" fill="none" stroke="#2563EB" stroke-width="17" stroke-dasharray="103.7 314.2" stroke-dashoffset="0" transform="rotate(-90 65 65)"/>
+                <circle cx="65" cy="65" r="50" fill="none" stroke="#16A34A" stroke-width="17" stroke-dasharray="72.3 314.2" stroke-dashoffset="-103.7" transform="rotate(-90 65 65)"/>
+                <circle cx="65" cy="65" r="50" fill="none" stroke="#D97706" stroke-width="17" stroke-dasharray="56.6 314.2" stroke-dashoffset="-176.0" transform="rotate(-90 65 65)"/>
+                <circle cx="65" cy="65" r="50" fill="none" stroke="#7C3AED" stroke-width="17" stroke-dasharray="47.1 314.2" stroke-dashoffset="-232.6" transform="rotate(-90 65 65)"/>
+                <circle cx="65" cy="65" r="50" fill="none" stroke="#94A3B8" stroke-width="17" stroke-dasharray="34.5 314.2" stroke-dashoffset="-279.7" transform="rotate(-90 65 65)"/>
+                <text x="65" y="61" text-anchor="middle" font-size="17" font-weight="800" fill="#0F172A" font-family="Inter">1.284</text>
+                <text x="65" y="78" text-anchor="middle" font-size="9.5" fill="#94A3B8" font-family="Inter">Total</text>
+              </svg>
+              <div style="display:flex;flex-direction:column;gap:9px;font-size:12px;">
+                <span style="display:flex;align-items:center;gap:6px;"><i style="width:8px;height:8px;border-radius:2px;background:#2563EB;display:inline-block;"></i>Cuti (33%)</span>
+                <span style="display:flex;align-items:center;gap:6px;"><i style="width:8px;height:8px;border-radius:2px;background:#16A34A;display:inline-block;"></i>Reimbursement (23%)</span>
+                <span style="display:flex;align-items:center;gap:6px;"><i style="width:8px;height:8px;border-radius:2px;background:#D97706;display:inline-block;"></i>Lembur (18%)</span>
+                <span style="display:flex;align-items:center;gap:6px;"><i style="width:8px;height:8px;border-radius:2px;background:#7C3AED;display:inline-block;"></i>Perjalanan Dinas (15%)</span>
+                <span style="display:flex;align-items:center;gap:6px;"><i style="width:8px;height:8px;border-radius:2px;background:#94A3B8;display:inline-block;"></i>Lainnya (11%)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-12" style="margin-bottom:16px;">
+          <div class="col-6 card">
+            <div class="card-head"><h2>Request by Department</h2></div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div><div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px;"><span>Direktorat Komersial</span><b>412</b></div><div style="height:8px;background:var(--gray-100);border-radius:5px;overflow:hidden;"><div style="width:88%;height:100%;background:#2563EB;"></div></div></div>
+              <div><div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px;"><span>Direktorat Teknologi &amp; Jaringan</span><b>296</b></div><div style="height:8px;background:var(--gray-100);border-radius:5px;overflow:hidden;"><div style="width:64%;height:100%;background:#2563EB;"></div></div></div>
+              <div><div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px;"><span>Direktorat Operasional &amp; Regional</span><b>318</b></div><div style="height:8px;background:var(--gray-100);border-radius:5px;overflow:hidden;"><div style="width:69%;height:100%;background:#2563EB;"></div></div></div>
+              <div><div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px;"><span>Direktorat HC / Finance &amp; Corporate</span><b>258</b></div><div style="height:8px;background:var(--gray-100);border-radius:5px;overflow:hidden;"><div style="width:56%;height:100%;background:#2563EB;"></div></div></div>
+            </div>
+          </div>
+          <div class="col-6 card">
+            <div class="card-head"><h2>Approval Bottleneck</h2><span class="chip chip-red">3 stage kritis</span></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Approval Stage</th><th>Avg. Waktu</th><th>Backlog</th></tr></thead>
+                <tbody>
+                  <tr><td>Approval Direktur FAT</td><td><span class="chip chip-red">3,8 hari</span></td><td>9</td></tr>
+                  <tr><td>Review HC — Perubahan Data</td><td><span class="chip chip-amber">2,1 hari</span></td><td>5</td></tr>
+                  <tr><td>Approval Atasan Langsung — Cuti</td><td><span class="chip chip-green">0,6 hari</span></td><td>2</td></tr>
+                  <tr><td>Verifikasi Finance — Reimbursement</td><td><span class="chip chip-amber">1,9 hari</span></td><td>7</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-12">
+          <div class="col-3 card">
+            <div class="card-head"><h2>Recent Activities</h2></div>
+            <div style="display:flex;flex-direction:column;gap:12px;font-size:12px;">
+              <div><b style="color:var(--gray-800);">Ahmad Fauzi</b> mengajukan <span class="muted">Cuti Tahunan</span><div class="muted" style="font-size:11px;margin-top:2px;">5 menit lalu</div></div>
+              <div><b style="color:var(--gray-800);">Anda</b> menyetujui <span class="muted">Lembur — Dewi Kusuma</span><div class="muted" style="font-size:11px;margin-top:2px;">32 menit lalu</div></div>
+              <div><b style="color:var(--gray-800);">Siti Rahayu</b> mengunggah revisi <span class="muted">Reimbursement</span><div class="muted" style="font-size:11px;margin-top:2px;">1 jam lalu</div></div>
+              <div><b style="color:var(--gray-800);">Budi Santoso</b> menolak <span class="muted">Kasbon — Yoga Adi</span><div class="muted" style="font-size:11px;margin-top:2px;">2 jam lalu</div></div>
+            </div>
+          </div>
+          <div class="col-3 card">
+            <div class="card-head"><h2>My Tasks</h2><span class="chip chip-blue">6</span></div>
+            <div style="display:flex;flex-direction:column;gap:10px;font-size:12px;">
+              <div style="display:flex;justify-content:space-between;"><span>Approve Cuti — Rizky Pratama</span><span class="chip chip-amber">Urgent</span></div>
+              <div style="display:flex;justify-content:space-between;"><span>Approve Lembur — Sinta Aulia</span><span class="chip chip-gray">Normal</span></div>
+              <div style="display:flex;justify-content:space-between;"><span>Review Reimbursement — Nanda Putri</span><span class="chip chip-amber">Urgent</span></div>
+            </div>
+          </div>
+          <div class="col-3 card">
+            <div class="card-head"><h2>SLA Alerts</h2><span class="chip chip-red">4</span></div>
+            <div style="display:flex;flex-direction:column;gap:10px;font-size:12px;">
+              <div>Kasbon — Yoga Adi <div class="muted" style="font-size:11px;">Lewat SLA 1 hari 4 jam</div></div>
+              <div>Perubahan Data — Fajar Maulana <div class="muted" style="font-size:11px;">Lewat SLA 6 jam</div></div>
+              <div>Reimbursement — Dimas Setiawan <div class="muted" style="font-size:11px;">Jatuh tempo 2 jam lagi</div></div>
+            </div>
+          </div>
+          <div class="col-3 card">
+            <div class="card-head"><h2>Upcoming Deadlines</h2></div>
+            <div style="display:flex;flex-direction:column;gap:10px;font-size:12px;">
+              <div style="display:flex;justify-content:space-between;"><span>Cuti Tahunan — Ahmad Fauzi</span><b>28 Jul</b></div>
+              <div style="display:flex;justify-content:space-between;"><span>Perjalanan Dinas — Siti Rahayu</span><b>29 Jul</b></div>
+              <div style="display:flex;justify-content:space-between;"><span>Pengunduran Diri — review</span><b>31 Jul</b></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- END PAGE 1 -->
+
+      <!-- ============================================================ -->
+      <!-- PAGE 2: PENGAJUAN (MY REQUESTS) -->
+      <!-- ============================================================ -->
+      <div class="page" id="page-pengajuan">
+        <div class="page-head">
+          <div>
+            <h1>My Requests</h1>
+            <div class="sub">Seluruh pengajuan yang Anda buat atau kelola</div>
+          </div>
+          <div style="display:flex;gap:10px;">
+            <button class="btn btn-outline perm-export"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 21h16"/></svg> Export</button>
+            <button class="btn btn-primary" onclick="openWizard()"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Create Request</button>
+          </div>
+        </div>
+
+        <div class="grid-12" style="margin-bottom:16px;">
+          <div class="col-3 card" style="padding:16px 18px;">
+            <div class="lbl" style="font-size:12px;color:var(--gray-500);font-weight:600;margin-bottom:6px;">Draft</div>
+            <div style="font-size:22px;font-weight:800;color:var(--gray-700);">2</div>
+          </div>
+          <div class="col-3 card" style="padding:16px 18px;">
+            <div class="lbl" style="font-size:12px;color:var(--gray-500);font-weight:600;margin-bottom:6px;">Pending</div>
+            <div style="font-size:22px;font-weight:800;color:var(--amber);">5</div>
+          </div>
+          <div class="col-3 card" style="padding:16px 18px;">
+            <div class="lbl" style="font-size:12px;color:var(--gray-500);font-weight:600;margin-bottom:6px;">Approved</div>
+            <div style="font-size:22px;font-weight:800;color:var(--green);">4</div>
+          </div>
+          <div class="col-3 card" style="padding:16px 18px;">
+            <div class="lbl" style="font-size:12px;color:var(--gray-500);font-weight:600;margin-bottom:6px;">Rejected</div>
+            <div style="font-size:22px;font-weight:800;color:var(--red);">2</div>
+          </div>
+          <div class="col-3 card" style="padding:16px 18px;grid-column:span 3;">
+            <div class="lbl" style="font-size:12px;color:var(--gray-500);font-weight:600;margin-bottom:6px;">Revision</div>
+            <div style="font-size:22px;font-weight:800;color:var(--purple);">1</div>
+          </div>
+        </div>
+
+        <div class="card toolbar-card" style="margin-bottom:16px;">
+          <div class="toolbar-row">
+            <div class="form-field" style="min-width:220px;">
+              <div class="topbar-search" style="min-width:0;">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+                <input type="text" id="pengajuan-search" oninput="renderPengajuanTable()" placeholder="Cari nomor / subjek / requester...">
+              </div>
+            </div>
+            <div class="form-field"><select><option>Semua Perusahaan</option><option>PT Dasarata</option><option>Griyanet</option><option>Rumah Drone</option><option>KiosNet</option></select></div>
+            <div class="form-field"><select><option>Semua Cabang</option><option>Kantor Pusat</option><option>Malang Raya</option><option>Kediri Raya</option><option>Blitar Raya</option><option>Tulungagung Raya</option></select></div>
+            <div class="form-field"><select><option>Semua Jenis</option><option>Cuti Tahunan</option><option>Izin Sakit</option><option>Lembur</option><option>Reimbursement Biaya</option><option>Perjalanan Dinas</option><option>Kasbon</option><option>Perubahan Data Karyawan</option><option>Pengunduran Diri</option></select></div>
+            <div class="form-field"><select><option>Semua Status</option><option>Draft</option><option>Pending</option><option>Approved</option><option>Rejected</option><option>Revision</option></select></div>
+            <div class="form-field"><input type="text" placeholder="Rentang tanggal..." onfocus="this.type='date'"></div>
+            <button class="btn btn-outline btn-sm">Reset</button>
+          </div>
+        </div>
+
+        <div class="card" style="padding:0;">
+          <div class="table-wrap">
+            <table id="pengajuan-table">
+              <thead>
+                <tr>
+                  <th>No. Pengajuan</th><th>Jenis</th><th>Subjek</th><th>Requester</th><th>Perusahaan</th><th>Cabang</th>
+                  <th>Tgl Dibuat</th><th>Tahap Saat Ini</th><th>SLA</th><th>Status</th><th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="pengajuan-tbody"></tbody>
+            </table>
+          </div>
+          <div class="pagination" style="padding:16px 20px;">
+            <span>Menampilkan 1–14 dari 14 pengajuan</span>
+            <div class="pg-btns">
+              <button class="pg-btn active">1</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- END PAGE 2 -->
+
+      <!-- ============================================================ -->
+      <!-- PAGE 3: PERSETUJUAN (APPROVAL) -->
+      <!-- ============================================================ -->
+      <div class="page" id="page-persetujuan">
+        <div class="page-head">
+          <div>
+            <h1>Requests Waiting My Approval</h1>
+            <div class="sub">Tinjau dan proses pengajuan yang membutuhkan persetujuan Anda</div>
+          </div>
+        </div>
+
+        <div class="grid-12" style="margin-bottom:16px;">
+          <div class="col-3 kpi-card">
+            <div class="lbl">Pending Today</div>
+            <div class="val">6</div>
+          </div>
+          <div class="col-3 kpi-card">
+            <div class="lbl">Over SLA</div>
+            <div class="val" style="color:var(--red);">2</div>
+          </div>
+          <div class="col-3 kpi-card">
+            <div class="lbl">High Priority</div>
+            <div class="val" style="color:var(--amber);">3</div>
+          </div>
+          <div class="col-3 kpi-card">
+            <div class="lbl">Completed Today</div>
+            <div class="val" style="color:var(--green);">8</div>
+          </div>
+        </div>
+
+        <div class="split-view">
+          <div class="split-list">
+            <div class="split-list-head">
+              <div class="topbar-search" style="min-width:0;">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+                <input type="text" placeholder="Cari pengajuan...">
+              </div>
+            </div>
+            <div class="split-list-items" id="approval-list"></div>
+          </div>
+          <div class="split-detail" id="approval-detail"></div>
+        </div>
+      </div>
+      <!-- END PAGE 3 -->
+
+      <!-- ============================================================ -->
+      <!-- PAGE 4: RIWAYAT (HISTORY) -->
+      <!-- ============================================================ -->
+      <div class="page" id="page-riwayat">
+        <div class="page-head">
+          <div>
+            <h1>Riwayat</h1>
+            <div class="sub">Riwayat lengkap seluruh pengajuan yang sudah selesai diproses</div>
+          </div>
+          <button class="btn btn-outline perm-export"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 21h16"/></svg> Download PDF</button>
+        </div>
+
+        <div class="card toolbar-card" style="margin-bottom:16px;">
+          <div class="toolbar-row">
+            <div class="form-field" style="min-width:220px;">
+              <div class="topbar-search" style="min-width:0;">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+                <input type="text" placeholder="Cari riwayat pengajuan...">
+              </div>
+            </div>
+            <div class="form-field"><select><option>Semua Jenis</option><option>Cuti Tahunan</option><option>Reimbursement Biaya</option><option>Lembur</option><option>Kasbon</option></select></div>
+            <div class="form-field"><select><option>Semua Status</option><option>Approved</option><option>Rejected</option></select></div>
+            <div class="form-field"><select><option>Semua Perusahaan</option><option>PT Dasarata</option><option>Griyanet</option></select></div>
+            <div class="form-field"><input type="text" placeholder="Rentang tanggal..." onfocus="this.type='date'"></div>
+            <button class="btn btn-outline btn-sm">Filter Lanjutan</button>
+          </div>
+        </div>
+
+        <div class="grid-12">
+          <div class="col-4 card">
+            <div class="card-head"><h2>Timeline Terbaru</h2></div>
+            <div class="history-tl" id="history-timeline"></div>
+          </div>
+          <div class="col-8 card" style="padding:0;">
+            <div class="card-head" style="padding:20px 20px 0;"><h2>Tabel Riwayat</h2></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>No. Pengajuan</th><th>Jenis</th><th>Subjek</th><th>Requester</th><th>Selesai Pada</th><th>Durasi Proses</th><th>Status</th><th>Aksi</th></tr></thead>
+                <tbody id="history-tbody"></tbody>
+              </table>
+            </div>
+            <div class="pagination" style="padding:16px 20px;">
+              <span>Menampilkan 1–10 dari 862 riwayat</span>
+              <div class="pg-btns">
+                <button class="pg-btn"><svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg></button>
+                <button class="pg-btn active">1</button><button class="pg-btn">2</button><button class="pg-btn">3</button><span class="muted">…</span><button class="pg-btn">87</button>
+                <button class="pg-btn"><svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- END PAGE 4 -->
+
+      <!-- ============================================================ -->
+      <!-- PAGE 5: LAPORAN (REPORTS) -->
+      <!-- ============================================================ -->
+      <div class="page" id="page-laporan">
+        <div class="page-head">
+          <div>
+            <h1>Laporan</h1>
+            <div class="sub">Executive dashboard performa pengajuan &amp; persetujuan</div>
+          </div>
+          <div style="display:flex;gap:10px;">
+            <button class="btn btn-outline perm-export"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 21h16"/></svg> Export Excel</button>
+            <button class="btn btn-outline perm-export"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 21h16"/></svg> Export PDF</button>
+          </div>
+        </div>
+
+        <div class="grid-12" style="margin-bottom:16px;">
+          <div class="col-3 kpi-card">
+            <div class="lbl">Total Requests (YTD)</div>
+            <div class="val">6.842</div>
+            <div class="kpi-delta up"><svg viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg> 14,2% YoY</div>
+          </div>
+          <div class="col-3 kpi-card">
+            <div class="lbl">Approval Rate</div>
+            <div class="val" style="color:var(--green);">88,4%</div>
+            <div class="kpi-delta up"><svg viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg> 2,1pt vs kuartal lalu</div>
+          </div>
+          <div class="col-3 kpi-card">
+            <div class="lbl">Average SLA</div>
+            <div class="val">1,6 hari</div>
+            <div class="kpi-delta up"><svg viewBox="0 0 24 24"><path d="M6 9l6-6 6 6"/></svg> membaik 0,5 hari</div>
+          </div>
+          <div class="col-3 kpi-card">
+            <div class="lbl">Escalated Requests</div>
+            <div class="val" style="color:var(--red);">23</div>
+            <div class="kpi-delta down">0,3% dari total</div>
+          </div>
+        </div>
+
+        <div class="grid-12" style="margin-bottom:16px;">
+          <div class="col-8 card">
+            <div class="card-head"><h2>Request Trends</h2><span class="muted" style="font-size:12px;">Perbandingan diajukan vs diselesaikan</span></div>
+            <svg viewBox="0 0 1000 220" style="width:100%;height:auto;display:block;">
+              <g stroke="#E2E8F0" stroke-width="1"><line x1="40" y1="180" x2="980" y2="180"/><line x1="40" y1="135" x2="980" y2="135"/><line x1="40" y1="90" x2="980" y2="90"/><line x1="40" y1="45" x2="980" y2="45"/></g>
+              <polyline points="80,120 165,110 250,118 335,95 420,100 505,80 590,85 675,60 760,68 845,50 930,45" fill="none" stroke="#2563EB" stroke-width="2.5"/>
+              <polyline points="80,140 165,132 250,136 335,118 420,122 505,105 590,108 675,88 760,92 845,78 930,72" fill="none" stroke="#94A3B8" stroke-width="2.5" stroke-dasharray="5 4"/>
+              <g font-size="11" fill="#94A3B8" text-anchor="middle" font-family="Inter, sans-serif">
+                <text x="80" y="200">Ags</text><text x="165" y="200">Sep</text><text x="250" y="200">Okt</text><text x="335" y="200">Nov</text><text x="420" y="200">Des</text><text x="505" y="200">Jan</text><text x="590" y="200">Feb</text><text x="675" y="200">Mar</text><text x="760" y="200">Apr</text><text x="845" y="200">Mei</text><text x="930" y="200">Jun</text>
+              </g>
+            </svg>
+            <div class="chart-legend"><span><i style="background:#2563EB"></i>Diajukan</span><span><i style="background:#94A3B8"></i>Diselesaikan</span></div>
+          </div>
+          <div class="col-4 card">
+            <div class="card-head"><h2>Approval Performance</h2></div>
+            <div style="display:flex;align-items:center;gap:20px;">
+              <svg viewBox="0 0 130 130" style="width:110px;height:110px;flex-shrink:0;">
+                <circle cx="65" cy="65" r="50" fill="none" stroke="#E2E8F0" stroke-width="17"/>
+                <circle cx="65" cy="65" r="50" fill="none" stroke="#16A34A" stroke-width="17" stroke-dasharray="277.9 314.2" stroke-dashoffset="0" transform="rotate(-90 65 65)"/>
+                <circle cx="65" cy="65" r="50" fill="none" stroke="#DC2626" stroke-width="17" stroke-dasharray="36.3 314.2" stroke-dashoffset="-277.9" transform="rotate(-90 65 65)"/>
+                <text x="65" y="61" text-anchor="middle" font-size="16" font-weight="800" fill="#0F172A" font-family="Inter">88,4%</text>
+                <text x="65" y="78" text-anchor="middle" font-size="9" fill="#94A3B8" font-family="Inter">Approved</text>
+              </svg>
+              <div style="display:flex;flex-direction:column;gap:9px;font-size:12px;">
+                <span style="display:flex;align-items:center;gap:6px;"><i style="width:8px;height:8px;border-radius:2px;background:#16A34A;display:inline-block;"></i>Approved (88,4%)</span>
+                <span style="display:flex;align-items:center;gap:6px;"><i style="width:8px;height:8px;border-radius:2px;background:#DC2626;display:inline-block;"></i>Rejected (11,6%)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-12">
+          <div class="col-6 card">
+            <div class="card-head"><h2>Approval by Department</h2></div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div><div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px;"><span>Direktorat Komersial</span><b>1,8 hari</b></div><div style="height:8px;background:var(--gray-100);border-radius:5px;overflow:hidden;"><div style="width:60%;height:100%;background:#2563EB;"></div></div></div>
+              <div><div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px;"><span>Direktorat Teknologi &amp; Jaringan</span><b>1,2 hari</b></div><div style="height:8px;background:var(--gray-100);border-radius:5px;overflow:hidden;"><div style="width:40%;height:100%;background:#2563EB;"></div></div></div>
+              <div><div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px;"><span>Direktorat Operasional &amp; Regional</span><b>2,4 hari</b></div><div style="height:8px;background:var(--gray-100);border-radius:5px;overflow:hidden;"><div style="width:80%;height:100%;background:#2563EB;"></div></div></div>
+              <div><div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px;"><span>Direktorat HC / Finance &amp; Corporate</span><b>1,0 hari</b></div><div style="height:8px;background:var(--gray-100);border-radius:5px;overflow:hidden;"><div style="width:33%;height:100%;background:#2563EB;"></div></div></div>
+            </div>
+          </div>
+          <div class="col-6 card">
+            <div class="card-head"><h2>Approval by Manager</h2><span class="muted" style="font-size:12px;">Top approver — kecepatan rata-rata</span></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Manager</th><th>Diproses</th><th>Avg. Waktu</th></tr></thead>
+                <tbody>
+                  <tr><td>Fajar Maulana</td><td>184</td><td><span class="chip chip-green">0,8 hari</span></td></tr>
+                  <tr><td>Dimas Setiawan</td><td>142</td><td><span class="chip chip-green">1,1 hari</span></td></tr>
+                  <tr><td>Sinta Aulia</td><td>98</td><td><span class="chip chip-amber">1,9 hari</span></td></tr>
+                  <tr><td>Budi Santoso</td><td>76</td><td><span class="chip chip-red">3,2 hari</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- END PAGE 5 -->
+
+      <!-- ============================================================ -->
+      <!-- PAGE 6: MASTER JENIS PENGAJUAN -->
+      <!-- ============================================================ -->
+      <div class="page" id="page-master-jenis">
+        <div class="page-head">
+          <div>
+            <h1>Master Jenis Pengajuan</h1>
+            <div class="sub">Kelola seluruh jenis pengajuan, workflow, template form, dan SLA terkait</div>
+          </div>
+          <button class="btn btn-primary perm-manage" onclick="openTypeDrawer()"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> New Request Type</button>
+        </div>
+
+        <div class="card toolbar-card" style="margin-bottom:16px;">
+          <div class="toolbar-row">
+            <div class="form-field" style="min-width:220px;">
+              <div class="topbar-search" style="min-width:0;">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+                <input type="text" placeholder="Cari jenis pengajuan...">
+              </div>
+            </div>
+            <div class="form-field"><select><option>Semua Kategori</option><option>Kepegawaian</option><option>Keuangan</option><option>Administrasi</option></select></div>
+            <div class="form-field"><select><option>Semua Status</option><option>Active</option><option>Nonaktif</option></select></div>
+          </div>
+        </div>
+
+        <div class="card" style="padding:0;">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Name</th><th>Category</th><th>Workflow</th><th>Template</th><th>SLA</th><th>Notification</th><th>Status</th><th>Aksi</th></tr></thead>
+              <tbody id="master-jenis-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- END PAGE 6 -->
+
+      <!-- ============================================================ -->
+      <!-- PAGE 7: WORKFLOW APPROVAL -->
+      <!-- ============================================================ -->
+      <div class="page" id="page-workflow">
+        <div class="page-head">
+          <div>
+            <h1>Workflow Approval</h1>
+            <div class="sub">Visual builder untuk alur persetujuan bertingkat</div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <select id="wf-select-type" onchange="renderWorkflowCanvas()" style="border:1px solid var(--gray-300);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;"></select>
+            <button class="btn btn-primary perm-manage" onclick="showToast('Workflow tersimpan.')"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Save Workflow</button>
+          </div>
+        </div>
+
+        <div class="wf-builder">
+          <div class="card">
+            <div class="section-label">Approval Node Types</div>
+            <div class="wf-palette-item" onclick="showToast('Node Sequential Approval ditambahkan ke canvas')"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg> Sequential Approval</div>
+            <div class="wf-palette-item" onclick="showToast('Node Parallel Approval ditambahkan ke canvas')"><svg viewBox="0 0 24 24"><path d="M8 3v18M16 3v18M4 8h4M16 8h4M4 16h4M16 16h4"/></svg> Parallel Approval</div>
+            <div class="wf-palette-item" onclick="showToast('Node Conditional Approval ditambahkan ke canvas')"><svg viewBox="0 0 24 24"><path d="M6 3v12a3 3 0 003 3h9"/><path d="M15 15l3 3-3 3M18 3l-6 9"/></svg> Conditional Approval</div>
+            <div class="wf-palette-item" onclick="showToast('Node Delegation ditambahkan ke canvas')"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a3 3 0 00-2-2.83M16 3.13a4 4 0 010 7.75"/></svg> Delegation</div>
+            <div class="wf-palette-item" onclick="showToast('Node Escalation ditambahkan ke canvas')"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg> Escalation</div>
+            <div class="wf-palette-item" onclick="showToast('Node Auto Approval ditambahkan ke canvas')"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg> Auto Approval</div>
+            <div class="note-box" style="display:flex;gap:8px;background:var(--primary-light);border:1px solid var(--primary-100);color:var(--primary-dark);border-radius:10px;padding:11px 13px;font-size:11.5px;margin-top:14px;">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+              <span>Klik tipe node untuk menambahkan ke canvas, atau klik node yang sudah ada untuk mengubah propertinya.</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h2 id="wf-canvas-title">Workflow — Cuti Tahunan</h2><span class="chip chip-green">Published</span></div>
+            <div class="wf-canvas"><div class="wf-flow" id="wf-flow"></div></div>
+          </div>
+        </div>
+      </div>
+      <!-- END PAGE 7 -->
+
+      <!-- ============================================================ -->
+      <!-- PAGE 8: TEMPLATE FORM -->
+      <!-- ============================================================ -->
+      <div class="page" id="page-template-form">
+        <div class="page-head">
+          <div>
+            <h1>Template Form</h1>
+            <div class="sub">Form builder — susun field dinamis untuk setiap jenis pengajuan</div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <select id="fb-select-type" onchange="renderFormBuilder()" style="border:1px solid var(--gray-300);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;"></select>
+            <button class="btn btn-primary perm-manage" onclick="showToast('Template form tersimpan.')"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Save Template</button>
+          </div>
+        </div>
+
+        <div class="fb-builder">
+          <div class="card">
+            <div class="section-label">Components</div>
+            <div class="fb-comp-item" onclick="addFormComponent('text','Text')"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg> Text</div>
+            <div class="fb-comp-item" onclick="addFormComponent('number','Number')"><svg viewBox="0 0 24 24"><path d="M4 9h16M4 15h16M8 3L6 21M18 3l-2 18"/></svg> Number</div>
+            <div class="fb-comp-item" onclick="addFormComponent('currency','Currency')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15 9.5a3 3 0 00-3-1.5c-2 0-3 1-3 2.3 0 2.7 6 1.2 6 3.9 0 1.3-1.3 2.3-3 2.3a3.5 3.5 0 01-3-1.5M12 6.5v11"/></svg> Currency</div>
+            <div class="fb-comp-item" onclick="addFormComponent('textarea','Textarea')"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h10M7 13h6"/></svg> Textarea</div>
+            <div class="fb-comp-item" onclick="addFormComponent('dropdown','Dropdown')"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M9 12l3 3 3-3"/></svg> Dropdown</div>
+            <div class="fb-comp-item" onclick="addFormComponent('radio','Radio')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5" fill="currentColor"/></svg> Radio</div>
+            <div class="fb-comp-item" onclick="addFormComponent('checkbox','Checkbox')"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12l3 3 5-6"/></svg> Checkbox</div>
+            <div class="fb-comp-item" onclick="addFormComponent('attachment','Attachment')"><svg viewBox="0 0 24 24"><path d="M21.4 11.1l-9 9a5 5 0 01-7-7l9-9a3.5 3.5 0 015 5l-9 9a2 2 0 01-3-3l8-8"/></svg> Attachment</div>
+            <div class="fb-comp-item" onclick="addFormComponent('date','Date')"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg> Date</div>
+            <div class="fb-comp-item" onclick="addFormComponent('employee','Employee Picker')"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> Employee Picker</div>
+            <div class="fb-comp-item" onclick="addFormComponent('department','Department Picker')"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> Department Picker</div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h2>Canvas — <span id="fb-canvas-title">Form Cuti Tahunan</span></h2><span class="muted" style="font-size:11.5px;">Klik komponen di kiri untuk menambah field</span></div>
+            <div class="fb-canvas" id="fb-canvas"></div>
+          </div>
+          <div class="card fb-preview-phone">
+            <div class="section-label">Live Preview</div>
+            <div id="fb-preview"></div>
+          </div>
+        </div>
+      </div>
+      <!-- END PAGE 8 -->
+
+      <!-- ============================================================ -->
+      <!-- PAGE 9: SLA & NOTIFICATION -->
+      <!-- ============================================================ -->
+      <div class="page" id="page-sla">
+        <div class="page-head">
+          <div>
+            <h1>SLA &amp; Notification</h1>
+            <div class="sub">Konfigurasi target waktu persetujuan, reminder, eskalasi, dan kanal notifikasi</div>
+          </div>
+          <button class="btn btn-primary"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Tambah Konfigurasi</button>
+        </div>
+        <div class="card" style="padding:0;">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Request Type</th><th>Approval Time</th><th>Reminder</th><th>Escalation</th><th>Notification Channel</th><th>Aksi</th></tr></thead>
+              <tbody id="sla-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- END PAGE 9 -->
+
+      <!-- ============================================================ -->
+      <!-- PAGE 10: HAK AKSES (ACCESS CONTROL) -->
+      <!-- ============================================================ -->
+      <div class="page" id="page-access">
+        <div class="page-head">
+          <div>
+            <h1>Hak Akses</h1>
+            <div class="sub">Matrix permission per role — Access Control Management</div>
+          </div>
+          <button class="btn btn-outline perm-export"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 21h16"/></svg> Export Matrix</button>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table class="perm-table" id="perm-matrix"></table>
+          </div>
+        </div>
+      </div>
+      <!-- END PAGE 10 -->
+
+    </div>
+  </div>
+</div>
+
+<!-- ============ DRAWER: EDIT REQUEST TYPE ============ -->
+<div class="drawer-overlay" id="type-drawer-overlay" onclick="closeTypeDrawer()"></div>
+<div class="drawer" id="type-drawer">
+  <div class="drawer-head">
+    <h2 id="drawer-title">Edit Request Type</h2>
+    <button class="modal-close" onclick="closeTypeDrawer()"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="drawer-body">
+    <div class="drawer-tabs">
+      <div class="drawer-tab active" data-dtab="general" onclick="switchDrawerTab('general', this)">General Information</div>
+      <div class="drawer-tab" data-dtab="workflow" onclick="switchDrawerTab('workflow', this)">Workflow Assignment</div>
+      <div class="drawer-tab" data-dtab="template" onclick="switchDrawerTab('template', this)">Dynamic Form Template</div>
+      <div class="drawer-tab" data-dtab="sla" onclick="switchDrawerTab('sla', this)">SLA Configuration</div>
+      <div class="drawer-tab" data-dtab="notif" onclick="switchDrawerTab('notif', this)">Notification Rules</div>
+    </div>
+
+    <div class="drawer-tab-panel active" id="dtab-general">
+      <div class="form-grid" style="grid-template-columns:1fr;gap:14px;">
+        <div class="form-field"><label>Nama Jenis Pengajuan</label><input type="text" id="dg-name" value="Cuti Tahunan"></div>
+        <div class="form-field"><label>Kategori</label><select id="dg-category"><option>Kepegawaian</option><option>Keuangan</option><option>Administrasi</option></select></div>
+        <div class="form-field"><label>Deskripsi</label><textarea>Pengajuan cuti tahunan karyawan sesuai kebijakan HC.</textarea></div>
+        <div class="form-field"><label>Status</label><select><option>Active</option><option>Nonaktif</option></select></div>
+      </div>
+    </div>
+    <div class="drawer-tab-panel" id="dtab-workflow">
+      <div class="form-field" style="margin-bottom:14px;"><label>Workflow Ditugaskan</label><select><option>Sequential — Atasan Langsung</option><option>Sequential — Atasan → Finance</option><option>Sequential — Review HC</option></select></div>
+      <div class="note-box" style="background:var(--primary-light);border:1px solid var(--primary-100);color:var(--primary-dark);border-radius:10px;padding:12px 14px;font-size:12px;">Lihat &amp; ubah detail alur node di halaman <b>Workflow Approval</b>.</div>
+    </div>
+    <div class="drawer-tab-panel" id="dtab-template">
+      <div class="form-field" style="margin-bottom:14px;"><label>Template Form Ditugaskan</label><select><option>Form Cuti v2</option><option>Form Reimbursement</option><option>Form Kasbon</option></select></div>
+      <div class="note-box" style="background:var(--primary-light);border:1px solid var(--primary-100);color:var(--primary-dark);border-radius:10px;padding:12px 14px;font-size:12px;">Susun field form di halaman <b>Template Form</b>.</div>
+    </div>
+    <div class="drawer-tab-panel" id="dtab-sla">
+      <div class="form-grid" style="grid-template-columns:1fr 1fr;gap:14px;">
+        <div class="form-field"><label>Approval Time (hari)</label><input type="number" value="1"></div>
+        <div class="form-field"><label>Reminder Sebelum (jam)</label><input type="number" value="4"></div>
+        <div class="form-field"><label>Escalation Setelah (jam)</label><input type="number" value="24"></div>
+        <div class="form-field"><label>Eskalasi Ke</label><select><option>Atasan dari Approver</option><option>Direktur HC</option></select></div>
+      </div>
+    </div>
+    <div class="drawer-tab-panel" id="dtab-notif">
+      <div class="form-field" style="margin-bottom:10px;"><label style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:12.5px;color:var(--gray-800);"><input type="checkbox" checked style="width:16px;height:16px;"> Email</label></div>
+      <div class="form-field" style="margin-bottom:10px;"><label style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:12.5px;color:var(--gray-800);"><input type="checkbox" checked style="width:16px;height:16px;"> Push Notification (App)</label></div>
+      <div class="form-field"><label style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:12.5px;color:var(--gray-800);"><input type="checkbox" style="width:16px;height:16px;"> WhatsApp</label></div>
+    </div>
+  </div>
+  <div class="drawer-foot">
+    <button class="btn btn-outline" onclick="closeTypeDrawer()">Batal</button>
+    <button class="btn btn-primary perm-manage" onclick="closeTypeDrawer(); showToast('Jenis pengajuan tersimpan.')">Simpan</button>
+  </div>
+</div>
+
+<!-- ============ CREATE REQUEST WIZARD ============ -->
+<div class="modal-overlay" id="wizard-overlay">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2>Create Request</h2>
+      <button class="modal-close" onclick="closeWizard()"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="modal-steps">
+      <div class="modal-step active" id="wstep-dot-1"><div class="dot">1</div><div class="lbl">Jenis</div></div>
+      <div class="modal-step-line" id="wline-1"></div>
+      <div class="modal-step" id="wstep-dot-2"><div class="dot">2</div><div class="lbl">Form</div></div>
+      <div class="modal-step-line" id="wline-2"></div>
+      <div class="modal-step" id="wstep-dot-3"><div class="dot">3</div><div class="lbl">Review</div></div>
+      <div class="modal-step-line" id="wline-3"></div>
+      <div class="modal-step" id="wstep-dot-4"><div class="dot">4</div><div class="lbl">Submit</div></div>
+    </div>
+    <div class="modal-body">
+      <!-- STEP 1: Select Request Type -->
+      <div class="wizard-panel active" id="wpanel-1">
+        <div class="section-label" style="margin-bottom:14px;">Pilih Jenis Pengajuan</div>
+        <div class="type-card-grid" id="wizard-type-grid"></div>
+      </div>
+      <!-- STEP 2: Dynamic Form -->
+      <div class="wizard-panel" id="wpanel-2">
+        <div class="section-label" style="margin-bottom:14px;">Isi Form <span id="wform-typename" style="color:var(--primary);"></span></div>
+        <div class="form-grid" id="wform-fields"></div>
+      </div>
+      <!-- STEP 3: Review -->
+      <div class="wizard-panel" id="wpanel-3">
+        <div class="section-label" style="margin-bottom:14px;">Review Pengajuan</div>
+        <div class="card" style="background:var(--gray-50);border-style:dashed;" id="wreview-box"></div>
+      </div>
+      <!-- STEP 4: Submit -->
+      <div class="wizard-panel" id="wpanel-4">
+        <div style="text-align:center;padding:30px 10px;">
+          <div style="width:64px;height:64px;border-radius:50%;background:var(--green-bg);color:var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
+            <svg viewBox="0 0 24 24" width="30" height="30" stroke="currentColor" fill="none" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <div style="font-size:16px;font-weight:800;color:var(--gray-900);margin-bottom:6px;">Pengajuan Berhasil Dikirim</div>
+          <div class="muted" style="font-size:13px;">Nomor pengajuan <b class="req-number" id="wsuccess-number">—</b> telah dikirim ke <span id="wsuccess-stage">Atasan Langsung</span> untuk persetujuan pertama.</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" id="wbtn-back" onclick="wizardBack()">Batal</button>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-outline" id="wbtn-draft" onclick="wizardSaveDraft()">Simpan Draft</button>
+        <button class="btn btn-primary" id="wbtn-next" onclick="wizardNext()">Lanjut</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button class="fab" onclick="openWizard()"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Create Request</button>
+<div class="toast" id="toast"></div>
+
+<script>
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(window.__toastTimer);
+    window.__toastTimer = setTimeout(()=>t.classList.remove('show'), 2600);
+  }
+
+  const pageLabels = {
+    dashboard:'Dashboard', pengajuan:'Pengajuan', persetujuan:'Persetujuan', riwayat:'Riwayat', laporan:'Laporan',
+    'master-jenis':'Master Jenis Pengajuan', workflow:'Workflow Approval', 'template-form':'Template Form',
+    sla:'SLA & Notification', access:'Hak Akses'
+  };
+  function showLoadingBar(){
+    const bar = document.getElementById('loading-bar');
+    bar.style.width = '0';
+    bar.classList.add('show');
+    requestAnimationFrame(() => { bar.style.width = '70%'; });
+    clearTimeout(window.__loadingBarTimer);
+    window.__loadingBarTimer = setTimeout(() => {
+      bar.style.width = '100%';
+      setTimeout(() => { bar.classList.remove('show'); bar.style.width = '0'; }, 180);
+    }, 220);
+  }
+  function toggleSubmenu(id, el){
+    const sub = document.getElementById(id);
+    const open = sub.style.display !== 'none';
+    sub.style.display = open ? 'none' : 'block';
+    el.classList.toggle('open', !open);
+  }
+  function goPage(key, el){
+    showLoadingBar();
+    document.querySelectorAll('.menu-item[data-page]').forEach(n=>n.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    const target = document.getElementById('page-' + key);
+    if(target) target.classList.add('active');
+    document.title = 'Dasaria HRIS — ' + pageLabels[key];
+    document.getElementById('breadcrumb-trail').innerHTML = 'Home / Pengajuan &amp; Persetujuan / <b>' + pageLabels[key] + '</b>';
+    window.scrollTo({top:0, behavior:'instant'});
+    document.querySelector('.fab').style.display = (key === 'persetujuan') ? 'none' : 'inline-flex';
+  }
+
+  // =========================================================
+  // DATA MODEL
+  // =========================================================
+  const icoCuti = '<svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.9"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>';
+  const icoSakit = '<svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.9"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/><path d="M9 12h2l1-2 2 4 1-2h2"/></svg>';
+  const icoLembur = '<svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>';
+  const icoReimb = '<svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.9"><path d="M6 2h9l3 3v17H6z"/><path d="M15 2v3h3M9 11h6M9 15h6M9 7h3"/></svg>';
+  const icoDinas = '<svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.9"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1M9 13h1M14 9h1M14 13h1M9 21v-4h6v4"/></svg>';
+  const icoKasbon = '<svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.9"><path d="M2 8h18a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2z"/><path d="M2 8V6a2 2 0 012-2h13"/><circle cx="16" cy="14" r="1.6"/></svg>';
+  const icoUbahData = '<svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.9"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M17 11l3-3 3 3M20 8v9"/></svg>';
+  const icoResign = '<svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.9"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>';
+
+  const requestTypes = [
+    { key:'cuti', name:'Cuti Tahunan', category:'Kepegawaian', icon:icoCuti,
+      fields:[
+        {k:'tglMulai', l:'Tanggal Mulai', t:'date'},
+        {k:'tglSelesai', l:'Tanggal Selesai', t:'date'},
+        {k:'jenisCuti', l:'Jenis Cuti', t:'select', opts:['Cuti Tahunan','Cuti Menikah','Cuti Melahirkan','Cuti Duka']},
+        {k:'alasan', l:'Alasan', t:'textarea', full:true}
+      ]},
+    { key:'sakit', name:'Izin Sakit', category:'Kepegawaian', icon:icoSakit,
+      fields:[
+        {k:'tglMulai', l:'Tanggal Mulai', t:'date'},
+        {k:'tglSelesai', l:'Tanggal Selesai', t:'date'},
+        {k:'keterangan', l:'Keterangan', t:'textarea', full:true},
+        {k:'suratDokter', l:'Surat Keterangan Dokter', t:'file', full:true}
+      ]},
+    { key:'lembur', name:'Lembur', category:'Kepegawaian', icon:icoLembur,
+      fields:[
+        {k:'tglLembur', l:'Tanggal Lembur', t:'date'},
+        {k:'jamMulai', l:'Jam Mulai', t:'text', ph:'18:00'},
+        {k:'jamSelesai', l:'Jam Selesai', t:'text', ph:'21:00'},
+        {k:'alasanLembur', l:'Alasan Lembur', t:'textarea', full:true}
+      ]},
+    { key:'reimb', name:'Reimbursement Biaya', category:'Keuangan', icon:icoReimb,
+      fields:[
+        {k:'kategori', l:'Kategori Biaya', t:'select', opts:['Transportasi (BBM)','Akomodasi','Konsumsi','Komunikasi','Lainnya']},
+        {k:'nominal', l:'Nominal (Rp)', t:'number', ph:'850000'},
+        {k:'tglTransaksi', l:'Tanggal Transaksi', t:'date'},
+        {k:'deskripsi', l:'Deskripsi', t:'textarea', full:true},
+        {k:'bukti', l:'Bukti Transaksi', t:'file', full:true}
+      ]},
+    { key:'dinas', name:'Perjalanan Dinas', category:'Keuangan', icon:icoDinas,
+      fields:[
+        {k:'tujuan', l:'Tujuan', t:'text', ph:'mis. Kantor Pusat - Kota Malang'},
+        {k:'tglBerangkat', l:'Tanggal Berangkat', t:'date'},
+        {k:'tglKembali', l:'Tanggal Kembali', t:'date'},
+        {k:'estimasiBiaya', l:'Estimasi Biaya (Rp)', t:'number', ph:'3200000'},
+        {k:'tujuanKegiatan', l:'Tujuan Kegiatan', t:'textarea', full:true}
+      ]},
+    { key:'kasbon', name:'Kasbon', category:'Keuangan', icon:icoKasbon,
+      fields:[
+        {k:'nominal', l:'Nominal Kasbon (Rp)', t:'number', ph:'1500000'},
+        {k:'cicilan', l:'Jumlah Cicilan', t:'select', opts:['1x','2x','3x','6x']},
+        {k:'alasan', l:'Alasan', t:'textarea', full:true}
+      ]},
+    { key:'ubahdata', name:'Perubahan Data Karyawan', category:'Administrasi', icon:icoUbahData,
+      fields:[
+        {k:'jenisPerubahan', l:'Jenis Perubahan', t:'select', opts:['Rekening Bank','Alamat Domisili','Status Pernikahan','Kontak Darurat']},
+        {k:'dataBaru', l:'Data Baru', t:'text', ph:'mis. BCA 8800123456 a.n. ...', full:true},
+        {k:'lampiran', l:'Lampiran Pendukung', t:'file', full:true}
+      ]},
+    { key:'resign', name:'Pengunduran Diri', category:'Administrasi', icon:icoResign,
+      fields:[
+        {k:'tglEfektif', l:'Tanggal Efektif', t:'date'},
+        {k:'masaNotice', l:'Masa Notice', t:'select', opts:['30 hari (sesuai kontrak)','14 hari (kesepakatan)']},
+        {k:'alasanResign', l:'Alasan Pengunduran Diri', t:'textarea', full:true},
+        {k:'suratResign', l:'Surat Pengunduran Diri', t:'file', full:true}
+      ]}
+  ];
+
+  function statusChip(s){
+    const map = {
+      Draft:'chip-gray', Pending:'chip-amber', Approved:'chip-green', Rejected:'chip-red', Revision:'chip-purple'
+    };
+    return '<span class="chip ' + map[s] + '"><i></i>' + s + '</span>';
+  }
+
+  const requestsData = [
+    {num:'REQ-2026-01842', type:'Cuti Tahunan', subject:'Cuti Tahunan 28-30 Jul 2026', requester:'Ahmad Fauzi', company:'PT Dasarata', branch:'Malang Raya', created:'22 Jul 2026', stage:'Menunggu Atasan Langsung', sla:'18j 22m', status:'Pending'},
+    {num:'REQ-2026-01841', type:'Reimbursement Biaya', subject:'Reimbursement BBM Juli', requester:'Siti Rahayu', company:'PT Dasarata', branch:'Kantor Pusat', created:'21 Jul 2026', stage:'Menunggu Finance', sla:'Lewat SLA 4j', status:'Pending', over:true},
+    {num:'REQ-2026-01839', type:'Lembur', subject:'Lembur Closing Payroll', requester:'Dewi Kusuma', company:'PT Dasarata', branch:'Kediri Raya', created:'20 Jul 2026', stage:'Selesai', sla:'—', status:'Approved'},
+    {num:'REQ-2026-01836', type:'Kasbon', subject:'Kasbon Kebutuhan Keluarga', requester:'Yoga Adi', company:'Griyanet', branch:'Malang Raya', created:'19 Jul 2026', stage:'Ditolak Atasan', sla:'—', status:'Rejected'},
+    {num:'REQ-2026-01834', type:'Perjalanan Dinas', subject:'Dinas ke Kantor Pusat', requester:'Dimas Setiawan', company:'PT Dasarata', branch:'Kediri Raya', created:'18 Jul 2026', stage:'Menunggu Direktur', sla:'1h 3j', status:'Pending'},
+    {num:'REQ-2026-01831', type:'Perubahan Data Karyawan', subject:'Update Rekening Bank', requester:'Fajar Maulana', company:'PT Dasarata', branch:'Kantor Pusat', created:'17 Jul 2026', stage:'Review HC', sla:'Lewat SLA 6j', status:'Pending', over:true},
+    {num:'REQ-2026-01829', type:'Cuti Tahunan', subject:'Cuti Menikah', requester:'Sinta Aulia', company:'PT Dasarata', branch:'Tulungagung Raya', created:'16 Jul 2026', stage:'Selesai', sla:'—', status:'Approved'},
+    {num:'REQ-2026-01825', type:'Izin Sakit', subject:'Izin Sakit 2 Hari', requester:'Rizky Pratama', company:'Griyanet', branch:'Blitar Raya', created:'15 Jul 2026', stage:'Menunggu Revisi Pemohon', sla:'—', status:'Revision'},
+    {num:'REQ-2026-01820', type:'Pengunduran Diri', subject:'Resign per 31 Agustus', requester:'Nanda Putri', company:'PT Dasarata', branch:'Kantor Pusat', created:'14 Jul 2026', stage:'Menunggu Direktur HC', sla:'2h 5j', status:'Pending'},
+    {num:'REQ-2026-01818', type:'Reimbursement Biaya', subject:'Reimbursement Training', requester:'Budi Santoso', company:'PT Dasarata', branch:'Kantor Pusat', created:'13 Jul 2026', stage:'Selesai', sla:'—', status:'Approved'},
+    {num:'REQ-2026-01812', type:'Lembur', subject:'Lembur Stock Opname', requester:'Andi Wijaya', company:'Griyanet', branch:'Malang Raya', created:'10 Jul 2026', stage:'Draft', sla:'—', status:'Draft'},
+    {num:'REQ-2026-01805', type:'Cuti Tahunan', subject:'Cuti Akhir Tahun', requester:'Intan Permata', company:'PT Dasarata', branch:'Kantor Pusat', created:'8 Jul 2026', stage:'Draft', sla:'—', status:'Draft'},
+    {num:'REQ-2026-01799', type:'Kasbon', subject:'Kasbon Pendidikan Anak', requester:'Galih Ramadhan', company:'Rumah Drone', branch:'Malang Raya', created:'5 Jul 2026', stage:'Selesai', sla:'—', status:'Approved'},
+    {num:'REQ-2026-01790', type:'Perjalanan Dinas', subject:'Dinas Survey Cabang Baru', requester:'Melati Ayu Lestari', company:'KiosNet', branch:'Kediri Raya', created:'1 Jul 2026', stage:'Ditolak Finance', sla:'—', status:'Rejected'}
+  ];
+
+  function renderPengajuanTable(){
+    const body = document.getElementById('pengajuan-tbody');
+    if(!body) return;
+    const q = (document.getElementById('pengajuan-search').value || '').trim().toLowerCase();
+    const filtered = q ? requestsData.filter(r =>
+      r.num.toLowerCase().includes(q) || r.subject.toLowerCase().includes(q) || r.requester.toLowerCase().includes(q) || r.type.toLowerCase().includes(q)
+    ) : requestsData;
+    if(filtered.length === 0){
+      body.innerHTML = `<tr><td colspan="11">
+        <div class="empty-state">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+          <div class="es-title">Tidak ada pengajuan ditemukan</div>
+          <div class="es-desc">Coba ubah kata kunci pencarian atau reset filter.</div>
+        </div>
+      </td></tr>`;
+      return;
+    }
+    body.innerHTML = filtered.map(r => `
+      <tr>
+        <td class="mono req-number">${r.num}</td>
+        <td>${r.type}</td>
+        <td class="req-subject">${r.subject}</td>
+        <td>${r.requester}</td>
+        <td>${r.company}</td>
+        <td>${r.branch}</td>
+        <td class="muted">${r.created}</td>
+        <td>${r.stage}</td>
+        <td>${r.sla === '—' ? '<span class="muted">—</span>' : '<span class="chip ' + (r.over ? 'chip-red' : 'chip-blue') + '">' + r.sla + '</span>'}</td>
+        <td>${statusChip(r.status)}</td>
+        <td>
+          <div style="display:flex;gap:6px;">
+            <button class="icon-btn" style="width:30px;height:30px;" title="Lihat Detail" onclick="showToast('Menampilkan detail ' + '${r.num}' + '...')"><svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+  renderPengajuanTable();
+
+  // =========================================================
+  // HAK AKSES — permission matrix (defined early: referenced by
+  // renderApprovalList/selectApproval/renderMasterJenisTable below)
+  // =========================================================
+  const roles = ['Employee','Supervisor','Manager','HR','Finance','Director','System Administrator'];
+  const roleIcons = {
+    Employee:'<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 016-6h4a6 6 0 016 6v1"/></svg>',
+    Supervisor:'<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>',
+    Manager:'<svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>',
+    HR:'<svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>',
+    Finance:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15 9.5a3 3 0 00-3-1.5c-2 0-3 1-3 2.3 0 2.7 6 1.2 6 3.9 0 1.3-1.3 2.3-3 2.3a3.5 3.5 0 01-3-1.5M12 6.5v11"/></svg>',
+    Director:'<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M8.5 12.5L6 22l6-3 6 3-2.5-9.5"/></svg>',
+    'System Administrator':'<svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>'
+  };
+  const permissions = ['Create','Read','Edit','Delete','Approve','Export','Manage Master'];
+  const permMatrix = {
+    Create:[1,1,1,1,1,1,1],
+    Read:[1,1,1,1,1,1,1],
+    Edit:[1,1,1,1,0,0,1],
+    Delete:[1,0,0,1,0,0,1],
+    Approve:[0,1,1,1,1,1,0],
+    Export:[0,0,1,1,1,1,1],
+    'Manage Master':[0,0,0,1,0,0,1]
+  };
+  function togglePerm(perm, idx){
+    permMatrix[perm][idx] = permMatrix[perm][idx] ? 0 : 1;
+    renderPermMatrix();
+    showToast((permMatrix[perm][idx] ? 'Mengaktifkan' : 'Menonaktifkan') + ' izin "' + perm + '" untuk role ' + roles[idx]);
+  }
+  function renderPermMatrix(){
+    const el = document.getElementById('perm-matrix');
+    if(!el) return;
+    let head = '<thead><tr><th>Permission</th>' + roles.map(r => `<th><div class="role-head"><div class="rh-icon">${roleIcons[r]}</div><span>${r}</span></div></th>`).join('') + '</tr></thead>';
+    let body = '<tbody>' + permissions.map(p => `
+      <tr><td><b>${p}</b></td>${roles.map((r,i) => `<td><span class="perm-check ${permMatrix[p][i] ? 'on' : ''}" onclick="togglePerm('${p}', ${i})">${permMatrix[p][i] ? '<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>' : ''}</span></td>`).join('')}</tr>
+    `).join('') + '</tbody>';
+    el.innerHTML = head + body;
+  }
+  renderPermMatrix();
+
+  let currentRole = 'HR';
+  const roleIndex = {Employee:0, Supervisor:1, Manager:2, HR:3, Finance:4, Director:5, 'System Administrator':6};
+  function hasPermission(action){
+    return !!(permMatrix[action] && permMatrix[action][roleIndex[currentRole]]);
+  }
+  function applyPermissions(){
+    document.querySelectorAll('.perm-approve').forEach(b => {
+      const ok = hasPermission('Approve');
+      b.disabled = !ok;
+      b.title = ok ? '' : 'Role "' + currentRole + '" tidak memiliki izin Approve';
+    });
+    document.querySelectorAll('.perm-manage').forEach(b => {
+      const ok = hasPermission('Manage Master');
+      b.disabled = !ok;
+      b.title = ok ? '' : 'Role "' + currentRole + '" tidak memiliki izin Manage Master';
+    });
+    document.querySelectorAll('.perm-export').forEach(b => {
+      const ok = hasPermission('Export');
+      b.disabled = !ok;
+      b.title = ok ? '' : 'Role "' + currentRole + '" tidak memiliki izin Export';
+    });
+    document.querySelectorAll('.perm-delete').forEach(b => {
+      const ok = hasPermission('Delete');
+      b.disabled = !ok;
+      b.title = ok ? '' : 'Role "' + currentRole + '" tidak memiliki izin Delete';
+    });
+  }
+  function setRole(role){
+    currentRole = role;
+    applyPermissions();
+    showToast('Simulasi role diganti ke "' + role + '" — tombol aksi menyesuaikan hak akses.');
+  }
+
+  // =========================================================
+  // PERSETUJUAN — split view
+  // =========================================================
+  const approvalQueue = [
+    { id:1, num:'REQ-2026-01842', type:'Cuti Tahunan', subject:'Cuti Tahunan 28-30 Jul 2026', requester:'Ahmad Fauzi', role:'Supervisor Cabang Malang', company:'PT Dasarata', branch:'Malang Raya', created:'22 Jul 2026, 09:12', priority:'Normal', sla:'18j 22m', over:false,
+      fields:[{l:'Tanggal Mulai',v:'28 Juli 2026'},{l:'Tanggal Selesai',v:'30 Juli 2026'},{l:'Jenis Cuti',v:'Cuti Tahunan'},{l:'Sisa Cuti',v:'9 hari'},{l:'Alasan',v:'Acara keluarga di luar kota'}],
+      attachments:[],
+      timeline:[{stage:'Diajukan Pemohon', who:'Ahmad Fauzi', time:'22 Jul 2026, 09:12', state:'done'},{stage:'Atasan Langsung', who:'Menunggu Anda', time:'', state:'current'},{stage:'Selesai', who:'', time:'', state:'pending'}],
+      comments:[{name:'Ahmad Fauzi', time:'22 Jul, 09:12', text:'Mohon persetujuannya, terima kasih.'}]
+    },
+    { id:2, num:'REQ-2026-01841', type:'Reimbursement Biaya', subject:'Reimbursement BBM Juli', requester:'Siti Rahayu', role:'Officer Payroll', company:'PT Dasarata', branch:'Kantor Pusat', created:'21 Jul 2026, 14:05', priority:'High', sla:'Lewat SLA 4j', over:true,
+      fields:[{l:'Kategori Biaya',v:'Transportasi (BBM)'},{l:'Nominal',v:'Rp 850.000'},{l:'Tanggal Transaksi',v:'18 Juli 2026'},{l:'Deskripsi',v:'BBM kunjungan ke 3 cabang wilayah Malang Raya'}],
+      attachments:[{name:'struk-bbm-juli.pdf', size:'240 KB'}],
+      timeline:[{stage:'Diajukan Pemohon', who:'Siti Rahayu', time:'21 Jul 2026, 14:05', state:'done'},{stage:'Atasan Langsung', who:'Fajar Maulana', time:'21 Jul 2026, 16:40', state:'done'},{stage:'Finance', who:'Menunggu Anda', time:'', state:'current'},{stage:'Selesai', who:'', time:'', state:'pending'}],
+      comments:[{name:'Fajar Maulana', time:'21 Jul, 16:40', text:'Disetujui dari sisi atasan, lanjut ke Finance untuk verifikasi nominal.'}]
+    },
+    { id:3, num:'REQ-2026-01834', type:'Perjalanan Dinas', subject:'Dinas ke Kantor Pusat', requester:'Dimas Setiawan', role:'Head of Region Kediri', company:'PT Dasarata', branch:'Kediri Raya', created:'18 Jul 2026, 10:30', priority:'High', sla:'1h 3j', over:false,
+      fields:[{l:'Tujuan',v:'Kantor Pusat — Kota Malang'},{l:'Tanggal Berangkat',v:'24 Juli 2026'},{l:'Tanggal Kembali',v:'26 Juli 2026'},{l:'Estimasi Biaya',v:'Rp 3.200.000'},{l:'Tujuan Kegiatan',v:'Rapat koordinasi Regional Kediri dengan Direktorat Operasional'}],
+      attachments:[{name:'itinerary-dinas.pdf', size:'128 KB'}],
+      timeline:[{stage:'Diajukan Pemohon', who:'Dimas Setiawan', time:'18 Jul 2026, 10:30', state:'done'},{stage:'Direktur Operasional', who:'Menunggu Anda', time:'', state:'current'},{stage:'Selesai', who:'', time:'', state:'pending'}],
+      comments:[]
+    },
+    { id:4, num:'REQ-2026-01831', type:'Perubahan Data Karyawan', subject:'Update Rekening Bank', requester:'Fajar Maulana', role:'Manager Finance Kantor Pusat', company:'PT Dasarata', branch:'Kantor Pusat', created:'17 Jul 2026, 08:50', priority:'Normal', sla:'Lewat SLA 6j', over:true,
+      fields:[{l:'Jenis Perubahan',v:'Rekening Bank'},{l:'Data Baru',v:'BCA 8800123456 a.n. Fajar Maulana'},{l:'Alasan',v:'Penggantian bank utama'}],
+      attachments:[{name:'buku-tabungan.jpg', size:'1,1 MB'}],
+      timeline:[{stage:'Diajukan Pemohon', who:'Fajar Maulana', time:'17 Jul 2026, 08:50', state:'done'},{stage:'Review HC', who:'Menunggu Anda', time:'', state:'current'},{stage:'Selesai', who:'', time:'', state:'pending'}],
+      comments:[]
+    },
+    { id:5, num:'REQ-2026-01820', type:'Pengunduran Diri', subject:'Resign per 31 Agustus', requester:'Nanda Putri', role:'Staff Finance Kantor Pusat', company:'PT Dasarata', branch:'Kantor Pusat', created:'14 Jul 2026, 11:20', priority:'High', sla:'2h 5j', over:false,
+      fields:[{l:'Tanggal Efektif',v:'31 Agustus 2026'},{l:'Masa Notice',v:'30 hari (sesuai kontrak)'},{l:'Alasan',v:'Melanjutkan studi S2'}],
+      attachments:[{name:'surat-pengunduran-diri.pdf', size:'96 KB'}],
+      timeline:[{stage:'Diajukan Pemohon', who:'Nanda Putri', time:'14 Jul 2026, 11:20', state:'done'},{stage:'Atasan Langsung', who:'Fajar Maulana', time:'14 Jul 2026, 15:00', state:'done'},{stage:'Direktur HC', who:'Menunggu Anda', time:'', state:'current'},{stage:'Selesai', who:'', time:'', state:'pending'}],
+      comments:[{name:'Fajar Maulana', time:'14 Jul, 15:00', text:'Sudah exit interview awal, silakan lanjut ke Direktur HC.'}]
+    },
+    { id:6, num:'REQ-2026-01839B', type:'Lembur', subject:'Lembur Persiapan Closing Payroll', requester:'Sinta Aulia', role:'Branch Leader Cabang Tulungagung', company:'PT Dasarata', branch:'Tulungagung Raya', created:'21 Jul 2026, 17:00', priority:'Normal', sla:'22j', over:false,
+      fields:[{l:'Tanggal Lembur',v:'21 Juli 2026'},{l:'Jam Mulai',v:'18:00'},{l:'Jam Selesai',v:'21:00'},{l:'Alasan',v:'Persiapan closing payroll cabang Tulungagung'}],
+      attachments:[],
+      timeline:[{stage:'Diajukan Pemohon', who:'Sinta Aulia', time:'21 Jul 2026, 17:00', state:'done'},{stage:'Atasan Langsung', who:'Menunggu Anda', time:'', state:'current'},{stage:'Selesai', who:'', time:'', state:'pending'}],
+      comments:[]
+    }
+  ];
+  let activeApprovalId = null;
+
+  function initials(name){ return name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase(); }
+
+  function renderApprovalList(){
+    const list = document.getElementById('approval-list');
+    if(!list) return;
+    if(approvalQueue.length === 0){
+      list.innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--gray-400);font-size:12.5px;">Semua pengajuan sudah diproses 🎉</div>';
+      document.getElementById('approval-detail').innerHTML = '';
+      document.getElementById('nav-approval-count').textContent = '0';
+      return;
+    }
+    list.innerHTML = approvalQueue.map(r => `
+      <div class="split-item ${r.id === activeApprovalId ? 'active' : ''}" onclick="selectApproval(${r.id})">
+        <div class="si-top"><span class="si-num">${r.num}</span>${r.over ? '<span class="chip chip-red">Over SLA</span>' : (r.priority === 'High' ? '<span class="chip chip-amber">High</span>' : '')}</div>
+        <div class="si-subject">${r.subject}</div>
+        <div class="si-meta">${r.requester} · ${r.branch}</div>
+      </div>
+    `).join('');
+    document.getElementById('nav-approval-count').textContent = approvalQueue.length;
+  }
+
+  function selectApproval(id){
+    activeApprovalId = id;
+    renderApprovalList();
+    const r = approvalQueue.find(x => x.id === id);
+    const detail = document.getElementById('approval-detail');
+    if(!r){ detail.innerHTML = ''; return; }
+    detail.innerHTML = `
+      <div class="split-detail-body">
+        <div class="detail-section">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+            <div>
+              <div style="font-size:11px;font-weight:700;color:var(--primary);margin-bottom:4px;">${r.num} · ${r.type}</div>
+              <div style="font-size:16px;font-weight:800;color:var(--gray-900);">${r.subject}</div>
+            </div>
+            ${r.priority === 'High' ? '<span class="chip chip-amber">High Priority</span>' : '<span class="chip chip-gray">Normal</span>'}
+          </div>
+        </div>
+        <div class="detail-section">
+          <h3>Employee Profile</h3>
+          <div class="emp-profile">
+            <div class="avatar">${initials(r.requester)}</div>
+            <div>
+              <div class="e-name">${r.requester}</div>
+              <div class="e-role">${r.role} · ${r.company} · ${r.branch}</div>
+            </div>
+          </div>
+        </div>
+        <div class="detail-section">
+          <h3>Request Information</h3>
+          <div class="detail-kv">
+            <div><div class="k">Diajukan</div><div class="v">${r.created}</div></div>
+            <div><div class="k">SLA</div><div class="v" style="color:${r.over ? 'var(--red)' : 'var(--gray-800)'}">${r.sla}</div></div>
+          </div>
+        </div>
+        <div class="detail-section">
+          <h3>Dynamic Form</h3>
+          <div class="detail-kv">
+            ${r.fields.map(f => `<div><div class="k">${f.l}</div><div class="v">${f.v}</div></div>`).join('')}
+          </div>
+        </div>
+        <div class="detail-section">
+          <h3>Attachments</h3>
+          ${r.attachments.length === 0 ? '<div class="muted" style="font-size:12.5px;">Tidak ada lampiran</div>' : r.attachments.map(a => `
+            <div class="attach-row">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+              <span class="a-name">${a.name}</span><span class="a-size">${a.size}</span>
+            </div>
+          `).join('')}
+        </div>
+        <div class="detail-section">
+          <h3>Approval Timeline</h3>
+          <div class="approval-tl">
+            ${r.timeline.map(t => `
+              <div class="approval-tl-item ${t.state}">
+                <div class="approval-tl-dot">${t.state === 'done' ? '<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>' : ''}</div>
+                <div class="tl-stage">${t.stage}</div>
+                <div class="tl-meta">${t.who}${t.time ? ' · ' + t.time : ''}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        <div class="detail-section">
+          <h3>Internal Comments</h3>
+          ${r.comments.map(c => `
+            <div class="comment-row">
+              <div class="avatar" style="width:30px;height:30px;font-size:10.5px;">${initials(c.name)}</div>
+              <div class="c-body"><span class="c-name">${c.name}</span><span class="c-time">${c.time}</span><div class="c-text">${c.text}</div></div>
+            </div>
+          `).join('') || '<div class="muted" style="font-size:12.5px;">Belum ada komentar</div>'}
+          <div class="form-field" style="margin-top:12px;"><textarea placeholder="Tulis komentar internal..." style="min-height:60px;"></textarea></div>
+        </div>
+      </div>
+      <div class="split-detail-foot">
+        <button class="btn btn-outline perm-approve" onclick="processApproval(${r.id}, 'revision')">Request Revision</button>
+        <button class="btn btn-danger perm-approve" onclick="processApproval(${r.id}, 'reject')">Reject</button>
+        <button class="btn btn-primary perm-approve" onclick="processApproval(${r.id}, 'approve')">Approve</button>
+      </div>
+    `;
+    if(typeof applyPermissions === 'function') applyPermissions();
+  }
+
+  function processApproval(id, action){
+    const r = approvalQueue.find(x => x.id === id);
+    if(!r) return;
+    const msg = action === 'approve' ? 'disetujui' : action === 'reject' ? 'ditolak' : 'dikembalikan untuk revisi';
+    showToast('Pengajuan ' + r.num + ' berhasil ' + msg + '.');
+    approvalQueue.splice(approvalQueue.findIndex(x => x.id === id), 1);
+    activeApprovalId = null;
+    renderApprovalList();
+    document.getElementById('approval-detail').innerHTML = approvalQueue.length ? '<div style="padding:60px 20px;text-align:center;color:var(--gray-400);font-size:12.5px;">Pilih pengajuan di sebelah kiri untuk melihat detail</div>' : '';
+  }
+
+  renderApprovalList();
+  if(approvalQueue.length) selectApproval(approvalQueue[0].id);
+
+  // =========================================================
+  // RIWAYAT (HISTORY)
+  // =========================================================
+  const historyEvents = [
+    {name:'Dewi Kusuma', subject:'Lembur Closing Payroll', status:'Approved', date:'20 Jul 2026'},
+    {name:'Yoga Adi', subject:'Kasbon Kebutuhan Keluarga', status:'Rejected', date:'19 Jul 2026'},
+    {name:'Sinta Aulia', subject:'Cuti Menikah', status:'Approved', date:'16 Jul 2026'},
+    {name:'Budi Santoso', subject:'Reimbursement Training', status:'Approved', date:'13 Jul 2026'},
+    {name:'Galih Ramadhan', subject:'Kasbon Pendidikan Anak', status:'Approved', date:'5 Jul 2026'},
+    {name:'Melati Ayu Lestari', subject:'Dinas Survey Cabang Baru', status:'Rejected', date:'1 Jul 2026'}
+  ];
+  function renderHistoryTimeline(){
+    const el = document.getElementById('history-timeline');
+    if(!el) return;
+    el.innerHTML = historyEvents.map((h,i) => `
+      <div class="history-tl-item">
+        <div class="history-tl-marker">
+          <div class="dot" style="background:${h.status === 'Approved' ? 'var(--green)' : 'var(--red)'}"></div>
+          ${i < historyEvents.length - 1 ? '<div class="line"></div>' : ''}
+        </div>
+        <div class="history-tl-body">
+          <div style="font-size:12.5px;font-weight:700;color:var(--gray-900);">${h.name}</div>
+          <div style="font-size:12px;color:var(--gray-600);margin:2px 0 6px;">${h.subject}</div>
+          <div style="display:flex;align-items:center;gap:8px;">${statusChip(h.status)}<span class="muted" style="font-size:11px;">${h.date}</span></div>
+        </div>
+      </div>
+    `).join('');
+  }
+  const historyTable = [
+    {num:'REQ-2026-01839', type:'Lembur', subject:'Lembur Closing Payroll', requester:'Dewi Kusuma', date:'20 Jul 2026', durasi:'0,5 hari', status:'Approved'},
+    {num:'REQ-2026-01836', type:'Kasbon', subject:'Kasbon Kebutuhan Keluarga', requester:'Yoga Adi', date:'19 Jul 2026', durasi:'1,2 hari', status:'Rejected'},
+    {num:'REQ-2026-01829', type:'Cuti Tahunan', subject:'Cuti Menikah', requester:'Sinta Aulia', date:'16 Jul 2026', durasi:'0,8 hari', status:'Approved'},
+    {num:'REQ-2026-01818', type:'Reimbursement Biaya', subject:'Reimbursement Training', requester:'Budi Santoso', date:'13 Jul 2026', durasi:'1,5 hari', status:'Approved'},
+    {num:'REQ-2026-01799', type:'Kasbon', subject:'Kasbon Pendidikan Anak', requester:'Galih Ramadhan', date:'5 Jul 2026', durasi:'2,0 hari', status:'Approved'},
+    {num:'REQ-2026-01790', type:'Perjalanan Dinas', subject:'Dinas Survey Cabang Baru', requester:'Melati Ayu Lestari', date:'1 Jul 2026', durasi:'0,9 hari', status:'Rejected'},
+    {num:'REQ-2026-01783', type:'Cuti Tahunan', subject:'Cuti Akhir Semester', requester:'Andi Wijaya', date:'28 Jun 2026', durasi:'0,4 hari', status:'Approved'},
+    {num:'REQ-2026-01776', type:'Reimbursement Biaya', subject:'Reimbursement Internet', requester:'Rizky Pratama', date:'25 Jun 2026', durasi:'1,1 hari', status:'Approved'},
+    {num:'REQ-2026-01765', type:'Izin Sakit', subject:'Izin Sakit 1 Hari', requester:'Intan Permata', date:'20 Jun 2026', durasi:'0,3 hari', status:'Approved'},
+    {num:'REQ-2026-01758', type:'Lembur', subject:'Lembur Audit Internal', requester:'Nanda Putri', date:'15 Jun 2026', durasi:'2,4 hari', status:'Rejected'}
+  ];
+  function renderHistoryTable(){
+    const body = document.getElementById('history-tbody');
+    if(!body) return;
+    body.innerHTML = historyTable.map(h => `
+      <tr>
+        <td class="mono req-number">${h.num}</td>
+        <td>${h.type}</td>
+        <td class="req-subject">${h.subject}</td>
+        <td>${h.requester}</td>
+        <td class="muted">${h.date}</td>
+        <td>${h.durasi}</td>
+        <td>${statusChip(h.status)}</td>
+        <td><button class="icon-btn perm-export" style="width:30px;height:30px;" title="Download PDF" onclick="showToast('Mengunduh PDF ' + '${h.num}' + '...')"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 21h16"/></svg></button></td>
+      </tr>
+    `).join('');
+  }
+  renderHistoryTimeline();
+  renderHistoryTable();
+
+  // =========================================================
+  // CREATE REQUEST WIZARD
+  // =========================================================
+  let wizardStep = 1;
+  let wizardTypeKey = null;
+  let wizardSeq = 1843;
+
+  function renderWizardTypeGrid(){
+    document.getElementById('wizard-type-grid').innerHTML = requestTypes.map(t => `
+      <div class="type-card ${t.key === wizardTypeKey ? 'selected' : ''}" onclick="selectWizardType('${t.key}')">
+        <div class="ic">${t.icon}</div>
+        <div class="t-name">${t.name}</div>
+        <div class="t-cat">${t.category}</div>
+      </div>
+    `).join('');
+  }
+  function selectWizardType(key){
+    wizardTypeKey = key;
+    renderWizardTypeGrid();
+    document.getElementById('wbtn-next').disabled = false;
+  }
+
+  function fieldInput(f){
+    const id = 'wf-' + f.k;
+    if(f.t === 'select') return `<select id="${id}">${f.opts.map(o=>'<option>'+o+'</option>').join('')}</select>`;
+    if(f.t === 'textarea') return `<textarea id="${id}" placeholder="${f.ph||''}"></textarea>`;
+    if(f.t === 'file') return `<div class="attach-row" style="cursor:pointer;background:var(--gray-50);" onclick="showToast('Membuka file picker...')"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M17 8l-5-5-5 5M12 3v12"/></svg><span class="a-name muted">Klik untuk unggah file</span></div>`;
+    return `<input type="${f.t}" id="${id}" placeholder="${f.ph||''}">`;
+  }
+  function renderWizardForm(){
+    const type = requestTypes.find(t => t.key === wizardTypeKey);
+    document.getElementById('wform-typename').textContent = '— ' + type.name;
+    document.getElementById('wform-fields').innerHTML = type.fields.map(f => `
+      <div class="form-field" ${f.full ? 'style="grid-column:1/-1;"' : ''}>
+        <label>${f.l}</label>
+        ${fieldInput(f)}
+      </div>
+    `).join('');
+  }
+
+  function renderWizardReview(){
+    const type = requestTypes.find(t => t.key === wizardTypeKey);
+    let rows = '<div class="review-row"><span class="rl">Jenis Pengajuan</span><span class="rv">' + type.name + '</span></div>';
+    rows += '<div class="review-row"><span class="rl">Pemohon</span><span class="rv">Tes Admin</span></div>';
+    type.fields.forEach(f => {
+      const el = document.getElementById('wf-' + f.k);
+      let val = el ? (f.t === 'file' ? 'File terlampir' : (el.value || '—')) : '—';
+      rows += '<div class="review-row"><span class="rl">' + f.l + '</span><span class="rv">' + val + '</span></div>';
+    });
+    document.getElementById('wreview-box').innerHTML = rows;
+  }
+
+  function updateWizardSteps(){
+    for(let i=1;i<=4;i++){
+      const dot = document.getElementById('wstep-dot-' + i);
+      dot.classList.toggle('active', i === wizardStep);
+      dot.classList.toggle('done', i < wizardStep);
+      const line = document.getElementById('wline-' + i);
+      if(line) line.classList.toggle('done', i < wizardStep);
+    }
+    document.querySelectorAll('.wizard-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('wpanel-' + wizardStep).classList.add('active');
+
+    const back = document.getElementById('wbtn-back');
+    const draft = document.getElementById('wbtn-draft');
+    const next = document.getElementById('wbtn-next');
+    draft.style.display = (wizardStep === 4) ? 'none' : 'inline-flex';
+    if(wizardStep === 1){ back.textContent = 'Batal'; next.textContent = 'Lanjut'; next.disabled = !wizardTypeKey; }
+    else if(wizardStep === 2){ back.textContent = 'Kembali'; next.textContent = 'Lanjut'; next.disabled = false; }
+    else if(wizardStep === 3){ back.textContent = 'Kembali'; next.textContent = 'Submit Pengajuan'; next.disabled = false; }
+    else { back.style.display = 'none'; next.textContent = 'Selesai'; next.disabled = false; }
+    if(wizardStep !== 4) back.style.display = 'inline-flex';
+  }
+
+  function wizardNext(){
+    if(wizardStep === 1){
+      if(!wizardTypeKey) return;
+      renderWizardForm();
+      wizardStep = 2;
+    } else if(wizardStep === 2){
+      renderWizardReview();
+      wizardStep = 3;
+    } else if(wizardStep === 3){
+      const num = 'REQ-2026-0' + (wizardSeq++);
+      document.getElementById('wsuccess-number').textContent = num;
+      wizardStep = 4;
+    } else {
+      closeWizard();
+      showToast('Pengajuan baru berhasil dikirim.');
+      return;
+    }
+    updateWizardSteps();
+  }
+  function wizardBack(){
+    if(wizardStep === 1){ closeWizard(); return; }
+    wizardStep -= 1;
+    updateWizardSteps();
+  }
+  function wizardSaveDraft(){
+    showToast('Pengajuan disimpan sebagai draft.');
+    closeWizard();
+  }
+
+  function openWizard(){
+    wizardStep = 1;
+    wizardTypeKey = null;
+    renderWizardTypeGrid();
+    updateWizardSteps();
+    document.getElementById('wizard-overlay').classList.add('show');
+  }
+  function closeWizard(){
+    document.getElementById('wizard-overlay').classList.remove('show');
+  }
+
+  // =========================================================
+  // PAGE 6: MASTER JENIS PENGAJUAN
+  // =========================================================
+  const masterJenisMeta = {
+    cuti:{workflow:'Sequential — Atasan Langsung', sla:'1 hari', notif:'Email + Push', status:'Active'},
+    sakit:{workflow:'Sequential — Atasan Langsung', sla:'1 hari', notif:'Email', status:'Active'},
+    lembur:{workflow:'Sequential — Atasan Langsung', sla:'1 hari', notif:'Push', status:'Active'},
+    reimb:{workflow:'Conditional — Atasan → Finance/Direktur FAT', sla:'3 hari', notif:'Email + Push', status:'Active'},
+    dinas:{workflow:'Sequential — Atasan → Direktur', sla:'2 hari', notif:'Email', status:'Active'},
+    kasbon:{workflow:'Sequential — Atasan → Finance', sla:'2 hari', notif:'Email + Push', status:'Active'},
+    ubahdata:{workflow:'Sequential — Review HC', sla:'3 hari', notif:'Email', status:'Active'},
+    resign:{workflow:'Sequential — Atasan → Direktur HC', sla:'5 hari', notif:'Email + Push', status:'Nonaktif'}
+  };
+  function renderMasterJenisTable(){
+    const body = document.getElementById('master-jenis-tbody');
+    if(!body) return;
+    body.innerHTML = requestTypes.map(t => {
+      const m = masterJenisMeta[t.key];
+      return `
+      <tr>
+        <td><div style="display:flex;align-items:center;gap:10px;"><div class="kpi-icon" style="width:30px;height:30px;background:var(--primary-light);color:var(--primary);border-radius:8px;">${t.icon}</div><div><div class="req-subject">${t.name}</div><div class="muted" style="font-size:11px;">${t.category}</div></div></div></td>
+        <td>${t.category}</td>
+        <td>${m.workflow}</td>
+        <td>Form ${t.name}</td>
+        <td>${m.sla}</td>
+        <td>${m.notif}</td>
+        <td>${m.status === 'Active' ? '<span class="chip chip-green">Active</span>' : '<span class="chip chip-gray">Nonaktif</span>'}</td>
+        <td><button class="btn btn-outline btn-sm perm-manage" onclick="openTypeDrawer('${t.key}')">Edit</button></td>
+      </tr>
+    `;
+    }).join('');
+    if(typeof applyPermissions === 'function') applyPermissions();
+  }
+  renderMasterJenisTable();
+
+  function switchDrawerTab(key, el){
+    document.querySelectorAll('.drawer-tab').forEach(t=>t.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('.drawer-tab-panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById('dtab-' + key).classList.add('active');
+  }
+  function openTypeDrawer(key){
+    const type = requestTypes.find(t => t.key === key) || requestTypes[0];
+    document.getElementById('drawer-title').textContent = key ? 'Edit Request Type' : 'New Request Type';
+    document.getElementById('dg-name').value = type.name;
+    document.getElementById('dg-category').value = type.category;
+    document.getElementById('type-drawer').classList.add('show');
+    document.getElementById('type-drawer-overlay').classList.add('show');
+  }
+  function closeTypeDrawer(){
+    document.getElementById('type-drawer').classList.remove('show');
+    document.getElementById('type-drawer-overlay').classList.remove('show');
+  }
+
+  // =========================================================
+  // PAGE 7: WORKFLOW APPROVAL — visual builder
+  // =========================================================
+  const workflowDefs = {
+    cuti:{ steps:[ {type:'start',title:'Pengajuan Dibuat',sub:'Oleh Karyawan'}, {type:'seq',title:'Atasan Langsung',sub:'Sequential · SLA 1 hari'}, {type:'end',title:'Selesai',sub:'Cuti Disetujui & Tercatat'} ]},
+    sakit:{ steps:[ {type:'start',title:'Pengajuan Dibuat',sub:'Oleh Karyawan'}, {type:'seq',title:'Atasan Langsung',sub:'Sequential · SLA 1 hari'}, {type:'end',title:'Selesai',sub:'Izin Tercatat'} ]},
+    lembur:{ steps:[ {type:'start',title:'Pengajuan Dibuat',sub:'Oleh Karyawan'}, {type:'seq',title:'Atasan Langsung',sub:'Sequential · SLA 1 hari'}, {type:'end',title:'Selesai',sub:'Lembur Tercatat ke Payroll'} ]},
+    reimb:{ steps:[ {type:'start',title:'Pengajuan Dibuat',sub:'Oleh Karyawan'}, {type:'seq',title:'Atasan Langsung',sub:'Sequential Approval'},
+      {type:'branch', options:[ {label:'Nominal > Rp 1.000.000', node:{type:'seq',title:'Direktur FAT',sub:'Approval Tambahan'}}, {label:'Nominal ≤ Rp 1.000.000', node:{type:'auto',title:'Auto Approval',sub:'Langsung Diproses'}} ]},
+      {type:'end',title:'Selesai',sub:'Reimbursement Dibayar'} ]},
+    dinas:{ steps:[ {type:'start',title:'Pengajuan Dibuat',sub:'Oleh Karyawan'}, {type:'seq',title:'Atasan Langsung',sub:'Sequential Approval'}, {type:'seq',title:'Direktur Terkait',sub:'Sequential · SLA 2 hari'}, {type:'end',title:'Selesai',sub:'Dinas Disetujui'} ]},
+    kasbon:{ steps:[ {type:'start',title:'Pengajuan Dibuat',sub:'Oleh Karyawan'}, {type:'seq',title:'Atasan Langsung',sub:'Sequential Approval'}, {type:'seq',title:'Finance',sub:'Verifikasi Saldo Kasbon'}, {type:'end',title:'Selesai',sub:'Kasbon Dicairkan'} ]},
+    ubahdata:{ steps:[ {type:'start',title:'Pengajuan Dibuat',sub:'Oleh Karyawan'}, {type:'seq',title:'Review HC',sub:'Verifikasi Dokumen'}, {type:'end',title:'Selesai',sub:'Data Terupdate'} ]},
+    resign:{ steps:[ {type:'start',title:'Pengajuan Dibuat',sub:'Oleh Karyawan'}, {type:'seq',title:'Atasan Langsung',sub:'Sequential Approval'}, {type:'seq',title:'Direktur HC',sub:'Approval Final · Exit Interview'}, {type:'end',title:'Selesai',sub:'Proses Offboarding'} ]}
+  };
+  const wfTypeLabel = {start:'START', seq:'SEQUENTIAL', auto:'AUTO APPROVAL', end:'END'};
+  function wfNodeHtml(step){
+    const cls = step.type === 'start' ? 'start' : step.type === 'end' ? 'end' : '';
+    return `<div class="wf-node ${cls}">
+      <div class="wf-actions"><button onclick="showToast('Membuka properti node...')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.6a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></button></div>
+      <div class="wf-type">${wfTypeLabel[step.type] || step.type.toUpperCase()}</div>
+      <div class="wf-title">${step.title}</div>
+      <div class="wf-sub">${step.sub}</div>
+    </div>`;
+  }
+  const wfArrow = `<div class="wf-arrow"><svg viewBox="0 0 28 14"><path d="M0 7h24M18 1l6 6-6 6"/></svg></div>`;
+  function renderWorkflowCanvas(){
+    const key = document.getElementById('wf-select-type').value;
+    const type = requestTypes.find(t => t.key === key);
+    const def = workflowDefs[key];
+    document.getElementById('wf-canvas-title').textContent = 'Workflow — ' + type.name;
+    let html = '';
+    def.steps.forEach((step, i) => {
+      if(i > 0) html += wfArrow;
+      if(step.type === 'branch'){
+        html += `<div class="wf-branch">` + step.options.map(o => `
+          <div><div class="wf-branch-lbl">${o.label}</div>${wfNodeHtml(o.node)}</div>
+        `).join('') + `</div>`;
+      } else {
+        html += wfNodeHtml(step);
+      }
+    });
+    document.getElementById('wf-flow').innerHTML = html;
+  }
+  function populateTypeSelects(){
+    const opts = requestTypes.map(t => `<option value="${t.key}">${t.name}</option>`).join('');
+    const wfSel = document.getElementById('wf-select-type');
+    const fbSel = document.getElementById('fb-select-type');
+    if(wfSel) wfSel.innerHTML = opts;
+    if(fbSel) fbSel.innerHTML = opts;
+  }
+  populateTypeSelects();
+  renderWorkflowCanvas();
+
+  // =========================================================
+  // PAGE 8: TEMPLATE FORM — form builder
+  // =========================================================
+  let fbFields = [];
+  const fbTypeLabels = {text:'Text', number:'Number', currency:'Currency', textarea:'Textarea', dropdown:'Dropdown', radio:'Radio', checkbox:'Checkbox', attachment:'Attachment', date:'Date', employee:'Employee Picker', department:'Department Picker'};
+  function renderFormBuilder(){
+    const key = document.getElementById('fb-select-type').value;
+    const type = requestTypes.find(t => t.key === key);
+    document.getElementById('fb-canvas-title').textContent = 'Form ' + type.name;
+    fbFields = type.fields.map(f => ({ type: f.t === 'select' ? 'dropdown' : f.t, label: f.l }));
+    renderFbCanvas();
+  }
+  function renderFbCanvas(){
+    const canvas = document.getElementById('fb-canvas');
+    if(fbFields.length === 0){
+      canvas.innerHTML = '<div class="fb-empty">Belum ada field. Klik komponen di sebelah kiri untuk menambahkan.</div>';
+    } else {
+      canvas.innerHTML = fbFields.map((f,i) => `
+        <div class="fb-field">
+          <div class="fb-field-top">
+            <span class="ft-label">${f.label}</span>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span class="ft-type">${fbTypeLabels[f.type] || f.type}</span>
+              <div class="fb-field-actions">
+                <button onclick="moveFbField(${i},-1)" title="Naik"><svg viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg></button>
+                <button onclick="moveFbField(${i},1)" title="Turun"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+                <button onclick="removeFbField(${i})" title="Hapus"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+              </div>
+            </div>
+          </div>
+          <div class="ft-preview-mock"></div>
+        </div>
+      `).join('');
+    }
+    renderFbPreview();
+  }
+  function addFormComponent(type, label){
+    fbFields.push({type, label: label + ' Baru'});
+    renderFbCanvas();
+    showToast(label + ' ditambahkan ke form');
+  }
+  function moveFbField(i, dir){
+    const j = i + dir;
+    if(j < 0 || j >= fbFields.length) return;
+    const tmp = fbFields[i]; fbFields[i] = fbFields[j]; fbFields[j] = tmp;
+    renderFbCanvas();
+  }
+  function removeFbField(i){ fbFields.splice(i,1); renderFbCanvas(); }
+  function renderFbPreview(){
+    document.getElementById('fb-preview').innerHTML = fbFields.map(f => `
+      <div class="form-field" style="margin-bottom:12px;">
+        <label>${f.label}</label>
+        ${f.type === 'textarea' ? '<textarea disabled style="min-height:56px;"></textarea>'
+          : f.type === 'dropdown' ? '<select disabled><option>Pilih...</option></select>'
+          : f.type === 'checkbox' ? '<input type="checkbox" disabled style="width:16px;height:16px;">'
+          : f.type === 'attachment' ? '<div class="attach-row" style="background:var(--gray-50);"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M17 8l-5-5-5 5M12 3v12"/></svg><span class="a-name muted">Unggah file</span></div>'
+          : '<input type="text" disabled placeholder="' + f.label + '">'}
+      </div>
+    `).join('') || '<div class="muted" style="font-size:12px;">Preview form akan muncul di sini.</div>';
+  }
+  renderFormBuilder();
+
+  // =========================================================
+  // PAGE 9: SLA & NOTIFICATION
+  // =========================================================
+  const slaConfig = {
+    cuti:{approval:'1 hari', reminder:'4 jam sebelum SLA', escalation:'24 jam → Atasan dari Approver', channel:'Email + Push'},
+    sakit:{approval:'1 hari', reminder:'4 jam sebelum SLA', escalation:'24 jam → Atasan dari Approver', channel:'Email'},
+    lembur:{approval:'1 hari', reminder:'2 jam sebelum SLA', escalation:'12 jam → Atasan dari Approver', channel:'Push'},
+    reimb:{approval:'3 hari', reminder:'8 jam sebelum SLA', escalation:'48 jam → Direktur FAT', channel:'Email + Push'},
+    dinas:{approval:'2 hari', reminder:'6 jam sebelum SLA', escalation:'24 jam → Direktur Terkait', channel:'Email'},
+    kasbon:{approval:'2 hari', reminder:'6 jam sebelum SLA', escalation:'24 jam → Direktur FAT', channel:'Email + Push'},
+    ubahdata:{approval:'3 hari', reminder:'8 jam sebelum SLA', escalation:'48 jam → Direktur HC', channel:'Email'},
+    resign:{approval:'5 hari', reminder:'12 jam sebelum SLA', escalation:'72 jam → Direktur Utama', channel:'Email + Push'}
+  };
+  function renderSlaTable(){
+    const body = document.getElementById('sla-tbody');
+    if(!body) return;
+    body.innerHTML = requestTypes.map(t => {
+      const s = slaConfig[t.key];
+      return `<tr>
+        <td class="req-subject">${t.name}</td>
+        <td><span class="chip chip-blue">${s.approval}</span></td>
+        <td>${s.reminder}</td>
+        <td>${s.escalation}</td>
+        <td>${s.channel}</td>
+        <td><button class="btn btn-outline btn-sm" onclick="showToast('Membuka konfigurasi SLA ' + '${t.name}' + '...')">Edit</button></td>
+      </tr>`;
+    }).join('');
+  }
+  renderSlaTable();
+
+  // Deep-link support: pengajuan-persetujuan.html#pengajuan etc. (for links from other modules)
+  (function(){
+    const key = location.hash.replace('#','');
+    if(pageLabels[key]){
+      const navEl = document.querySelector('.menu-item[data-page="' + key + '"]');
+      if(navEl) goPage(key, navEl);
+    }
+  })();
+</script>
+</body>
+</html>

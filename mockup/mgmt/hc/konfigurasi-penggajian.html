@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dasaria HRIS — Dashboard HC</title>
+<title>Dasaria HRIS — Payroll Configuration</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -514,18 +514,7 @@
   .remun-note{font-size:12px;color:var(--text-mid);margin-top:12px;display:flex;align-items:flex-start;gap:8px;}
   .remun-note svg{width:14px;height:14px;stroke:var(--text-mid);fill:none;stroke-width:2;flex-shrink:0;margin-top:1px;}
 
-  /* ===== PPh21 Setting — wide sticky table ===== */
-  .table-scroll{overflow-x:auto;border-radius:10px;}
-  .pph-table{border-collapse:separate;border-spacing:0;font-size:12.5px;}
-  .pph-table th, .pph-table td{white-space:nowrap;padding:10px 14px;}
-  .pph-table thead th{position:sticky;top:0;z-index:3;}
-  .pph-table .sticky-name{position:sticky;left:0;z-index:2;background:#fff;box-shadow:2px 0 4px rgba(0,0,0,.05);}
-  .pph-table thead th.sticky-name{background:var(--navy);z-index:4;}
-  .pph-emp-name{font-weight:700;color:var(--text-dark);white-space:nowrap;}
-  .pph-emp-sub{font-size:10.5px;color:var(--text-mid);font-weight:500;white-space:nowrap;margin-top:1px;}
   .pph-tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:12px;white-space:nowrap;}
-  .pph-tag.lebih{background:#dcfce7;color:#16A34A;}
-  .pph-tag.kurang{background:#fde2e2;color:#c0392b;}
   .pph-tag.nihil{background:var(--gray-border);color:var(--text-mid);}
 </style>
 </head>
@@ -571,29 +560,62 @@
       <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="submenu" id="sub-penggajian" style="display:block">
+      <a class="menu-item" href="camd.html">Compensation Architecture (CAMD)</a>
+      <a class="menu-item active" href="konfigurasi-penggajian.html">Payroll Configuration</a>
+      <a class="menu-item" href="pph21-pph26-setting.html">PPh21 &amp; 26 Setting</a>
       <a class="menu-item" href="dashboard-hc.html#payroll-dashboard">Dashboard Penggajian</a>
-      <a class="menu-item active" href="konfigurasi-penggajian.html">Konfigurasi Penggajian</a>
       <a class="menu-item" href="dashboard-hc.html#periode">Periode Gajian</a>
       <a class="menu-item" href="dashboard-hc.html#validasi">Persetujuan Periode Gajian</a>
       <a class="menu-item" href="dashboard-hc.html#distribusi">Distribusi Gaji &amp; Slip Gaji</a>
       <a class="menu-item" href="dashboard-hc.html#kasbon">Kasbon</a>
       <a class="menu-item" href="rekonsiliasi-payroll.html">Rekonsiliasi Payroll</a>
     </div>
-    <a class="menu-item" id="menu-jenispengajuan" href="dashboard-hc.html">
+    <div class="menu-item" id="menu-jenispengajuan" onclick="toggleSubmenu('sub-jenispengajuan', this)">
       <svg viewBox="0 0 24 24"><path d="M6 2.5h9l4.5 4.5v14.5H6z"/><path d="M15 2.5V7h4.5M8.5 12.5h7M8.5 16h7"/></svg>
-      Jenis Pengajuan
-    </a>
-    <div class="menu-item" onclick="toggleSubmenu('sub-rekrutmen', this)">
+      Pengajuan &amp; Persetujuan
+      <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="submenu" id="sub-jenispengajuan" style="display:none">
+      <a class="menu-item" href="pengajuan-persetujuan.html#dashboard">Dashboard</a>
+      <a class="menu-item" href="pengajuan-persetujuan.html#pengajuan">Pengajuan</a>
+      <a class="menu-item" href="pengajuan-persetujuan.html#persetujuan">Persetujuan</a>
+      <a class="menu-item" href="pengajuan-persetujuan.html#riwayat">Riwayat</a>
+    </div>
+    <div class="menu-item" id="menu-attendance" onclick="toggleSubmenu('sub-attendance', this)">
+      <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      Jadwal &amp; Kehadiran
+      <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="submenu" id="sub-attendance" style="display:none">
+      <a class="menu-item" href="attendance-schedule.html#dashboard">Dashboard</a>
+      <a class="menu-item" href="attendance-schedule.html#kehadiran">Kehadiran</a>
+      <a class="menu-item" href="attendance-schedule.html#jadwal">Jadwal Kerja</a>
+      <a class="menu-item" href="attendance-schedule.html#shift">Shift Management</a>
+      <a class="menu-item" href="attendance-schedule.html#kalender">Kalender Kerja</a>
+      <a class="menu-item" href="attendance-schedule.html#monitoring">Monitoring</a>
+    </div>
+    <div class="menu-item" id="menu-document" onclick="toggleSubmenu('sub-document', this)">
+      <svg viewBox="0 0 24 24"><path d="M2 20h20M4 20V10l4-3 4 3v10M12 20V6l4-3 4 3v14"/></svg>
+      Dokumen
+      <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="submenu" id="sub-document" style="display:none">
+      <a class="menu-item" href="document.html#factory">Document Factory</a>
+      <a class="menu-item" href="document.html#control">Document Control</a>
+      <a class="menu-item" href="document.html#template">Template</a>
+      <a class="menu-item" href="document.html#repository">Repository</a>
+    </div>
+    <div class="menu-item" id="menu-rekrutmen" onclick="toggleSubmenu('sub-rekrutmen', this)">
       <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
       Rekrutmen
       <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="submenu" id="sub-rekrutmen" style="display:none">
-      <a class="menu-item" href="#">Daftar Lowongan</a>
-      <a class="menu-item" href="#">Pipeline Kandidat</a>
-      <a class="menu-item" href="#">Proses Seleksi</a>
+      <a class="menu-item" href="dashboard-hc.html">Daftar Lowongan</a>
+      <a class="menu-item" href="dashboard-hc.html">Pipeline Kandidat</a>
+      <a class="menu-item" href="dashboard-hc.html">Proses Seleksi</a>
     </div>
-    <a class="menu-item" href="#">
+    <a class="menu-item" href="dashboard-hc.html">
       <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
       Hak Akses
     </a>
@@ -621,8 +643,11 @@
 
     <div class="page-top-area">
       <div class="page-header">
-        <h1>Konfigurasi Penggajian</h1>
-        <div class="breadcrumb">Home &gt; Penggajian &gt; <b id="konf-crumb">Komponen Gaji</b></div>
+        <div>
+          <h1>Payroll Configuration</h1>
+          <div class="breadcrumb">Home &gt; Penggajian &gt; <b id="konf-crumb">Komponen Gaji</b></div>
+        </div>
+        <span class="pill pill-blue">Owned by Finance / FAT</span>
       </div>
     </div>
 
@@ -630,9 +655,11 @@
       <div class="tabbar" id="konf-tabbar">
         <div class="tab active" data-tab="komponen">Komponen Gaji</div>
         <div class="tab" data-tab="grade">Struktur &amp; Skala Upah</div>
+        <div class="tab" data-tab="pemotongan">Acuan Pemotongan</div>
         <div class="tab" data-tab="asuransi">Asuransi Sosial</div>
-        <div class="tab" data-tab="pph21">PPh21 Setting</div>
         <div class="tab" data-tab="thr">THR</div>
+        <div class="tab" data-tab="kalender">Periode Gajian &amp; Kalender</div>
+        <div class="tab" data-tab="glmapping">GL Account Mapping</div>
       </div>
     </div>
 
@@ -735,67 +762,9 @@
         <!-- INNER: Struktur Grade -->
         <div class="inner-panel active" id="grade-inner-struktur">
 
-          <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
-            <button class="btn btn-blue" id="add-group-toggle-btn" onclick="toggleAddGroupPanel()">
-              <svg viewBox="0 0 24 24" width="14" height="14" stroke="#fff" fill="none" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
-              Tambah Group UMK
-            </button>
-          </div>
-
-          <!-- ADD GROUP UMK PANEL -->
-          <div class="form-panel" id="add-group-panel" style="display:none;">
-            <div class="form-panel-title">
-              <svg viewBox="0 0 24 24" width="15" height="15" stroke="var(--blue)" fill="none" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-              Tambah Group UMK Baru
-            </div>
-            <div class="form-grid">
-              <div class="form-field">
-                <label>Kota</label>
-                <select id="ag-kota" onchange="onAgKotaChange()">
-                  <option value="__new__">+ Kota Baru…</option>
-                </select>
-              </div>
-              <div class="form-field" id="ag-newkota-field" style="display:none;">
-                <label>Nama Kota Baru</label>
-                <input type="text" id="ag-newkota" placeholder="mis. Kota Kediri">
-              </div>
-              <div class="form-field">
-                <label>Nama Region</label>
-                <input type="text" id="ag-region" placeholder="mis. Kediri Raya">
-              </div>
-              <div class="form-field">
-                <label>Tipe Wilayah</label>
-                <select id="ag-tipe">
-                  <option value="Kota">Kota</option>
-                  <option value="Kab">Kabupaten</option>
-                  <option value="Kota,Kab">Kota &amp; Kabupaten (Irisan)</option>
-                </select>
-              </div>
-              <div class="form-field">
-                <label>Nominal UMK (Rp)</label>
-                <input type="number" id="ag-umk" placeholder="mis. 2800000">
-              </div>
-              <div class="form-field">
-                <label>Tahun UMK</label>
-                <input type="number" id="ag-tahun" value="2026">
-              </div>
-              <div class="form-field">
-                <label>Cost Index</label>
-                <input type="number" step="0.01" id="ag-ci" placeholder="mis. 97.50">
-              </div>
-              <div class="form-field">
-                <label>Market Salary Index</label>
-                <input type="number" step="0.01" id="ag-msi" placeholder="mis. 0.98">
-              </div>
-              <div class="form-field" style="grid-column:1/-1;">
-                <label>Regulasi UMK Pemerintah</label>
-                <input type="text" id="ag-dasar" placeholder="mis. Keputusan Gubernur Jawa Timur No. ... Tahun 2025">
-              </div>
-            </div>
-            <div class="form-actions">
-              <button class="btn btn-outline" onclick="resetAddGroupForm()">Batal</button>
-              <button class="btn btn-blue" onclick="addGroupUmk()">Simpan Group UMK</button>
-            </div>
+          <div class="note-box" style="align-items:center;">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="#c2622a" fill="none" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+            <span><b>Read-Only</b> — Struktur &amp; Skala Upah ditarik dari <b>CAMD &gt; Salary Architecture &amp; Matrix</b> (status: Published). Untuk mengubah Group UMK atau struktur Grade, buka <a href="camd.html" style="color:#9a3412;font-weight:700;">Compensation Architecture (CAMD)</a>.</span>
           </div>
 
           <!-- SECTION A: HEAD OFFICE (Kota Utama) -->
@@ -803,18 +772,10 @@
             <div class="card-head">
               <h2>Group UMK Head Office <span class="kota-sub" id="ho-kota-label" style="font-weight:600;margin-left:4px;"></span>
                 <span class="status-pill">
-                  <button class="status-badge" id="ho-status-badge" onclick="toggleHoStatusMenu(event)"></button>
-                  <div class="status-menu" id="ho-status-menu">
-                    <button class="opt-aktif" onclick="setHoStatus('aktif')"><i></i>Aktif</button>
-                    <button class="opt-nonaktif" onclick="setHoStatus('nonaktif')"><i></i>Nonaktif</button>
-                  </div>
+                  <button class="status-badge" id="ho-status-badge" style="cursor:default;pointer-events:none;"></button>
                 </span>
               </h2>
               <div class="card-actions">
-                <button class="btn-manage" onclick="openManageGrade('ho', null)">
-                  <svg viewBox="0 0 24 24" width="13" height="13" stroke="var(--blue)" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.6a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-                  Kelola Grade
-                </button>
                 <button class="chevron-btn" id="ho-chevron" onclick="toggleCardCollapse('ho')">
                   <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
                 </button>
@@ -846,16 +807,12 @@
             <div class="card-head">
               <h2>Group UMK Kota (Cabang/Lapangan)</h2>
               <div class="card-actions">
-                <button class="btn-manage" onclick="toggleAddGroupPanel()">
-                  <svg viewBox="0 0 24 24" width="13" height="13" stroke="var(--blue)" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.6a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-                  Kelola Group UMK
-                </button>
                 <button class="chevron-btn" id="branch-chevron" onclick="toggleCardCollapse('branch')">
                   <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
                 </button>
               </div>
             </div>
-            <div class="module-intro" style="margin-top:-6px;">Satu Kota dapat memiliki lebih dari satu Region, masing-masing dengan UMK, Cost Index, dan Market Salary Index sendiri. Klik status untuk aktif/nonaktifkan, klik panah untuk membuka struktur Grade tiap Region.</div>
+            <div class="module-intro" style="margin-top:-6px;">Satu Kota dapat memiliki lebih dari satu Region, masing-masing dengan UMK, Cost Index, dan Market Salary Index sendiri. Klik panah untuk membuka struktur Grade tiap Region.</div>
             <div class="group-body" id="branch-body">
               <table class="branch-region-table">
                 <thead>
@@ -898,7 +855,7 @@
             </div>
             <div class="remun-note" id="remun-note">
               <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
-              <span>Nilai Gross diambil langsung dari Struktur &amp; Skala Upah. Mode Net adalah estimasi setelah potongan BPJS &amp; PPh21 (mengikuti Kategori TER) — nominal final tetap mengikuti perhitungan payroll resmi di modul PPh21 Setting.</span>
+              <span>Nilai Gross diambil langsung dari Struktur &amp; Skala Upah. Mode Net adalah estimasi setelah potongan BPJS &amp; PPh21 (mengikuti Kategori TER) — nominal final tetap mengikuti perhitungan payroll resmi di modul <a href="pph21-pph26-setting.html">PPh21 &amp; 26 Setting</a>.</span>
             </div>
           </div>
         </div>
@@ -967,131 +924,22 @@
       </div>
 
       <!-- ============ MODUL: PPh21 SETTING ============ -->
-      <div class="subtab-panel" id="konf-pph21">
-        <div class="module-intro">Simulasi &amp; perhitungan PPh 21 per karyawan menggunakan metode <b>TER (Tarif Efektif Rata-rata)</b> sesuai PMK 168/2023 untuk masa Januari–November, dengan rekonsiliasi tarif progresif tahunan di masa Desember.</div>
-
+      <div class="subtab-panel" id="konf-pemotongan">
+        <div class="module-intro">Master variabel dasar pemotongan payroll — dipakai sebagai acuan basis perhitungan di slip gaji. Detail formula per jenis potongan (khususnya Prorate &amp; Potongan Absensi) masih menunggu sesi pembahasan terpisah.</div>
         <div class="card">
-          <div class="card-head">
-            <h2>PPh21 Setting — Periode Juni 2026</h2>
-            <div class="toolbar">
-              <select style="border:1px solid var(--gray-border);border-radius:8px;padding:9px 12px;font-size:13px;"><option>Juni 2026</option><option>Mei 2026</option></select>
-              <button class="btn btn-green">⇪ Ekspor</button>
-            </div>
-          </div>
-          <div class="toolbar" style="margin-bottom:14px;"><div class="search">🔍 Cari nama / NIK / NPWP</div><button class="btn btn-outline">☰ Filter</button></div>
-          <div class="table-scroll">
-            <table class="pph-table">
-              <thead>
-                <tr>
-                  <th class="sticky-name">Nama</th>
-                  <th>Kepangkatan</th>
-                  <th>Status PKWT</th>
-                  <th>NIK (KTP)</th>
-                  <th>NPWP</th>
-                  <th>Status Nikah/Tanggungan</th>
-                  <th>Kode PTKP</th>
-                  <th>Kat. TER</th>
-                  <th style="text-align:right">PTKP /Tahun</th>
-                  <th style="text-align:right">THP Final (Rp)</th>
-                  <th style="text-align:right">JHT 2% Kary</th>
-                  <th style="text-align:right">JPN 1% Kary</th>
-                  <th style="text-align:right">BPJS Kes 1% Kary</th>
-                  <th style="text-align:right">Total BPJS Kary</th>
-                  <th style="text-align:right">Bruto PPh21</th>
-                  <th style="text-align:right">TER %</th>
-                  <th style="text-align:right">PPh21 Masa Jan-Nov</th>
-                  <th style="text-align:right">PKP Annual</th>
-                  <th style="text-align:right">PPh21 Annual Progresif</th>
-                  <th style="text-align:right">PPh21 Des Penyesuaian</th>
-                  <th style="text-align:right">Avg PPh21 /Bulan</th>
-                  <th style="text-align:right">Cost PPh21 /Tahun</th>
-                  <th style="text-align:right">BPJS Perus/Bln</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="sticky-name"><div class="pph-emp-name">Ahmad Fauzi</div><div class="pph-emp-sub">PT Dasarata · Direktorat Operasional &amp; Regional · Supervisor Cabang Malang</div></td>
-                  <td>G4 — Supervisor</td>
-                  <td><span class="pill pill-blue">Tetap (PKWTT)</span></td>
-                  <td><span class="masked">3573••••••0231</span></td>
-                  <td><span class="masked">09.xxx.xxx.x-651</span></td>
-                  <td>K/1</td>
-                  <td class="muted">K/1</td>
-                  <td><span class="pill pill-peach">TER B</span></td>
-                  <td style="text-align:right">Rp 63.000.000</td>
-                  <td style="text-align:right;font-weight:700">Rp 5.346.204</td>
-                  <td style="text-align:right">Rp 111.962</td>
-                  <td style="text-align:right">Rp 55.981</td>
-                  <td style="text-align:right">Rp 55.981</td>
-                  <td style="text-align:right">Rp 223.924</td>
-                  <td style="text-align:right">Rp 5.598.119</td>
-                  <td style="text-align:right">0.5%</td>
-                  <td style="text-align:right">Rp 27.991</td>
-                  <td style="text-align:right">Rp 0</td>
-                  <td style="text-align:right">Rp 0</td>
-                  <td style="text-align:right">-Rp 307.901 <span class="pph-tag lebih">Lebih Bayar</span></td>
-                  <td style="text-align:right">Rp 0</td>
-                  <td style="text-align:right">Rp 0</td>
-                  <td style="text-align:right">Rp 573.247</td>
-                </tr>
-                <tr>
-                  <td class="sticky-name"><div class="pph-emp-name">Siti Rahayu</div><div class="pph-emp-sub">PT Dasarata · Direktorat HC / Finance &amp; Corporate · Officer Payroll</div></td>
-                  <td>G2 — Officer</td>
-                  <td><span class="pill pill-blue">Tetap (PKWTT)</span></td>
-                  <td><span class="masked">3507••••••0114</span></td>
-                  <td><span class="masked">08.xxx.xxx.x-651</span></td>
-                  <td>TK/0</td>
-                  <td class="muted">TK/0</td>
-                  <td><span class="pill pill-red">TER A</span></td>
-                  <td style="text-align:right">Rp 54.000.000</td>
-                  <td style="text-align:right;font-weight:700">Rp 5.354.955</td>
-                  <td style="text-align:right">Rp 112.440</td>
-                  <td style="text-align:right">Rp 56.220</td>
-                  <td style="text-align:right">Rp 56.220</td>
-                  <td style="text-align:right">Rp 224.880</td>
-                  <td style="text-align:right">Rp 5.622.000</td>
-                  <td style="text-align:right">0.75%</td>
-                  <td style="text-align:right">Rp 42.165</td>
-                  <td style="text-align:right">Rp 8.066.880</td>
-                  <td style="text-align:right">Rp 403.344</td>
-                  <td style="text-align:right">-Rp 60.471 <span class="pph-tag lebih">Lebih Bayar</span></td>
-                  <td style="text-align:right">Rp 33.612</td>
-                  <td style="text-align:right">Rp 403.344</td>
-                  <td style="text-align:right">Rp 575.693</td>
-                </tr>
-                <tr>
-                  <td class="sticky-name"><div class="pph-emp-name">Budi Santoso</div><div class="pph-emp-sub">PT Dasarata · Direktorat Komersial · Direktur Komersial</div></td>
-                  <td>G6 — Direktur</td>
-                  <td><span class="pill pill-blue">Tetap (PKWTT)</span></td>
-                  <td><span class="masked">3573••••••0089</span></td>
-                  <td><span class="masked">07.xxx.xxx.x-651</span></td>
-                  <td>TK/0</td>
-                  <td class="muted">TK/0</td>
-                  <td><span class="pill pill-red">TER A</span></td>
-                  <td style="text-align:right">Rp 54.000.000</td>
-                  <td style="text-align:right;font-weight:700">Rp 6.317.500</td>
-                  <td style="text-align:right">Rp 133.000</td>
-                  <td style="text-align:right">Rp 66.500</td>
-                  <td style="text-align:right">Rp 66.500</td>
-                  <td style="text-align:right">Rp 266.000</td>
-                  <td style="text-align:right">Rp 6.650.000</td>
-                  <td style="text-align:right">1%</td>
-                  <td style="text-align:right">Rp 66.500</td>
-                  <td style="text-align:right">Rp 19.416.000</td>
-                  <td style="text-align:right">Rp 970.800</td>
-                  <td style="text-align:right">Rp 239.300 <span class="pph-tag kurang">Kurang Bayar</span></td>
-                  <td style="text-align:right">Rp 80.900</td>
-                  <td style="text-align:right">Rp 970.800</td>
-                  <td style="text-align:right">Rp 680.960</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="foot"><span>Menampilkan 3 dari 235 karyawan aktif</span><span>‹ 1 2 … 78 ›</span></div>
-          <div class="formula-box">
-            <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
-            <span><code>PPh21 Masa</code> = Bruto PPh21 × TER% (Jan–Nov). <code>PPh21 Des Penyesuaian</code> = PPh21 Annual Progresif − (11 × PPh21 Masa) — bisa negatif (Lebih Bayar/restitusi) bila TER bulanan lebih besar dari kewajiban tahunan riil.</span>
-          </div>
+          <div class="card-head"><h2>Acuan Pemotongan</h2></div>
+          <table>
+            <thead><tr><th>Kode</th><th>Jenis Potongan</th><th>Basis Perhitungan</th><th>Formula</th><th>GL Account</th></tr></thead>
+            <tbody>
+              <tr><td class="masked">BPJS-TK-05</td><td>JHT (Jaminan Hari Tua) — Karyawan</td><td class="muted">Basis BPJS (Gaji Pokok + Tunjangan Tetap)</td><td>2% × Basis BPJS</td><td class="muted">2101-JHT-KARY</td></tr>
+              <tr><td class="masked">BPJS-TK-06</td><td>JPN (Jaminan Pensiun) — Karyawan</td><td class="muted">Basis BPJS, capped sesuai ketentuan JP berjalan</td><td>1% × Basis BPJS (capped)</td><td class="muted">2102-JPN-KARY</td></tr>
+              <tr><td class="masked">BPJS-KES-02</td><td>BPJS Kesehatan — Karyawan</td><td class="muted">Basis BPJS, capped Rp 12.000.000</td><td>1% × Basis BPJS (capped)</td><td class="muted">2103-BPJSKES-KARY</td></tr>
+              <tr><td class="masked">KASBON-01</td><td>Kasbon</td><td class="muted">Cicilan tetap per periode</td><td class="muted">Terhubung ke modul Kasbon existing</td><td class="muted">2104-KASBON</td></tr>
+              <tr><td class="masked">PRORATE-01</td><td>Prorate</td><td class="muted">Proporsional hari kerja aktif</td><td class="muted">(Gaji Pokok ÷ Hari Kerja Standar) × Hari Kerja Aktual — <b>draf, perlu pembahasan</b></td><td class="muted">—</td></tr>
+              <tr><td class="masked">ABSEN-01</td><td>Potongan Absensi</td><td class="muted">Per hari/jam tidak hadir tanpa keterangan</td><td class="muted">Formula menyusul — <b>perlu sesi pembahasan terpisah</b></td><td class="muted">—</td></tr>
+            </tbody>
+          </table>
+          <div class="note-box" style="margin-top:16px;margin-bottom:0;">ℹ Rate BPJS di atas mengikuti simulasi kalkulator pada tab <b>Asuransi Sosial</b>. Formula Prorate &amp; Potongan Absensi ditandai sebagai open item pada BRD/PRD Bagian D.1.</div>
         </div>
       </div>
 
@@ -1107,6 +955,47 @@
             </tbody>
           </table>
           <div class="foot"><span>Menampilkan 1-10 of 100</span><span>‹ 1 2 … 8 9 10 ›</span></div>
+        </div>
+      </div>
+
+      <!-- ============ MODUL: PERIODE GAJIAN & KALENDER ============ -->
+      <div class="subtab-panel" id="konf-kalender">
+        <div class="module-intro">Setting prorata dan pembulatan untuk perhitungan payroll — berbeda dari menu <b>Periode Gajian</b> (jadwal &amp; approval periode berjalan). Halaman ini mengatur aturan kalkulasi, bukan jadwal proses.</div>
+        <div class="form-panel">
+          <div class="form-panel-title">Basis Prorata</div>
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Metode Prorata</label>
+              <select><option>Kalender (30/31 hari)</option><option>Hari Kerja Efektif</option></select>
+            </div>
+            <div class="form-field">
+              <label>Berlaku Untuk</label>
+              <select><option>Karyawan Baru &amp; Resign Mid-Period</option><option>Semua Perubahan Status Mid-Period</option></select>
+            </div>
+          </div>
+        </div>
+        <div class="form-panel">
+          <div class="form-panel-title">Aturan Pembulatan</div>
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Pembulatan Komponen Gaji</label>
+              <select><option>Ke bawah, kelipatan Rp 1</option><option>Ke bawah, kelipatan Rp 100</option><option>Ke terdekat, kelipatan Rp 100</option></select>
+            </div>
+            <div class="form-field">
+              <label>Pembulatan PKP (PPh21)</label>
+              <select><option>Ke bawah, kelipatan Rp 1.000 penuh</option></select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ MODUL: GL ACCOUNT MAPPING ============ -->
+      <div class="subtab-panel" id="konf-glmapping">
+        <div class="module-intro">Pemetaan setiap komponen payroll ke akun General Ledger — dimiliki Direktorat FAT. Ditandai sebagai <b>blocking issue existing, prioritas tinggi</b> pada BRD/PRD.</div>
+        <div class="card ph-card" style="text-align:center;padding:56px 20px;">
+          <div style="font-size:38px;margin-bottom:12px;">🧾</div>
+          <div style="font-size:16px;font-weight:700;margin-bottom:6px;">GL Account Mapping</div>
+          <div class="muted" style="max-width:520px;margin:0 auto;line-height:1.6;">Halaman ini menunggu detail desain — pemetaan Komponen Gaji, Acuan Pemotongan, Asuransi Sosial, dan THR ke masing-masing GL Account. Data GL Account contoh sudah muncul di tab Acuan Pemotongan sebagai referensi awal.</div>
         </div>
       </div>
 
@@ -1138,15 +1027,15 @@
     el.classList.toggle('open', !open);
   }
 
-  // ===== Outer tab switching: Komponen Gaji / Struktur & Skala Upah / Asuransi Sosial / PPh21 Setting / THR =====
+  // ===== Outer tab switching: Komponen Gaji / Struktur & Skala Upah / Acuan Pemotongan / Asuransi Sosial / THR / Periode Gajian & Kalender / GL Account Mapping =====
   const konfTabs = document.querySelectorAll('#konf-tabbar .tab');
   const konfPanels = {
-    komponen:'konf-komponen', grade:'konf-grade', asuransi:'konf-asuransi',
-    pph21:'konf-pph21', thr:'konf-thr'
+    komponen:'konf-komponen', grade:'konf-grade', pemotongan:'konf-pemotongan', asuransi:'konf-asuransi',
+    thr:'konf-thr', kalender:'konf-kalender', glmapping:'konf-glmapping'
   };
   const konfLabels = {
-    komponen:'Komponen Gaji', grade:'Struktur & Skala Upah', asuransi:'Asuransi Sosial',
-    pph21:'PPh21 Setting', thr:'THR'
+    komponen:'Komponen Gaji', grade:'Struktur & Skala Upah', pemotongan:'Acuan Pemotongan', asuransi:'Asuransi Sosial',
+    thr:'THR', kalender:'Periode Gajian & Kalender', glmapping:'GL Account Mapping'
   };
   konfTabs.forEach(tab=>{
     tab.addEventListener('click', ()=>{
@@ -1347,7 +1236,7 @@
         '<td style="text-align:right">' + fmtRp(thp(overallMin)) + '</td>' +
         '<td style="text-align:right">' + fmtRp(thp(midLevel.mid)) + '</td>' +
         '<td style="text-align:right">' + fmtRp(thp(overallMax)) + '</td>' +
-        '<td>✏️</td>' +
+        '<td class="muted">—</td>' +
       '</tr>';
       html += '<tr class="sublevel-detail-row" style="display:' + (r.expanded ? 'table-row' : 'none') + '"><td colspan="7" style="padding:0;">' +
         '<table class="sublevel-table"><thead><tr><th>Sub-Level</th><th style="text-align:right">Range Gaji Pokok</th><th style="text-align:right">THP Min</th><th style="text-align:right">THP Mid</th><th style="text-align:right">THP Max</th></tr></thead><tbody>' +
@@ -1384,7 +1273,7 @@
   function applyHoStatusUI(){
     const badge = document.getElementById('ho-status-badge');
     badge.className = 'status-badge ' + hoGroup.status;
-    badge.innerHTML = (hoGroup.status === 'aktif' ? 'Aktif' : 'Nonaktif') + ' ' + icoChevronSm;
+    badge.innerHTML = (hoGroup.status === 'aktif' ? 'Aktif' : 'Nonaktif');
     document.getElementById('ho-card').classList.toggle('status-nonaktif', hoGroup.status !== 'aktif');
   }
   function toggleHoStatusMenu(event){
@@ -1419,13 +1308,9 @@
           '<td style="text-align:right">' + region.costIndex.toFixed(2) + '</td>' +
           '<td style="text-align:right">' + region.marketSalaryIndex.toFixed(2) + '</td>' +
           '<td><span class="status-pill">' +
-            '<button class="status-badge ' + region.status + '" onclick="toggleRegionStatusMenu(\'' + region.key + '\', event)">' + (isActive ? 'Aktif' : 'Nonaktif') + ' ' + icoChevronSm + '</button>' +
-            '<div class="status-menu" id="status-menu-' + region.key + '">' +
-              '<button class="opt-aktif" onclick="setRegionStatus(\'' + region.key + '\', \'aktif\')"><i></i>Aktif</button>' +
-              '<button class="opt-nonaktif" onclick="setRegionStatus(\'' + region.key + '\', \'nonaktif\')"><i></i>Nonaktif</button>' +
-            '</div>' +
+            '<button class="status-badge ' + region.status + '" style="cursor:default;pointer-events:none;">' + (isActive ? 'Aktif' : 'Nonaktif') + '</button>' +
           '</span></td>' +
-          '<td><div class="region-actions"><button class="icon-link-btn" title="Kelola Grade" onclick="openManageGrade(\'region\', \'' + region.key + '\')">' + icoGear + '</button></div></td>' +
+          '<td class="muted">—</td>' +
         '</tr>';
 
         if(isActive){
@@ -1650,8 +1535,8 @@
     document.querySelectorAll('.netgross-toggle span').forEach(s=>s.classList.remove('active'));
     el.classList.add('active');
     document.getElementById('remun-note').lastElementChild.textContent = mode === 'net'
-      ? 'Mode Net: estimasi setelah potongan BPJS & PPh21 (mengikuti Kategori TER) — nominal final tetap mengikuti perhitungan payroll resmi di modul PPh21 Setting.'
-      : 'Nilai Gross diambil langsung dari Struktur & Skala Upah. Mode Net adalah estimasi setelah potongan BPJS & PPh21 (mengikuti Kategori TER) — nominal final tetap mengikuti perhitungan payroll resmi di modul PPh21 Setting.';
+      ? 'Mode Net: estimasi setelah potongan BPJS & PPh21 (mengikuti Kategori TER) — nominal final tetap mengikuti perhitungan payroll resmi di modul PPh21 & 26 Setting.'
+      : 'Nilai Gross diambil langsung dari Struktur & Skala Upah. Mode Net adalah estimasi setelah potongan BPJS & PPh21 (mengikuti Kategori TER) — nominal final tetap mengikuti perhitungan payroll resmi di modul PPh21 & 26 Setting.';
     calcRemun();
   }
   function netFactor(gross){

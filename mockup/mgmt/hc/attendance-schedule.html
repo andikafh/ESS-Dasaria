@@ -204,6 +204,32 @@
   .shift-tag.malam{background:var(--purple-bg);color:#5B21B6;}
   .shift-tag.off{background:var(--gray-100);color:var(--gray-400);}
 
+  /* ===== MODAL (Verifikasi Jadwal Kerja) ===== */
+  .modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);display:none;align-items:center;justify-content:center;z-index:200;padding:24px;}
+  .modal-overlay.show{display:flex;}
+  .modal-box{background:#fff;border-radius:16px;width:100%;max-width:480px;max-height:88vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);}
+  .modal-head{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--gray-200);}
+  .modal-head h2{font-size:16px;font-weight:800;margin:0;color:var(--gray-900);}
+  .modal-body{padding:22px 24px;overflow-y:auto;flex:1;}
+  .modal-foot{display:flex;justify-content:flex-end;gap:10px;padding:16px 24px;border-top:1px solid var(--gray-200);}
+
+  /* ===== JADWAL VERIFIKASI: kode jadwal (keluarga warna dingin — terpisah dari warna status hijau/kuning/merah) ===== */
+  .jv-code{display:inline-flex;align-items:center;justify-content:center;min-width:32px;padding:4px 6px;border-radius:6px;font-size:10.5px;font-weight:800;}
+  .jv-code.r{background:#DBEAFE;color:#1D4ED8;}
+  .jv-code.p{background:#EDE9FE;color:#6D28D9;}
+  .jv-code.s1{background:#CFFAFE;color:#0E7490;}
+  .jv-code.s2{background:#E0E7FF;color:#4338CA;}
+  .jv-code.s3{background:#F5D0FE;color:#A21CAF;}
+  .jv-code.off{background:var(--gray-100);color:var(--gray-400);font-weight:700;}
+  .jv-table{width:100%;border-collapse:collapse;font-size:12px;}
+  .jv-table th, .jv-table td{padding:7px 4px;text-align:center;border-bottom:1px solid var(--gray-100);white-space:nowrap;}
+  .jv-table thead th{background:var(--gray-50);color:var(--gray-500);font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.3px;border-bottom:1px solid var(--gray-200);}
+  .jv-table th.jv-weekend{color:var(--red);}
+  .jv-table td:first-child, .jv-table th:first-child{text-align:left;padding:10px 14px;position:sticky;left:0;background:#fff;z-index:1;}
+  .jv-table td:nth-child(2), .jv-table th:nth-child(2){text-align:left;padding:10px 12px;min-width:150px;}
+  .jv-table thead th:first-child{background:var(--gray-50);z-index:2;}
+  .jv-table td.jv-total{font-weight:700;color:var(--gray-800);}
+
   .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
   .cal-dow{text-align:center;font-size:10.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;padding-bottom:6px;}
   .cal-cell{border:1px solid var(--gray-200);border-radius:8px;min-height:76px;padding:6px 8px;font-size:11px;position:relative;}
@@ -283,15 +309,16 @@
       <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="submenu" id="sub-penggajian" style="display:none">
-      <a class="menu-item" href="camd.html">Compensation Architecture (CAMD)</a>
-      <a class="menu-item" href="konfigurasi-penggajian.html">Payroll Configuration</a>
-      <a class="menu-item" href="pph21-pph26-setting.html">PPh21 &amp; 26 Setting</a>
-      <a class="menu-item" href="dashboard-hc.html#payroll-dashboard">Dashboard Penggajian</a>
-      <a class="menu-item" href="dashboard-hc.html#periode">Periode Gajian</a>
-      <a class="menu-item" href="dashboard-hc.html#validasi">Persetujuan Periode Gajian</a>
-      <a class="menu-item" href="dashboard-hc.html#distribusi">Distribusi Gaji &amp; Slip Gaji</a>
-      <a class="menu-item" href="dashboard-hc.html#kasbon">Kasbon</a>
-      <a class="menu-item" href="rekonsiliasi-payroll.html">Rekonsiliasi Payroll</a>
+      <a class="menu-item" data-key="camd" href="camd.html">Arsitektur Kompensasi</a>
+      <a class="menu-item" data-key="konfigurasi" href="konfigurasi-penggajian.html">Payroll Configuration</a>
+      <a class="menu-item" data-key="pph2126" href="pph21-pph26-setting.html">PPh21 &amp; 26 Setting</a>
+      <a class="menu-item" data-key="payroll-dashboard" href="dashboard-hc.html#payroll-dashboard">Dashboard Penggajian</a>
+      <a class="menu-item" data-key="payroll-karyawan" href="payroll-karyawan-detail.html">Data Payroll Karyawan</a>
+      <a class="menu-item" data-key="periode" href="dashboard-hc.html#periode">Periode Gajian</a>
+      <a class="menu-item" data-key="validasi" href="dashboard-hc.html#validasi">Persetujuan Periode Gajian</a>
+      <a class="menu-item" data-key="distribusi" href="dashboard-hc.html#distribusi">Distribusi Gaji &amp; Slip Gaji</a>
+      <a class="menu-item" data-key="kasbon" href="dashboard-hc.html#kasbon">Kasbon</a>
+      <a class="menu-item" data-key="rekonsiliasi" href="rekonsiliasi-payroll.html">Rekonsiliasi Payroll</a>
     </div>
     <div class="menu-item" onclick="toggleSubmenu('sub-jenispengajuan', this)">
       <svg viewBox="0 0 24 24"><path d="M6 2.5h9l4.5 4.5v14.5H6z"/><path d="M15 2.5V7h4.5M8.5 12.5h7M8.5 16h7"/></svg>
@@ -551,48 +578,169 @@
         <div class="page-head">
           <div>
             <h1>Jadwal Kerja</h1>
-            <div class="sub">Susun dan kelola jadwal kerja mingguan &amp; bulanan karyawan</div>
+            <div class="sub">Susun, kelola, dan verifikasi jadwal kerja karyawan Head Office &amp; Branch</div>
           </div>
-          <div style="display:flex;gap:10px;">
+        </div>
+
+        <div class="tabbar" style="max-width:360px;">
+          <div class="tab active" onclick="switchTab(this,'jksec-susun')">Susun Jadwal</div>
+          <div class="tab" onclick="switchTab(this,'jksec-verifikasi')">Verifikasi &amp; Validasi</div>
+        </div>
+
+        <!-- ===== TAB: SUSUN JADWAL ===== -->
+        <div class="tab-panel active" id="jksec-susun">
+          <div style="display:flex;justify-content:flex-end;gap:10px;margin-bottom:16px;">
             <span class="chip chip-gray">Draft</span>
             <button class="btn btn-primary perm-publish" onclick="showToast('Jadwal minggu ini berhasil dipublish ke seluruh karyawan.')"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Publish Schedule</button>
           </div>
-        </div>
 
-        <div class="grid-12" style="margin-bottom:16px;">
-          <div class="col-3 kpi-card"><div class="lbl">Total Terjadwal</div><div class="val">497</div></div>
-          <div class="col-3 kpi-card"><div class="lbl">Draft</div><div class="val" style="color:var(--gray-500);">1 minggu</div></div>
-          <div class="col-3 kpi-card"><div class="lbl">Published</div><div class="val" style="color:var(--green);">3 minggu</div></div>
-          <div class="col-3 kpi-card"><div class="lbl">Belum Terjadwal</div><div class="val" style="color:var(--red);">15</div></div>
-        </div>
+          <div class="grid-12" style="margin-bottom:16px;">
+            <div class="col-3 kpi-card"><div class="lbl">Total Terjadwal</div><div class="val">497</div></div>
+            <div class="col-3 kpi-card"><div class="lbl">Draft</div><div class="val" style="color:var(--gray-500);">1 minggu</div></div>
+            <div class="col-3 kpi-card"><div class="lbl">Published</div><div class="val" style="color:var(--green);">3 minggu</div></div>
+            <div class="col-3 kpi-card"><div class="lbl">Belum Terjadwal</div><div class="val" style="color:var(--red);">15</div></div>
+          </div>
 
-        <div class="card">
-          <div class="card-head">
-            <h2>Employee Assignment — Minggu 27 Jul – 2 Ags 2026</h2>
-            <div class="tabbar" style="margin-bottom:0;max-width:280px;">
-              <div class="tab active" onclick="switchTab(this,'jadwal-weekly')">Weekly</div>
-              <div class="tab" onclick="switchTab(this,'jadwal-monthly')">Monthly</div>
+          <div class="card">
+            <div class="card-head">
+              <h2>Employee Assignment — Minggu 27 Jul – 2 Ags 2026</h2>
+              <div class="tabbar" style="margin-bottom:0;max-width:280px;">
+                <div class="tab active" onclick="switchTab(this,'jadwal-weekly')">Weekly</div>
+                <div class="tab" onclick="switchTab(this,'jadwal-monthly')">Monthly</div>
+              </div>
+            </div>
+            <div class="tab-panel active" id="jadwal-weekly">
+              <div class="table-wrap">
+                <table class="sched-grid">
+                  <thead><tr><th style="text-align:left;">Karyawan</th><th>Sen</th><th>Sel</th><th>Rab</th><th>Kam</th><th>Jum</th><th>Sab</th><th>Min</th></tr></thead>
+                  <tbody id="jadwal-tbody"></tbody>
+                </table>
+              </div>
+              <div class="chart-legend">
+                <span><i style="background:#DBEAFE"></i>Shift Pagi (08:00–16:00)</span>
+                <span><i style="background:#FEF3C7"></i>Shift Siang (14:00–22:00)</span>
+                <span><i style="background:#EDE9FE"></i>Shift Malam (22:00–06:00)</span>
+                <span><i style="background:#F1F5F9"></i>Libur (OFF)</span>
+              </div>
+            </div>
+            <div class="tab-panel" id="jadwal-monthly">
+              <div class="empty-state">
+                <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
+                <div class="es-title">Tampilan bulanan sedang disiapkan</div>
+                <div class="es-desc">Gunakan tampilan Weekly untuk saat ini — data mingguan tetap sinkron dengan Monthly.</div>
+              </div>
             </div>
           </div>
-          <div class="tab-panel active" id="jadwal-weekly">
-            <div class="table-wrap">
-              <table class="sched-grid">
-                <thead><tr><th style="text-align:left;">Karyawan</th><th>Sen</th><th>Sel</th><th>Rab</th><th>Kam</th><th>Jum</th><th>Sab</th><th>Min</th></tr></thead>
-                <tbody id="jadwal-tbody"></tbody>
+        </div>
+
+        <!-- ===== TAB: VERIFIKASI & VALIDASI ===== -->
+        <div class="tab-panel" id="jksec-verifikasi">
+
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <button class="btn btn-outline btn-sm" onclick="jvChangePeriod(-1)" title="Bulan sebelumnya"><svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg></button>
+              <div style="font-weight:800;font-size:15px;color:var(--gray-900);min-width:130px;text-align:center;" id="jv-period-label">Juli 2026</div>
+              <button class="btn btn-outline btn-sm" onclick="jvChangePeriod(1)" title="Bulan berikutnya"><svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg></button>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <div class="form-field" style="min-width:190px;"><select id="jv-filter-direktorat" onchange="jvOnFilterChange()"></select></div>
+              <div class="form-field" style="min-width:190px;"><select id="jv-filter-branch" onchange="jvOnFilterChange()"></select></div>
+            </div>
+          </div>
+
+          <div class="grid-12" style="margin-bottom:16px;">
+            <div class="col-8 card">
+              <div class="card-head"><h2>Ringkasan Verifikasi</h2><span class="muted" style="font-size:12px;">Periode <span id="jv-period-label2">Juli 2026</span></span></div>
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+                <div>
+                  <div class="lbl" style="font-size:12px;color:var(--gray-500);font-weight:600;margin-bottom:6px;">Total Karyawan</div>
+                  <div style="font-size:22px;font-weight:800;color:var(--gray-900);">497</div>
+                  <div class="muted" style="font-size:11px;">Semua Direktorat</div>
+                </div>
+                <div>
+                  <div class="lbl" style="font-size:12px;color:var(--gray-500);font-weight:600;margin-bottom:6px;">Sudah Diverifikasi</div>
+                  <div style="font-size:22px;font-weight:800;color:var(--green);">186</div>
+                  <div class="muted" style="font-size:11px;">37,4% dari total</div>
+                </div>
+                <div>
+                  <div class="lbl" style="font-size:12px;color:var(--gray-500);font-weight:600;margin-bottom:6px;">Belum Diverifikasi</div>
+                  <div style="font-size:22px;font-weight:800;color:var(--amber);">311</div>
+                  <div class="muted" style="font-size:11px;">62,6% dari total</div>
+                </div>
+                <div>
+                  <div class="lbl" style="font-size:12px;color:var(--gray-500);font-weight:600;margin-bottom:6px;">Perlu Revisi</div>
+                  <div style="font-size:22px;font-weight:800;color:var(--red);">58</div>
+                  <div class="muted" style="font-size:11px;">11,6% dari total</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-4 card">
+              <div class="card-head"><h2>Status Verifikasi</h2></div>
+              <div style="display:flex;align-items:center;gap:16px;">
+                <svg viewBox="0 0 130 130" width="100" height="100" style="flex-shrink:0;">
+                  <circle cx="65" cy="65" r="50" fill="none" stroke="#E2E8F0" stroke-width="17"/>
+                  <circle cx="65" cy="65" r="50" fill="none" stroke="#16A34A" stroke-width="17" stroke-dasharray="80.9 314.2" stroke-dashoffset="0" transform="rotate(-90 65 65)"/>
+                  <circle cx="65" cy="65" r="50" fill="none" stroke="#D97706" stroke-width="17" stroke-dasharray="196.7 314.2" stroke-dashoffset="-80.9" transform="rotate(-90 65 65)"/>
+                  <circle cx="65" cy="65" r="50" fill="none" stroke="#DC2626" stroke-width="17" stroke-dasharray="36.6 314.2" stroke-dashoffset="-277.6" transform="rotate(-90 65 65)"/>
+                  <text x="65" y="61" text-anchor="middle" font-size="17" font-weight="800" fill="#0F172A" font-family="Inter">497</text>
+                  <text x="65" y="78" text-anchor="middle" font-size="9.5" fill="#94A3B8" font-family="Inter">Total</text>
+                </svg>
+                <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;">
+                  <span style="display:flex;align-items:center;gap:6px;"><i style="width:8px;height:8px;border-radius:2px;background:#16A34A;display:inline-block;flex-shrink:0;"></i>Disetujui — 128 (25,8%)</span>
+                  <span style="display:flex;align-items:center;gap:6px;"><i style="width:8px;height:8px;border-radius:2px;background:#D97706;display:inline-block;flex-shrink:0;"></i>Menunggu — 311 (62,6%)</span>
+                  <span style="display:flex;align-items:center;gap:6px;"><i style="width:8px;height:8px;border-radius:2px;background:#DC2626;display:inline-block;flex-shrink:0;"></i>Perlu Revisi — 58 (11,6%)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-bottom:16px;">
+            <div class="card-head"><h2>Aksi Verifikasi</h2><span class="muted" style="font-size:12px;">Verifikasi seluruh jadwal karyawan sekaligus per Branch atau per Direktorat</span></div>
+            <div class="grid-12">
+              <div class="col-6">
+                <div class="section-label">Per Branch</div>
+                <div class="table-wrap">
+                  <table>
+                    <thead><tr><th>Branch</th><th>Karyawan</th><th>Progres</th><th>Status</th><th>Aksi</th></tr></thead>
+                    <tbody id="jv-branch-tbody"></tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="section-label">Per Direktorat</div>
+                <div class="table-wrap">
+                  <table>
+                    <thead><tr><th>Direktorat</th><th>Karyawan</th><th>Progres</th><th>Status</th><th>Aksi</th></tr></thead>
+                    <tbody id="jv-direktorat-tbody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="padding:0;">
+            <div class="card-head" style="padding:20px 20px 0;">
+              <h2>Detail Jadwal Karyawan</h2>
+              <div class="chart-legend" style="margin-top:0;">
+                <span><i style="background:#DBEAFE"></i>R — Reguler</span>
+                <span><i style="background:#EDE9FE"></i>P — Project</span>
+                <span><i style="background:#CFFAFE"></i>S1 — Shift 1</span>
+                <span><i style="background:#E0E7FF"></i>S2 — Shift 2</span>
+                <span><i style="background:#F5D0FE"></i>S3 — Shift 3</span>
+                <span><i style="background:#F1F5F9"></i>OFF</span>
+              </div>
+            </div>
+            <div class="table-wrap" style="padding:16px 20px 0;">
+              <table class="jv-table">
+                <thead><tr id="jv-thead-row"></tr></thead>
+                <tbody id="jv-detail-tbody"></tbody>
               </table>
             </div>
-            <div class="chart-legend">
-              <span><i style="background:#DBEAFE"></i>Shift Pagi (08:00–16:00)</span>
-              <span><i style="background:#FEF3C7"></i>Shift Siang (14:00–22:00)</span>
-              <span><i style="background:#EDE9FE"></i>Shift Malam (22:00–06:00)</span>
-              <span><i style="background:#F1F5F9"></i>Libur (OFF)</span>
-            </div>
-          </div>
-          <div class="tab-panel" id="jadwal-monthly">
-            <div class="empty-state">
-              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
-              <div class="es-title">Tampilan bulanan sedang disiapkan</div>
-              <div class="es-desc">Gunakan tampilan Weekly untuk saat ini — data mingguan tetap sinkron dengan Monthly.</div>
+            <div class="pagination" style="padding:16px 20px;">
+              <span>Menampilkan 1–8 dari 497 karyawan</span>
+              <div class="pg-btns">
+                <button class="pg-btn active">1</button><button class="pg-btn">2</button><button class="pg-btn">3</button><span class="muted">…</span><button class="pg-btn">63</button>
+              </div>
             </div>
           </div>
         </div>
@@ -874,6 +1022,39 @@
   </div>
 </div>
 
+<!-- ============ MODAL: KONFIRMASI VERIFIKASI MASSAL ============ -->
+<div class="modal-overlay" id="jv-confirm-overlay" onclick="if(event.target===this) jvCloseConfirm()">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2 id="jv-confirm-title">Konfirmasi Verifikasi</h2>
+      <button class="modal-close" onclick="jvCloseConfirm()"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="modal-body" id="jv-confirm-body"></div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="jvCloseConfirm()">Batal</button>
+      <button class="btn btn-primary" onclick="jvConfirmBulk()">Konfirmasi Verifikasi</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODAL: TANDAI PERLU REVISI ============ -->
+<div class="modal-overlay" id="jv-revision-overlay" onclick="if(event.target===this) jvCloseRevision()">
+  <div class="modal-box" style="max-width:420px;">
+    <div class="modal-head">
+      <h2>Tandai Perlu Revisi</h2>
+      <button class="modal-close" onclick="jvCloseRevision()"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div id="jv-revision-emp" style="font-weight:700;color:var(--gray-900);margin-bottom:12px;"></div>
+      <div class="form-field"><label>Catatan Revisi</label><textarea id="jv-revision-note" placeholder="Jelaskan bagian jadwal yang perlu diperbaiki..."></textarea></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="jvCloseRevision()">Batal</button>
+      <button class="btn btn-danger" onclick="jvSubmitRevision()">Kirim Revisi</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -890,6 +1071,72 @@
     sub.style.display = open ? 'none' : 'block';
     el.classList.toggle('open', !open);
   }
+
+  // ===== Drag & drop reorder — submenu Penggajian (posisi tersimpan lintas halaman) =====
+  (function initPenggajianDrag(){
+    const container = document.getElementById('sub-penggajian');
+    if(!container) return;
+    const style = document.createElement('style');
+    style.textContent = `
+      #sub-penggajian .menu-item[draggable="true"]{cursor:grab;position:relative;padding-left:38px;}
+      #sub-penggajian .menu-item[draggable="true"]:active{cursor:grabbing;}
+      #sub-penggajian .menu-item[draggable="true"]::before{content:'\\22EE\\22EE';position:absolute;left:16px;top:50%;transform:translateY(-50%) scale(.6);color:#c7cad1;font-size:11px;line-height:1;letter-spacing:-2px;}
+      #sub-penggajian .menu-item.dragging{opacity:.35;}
+      #sub-penggajian .menu-item.drag-over-top{box-shadow:inset 0 2px 0 var(--blue);}
+      #sub-penggajian .menu-item.drag-over-bottom{box-shadow:inset 0 -2px 0 var(--blue);}
+    `;
+    document.head.appendChild(style);
+
+    const itemKey = el => el.getAttribute('data-key') || el.getAttribute('href') || el.textContent.trim();
+    const items = () => Array.from(container.querySelectorAll(':scope > .menu-item'));
+
+    (function applySavedOrder(){
+      let saved;
+      try{ saved = JSON.parse(localStorage.getItem('dasaria-penggajian-order') || 'null'); }catch(e){ saved = null; }
+      if(!Array.isArray(saved)) return;
+      saved.forEach(key => {
+        const el = items().find(e => itemKey(e) === key);
+        if(el) container.appendChild(el);
+      });
+    })();
+    items().forEach(el => el.setAttribute('draggable','true'));
+
+    let draggingEl = null;
+    container.addEventListener('dragstart', e => {
+      const item = e.target.closest('.menu-item[draggable="true"]');
+      if(!item){ e.preventDefault(); return; }
+      draggingEl = item;
+      item.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      try{ e.dataTransfer.setData('text/plain', itemKey(item)); }catch(err){}
+    });
+    container.addEventListener('dragend', () => {
+      if(draggingEl) draggingEl.classList.remove('dragging');
+      items().forEach(el => el.classList.remove('drag-over-top','drag-over-bottom'));
+      draggingEl = null;
+      localStorage.setItem('dasaria-penggajian-order', JSON.stringify(items().map(itemKey)));
+    });
+    container.addEventListener('dragover', e => {
+      if(!draggingEl) return;
+      e.preventDefault();
+      const target = e.target.closest('.menu-item[draggable="true"]');
+      items().forEach(el => el.classList.remove('drag-over-top','drag-over-bottom'));
+      if(!target || target === draggingEl) return;
+      const rect = target.getBoundingClientRect();
+      const before = (e.clientY - rect.top) < rect.height / 2;
+      target.classList.add(before ? 'drag-over-top' : 'drag-over-bottom');
+    });
+    container.addEventListener('drop', e => {
+      if(!draggingEl) return;
+      e.preventDefault();
+      const target = e.target.closest('.menu-item[draggable="true"]');
+      items().forEach(el => el.classList.remove('drag-over-top','drag-over-bottom'));
+      if(!target || target === draggingEl) return;
+      const rect = target.getBoundingClientRect();
+      const before = (e.clientY - rect.top) < rect.height / 2;
+      container.insertBefore(draggingEl, before ? target : target.nextSibling);
+    });
+  })();
   function showLoadingBar(){
     const bar = document.getElementById('loading-bar');
     bar.style.width = '0'; bar.classList.add('show');
@@ -1007,6 +1254,281 @@
     `).join('');
   }
   renderJadwalTable();
+
+  // ===== Jadwal Kerja — Verifikasi & Validasi =====
+  const jvMonthNames = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  let jvState = {y:2026, m:7, direktorat:'', branch:''};
+
+  function jvDaysInMonth(y,m){ return new Date(y, m, 0).getDate(); }
+  function jvDow(y,m,d){ return new Date(y, m-1, d).getDay(); }
+
+  const jvBranches = [
+    {name:'Head Office', direktorat:'PCC', total:86, verified:86, status:'Disetujui'},
+    {name:'Cabang Malang', direktorat:'Commercial', total:64, verified:42, status:'Menunggu'},
+    {name:'Cabang Batu', direktorat:'Commercial', total:52, verified:18, status:'Perlu Revisi'},
+    {name:'Cabang Pasuruan', direktorat:'Commercial', total:47, verified:20, status:'Menunggu'},
+    {name:'Cabang Surabaya', direktorat:'Commercial', total:39, verified:39, status:'Disetujui'},
+    {name:'Cabang Probolinggo', direktorat:'Commercial', total:31, verified:12, status:'Perlu Revisi'}
+  ];
+  const jvDirektorats = [
+    {name:'Commercial', total:233, verified:131, status:'Menunggu'},
+    {name:'PCC', total:86, verified:86, status:'Disetujui'},
+    {name:'IT', total:48, verified:28, status:'Menunggu'},
+    {name:'GSSC', total:52, verified:31, status:'Menunggu'},
+    {name:'FAT', total:38, verified:22, status:'Menunggu'},
+    {name:'NOC', total:40, verified:28, status:'Menunggu'}
+  ];
+
+  function jvGenPattern(type){
+    const arr = new Array(31).fill('R');
+    for(let i=0;i<31;i++){
+      const cyc = i % 7;
+      if(type==='reguler'){
+        if(cyc===5 || cyc===6) arr[i]='OFF';
+      } else if(type==='reguler-project'){
+        if(cyc===5 || cyc===6) arr[i]='OFF';
+        if(i>=10 && i<=13) arr[i]='P';
+      } else if(type==='shift-rotasi'){
+        if(cyc===0||cyc===1) arr[i]='S1';
+        else if(cyc===2||cyc===3) arr[i]='S2';
+        else if(cyc===4||cyc===5) arr[i]='S3';
+        else arr[i]='OFF';
+      } else if(type==='reguler-irregular'){
+        if(cyc===6) arr[i]='OFF';
+        if(i>=8 && i<=9) arr[i]='P';
+      }
+    }
+    return arr;
+  }
+
+  const jvEmployees = [
+    {name:'Ahmad Fauzi', npp:'24051201', branch:'Head Office', role:'HR Staff', atasan:'Budi Santoso', atasanRole:'HC Manager', direktorat:'PCC', status:'Disetujui', pattern:jvGenPattern('reguler-project')},
+    {name:'Siti Rahayu', npp:'24051202', branch:'Cabang Malang', role:'AE', atasan:'Dewi Kurnia', atasanRole:'Branch Leader', direktorat:'Commercial', status:'Menunggu', pattern:jvGenPattern('reguler-project')},
+    {name:'Dewi Kusuma', npp:'24051203', branch:'Cabang Batu', role:'Teknisi', atasan:'Rizky Pratama', atasanRole:'Branch Leader', direktorat:'Commercial', status:'Revisi', pattern:jvGenPattern('reguler-irregular')},
+    {name:'Fajar Maulana', npp:'23110045', branch:'Head Office', role:'IT Support', atasan:'Nanda Putri', atasanRole:'IT Manager', direktorat:'IT', status:'Disetujui', pattern:jvGenPattern('shift-rotasi')},
+    {name:'Yusuf Hidayat', npp:'23090012', branch:'Head Office', role:'NOC Engineer', atasan:'Fajar Maulana', atasanRole:'IT Manager', direktorat:'NOC', status:'Menunggu', pattern:jvGenPattern('shift-rotasi')},
+    {name:'Sinta Aulia', npp:'24051205', branch:'Cabang Surabaya', role:'AE', atasan:'Dimas Setiawan', atasanRole:'Head of Region', direktorat:'Commercial', status:'Disetujui', pattern:jvGenPattern('reguler')},
+    {name:'Yoga Adi', npp:'24051206', branch:'Cabang Probolinggo', role:'AE', atasan:'Dimas Setiawan', atasanRole:'Head of Region', direktorat:'Commercial', status:'Revisi', pattern:jvGenPattern('reguler-irregular')},
+    {name:'Budi Santoso', npp:'22010001', branch:'Head Office', role:'HC Manager', atasan:'Tes Admin', atasanRole:'Head of Human Capital', direktorat:'PCC', status:'Disetujui', pattern:jvGenPattern('reguler')}
+  ];
+
+  const jvCodeLbl = {R:'R', P:'P', S1:'S1', S2:'S2', S3:'S3', OFF:'OFF'};
+  function jvCodeBadge(code){
+    return '<span class="jv-code ' + code.toLowerCase() + '">' + jvCodeLbl[code] + '</span>';
+  }
+  function jvStatusChip(status){
+    const map = {Disetujui:'chip-green', Menunggu:'chip-amber', Revisi:'chip-red', 'Perlu Revisi':'chip-red'};
+    const lbl = status === 'Revisi' ? 'Perlu Revisi' : status;
+    return '<span class="chip ' + map[status] + '"><i></i>' + lbl + '</span>';
+  }
+
+  function jvPopulateFilters(){
+    const dSel = document.getElementById('jv-filter-direktorat');
+    const bSel = document.getElementById('jv-filter-branch');
+    if(!dSel || !bSel) return;
+    dSel.innerHTML = '<option value="">Semua Direktorat</option>' + jvDirektorats.map(d => `<option value="${d.name}">${d.name}</option>`).join('');
+    bSel.innerHTML = '<option value="">Semua Branch</option>' + jvBranches.map(b => `<option value="${b.name}">${b.name}</option>`).join('');
+  }
+
+  function jvRenderPeriodLabel(){
+    const lbl = jvMonthNames[jvState.m - 1] + ' ' + jvState.y;
+    document.getElementById('jv-period-label').textContent = lbl;
+    document.getElementById('jv-period-label2').textContent = lbl;
+  }
+
+  function jvChangePeriod(delta){
+    let m = jvState.m + delta, y = jvState.y;
+    if(m < 1){ m = 12; y--; } else if(m > 12){ m = 1; y++; }
+    jvState.m = m; jvState.y = y;
+    jvRenderPeriodLabel();
+    jvRenderDetailTable();
+  }
+
+  function jvOnFilterChange(){
+    jvState.direktorat = document.getElementById('jv-filter-direktorat').value;
+    jvState.branch = document.getElementById('jv-filter-branch').value;
+    jvRenderDetailTable();
+  }
+
+  function jvFilterToBranch(name){
+    document.getElementById('jv-filter-branch').value = name;
+    document.getElementById('jv-filter-direktorat').value = '';
+    jvState.branch = name; jvState.direktorat = '';
+    jvRenderDetailTable();
+    document.getElementById('jv-thead-row').scrollIntoView({behavior:'smooth', block:'center'});
+  }
+  function jvFilterToDirektorat(name){
+    document.getElementById('jv-filter-direktorat').value = name;
+    document.getElementById('jv-filter-branch').value = '';
+    jvState.direktorat = name; jvState.branch = '';
+    jvRenderDetailTable();
+    document.getElementById('jv-thead-row').scrollIntoView({behavior:'smooth', block:'center'});
+  }
+
+  function jvRenderBranchTable(){
+    const body = document.getElementById('jv-branch-tbody');
+    if(!body) return;
+    body.innerHTML = jvBranches.map(b => {
+      const pct = Math.round((b.verified / b.total) * 100);
+      return `
+      <tr>
+        <td><a href="javascript:void(0)" onclick="jvFilterToBranch('${b.name}')" style="color:var(--gray-800);font-weight:600;text-decoration:none;">${b.name}</a></td>
+        <td>${b.total}</td>
+        <td>
+          <div style="font-size:11px;color:var(--gray-500);margin-bottom:3px;">${b.verified} (${pct}%)</div>
+          <div style="height:6px;width:70px;background:var(--gray-100);border-radius:4px;overflow:hidden;"><div style="width:${pct}%;height:100%;background:${b.status==='Perlu Revisi' ? 'var(--red)' : b.status==='Disetujui' ? 'var(--green)' : 'var(--amber)'};"></div></div>
+        </td>
+        <td>${jvStatusChip(b.status)}</td>
+        <td><button class="btn btn-outline btn-sm" onclick="jvOpenConfirm('branch','${b.name}')">Verifikasi Branch</button></td>
+      </tr>
+    `;
+    }).join('');
+  }
+
+  function jvRenderDirektoratTable(){
+    const body = document.getElementById('jv-direktorat-tbody');
+    if(!body) return;
+    body.innerHTML = jvDirektorats.map(d => {
+      const pct = Math.round((d.verified / d.total) * 100);
+      return `
+      <tr>
+        <td><a href="javascript:void(0)" onclick="jvFilterToDirektorat('${d.name}')" style="color:var(--gray-800);font-weight:600;text-decoration:none;">${d.name}</a></td>
+        <td>${d.total}</td>
+        <td>
+          <div style="font-size:11px;color:var(--gray-500);margin-bottom:3px;">${d.verified} (${pct}%)</div>
+          <div style="height:6px;width:70px;background:var(--gray-100);border-radius:4px;overflow:hidden;"><div style="width:${pct}%;height:100%;background:${d.status==='Perlu Revisi' ? 'var(--red)' : d.status==='Disetujui' ? 'var(--green)' : 'var(--amber)'};"></div></div>
+        </td>
+        <td>${jvStatusChip(d.status)}</td>
+        <td><button class="btn btn-outline btn-sm" onclick="jvOpenConfirm('direktorat','${d.name}')">Verifikasi Direktorat</button></td>
+      </tr>
+    `;
+    }).join('');
+  }
+
+  function jvRenderDetailTable(){
+    const theadRow = document.getElementById('jv-thead-row');
+    const body = document.getElementById('jv-detail-tbody');
+    if(!theadRow || !body) return;
+    const nDays = jvDaysInMonth(jvState.y, jvState.m);
+
+    let headHtml = '<th>Nama Karyawan<br><span style="font-weight:500;text-transform:none;font-size:9.5px;">NPP • Branch • Role Title</span></th><th>Atasan Langsung</th>';
+    for(let d=1; d<=nDays; d++){
+      const dow = jvDow(jvState.y, jvState.m, d);
+      const isWeekend = dow === 0 || dow === 6;
+      const dowLbl = ['Min','Sen','Sel','Rab','Kam','Jum','Sab'][dow];
+      headHtml += `<th class="${isWeekend ? 'jv-weekend' : ''}">${d}<br>${dowLbl}</th>`;
+    }
+    headHtml += '<th>Total<br>Hari Kerja</th><th>Aksi</th>';
+    theadRow.innerHTML = headHtml;
+
+    const filtered = jvEmployees.filter(e =>
+      (!jvState.direktorat || e.direktorat === jvState.direktorat) &&
+      (!jvState.branch || e.branch === jvState.branch)
+    );
+
+    if(filtered.length === 0){
+      body.innerHTML = `<tr><td colspan="${nDays + 4}"><div class="empty-state"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg><div class="es-title">Tidak ada karyawan ditemukan</div><div class="es-desc">Coba ubah filter Direktorat atau Branch.</div></div></td></tr>`;
+      return;
+    }
+
+    body.innerHTML = filtered.map((e, idx) => {
+      const days = e.pattern.slice(0, nDays);
+      const totalKerja = days.filter(c => c !== 'OFF').length;
+      return `
+      <tr>
+        <td>
+          <div class="emp-cell">
+            <div class="avatar">${initials(e.name)}</div>
+            <div>
+              <div class="e-name">${e.name}</div>
+              <div class="e-sub">${e.npp} • ${e.branch} • ${e.role}</div>
+            </div>
+          </div>
+          <div style="margin-top:5px;">${jvStatusChip(e.status)}</div>
+        </td>
+        <td><div style="font-weight:600;color:var(--gray-800);">${e.atasan}</div><div class="muted" style="font-size:11px;">${e.atasanRole}</div></td>
+        ${days.map(c => '<td>' + jvCodeBadge(c) + '</td>').join('')}
+        <td class="jv-total">${totalKerja}</td>
+        <td>
+          <div style="display:flex;gap:5px;">
+            <button class="icon-btn" style="width:28px;height:28px;" title="Setujui" onclick="jvApproveEmployee('${e.name}')"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></button>
+            <button class="icon-btn" style="width:28px;height:28px;" title="Tandai Perlu Revisi" onclick="jvOpenRevision('${e.name}')"><svg viewBox="0 0 24 24"><path d="M12 9v4M12 16.5h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg></button>
+          </div>
+        </td>
+      </tr>
+    `;
+    }).join('');
+  }
+
+  let jvPendingBulk = null;
+  function jvOpenConfirm(kind, name){
+    const list = kind === 'branch' ? jvBranches : jvDirektorats;
+    const item = list.find(x => x.name === name);
+    if(!item) return;
+    const affected = jvEmployees.filter(e => kind === 'branch' ? e.branch === name : e.direktorat === name);
+    const remaining = item.total - item.verified;
+    jvPendingBulk = {kind, name};
+    document.getElementById('jv-confirm-title').textContent = 'Konfirmasi Verifikasi ' + (kind === 'branch' ? 'Branch' : 'Direktorat');
+    document.getElementById('jv-confirm-body').innerHTML = `
+      <p style="margin:0 0 14px;font-size:13.5px;color:var(--gray-700);">
+        Anda akan menyetujui jadwal kerja <b>${remaining}</b> dari <b>${item.total}</b> karyawan di ${kind === 'branch' ? 'branch' : 'direktorat'} <b>${name}</b> sekaligus. Seluruh jadwal yang belum diverifikasi akan berubah status menjadi <b>Disetujui</b>.
+      </p>
+      ${affected.length ? `<div class="section-label">Contoh karyawan terdampak</div><div style="display:flex;flex-direction:column;gap:6px;">${affected.slice(0,5).map(e => `<div style="display:flex;justify-content:space-between;font-size:12.5px;"><span>${e.name}</span>${jvStatusChip(e.status)}</div>`).join('')}${affected.length > 5 ? `<div class="muted" style="font-size:11.5px;">+${affected.length - 5} karyawan lainnya</div>` : ''}</div>` : ''}
+    `;
+    document.getElementById('jv-confirm-overlay').classList.add('show');
+  }
+  function jvCloseConfirm(){
+    document.getElementById('jv-confirm-overlay').classList.remove('show');
+    jvPendingBulk = null;
+  }
+  function jvConfirmBulk(){
+    if(!jvPendingBulk) return;
+    const {kind, name} = jvPendingBulk;
+    const list = kind === 'branch' ? jvBranches : jvDirektorats;
+    const item = list.find(x => x.name === name);
+    item.verified = item.total;
+    item.status = 'Disetujui';
+    jvEmployees.forEach(e => { if((kind === 'branch' ? e.branch : e.direktorat) === name) e.status = 'Disetujui'; });
+    jvCloseConfirm();
+    jvRenderBranchTable();
+    jvRenderDirektoratTable();
+    jvRenderDetailTable();
+    showToast('Verifikasi ' + (kind === 'branch' ? 'branch' : 'direktorat') + ' ' + name + ' berhasil — seluruh jadwal disetujui.');
+  }
+
+  let jvPendingEmployee = null;
+  function jvApproveEmployee(name){
+    const e = jvEmployees.find(x => x.name === name);
+    if(!e) return;
+    e.status = 'Disetujui';
+    jvRenderDetailTable();
+    showToast('Jadwal ' + name + ' disetujui.');
+  }
+  function jvOpenRevision(name){
+    jvPendingEmployee = name;
+    document.getElementById('jv-revision-emp').textContent = name;
+    document.getElementById('jv-revision-note').value = '';
+    document.getElementById('jv-revision-overlay').classList.add('show');
+  }
+  function jvCloseRevision(){
+    document.getElementById('jv-revision-overlay').classList.remove('show');
+    jvPendingEmployee = null;
+  }
+  function jvSubmitRevision(){
+    if(!jvPendingEmployee) return;
+    const e = jvEmployees.find(x => x.name === jvPendingEmployee);
+    if(e) e.status = 'Revisi';
+    const name = jvPendingEmployee;
+    jvCloseRevision();
+    jvRenderDetailTable();
+    showToast('Jadwal ' + name + ' ditandai perlu revisi.');
+  }
+
+  jvPopulateFilters();
+  jvRenderPeriodLabel();
+  jvRenderBranchTable();
+  jvRenderDirektoratTable();
+  jvRenderDetailTable();
 
   // ===== Shift Assignment =====
   const shiftAssignData = [

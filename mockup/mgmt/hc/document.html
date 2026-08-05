@@ -265,15 +265,16 @@
       <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="submenu" id="sub-penggajian" style="display:none">
-      <a class="menu-item" href="camd.html">Compensation Architecture (CAMD)</a>
-      <a class="menu-item" href="konfigurasi-penggajian.html">Payroll Configuration</a>
-      <a class="menu-item" href="pph21-pph26-setting.html">PPh21 &amp; 26 Setting</a>
-      <a class="menu-item" href="dashboard-hc.html#payroll-dashboard">Dashboard Penggajian</a>
-      <a class="menu-item" href="dashboard-hc.html#periode">Periode Gajian</a>
-      <a class="menu-item" href="dashboard-hc.html#validasi">Persetujuan Periode Gajian</a>
-      <a class="menu-item" href="dashboard-hc.html#distribusi">Distribusi Gaji &amp; Slip Gaji</a>
-      <a class="menu-item" href="dashboard-hc.html#kasbon">Kasbon</a>
-      <a class="menu-item" href="rekonsiliasi-payroll.html">Rekonsiliasi Payroll</a>
+      <a class="menu-item" data-key="camd" href="camd.html">Arsitektur Kompensasi</a>
+      <a class="menu-item" data-key="konfigurasi" href="konfigurasi-penggajian.html">Payroll Configuration</a>
+      <a class="menu-item" data-key="pph2126" href="pph21-pph26-setting.html">PPh21 &amp; 26 Setting</a>
+      <a class="menu-item" data-key="payroll-dashboard" href="dashboard-hc.html#payroll-dashboard">Dashboard Penggajian</a>
+      <a class="menu-item" data-key="payroll-karyawan" href="payroll-karyawan-detail.html">Data Payroll Karyawan</a>
+      <a class="menu-item" data-key="periode" href="dashboard-hc.html#periode">Periode Gajian</a>
+      <a class="menu-item" data-key="validasi" href="dashboard-hc.html#validasi">Persetujuan Periode Gajian</a>
+      <a class="menu-item" data-key="distribusi" href="dashboard-hc.html#distribusi">Distribusi Gaji &amp; Slip Gaji</a>
+      <a class="menu-item" data-key="kasbon" href="dashboard-hc.html#kasbon">Kasbon</a>
+      <a class="menu-item" data-key="rekonsiliasi" href="rekonsiliasi-payroll.html">Rekonsiliasi Payroll</a>
     </div>
     <div class="menu-item" onclick="toggleSubmenu('sub-jenispengajuan', this)">
       <svg viewBox="0 0 24 24"><path d="M6 2.5h9l4.5 4.5v14.5H6z"/><path d="M15 2.5V7h4.5M8.5 12.5h7M8.5 16h7"/></svg>
@@ -738,6 +739,72 @@ Perjanjian ini berlaku sejak {{tanggal_mulai}} sampai dengan {{tanggal_berakhir}
     sub.style.display = open ? 'none' : 'block';
     el.classList.toggle('open', !open);
   }
+
+  // ===== Drag & drop reorder — submenu Penggajian (posisi tersimpan lintas halaman) =====
+  (function initPenggajianDrag(){
+    const container = document.getElementById('sub-penggajian');
+    if(!container) return;
+    const style = document.createElement('style');
+    style.textContent = `
+      #sub-penggajian .menu-item[draggable="true"]{cursor:grab;position:relative;padding-left:38px;}
+      #sub-penggajian .menu-item[draggable="true"]:active{cursor:grabbing;}
+      #sub-penggajian .menu-item[draggable="true"]::before{content:'\\22EE\\22EE';position:absolute;left:16px;top:50%;transform:translateY(-50%) scale(.6);color:#c7cad1;font-size:11px;line-height:1;letter-spacing:-2px;}
+      #sub-penggajian .menu-item.dragging{opacity:.35;}
+      #sub-penggajian .menu-item.drag-over-top{box-shadow:inset 0 2px 0 var(--blue);}
+      #sub-penggajian .menu-item.drag-over-bottom{box-shadow:inset 0 -2px 0 var(--blue);}
+    `;
+    document.head.appendChild(style);
+
+    const itemKey = el => el.getAttribute('data-key') || el.getAttribute('href') || el.textContent.trim();
+    const items = () => Array.from(container.querySelectorAll(':scope > .menu-item'));
+
+    (function applySavedOrder(){
+      let saved;
+      try{ saved = JSON.parse(localStorage.getItem('dasaria-penggajian-order') || 'null'); }catch(e){ saved = null; }
+      if(!Array.isArray(saved)) return;
+      saved.forEach(key => {
+        const el = items().find(e => itemKey(e) === key);
+        if(el) container.appendChild(el);
+      });
+    })();
+    items().forEach(el => el.setAttribute('draggable','true'));
+
+    let draggingEl = null;
+    container.addEventListener('dragstart', e => {
+      const item = e.target.closest('.menu-item[draggable="true"]');
+      if(!item){ e.preventDefault(); return; }
+      draggingEl = item;
+      item.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      try{ e.dataTransfer.setData('text/plain', itemKey(item)); }catch(err){}
+    });
+    container.addEventListener('dragend', () => {
+      if(draggingEl) draggingEl.classList.remove('dragging');
+      items().forEach(el => el.classList.remove('drag-over-top','drag-over-bottom'));
+      draggingEl = null;
+      localStorage.setItem('dasaria-penggajian-order', JSON.stringify(items().map(itemKey)));
+    });
+    container.addEventListener('dragover', e => {
+      if(!draggingEl) return;
+      e.preventDefault();
+      const target = e.target.closest('.menu-item[draggable="true"]');
+      items().forEach(el => el.classList.remove('drag-over-top','drag-over-bottom'));
+      if(!target || target === draggingEl) return;
+      const rect = target.getBoundingClientRect();
+      const before = (e.clientY - rect.top) < rect.height / 2;
+      target.classList.add(before ? 'drag-over-top' : 'drag-over-bottom');
+    });
+    container.addEventListener('drop', e => {
+      if(!draggingEl) return;
+      e.preventDefault();
+      const target = e.target.closest('.menu-item[draggable="true"]');
+      items().forEach(el => el.classList.remove('drag-over-top','drag-over-bottom'));
+      if(!target || target === draggingEl) return;
+      const rect = target.getBoundingClientRect();
+      const before = (e.clientY - rect.top) < rect.height / 2;
+      container.insertBefore(draggingEl, before ? target : target.nextSibling);
+    });
+  })();
   function showLoadingBar(){
     const bar = document.getElementById('loading-bar');
     bar.style.width = '0'; bar.classList.add('show');

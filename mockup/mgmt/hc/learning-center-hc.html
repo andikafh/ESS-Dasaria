@@ -23,6 +23,8 @@
     --peach-text:#c2622a;
     --red-badge:#fde2e2;
     --red-text:#c0392b;
+    --purple-light:#f3eafb;
+    --purple-text:#9333ea;
   }
   *{box-sizing:border-box;}
   body{margin:0;font-family:'Outfit','Segoe UI',Arial,sans-serif;background:var(--gray-bg);color:var(--text-dark);font-size:14px;}
@@ -106,7 +108,6 @@
   .mx-green{background:#dcfce7;color:var(--green-dark);}
   .mx-peach{background:var(--peach);color:var(--peach-text);}
   .mx-gray{background:#eef0f3;color:#5b6472;}
-  .mx-count{font-size:11px;color:var(--text-mid);margin-top:5px;}
   .mx-legend{display:flex;gap:20px;margin-top:14px;flex-wrap:wrap;}
   .mx-legend span{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--text-mid);}
   .mx-legend i{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
@@ -118,14 +119,6 @@
   .lc-tab.active{background:#fff;color:var(--blue);box-shadow:0 1px 3px rgba(16,24,40,.1);}
   .lc-panel{display:none;}
   .lc-panel.active{display:block;}
-
-  /* CATEGORY TABS (dalam tab Kamus Kompetensi) */
-  .cd-tabs{display:flex;gap:6px;background:var(--gray-bg);border:1px solid var(--gray-border);border-radius:12px;padding:5px;margin-bottom:16px;}
-  .cd-tab{flex:1;text-align:center;padding:11px 14px;border-radius:9px;font-size:13px;font-weight:700;color:var(--text-mid);cursor:pointer;border:none;background:none;font-family:inherit;}
-  .cd-tab:hover{color:var(--text-dark);}
-  .cd-tab.active{background:#fff;color:var(--blue);box-shadow:0 1px 3px rgba(16,24,40,.1);}
-  .cd-panel{display:none;}
-  .cd-panel.active{display:block;}
 
   /* DEPARTMENT CARD (reused untuk Kamus & Learning Path) */
   .cd-dept-card{border:1px solid var(--gray-border);border-radius:12px;padding:16px 18px;margin-bottom:14px;background:#fff;}
@@ -143,29 +136,34 @@
   .cd-empty{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:18px;background:var(--gray-bg);border-radius:10px;border:1px dashed var(--gray-border);}
   .cd-empty p{margin:0;font-size:13px;color:var(--text-mid);}
 
-  /* TAG (tipe course / kategori) */
-  .tag{display:inline-flex;align-items:center;font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:6px;white-space:nowrap;}
-  .tag-wajib{background:var(--blue-light);color:var(--blue);}
-  .tag-pilihan{background:#f3eafb;color:#9333ea;}
-  .tag-kategori{background:var(--gray-bg);color:var(--text-mid);}
-
-  /* COURSE CARD */
-  .course-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;}
-  .course-card{border:1px solid var(--gray-border);border-radius:12px;padding:14px 16px;background:#fff;display:flex;flex-direction:column;gap:8px;}
-  .course-card .cc-badges{display:flex;gap:6px;flex-wrap:wrap;}
-  .course-card .cc-title{font-size:13.5px;font-weight:700;color:var(--text-dark);line-height:1.35;min-height:36px;}
-  .course-card .cc-meta{font-size:11.5px;color:var(--text-mid);display:flex;flex-direction:column;gap:3px;}
   .course-progress-track{height:6px;background:var(--gray-bg);border-radius:4px;overflow:hidden;margin-top:2px;}
   .course-progress-fill{height:100%;border-radius:4px;background:var(--blue);}
 
-  /* LEARNING PATH */
-  .path-row{display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding:8px 2px 6px;}
-  .path-step{display:flex;flex-direction:column;align-items:center;gap:8px;min-width:150px;position:relative;padding:0 12px;}
-  .path-step:not(:last-child)::after{content:'';position:absolute;top:16px;left:calc(50% + 28px);width:calc(100% - 24px);height:2px;background:var(--gray-border);}
-  .path-node{width:32px;height:32px;border-radius:50%;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;z-index:1;}
-  .path-node.done{background:#dcfce7;color:var(--green-dark);}
-  .path-title{font-size:11.5px;font-weight:700;text-align:center;color:var(--text-dark);line-height:1.3;max-width:150px;}
-  .path-meta{font-size:10.5px;color:var(--text-mid);text-align:center;}
+  /* ORG STRUCTURE TABLE (rowspan grouping dalam detail per Direktorat) */
+  #jobrole-body td{vertical-align:middle;}
+  #jobrole-body tr.org-divisi-start td{border-top:1px solid #c7cad1;}
+  .org-divisi-cell{font-weight:600;}
+
+  /* GRADE BADGE */
+  .grade-pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;padding:4px 10px;border-radius:6px;white-space:nowrap;}
+  .grade-Executive{background:var(--purple-light);color:var(--purple-text);}
+  .grade-Leadership{background:var(--blue-light);color:var(--blue);}
+  .grade-Professional{background:#dcfce7;color:var(--green-dark);}
+  .grade-Foundation{background:#eef0f3;color:#5b6472;}
+  .grade-band-sub{font-size:10.5px;color:var(--text-mid);margin-top:3px;}
+
+  /* JOB ROLE MONITORING TABLE */
+  .jr-cat-status{display:flex;flex-direction:column;gap:2px;}
+  .jr-cat-count{font-size:10.5px;color:var(--text-mid);}
+  .jr-cat-big{font-size:17px;font-weight:800;color:var(--text-dark);}
+  .jr-summary-row{cursor:pointer;}
+  .jr-summary-row:hover{background:#fafbfc;}
+  .jr-chev{width:14px;height:14px;stroke:var(--text-mid);fill:none;stroke-width:2.4;transition:transform .15s;flex-shrink:0;}
+  .jr-summary-row.open .jr-chev{transform:rotate(90deg);}
+  .jr-detail-row td{padding:0;border-bottom:1px solid var(--gray-border);}
+  .jr-detail-row table{font-size:12.5px;}
+  .jr-detail-row thead th{background:#e9edf5;color:var(--text-dark);font-size:11px;text-transform:uppercase;letter-spacing:.2px;}
+  .mx-count-big{font-size:18px;font-weight:800;color:var(--text-dark);}
 
   /* TALENT JOURNEY TIMELINE */
   .journey-timeline{display:flex;flex-direction:column;gap:0;margin-top:6px;}
@@ -182,6 +180,30 @@
 
   .toast{position:fixed;bottom:24px;right:28px;background:var(--navy);color:#fff;padding:13px 18px;border-radius:10px;font-size:13.5px;font-weight:600;box-shadow:0 8px 24px rgba(16,24,40,.25);display:flex;align-items:center;gap:10px;z-index:100;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .2s,transform .2s;}
   .toast.show{opacity:1;transform:translateY(0);}
+
+  /* MODAL: Request Modul */
+  .modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);display:none;align-items:center;justify-content:center;z-index:200;padding:20px;}
+  .modal-overlay.show{display:flex;}
+  .modal-box{background:#fff;border-radius:14px;padding:24px;max-width:440px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.25);}
+  .modal-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;gap:10px;}
+  .modal-head h3{margin:0;font-size:16px;}
+  .modal-head .sub{font-size:12.5px;color:var(--text-mid);margin-top:3px;}
+  .modal-close{background:none;border:none;cursor:pointer;color:var(--text-mid);padding:4px;flex-shrink:0;border-radius:6px;}
+  .modal-close:hover{background:var(--gray-bg);}
+  .modal-close svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;}
+  .modal-field{margin-bottom:14px;}
+  .modal-field label{display:block;font-size:11px;font-weight:700;color:var(--text-mid);margin-bottom:6px;text-transform:uppercase;letter-spacing:.3px;}
+  .modal-field input, .modal-field textarea{width:100%;border:1px solid var(--gray-border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;color:var(--text-dark);box-sizing:border-box;}
+  .modal-field input[readonly]{background:var(--gray-bg);color:var(--text-mid);}
+  .modal-field textarea{resize:vertical;min-height:70px;}
+  .modal-field input:focus, .modal-field textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(70,95,255,.12);}
+  .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:6px;}
+
+  /* KAMUS ACCORDION + ACTION */
+  .kamus-detail{padding:16px 20px;background:var(--gray-bg);}
+  .kamus-detail-table{background:#fff;border-radius:8px;overflow:hidden;margin-bottom:16px;}
+  .kamus-detail-table td.kamus-action{text-align:right;}
+  .kamus-detail-table .btn{padding:7px 12px;font-size:12.5px;}
 </style>
 </head>
 <body>
@@ -356,21 +378,37 @@
           <div class="card">
             <div class="card-head">
               <div>
-                <h2>Katalog Course</h2>
-                <div class="sub">Course tersedia untuk karyawan — Wajib (di-assign otomatis) atau Pilihan (elective), mengacu pada 3 kategori kompetensi.</div>
+                <h2>Monitoring Kompetensi per Job Role &amp; Grade</h2>
+                <div class="sub">Sudut pandang jenjang organisasi — telusuri Direktorat &rarr; Divisi &rarr; Departemen &rarr; Job Role, lalu lihat capaian Matrix kompetensinya.</div>
               </div>
             </div>
-            <div class="course-grid" id="course-grid"></div>
-          </div>
+            <div class="info-box">
+              <b>Konsep monitoring:</b> struktur mengacu pada dokumen resmi Struktur Organisasi (Direktorat &rarr; Divisi &rarr; Departemen &rarr; Job Title). Setiap Job Title memiliki Grade (G1–G7, mengacu pada Struktur Grade di Arsitektur Kompensasi) dengan syarat jumlah course wajib per kategori kompetensi. Angka capaian pada tabel di bawah adalah <b>simulasi/data dummy</b> untuk kebutuhan mockup.
+            </div>
 
-          <div class="card">
-            <div class="card-head">
-              <div>
-                <h2>Learning Path per Direktorat</h2>
-                <div class="sub">Urutan course yang direkomendasikan untuk tiap Direktorat — dari fondasi Kompetensi Inti hingga Fungsional &amp; Teknikal.</div>
-              </div>
+            <div class="exec-kpi-row" id="org-summary-row"></div>
+
+            <div style="overflow-x:auto;">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Direktorat</th>
+                    <th>Divisi</th>
+                    <th>Departemen</th>
+                    <th>Job Title</th>
+                    <th>Kompetensi Inti</th>
+                    <th>Kompetensi Manajerial</th>
+                    <th>Kompetensi Fungsional &amp; Teknikal</th>
+                  </tr>
+                </thead>
+                <tbody id="jobrole-body"></tbody>
+              </table>
             </div>
-            <div id="path-container"></div>
+            <div class="mx-legend">
+              <span><i style="background:var(--green-dark)"></i>Lengkap — capaian memenuhi syarat Grade</span>
+              <span><i style="background:var(--peach-text)"></i>Proses — capaian sebagian, belum memenuhi syarat</span>
+              <span><i style="background:#5b6472"></i>Belum Tersedia — belum ada capaian tercatat</span>
+            </div>
           </div>
 
           <div class="card">
@@ -399,7 +437,7 @@
               </div>
             </div>
             <div class="info-box">
-              <b>Konsep tata kelola:</b> setiap Direktorat bertanggung jawab menyusun modul dan sub materi pembelajaran untuk Kompetensi Manajerial dan Kompetensi Fungsional/Teknikal sesuai kebutuhan unit kerjanya. Kompetensi Inti berupa standar nilai &amp; perilaku korporat yang ditetapkan HC Pusat dan berlaku seragam di seluruh Direktorat.
+              <b>Konsep tata kelola:</b> setiap Direktorat bertanggung jawab menyusun modul dan sub materi pembelajaran untuk Kompetensi Manajerial dan Kompetensi Fungsional/Teknikal sesuai kebutuhan unit kerjanya. Kompetensi Inti berupa standar nilai &amp; perilaku korporat yang ditetapkan HC Pusat dan berlaku seragam di seluruh Direktorat. Angka pada tiap kolom menunjukkan jumlah modul tersusun — klik baris untuk lihat rincian &amp; ajukan permintaan modul baru.
             </div>
             <div style="overflow-x:auto;">
               <table>
@@ -419,17 +457,6 @@
               <span><i style="background:var(--peach-text)"></i>Proses Penyusunan — sebagian modul tersusun</span>
               <span><i style="background:#5b6472"></i>Belum Disusun — menunggu input Direktorat</span>
             </div>
-          </div>
-
-          <div class="card">
-            <div class="card-head">
-              <div>
-                <h2>Detail Modul &amp; Sub Materi</h2>
-                <div class="sub">Pilih kategori kompetensi untuk melihat rincian modul dan sub materi yang disusun tiap Direktorat.</div>
-              </div>
-            </div>
-            <div class="cd-tabs" id="cd-tabs"></div>
-            <div id="cd-panels"></div>
           </div>
 
         </div>
@@ -468,6 +495,42 @@
   </div>
 </div>
 
+<div class="modal-overlay" id="module-request-modal" onclick="if(event.target===this) closeModuleRequestModal()">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div>
+        <h3>Request Modul ke Direktorat</h3>
+        <div class="sub" id="mr-target">—</div>
+      </div>
+      <button class="modal-close" onclick="closeModuleRequestModal()">
+        <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <form id="mr-form" onsubmit="submitModuleRequest(event)">
+      <div class="modal-field">
+        <label>Direktorat</label>
+        <input type="text" id="mr-direktorat" readonly>
+      </div>
+      <div class="modal-field">
+        <label>Kategori Kompetensi</label>
+        <input type="text" id="mr-kategori" readonly>
+      </div>
+      <div class="modal-field">
+        <label>Nama Modul</label>
+        <input type="text" id="mr-nama-modul" placeholder="mis. Manajemen Risiko Operasional" required>
+      </div>
+      <div class="modal-field">
+        <label>Catatan / Usulan Sub Materi</label>
+        <textarea id="mr-catatan" placeholder="Opsional — tuliskan usulan sub materi atau konteks kebutuhan modul ini"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" onclick="closeModuleRequestModal()">Batal</button>
+        <button type="submit" class="btn btn-green">Kirim Permintaan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -488,12 +551,15 @@
   }
 
   // ===== DATASET DASAR =====
+  // Sesuai dokumen "Struktur Organisasi untuk Generate ID Doc" — sama dengan daftar Direktorat di tab Monitoring Kompetensi & Job Role
   const DIREKTORAT = [
-    'Direktorat Komersial',
-    'Direktorat Teknologi & Jaringan',
-    'Direktorat Operasional & Regional',
-    'Direktorat HC / Finance & Corporate',
-    'Direktorat FAT'
+    'People Corporate Compliance',
+    'Comercial',
+    'Information Technology',
+    'Business Development',
+    'Finance, Tax And Accounting (FAT)',
+    'General Services & Supply Chain',
+    'Network Operation Center'
   ];
 
   const KATEGORI = [
@@ -508,30 +574,32 @@
     belum:   { label:'Belum Disusun', cls:'mx-gray' }
   };
 
-  // ===== DATASET — Kamus Kompetensi (existing) =====
+  // ===== DATASET — Kamus Kompetensi (mengikuti 7 Direktorat resmi) =====
   const KAMUS = {
     manajerial: [
-      { direktorat:'Direktorat Komersial', status:'lengkap', pic:'Head Direktorat Komersial', modules:[
-        {nama:'Kepemimpinan Tim Penjualan', sub:['Coaching & Motivasi Tim Sales','Delegasi & Manajemen Target Cabang']},
-        {nama:'Pengambilan Keputusan Komersial', sub:['Analisis Risiko Bisnis','Negosiasi Strategis dengan Mitra']},
-        {nama:'Manajemen Perubahan Pasar', sub:['Adaptasi Strategi Kompetitif','Komunikasi Perubahan ke Tim Lapangan']},
-        {nama:'Perencanaan & Eksekusi Target', sub:['Penyusunan OKR Tim Sales','Monitoring Pencapaian Target Bulanan']}
-      ]},
-      { direktorat:'Direktorat Teknologi & Jaringan', status:'proses', pic:'Head of Division Teknologi & Jaringan', modules:[
-        {nama:'Kepemimpinan Tim Teknis', sub:['Manajemen Shift & Eskalasi Insiden','Pengembangan Kompetensi Teknisi']},
-        {nama:'Pengambilan Keputusan Teknis Kritis', sub:['Prioritisasi Insiden Jaringan','Manajemen Vendor & SLA']}
-      ]},
-      { direktorat:'Direktorat Operasional & Regional', status:'lengkap', pic:'General Regional Manager', modules:[
-        {nama:'Kepemimpinan Cabang & Regional', sub:['Supervisi Multi-Cabang','Pengembangan Branch Leader']},
-        {nama:'Manajemen Krisis Operasional', sub:['Penanganan Gangguan Layanan Cabang','Komunikasi Krisis ke Pelanggan']},
-        {nama:'Perencanaan Ekspansi Wilayah', sub:['Analisis Kelayakan Cabang Baru','Koordinasi Lintas Regional']}
-      ]},
-      { direktorat:'Direktorat HC / Finance & Corporate', status:'lengkap', pic:'Kepala Departemen Human Capital', modules:[
-        {nama:'Kepemimpinan Fungsi Corporate', sub:['Manajemen Tim Lintas Fungsi HC-Finance','Pengambilan Keputusan Kebijakan Internal']},
+      { direktorat:'People Corporate Compliance', status:'lengkap', pic:'Head of Human Capital', modules:[
+        {nama:'Kepemimpinan Fungsi Corporate', sub:['Manajemen Tim Lintas Fungsi HC & Compliance','Pengambilan Keputusan Kebijakan Internal']},
         {nama:'Manajemen Perubahan Organisasi', sub:['Change Management Restrukturisasi','Komunikasi Kebijakan Baru']},
         {nama:'Pengembangan Talenta Internal', sub:['Succession Planning','Coaching Calon Pemimpin']}
       ]},
-      { direktorat:'Direktorat FAT', status:'belum', pic:'Direktur FAT', modules:[] }
+      { direktorat:'Comercial', status:'lengkap', pic:'Head of Sales & Regional', modules:[
+        {nama:'Kepemimpinan Tim Penjualan', sub:['Coaching & Motivasi Tim Sales','Delegasi & Manajemen Target Cabang']},
+        {nama:'Kepemimpinan Cabang & Regional', sub:['Supervisi Multi-Cabang','Pengembangan Branch Leader']},
+        {nama:'Pengambilan Keputusan Komersial', sub:['Analisis Risiko Bisnis','Negosiasi Strategis dengan Mitra']},
+        {nama:'Perencanaan & Eksekusi Target', sub:['Penyusunan OKR Tim Sales','Monitoring Pencapaian Target Bulanan']}
+      ]},
+      { direktorat:'Information Technology', status:'proses', pic:'Head of IT Division', modules:[
+        {nama:'Kepemimpinan Tim Engineering', sub:['Manajemen Sprint & Delivery','Pengembangan Kompetensi Engineer']},
+        {nama:'Pengambilan Keputusan Teknis Kritis', sub:['Prioritisasi Backlog & Insiden Sistem','Manajemen Vendor & SLA']}
+      ]},
+      { direktorat:'Business Development', status:'belum', pic:'Head of Business Development', modules:[] },
+      { direktorat:'Finance, Tax And Accounting (FAT)', status:'proses', pic:'Head of FAT', modules:[
+        {nama:'Kepemimpinan Fungsi Finance & Compliance', sub:['Manajemen Tim Finance-Tax-Accounting','Pengambilan Keputusan Kebijakan Keuangan']}
+      ]},
+      { direktorat:'General Services & Supply Chain', status:'belum', pic:'Head of General Services & Supply Chain', modules:[] },
+      { direktorat:'Network Operation Center', status:'proses', pic:'Head of Network Operation Center', modules:[
+        {nama:'Kepemimpinan Tim NOC', sub:['Manajemen Shift & Eskalasi Insiden','Pengembangan Kompetensi Teknisi']}
+      ]}
     ],
     inti: DIREKTORAT.map(d => ({
       direktorat:d, status:'lengkap', pic:'HC Pusat — Standar Korporat', modules:[
@@ -541,29 +609,35 @@
       ]
     })),
     fungsional: [
-      { direktorat:'Direktorat Komersial', status:'proses', pic:'Head Direktorat Komersial', modules:[
-        {nama:'Teknik Negosiasi B2B', sub:['Strategi Closing Kontrak Korporat','Penyusunan Proposal Komersial']},
-        {nama:'Analisis Pasar & Segmentasi Pelanggan', sub:['Riset Kompetitor Lokal','Segmentasi Pelanggan Cabang']}
-      ]},
-      { direktorat:'Direktorat Teknologi & Jaringan', status:'lengkap', pic:'Head of Division Teknologi & Jaringan', modules:[
-        {nama:'Instalasi & Troubleshooting Jaringan FTTH', sub:['Konfigurasi ONT/ONU','Diagnosa Redaman Kabel Optik']},
-        {nama:'Manajemen Bandwidth & QoS', sub:['Konfigurasi Traffic Shaping','Monitoring Utilisasi Jaringan']},
-        {nama:'Keamanan Jaringan & Sistem', sub:['Hardening Perangkat Core Network','Deteksi Insiden Keamanan Dasar']},
-        {nama:'Instalasi Perangkat Pelanggan', sub:['SOP Instalasi Rumah Pelanggan','Standar K3 Instalasi Tiang']},
-        {nama:'Monitoring & NOC Operations', sub:['Penggunaan Tools NMS','Eskalasi Gangguan Berjenjang']}
-      ]},
-      { direktorat:'Direktorat Operasional & Regional', status:'proses', pic:'General Regional Manager', modules:[
-        {nama:'Manajemen Operasional Cabang', sub:['SOP Buka-Tutup Cabang','Pengelolaan Kas Kecil Cabang']},
-        {nama:'Standar Layanan Pelanggan Outlet', sub:['Penanganan Komplain di Loket','Standar Antrian & Estimasi Layanan']}
-      ]},
-      { direktorat:'Direktorat HC / Finance & Corporate', status:'lengkap', pic:'Kepala Departemen Human Capital', modules:[
+      { direktorat:'People Corporate Compliance', status:'lengkap', pic:'Head of Human Capital', modules:[
         {nama:'Payroll & Compensation Administration', sub:['Perhitungan PPh21 & BPJS','Rekonsiliasi Payroll Bulanan']},
+        {nama:'Recruitment & Talent Acquisition', sub:['Teknik Wawancara Berbasis Kompetensi','Sourcing Kandidat Digital']}
+      ]},
+      { direktorat:'Comercial', status:'proses', pic:'Head of Sales & Regional', modules:[
+        {nama:'Teknik Negosiasi B2B', sub:['Strategi Closing Kontrak Korporat','Penyusunan Proposal Komersial']},
+        {nama:'Analisis Pasar & Segmentasi Pelanggan', sub:['Riset Kompetitor Lokal','Segmentasi Pelanggan Cabang']},
+        {nama:'Manajemen Operasional Cabang', sub:['SOP Buka-Tutup Cabang','Pengelolaan Kas Kecil Cabang']}
+      ]},
+      { direktorat:'Information Technology', status:'lengkap', pic:'Head of IT Division', modules:[
+        {nama:'Software Development Best Practices', sub:['Code Review & Clean Code Standard','CI/CD & Version Control']},
+        {nama:'Quality Assurance & Testing', sub:['Manual & Automation Testing','Bug Tracking & Reporting']},
+        {nama:'API & System Integration', sub:['REST API Design','Integrasi Sistem Legacy']}
+      ]},
+      { direktorat:'Business Development', status:'proses', pic:'Head of Business Development', modules:[
+        {nama:'Business Analysis & Requirement Gathering', sub:['Teknik Wawancara Stakeholder','Dokumentasi Business Requirement']}
+      ]},
+      { direktorat:'Finance, Tax And Accounting (FAT)', status:'lengkap', pic:'Head of FAT', modules:[
+        {nama:'Audit Internal & Kepatuhan', sub:['Teknik Sampling Audit','Penyusunan Temuan & Rekomendasi']},
         {nama:'Financial Reporting & Analysis', sub:['Penyusunan Laporan Keuangan Bulanan','Analisis Varians Anggaran']},
-        {nama:'Recruitment & Talent Acquisition', sub:['Teknik Wawancara Berbasis Kompetensi','Sourcing Kandidat Digital']},
         {nama:'Tax Compliance', sub:['Pelaporan SPT Masa & Tahunan','Rekonsiliasi Pajak Payroll']}
       ]},
-      { direktorat:'Direktorat FAT', status:'proses', pic:'Direktur FAT', modules:[
-        {nama:'Audit Internal & Kepatuhan', sub:['Teknik Sampling Audit','Penyusunan Temuan & Rekomendasi']}
+      { direktorat:'General Services & Supply Chain', status:'proses', pic:'Head of General Services & Supply Chain', modules:[
+        {nama:'Warehouse & Inventory Management', sub:['SOP Penerimaan & Quality Control Barang','Manajemen Stok & Logistik']}
+      ]},
+      { direktorat:'Network Operation Center', status:'lengkap', pic:'Head of Network Operation Center', modules:[
+        {nama:'Instalasi & Troubleshooting Jaringan FTTH', sub:['Konfigurasi ONT/ONU','Diagnosa Redaman Kabel Optik']},
+        {nama:'Manajemen Bandwidth & QoS', sub:['Konfigurasi Traffic Shaping','Monitoring Utilisasi Jaringan']},
+        {nama:'Monitoring & NOC Operations', sub:['Penggunaan Tools NMS','Eskalasi Gangguan Berjenjang']}
       ]}
     ]
   };
@@ -574,25 +648,25 @@
 
   // ===== DATASET — Katalog Course (baru) =====
   const COURSES = [
-    { id:'C01', judul:'Kepemimpinan Tim Penjualan', kategori:'manajerial', direktorat:'Direktorat Komersial', tipe:'wajib', durasi:8, peserta:24, completion:88 },
-    { id:'C02', judul:'Pengambilan Keputusan Komersial', kategori:'manajerial', direktorat:'Direktorat Komersial', tipe:'wajib', durasi:6, peserta:18, completion:75 },
-    { id:'C03', judul:'Kepemimpinan Tim Teknis', kategori:'manajerial', direktorat:'Direktorat Teknologi & Jaringan', tipe:'wajib', durasi:8, peserta:15, completion:60 },
-    { id:'C04', judul:'Kepemimpinan Cabang & Regional', kategori:'manajerial', direktorat:'Direktorat Operasional & Regional', tipe:'wajib', durasi:10, peserta:22, completion:82 },
-    { id:'C05', judul:'Kepemimpinan Fungsi Corporate', kategori:'manajerial', direktorat:'Direktorat HC / Finance & Corporate', tipe:'wajib', durasi:8, peserta:12, completion:91 },
+    { id:'C01', judul:'Kepemimpinan Tim Penjualan', kategori:'manajerial', direktorat:'Comercial', tipe:'wajib', durasi:8, peserta:24, completion:88 },
+    { id:'C02', judul:'Pengambilan Keputusan Komersial', kategori:'manajerial', direktorat:'Comercial', tipe:'wajib', durasi:6, peserta:18, completion:75 },
+    { id:'C03', judul:'Kepemimpinan Tim Teknis', kategori:'manajerial', direktorat:'Network Operation Center', tipe:'wajib', durasi:8, peserta:15, completion:60 },
+    { id:'C04', judul:'Kepemimpinan Cabang & Regional', kategori:'manajerial', direktorat:'Comercial', tipe:'wajib', durasi:10, peserta:22, completion:82 },
+    { id:'C05', judul:'Kepemimpinan Fungsi Corporate', kategori:'manajerial', direktorat:'People Corporate Compliance', tipe:'wajib', durasi:8, peserta:12, completion:91 },
     { id:'C06', judul:'Integritas & Etika Kerja', kategori:'inti', direktorat:'Semua Direktorat', tipe:'wajib', durasi:4, peserta:153, completion:94 },
     { id:'C07', judul:'Orientasi Pelanggan', kategori:'inti', direktorat:'Semua Direktorat', tipe:'wajib', durasi:4, peserta:153, completion:87 },
     { id:'C08', judul:'Kolaborasi & Kerja Sama Tim', kategori:'inti', direktorat:'Semua Direktorat', tipe:'pilihan', durasi:3, peserta:96, completion:70 },
-    { id:'C09', judul:'Teknik Negosiasi B2B', kategori:'fungsional', direktorat:'Direktorat Komersial', tipe:'pilihan', durasi:6, peserta:14, completion:55 },
-    { id:'C10', judul:'Instalasi & Troubleshooting Jaringan FTTH', kategori:'fungsional', direktorat:'Direktorat Teknologi & Jaringan', tipe:'wajib', durasi:16, peserta:28, completion:79 },
-    { id:'C11', judul:'Manajemen Bandwidth & QoS', kategori:'fungsional', direktorat:'Direktorat Teknologi & Jaringan', tipe:'wajib', durasi:10, peserta:20, completion:65 },
-    { id:'C12', judul:'Manajemen Operasional Cabang', kategori:'fungsional', direktorat:'Direktorat Operasional & Regional', tipe:'pilihan', durasi:8, peserta:19, completion:48 },
-    { id:'C13', judul:'Payroll & Compensation Administration', kategori:'fungsional', direktorat:'Direktorat HC / Finance & Corporate', tipe:'wajib', durasi:12, peserta:9, completion:100 },
-    { id:'C14', judul:'Audit Internal & Kepatuhan', kategori:'fungsional', direktorat:'Direktorat FAT', tipe:'pilihan', durasi:8, peserta:5, completion:40 }
+    { id:'C09', judul:'Teknik Negosiasi B2B', kategori:'fungsional', direktorat:'Comercial', tipe:'pilihan', durasi:6, peserta:14, completion:55 },
+    { id:'C10', judul:'Instalasi & Troubleshooting Jaringan FTTH', kategori:'fungsional', direktorat:'Network Operation Center', tipe:'wajib', durasi:16, peserta:28, completion:79 },
+    { id:'C11', judul:'Manajemen Bandwidth & QoS', kategori:'fungsional', direktorat:'Network Operation Center', tipe:'wajib', durasi:10, peserta:20, completion:65 },
+    { id:'C12', judul:'Manajemen Operasional Cabang', kategori:'fungsional', direktorat:'Comercial', tipe:'pilihan', durasi:8, peserta:19, completion:48 },
+    { id:'C13', judul:'Payroll & Compensation Administration', kategori:'fungsional', direktorat:'People Corporate Compliance', tipe:'wajib', durasi:12, peserta:9, completion:100 },
+    { id:'C14', judul:'Audit Internal & Kepatuhan', kategori:'fungsional', direktorat:'Finance, Tax And Accounting (FAT)', tipe:'pilihan', durasi:8, peserta:5, completion:40 }
   ];
 
   // ===== DATASET — Talent Journey (baru) =====
   const TALENT_JOURNEY = {
-    nama:'Dimas Ardiansyah', posisi:'Head Direktorat Komersial', direktorat:'Direktorat Komersial',
+    nama:'Dimas Ardiansyah', posisi:'Head Direktorat Komersial', direktorat:'Comercial',
     milestones:[
       { tipe:'horizontal', judul:'Menyelesaikan Course "Orientasi Pelanggan"', tanggal:'Jan 2023', desc:'Kompetensi Inti — completion 100%.' },
       { tipe:'vertical', judul:'Promosi ke Supervisor Sales Area Malang', tanggal:'Jun 2023', desc:'Kenaikan jenjang struktural dari Staff ke Supervisor.' },
@@ -611,16 +685,16 @@
     belum: { label:'Belum Mulai', cls:'mx-gray' }
   };
   const RIWAYAT = [
-    { nama:'Dimas Ardiansyah', direktorat:'Direktorat Komersial', course:'Kepemimpinan Tim Penjualan', mulai:'01 Feb 2024', selesai:'15 Mar 2024', status:'selesai', skor:88 },
-    { nama:'Siti Rahmawati', direktorat:'Direktorat Teknologi & Jaringan', course:'Instalasi & Troubleshooting Jaringan FTTH', mulai:'10 Jan 2026', selesai:'-', status:'berlangsung', skor:null },
-    { nama:'Bagus Prakoso', direktorat:'Direktorat Operasional & Regional', course:'Manajemen Operasional Cabang', mulai:'-', selesai:'-', status:'belum', skor:null },
-    { nama:'Wulan Sari', direktorat:'Direktorat HC / Finance & Corporate', course:'Payroll & Compensation Administration', mulai:'05 Nov 2025', selesai:'20 Des 2025', status:'selesai', skor:95 },
-    { nama:'Rian Hidayat', direktorat:'Direktorat Teknologi & Jaringan', course:'Manajemen Bandwidth & QoS', mulai:'12 Jan 2026', selesai:'-', status:'berlangsung', skor:null },
-    { nama:'Putri Anggraini', direktorat:'Direktorat Komersial', course:'Teknik Negosiasi B2B', mulai:'-', selesai:'-', status:'belum', skor:null },
-    { nama:'Fajar Nugroho', direktorat:'Direktorat FAT', course:'Audit Internal & Kepatuhan', mulai:'20 Des 2025', selesai:'-', status:'berlangsung', skor:null },
-    { nama:'Ayu Lestari', direktorat:'Direktorat Operasional & Regional', course:'Kepemimpinan Cabang & Regional', mulai:'02 Sep 2025', selesai:'30 Okt 2025', status:'selesai', skor:84 },
-    { nama:'Yusuf Firmansyah', direktorat:'Direktorat HC / Finance & Corporate', course:'Integritas & Etika Kerja', mulai:'15 Jul 2025', selesai:'18 Jul 2025', status:'selesai', skor:97 },
-    { nama:'Nadia Permatasari', direktorat:'Direktorat Komersial', course:'Orientasi Pelanggan', mulai:'-', selesai:'-', status:'belum', skor:null }
+    { nama:'Dimas Ardiansyah', direktorat:'Comercial', course:'Kepemimpinan Tim Penjualan', mulai:'01 Feb 2024', selesai:'15 Mar 2024', status:'selesai', skor:88 },
+    { nama:'Siti Rahmawati', direktorat:'Network Operation Center', course:'Instalasi & Troubleshooting Jaringan FTTH', mulai:'10 Jan 2026', selesai:'-', status:'berlangsung', skor:null },
+    { nama:'Bagus Prakoso', direktorat:'Comercial', course:'Manajemen Operasional Cabang', mulai:'-', selesai:'-', status:'belum', skor:null },
+    { nama:'Wulan Sari', direktorat:'People Corporate Compliance', course:'Payroll & Compensation Administration', mulai:'05 Nov 2025', selesai:'20 Des 2025', status:'selesai', skor:95 },
+    { nama:'Rian Hidayat', direktorat:'Network Operation Center', course:'Manajemen Bandwidth & QoS', mulai:'12 Jan 2026', selesai:'-', status:'berlangsung', skor:null },
+    { nama:'Putri Anggraini', direktorat:'Comercial', course:'Teknik Negosiasi B2B', mulai:'-', selesai:'-', status:'belum', skor:null },
+    { nama:'Fajar Nugroho', direktorat:'Finance, Tax And Accounting (FAT)', course:'Audit Internal & Kepatuhan', mulai:'20 Des 2025', selesai:'-', status:'berlangsung', skor:null },
+    { nama:'Ayu Lestari', direktorat:'Comercial', course:'Kepemimpinan Cabang & Regional', mulai:'02 Sep 2025', selesai:'30 Okt 2025', status:'selesai', skor:84 },
+    { nama:'Yusuf Firmansyah', direktorat:'People Corporate Compliance', course:'Integritas & Etika Kerja', mulai:'15 Jul 2025', selesai:'18 Jul 2025', status:'selesai', skor:97 },
+    { nama:'Nadia Permatasari', direktorat:'Comercial', course:'Orientasi Pelanggan', mulai:'-', selesai:'-', status:'belum', skor:null }
   ];
 
   function renderKpiCard(c){
@@ -686,113 +760,346 @@
     document.getElementById('kamus-kpi-row').innerHTML = cards.map(renderKpiCard).join('');
   }
 
-  // ===== MATRIX TABLE =====
+  // ===== MATRIX TABLE (accordion per Direktorat, angka dulu — klik expand untuk detail) =====
   function renderMatrix(){
-    document.getElementById('matrix-body').innerHTML = DIREKTORAT.map(d => {
+    document.getElementById('matrix-body').innerHTML = DIREKTORAT.map((d, idx) => {
       const cells = KATEGORI.map(k => {
         const e = entryFor(k.key, d);
-        const meta = STATUS_META[e.status];
         return `<td>
-          <div class="mx-status ${meta.cls}">${meta.label}</div>
-          <div class="mx-count">${e.modules.length} Modul</div>
+          <div class="mx-count-big">${e.modules.length}</div>
+          <div class="mx-status ${STATUS_META[e.status].cls}">${STATUS_META[e.status].label}</div>
         </td>`;
       }).join('');
-      return `<tr><td><b>${d}</b></td>${cells}</tr>`;
+      return `
+        <tr class="jr-summary-row" id="kamus-summary-${idx}" onclick="toggleKamusDetail(${idx})">
+          <td>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <svg class="jr-chev" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+              <b>${d}</b>
+            </div>
+          </td>
+          ${cells}
+        </tr>
+        <tr class="jr-detail-row" id="kamus-detail-${idx}" style="display:none">
+          <td colspan="4">${renderKamusDetail(d)}</td>
+        </tr>`;
     }).join('');
   }
 
-  // ===== KAMUS TABS + PANELS =====
-  function renderTabsAndPanels(){
-    document.getElementById('cd-tabs').innerHTML = KATEGORI.map((k,i) => `
-      <button class="cd-tab${i===0?' active':''}" data-key="${k.key}" onclick="switchCategoryTab('${k.key}')">${k.label}</button>
-    `).join('');
+  function renderKamusDetail(direktorat){
+    const summaryRows = KATEGORI.map(k => {
+      const e = entryFor(k.key, direktorat);
+      const meta = STATUS_META[e.status];
+      return `<tr>
+        <td><b>${k.label}</b></td>
+        <td>${e.modules.length} Modul</td>
+        <td><div class="mx-status ${meta.cls}">${meta.label}</div></td>
+        <td class="kamus-action"><button class="btn btn-outline" onclick="event.stopPropagation(); openModuleRequestModal('${direktorat.replace(/'/g,"\\'")}','${k.key}','${k.label.replace(/'/g,"\\'")}')">+ Request Modul</button></td>
+      </tr>`;
+    }).join('');
 
-    document.getElementById('cd-panels').innerHTML = KATEGORI.map((k,i) => `
-      <div class="cd-panel${i===0?' active':''}" id="panel-${k.key}">
-        <div class="info-box">${k.desc}</div>
-        ${KAMUS[k.key].map(e => renderDeptCard(e)).join('')}
-      </div>
-    `).join('');
-  }
-
-  function renderDeptCard(e){
-    const meta = STATUS_META[e.status];
-    if(e.modules.length === 0){
+    const moduleLists = KATEGORI.map(k => {
+      const e = entryFor(k.key, direktorat);
+      if(e.modules.length === 0){
+        return `<div class="cd-dept-card">
+          <div class="cd-dept-head"><div class="cd-dept-name">${k.label}</div><div class="cd-dept-pic">PIC: ${e.pic}</div></div>
+          <div class="cd-empty"><p>Belum ada modul &amp; sub materi yang disusun untuk kategori ini.</p></div>
+        </div>`;
+      }
       return `<div class="cd-dept-card">
-        <div class="cd-dept-head">
-          <div><div class="cd-dept-name">${e.direktorat}</div><div class="cd-dept-pic">PIC: ${e.pic}</div></div>
-          <div class="mx-status ${meta.cls}">${meta.label}</div>
-        </div>
-        <div class="cd-empty">
-          <p>Belum ada modul &amp; sub materi yang disusun untuk kategori ini.</p>
-          <button class="btn btn-outline" onclick="showToast('Permintaan penyusunan modul dikirim ke ${e.direktorat}.')">+ Ajukan Penyusunan Modul</button>
+        <div class="cd-dept-head"><div class="cd-dept-name">${k.label}</div><div class="cd-dept-pic">PIC: ${e.pic}</div></div>
+        <div class="cd-module-list">
+          ${e.modules.map(m => `
+            <details class="cd-module">
+              <summary><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg> ${m.nama}</summary>
+              <div class="cd-module-body"><ul>${m.sub.map(s => `<li>${s}</li>`).join('')}</ul></div>
+            </details>
+          `).join('')}
         </div>
       </div>`;
-    }
-    return `<div class="cd-dept-card">
-      <div class="cd-dept-head">
-        <div><div class="cd-dept-name">${e.direktorat}</div><div class="cd-dept-pic">PIC: ${e.pic}</div></div>
-        <div class="mx-status ${meta.cls}">${meta.label}</div>
-      </div>
-      <div class="cd-module-list">
-        ${e.modules.map(m => `
-          <details class="cd-module">
-            <summary><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg> ${m.nama}</summary>
-            <div class="cd-module-body">
-              <ul>${m.sub.map(s => `<li>${s}</li>`).join('')}</ul>
-            </div>
-          </details>
-        `).join('')}
-      </div>
+    }).join('');
+
+    return `<div class="kamus-detail">
+      <table class="kamus-detail-table">
+        <thead><tr><th>Kategori Kompetensi</th><th>Jumlah Modul</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody>${summaryRows}</tbody>
+      </table>
+      ${moduleLists}
     </div>`;
   }
 
-  function switchCategoryTab(key){
-    document.querySelectorAll('.cd-tab').forEach(t => t.classList.toggle('active', t.getAttribute('data-key') === key));
-    document.querySelectorAll('.cd-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + key));
+  function toggleKamusDetail(idx){
+    const row = document.getElementById('kamus-detail-' + idx);
+    const trigger = document.getElementById('kamus-summary-' + idx);
+    const open = row.style.display === 'table-row';
+    row.style.display = open ? 'none' : 'table-row';
+    trigger.classList.toggle('open', !open);
   }
 
-  // ===== KATALOG COURSE =====
-  function renderCourseCatalog(){
-    const catLabel = { manajerial:'Manajerial', inti:'Inti', fungsional:'Fungsional & Teknikal' };
-    document.getElementById('course-grid').innerHTML = COURSES.map(c => `
-      <div class="course-card">
-        <div class="cc-badges">
-          <span class="tag ${c.tipe === 'wajib' ? 'tag-wajib' : 'tag-pilihan'}">${c.tipe === 'wajib' ? 'Wajib' : 'Pilihan'}</span>
-          <span class="tag tag-kategori">${catLabel[c.kategori]}</span>
+  // ===== MODAL: Request Modul ke Direktorat =====
+  function openModuleRequestModal(direktorat, kategoriKey, kategoriLabel){
+    document.getElementById('mr-target').textContent = direktorat + ' — ' + kategoriLabel;
+    document.getElementById('mr-direktorat').value = direktorat;
+    document.getElementById('mr-kategori').value = kategoriLabel;
+    document.getElementById('mr-nama-modul').value = '';
+    document.getElementById('mr-catatan').value = '';
+    document.getElementById('module-request-modal').classList.add('show');
+  }
+
+  function closeModuleRequestModal(){
+    document.getElementById('module-request-modal').classList.remove('show');
+  }
+
+  function submitModuleRequest(event){
+    event.preventDefault();
+    const direktorat = document.getElementById('mr-direktorat').value;
+    const kategori = document.getElementById('mr-kategori').value;
+    const namaModul = document.getElementById('mr-nama-modul').value;
+    closeModuleRequestModal();
+    showToast(`Permintaan modul "${namaModul}" (${kategori}) telah dikirim ke ${direktorat}.`);
+  }
+
+  // ===== DATASET — Job Role & Grade (reuse role/Direktorat dari Arsitektur Kompensasi/CAMD) =====
+  const GRADE_META = {
+    G1: { rankName:'Direktur', band:'Executive' },
+    G2: { rankName:'Direktur', band:'Executive' },
+    G3: { rankName:'Direktur/Manajer', band:'Leadership' },
+    G4: { rankName:'Manajer/Supervisor', band:'Leadership' },
+    G5: { rankName:'Principal', band:'Professional' },
+    G6: { rankName:'Officer', band:'Professional' },
+    G7: { rankName:'Entry Level', band:'Foundation' }
+  };
+
+  // Syarat jumlah course wajib per kategori kompetensi, berdasarkan Grade (semakin senior, syarat Manajerial makin besar; semakin operasional, syarat Fungsional & Teknikal makin besar)
+  const GRADE_REQUIREMENT = {
+    G1: { inti:2, manajerial:3, fungsional:0 },
+    G2: { inti:2, manajerial:3, fungsional:0 },
+    G3: { inti:2, manajerial:3, fungsional:1 },
+    G4: { inti:2, manajerial:2, fungsional:2 },
+    G5: { inti:2, manajerial:1, fungsional:2 },
+    G6: { inti:2, manajerial:0, fungsional:2 },
+    G7: { inti:1, manajerial:0, fungsional:1 }
+  };
+
+  // Struktur organisasi resmi (Direktorat → Divisi → Departemen → Job Title), sesuai dokumen
+  // "Struktur Organisasi untuk Generate ID Doc". Grade per Job Title adalah simulasi/dummy.
+  const JOB_ROLES = [
+    { direktorat:'People Corporate Compliance', divisi:'Human Capital', departemen:'Talent Acquisition', role:'Corporate Acquisition', grade:'G6' },
+    { direktorat:'People Corporate Compliance', divisi:'Human Capital', departemen:'Talent Acquisition', role:'Field Talent Recruiter', grade:'G6' },
+    { direktorat:'People Corporate Compliance', divisi:'Human Capital', departemen:'People Culture Operation', role:'Assessment Performance Analyst', grade:'G6' },
+    { direktorat:'People Corporate Compliance', divisi:'Human Capital', departemen:'People Culture Operation', role:'Learning Culture Specialist/Organization Development', grade:'G5' },
+    { direktorat:'People Corporate Compliance', divisi:'Human Capital', departemen:'People Culture Operation', role:'Customer Acquisition Enablement', grade:'G6' },
+    { direktorat:'People Corporate Compliance', divisi:'Human Capital', departemen:'Compensation & Benefits', role:'Benefit & Rewards Analyst', grade:'G6' },
+    { direktorat:'People Corporate Compliance', divisi:'Human Capital', departemen:'Compensation & Benefits', role:'Payroll Specialist', grade:'G6' },
+    { direktorat:'People Corporate Compliance', divisi:'Human Capital', departemen:'Business Partner Department', role:'Business Partner', grade:'G5' },
+    { direktorat:'People Corporate Compliance', divisi:'Corporate Regulatory Compliance', departemen:'Industrial Relations Regulatory', role:'IR Specialist', grade:'G5' },
+    { direktorat:'People Corporate Compliance', divisi:'Corporate Regulatory Compliance', departemen:'Corporate & Legal Strategic', role:'Corporate & Legal Strategic', grade:'G5' },
+
+    { direktorat:'Comercial', divisi:'Commercial Strategic & Partner', departemen:'Commercial Strategic & Partner', role:'Strategic & Partner', grade:'G5' },
+    { direktorat:'Comercial', divisi:'Network Infrastructure Division', departemen:'Customer Quality & Network Infrastructure', role:'Network Quality & Assurance Engineer', grade:'G6' },
+    { direktorat:'Comercial', divisi:'Network Infrastructure Division', departemen:'Customer Quality & Network Infrastructure', role:'Technical Control & Escalation Engineer', grade:'G6' },
+    { direktorat:'Comercial', divisi:'Network Infrastructure Division', departemen:'Core Network Infrastructure', role:'Network Infrastructure Engineer', grade:'G6' },
+    { direktorat:'Comercial', divisi:'Customer Experience', departemen:'Customer Care Department', role:'Customer Care Services', grade:'G7' },
+    { direktorat:'Comercial', divisi:'Customer Experience', departemen:'Retention Department', role:'Retention Officer', grade:'G6' },
+    { direktorat:'Comercial', divisi:'Sales Marketing', departemen:'Campaign & Development', role:'Branding Marketing', grade:'G6' },
+    { direktorat:'Comercial', divisi:'Sales Marketing', departemen:'Campaign & Development', role:'Design', grade:'G7' },
+    { direktorat:'Comercial', divisi:'Sales Marketing', departemen:'Campaign & Development', role:'Product Development', grade:'G6' },
+    { direktorat:'Comercial', divisi:'Sales Marketing', departemen:'Banner Installer Department', role:'Banner Installer Team', grade:'G7' },
+    { direktorat:'Comercial', divisi:'Operasional Regional Division (General Regional Manager)', departemen:'Regional Department (Supervisor Regional)', role:'Branch (Branch Leader)', grade:'G5' },
+    { direktorat:'Comercial', divisi:'Operasional Regional Division (General Regional Manager)', departemen:'Regional Department (Supervisor Regional)', role:'Permit', grade:'G7' },
+    { direktorat:'Comercial', divisi:'Operasional Regional Division (General Regional Manager)', departemen:'Regional Department (Supervisor Regional)', role:'Billing', grade:'G7' },
+    { direktorat:'Comercial', divisi:'Operasional Regional Division (General Regional Manager)', departemen:'Regional Department (Supervisor Regional)', role:'Engineer', grade:'G6' },
+    { direktorat:'Comercial', divisi:'Operasional Regional Division (General Regional Manager)', departemen:'Regional Department (Supervisor Regional)', role:'Account Executive', grade:'G7' },
+
+    { direktorat:'Information Technology', divisi:'Information Technology Division', departemen:'Business Operation Department', role:'UI/UX Designer', grade:'G6' },
+    { direktorat:'Information Technology', divisi:'Information Technology Division', departemen:'Business Operation Department', role:'Backend', grade:'G6' },
+    { direktorat:'Information Technology', divisi:'Information Technology Division', departemen:'Business Operation Department', role:'Frontend', grade:'G6' },
+    { direktorat:'Information Technology', divisi:'Information Technology Division', departemen:'Business Operation Department', role:'Project Manager', grade:'G5' },
+    { direktorat:'Information Technology', divisi:'Information Technology Division', departemen:'Business Operation Department', role:'Fullstack Engineer', grade:'G6' },
+    { direktorat:'Information Technology', divisi:'Information Technology Division', departemen:'Business Operation Department', role:'Technical Writer', grade:'G7' },
+    { direktorat:'Information Technology', divisi:'Information Technology Division', departemen:'Business Operation Department', role:'QA', grade:'G6' },
+    { direktorat:'Information Technology', divisi:'Information Technology Division', departemen:'Core Systems Department', role:'UI/UX Designer', grade:'G6' },
+    { direktorat:'Information Technology', divisi:'Information Technology Division', departemen:'Core Systems Department', role:'Backend', grade:'G6' },
+    { direktorat:'Information Technology', divisi:'Information Technology Division', departemen:'Core Systems Department', role:'Frontend', grade:'G6' },
+    { direktorat:'Information Technology', divisi:'Information Technology Division', departemen:'Core Systems Department', role:'Project Manager', grade:'G5' },
+    { direktorat:'Information Technology', divisi:'Information Technology Division', departemen:'Core Systems Department', role:'Fullstack Engineer', grade:'G6' },
+    { direktorat:'Information Technology', divisi:'Information Technology Division', departemen:'Core Systems Department', role:'Technical Writer', grade:'G7' },
+    { direktorat:'Information Technology', divisi:'Information Technology Division', departemen:'Core Systems Department', role:'QA', grade:'G6' },
+
+    { direktorat:'Business Development', divisi:'Business Governance & Innovation', departemen:'Business Quality & Governance', role:'Business Analyst', grade:'G6' },
+    { direktorat:'Business Development', divisi:'Business Governance & Innovation', departemen:'Business Quality & Governance', role:'Product Specialist', grade:'G6' },
+    { direktorat:'Business Development', divisi:'Business Governance & Innovation', departemen:'Business Quality & Governance', role:'Quality Engineer', grade:'G6' },
+    { direktorat:'Business Development', divisi:'Business Governance & Innovation', departemen:'Strategic Growth & Product', role:'Business Intelligence', grade:'G5' },
+    { direktorat:'Business Development', divisi:'Business Governance & Innovation', departemen:'Strategic Growth & Product', role:'Business Development', grade:'G5' },
+
+    { direktorat:'Finance, Tax And Accounting (FAT)', divisi:'Finance, Tax And Accounting (FAT)', departemen:'Finance', role:'Finance', grade:'G6' },
+    { direktorat:'Finance, Tax And Accounting (FAT)', divisi:'Finance, Tax And Accounting (FAT)', departemen:'Tax', role:'Tax', grade:'G6' },
+    { direktorat:'Finance, Tax And Accounting (FAT)', divisi:'Finance, Tax And Accounting (FAT)', departemen:'Accounting', role:'Accounting', grade:'G6' },
+
+    { direktorat:'General Services & Supply Chain', divisi:'General Services & Supply Chain Division', departemen:'Warehouse Management & Infrastructure Service', role:'Receiving & Quality Control', grade:'G7' },
+    { direktorat:'General Services & Supply Chain', divisi:'General Services & Supply Chain Division', departemen:'Warehouse Management & Infrastructure Service', role:'Inventory Control', grade:'G7' },
+    { direktorat:'General Services & Supply Chain', divisi:'General Services & Supply Chain Division', departemen:'Warehouse Management & Infrastructure Service', role:'Logistic & Delivery', grade:'G7' },
+    { direktorat:'General Services & Supply Chain', divisi:'General Services & Supply Chain Division', departemen:'Corporate General Affairs', role:'General Affairs & Administrator', grade:'G7' },
+    { direktorat:'General Services & Supply Chain', divisi:'General Services & Supply Chain Division', departemen:'Corporate General Affairs', role:'General Affairs & Maintenance', grade:'G7' },
+    { direktorat:'General Services & Supply Chain', divisi:'General Services & Supply Chain Division', departemen:'Corporate General Affairs', role:'Office Housekeeping', grade:'G7' },
+
+    { direktorat:'Network Operation Center', divisi:'Network Operation Center', departemen:'Network Operation Center', role:'Network Operation Center', grade:'G6' },
+    { direktorat:'Network Operation Center', divisi:'Network Operation Center', departemen:'Network Operation Center', role:'Network Operation Asset', grade:'G6' },
+    { direktorat:'Network Operation Center', divisi:'Network Operation Center', departemen:'Network Operation Center', role:'Network Operation Administrative', grade:'G7' }
+  ];
+
+  // ===== SIMULASI CAPAIAN KOMPETENSI (deterministik, bukan Math.random supaya stabil di setiap reload) =====
+  function seededRatio(seed){
+    let h = 0;
+    for(let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
+    return (h % 1000) / 1000;
+  }
+
+  function simulateCategoryStatus(seed, kategoriKey, required){
+    if(required === 0) return { status:'na', required:0 };
+    const achieved = Math.min(required, Math.round(seededRatio(seed + '|' + kategoriKey + '|count') * (required + 0.6)));
+    const completion = achieved > 0 ? Math.round(45 + seededRatio(seed + '|' + kategoriKey + '|pct') * 55) : 0;
+    let status;
+    if(achieved === 0) status = 'belum';
+    else if(achieved < required || completion < 70) status = 'proses';
+    else status = 'lengkap';
+    return { achieved, required, completion, status };
+  }
+
+  // ===== RINGKASAN JENJANG ORGANISASI =====
+  function renderOrgSummary(){
+    const cards = [
+      { lbl:'Direktorat', val: new Set(JOB_ROLES.map(r => r.direktorat)).size, sub:'Unit bisnis tingkat tertinggi', bg:'var(--blue-light)', color:'var(--blue)',
+        icon:'<path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/>' },
+      { lbl:'Divisi', val: new Set(JOB_ROLES.map(r => r.divisi)).size, sub:'Di bawah seluruh Direktorat', bg:'#dcfce7', color:'var(--green-dark)',
+        icon:'<rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/>' },
+      { lbl:'Departemen', val: new Set(JOB_ROLES.map(r => r.direktorat + '|' + r.divisi + '|' + r.departemen)).size, sub:'Di bawah seluruh Divisi', bg:'var(--peach)', color:'var(--peach-text)',
+        icon:'<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>' },
+      { lbl:'Job Title', val: JOB_ROLES.length, sub:'Total job title termonitor', bg:'var(--purple-light)', color:'var(--purple-text)',
+        icon:'<path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/>' }
+    ];
+    document.getElementById('org-summary-row').innerHTML = cards.map(c => `
+      <div class="exec-kpi-card">
+        <div class="eki-head">
+          <div class="exec-kpi-circle" style="background:${c.bg}"><svg viewBox="0 0 24 24" stroke="${c.color}">${c.icon}</svg></div>
+          <div class="eki-lbl">${c.lbl}</div>
         </div>
-        <div class="cc-title">${c.judul}</div>
-        <div class="cc-meta">
-          <span>${c.direktorat}</span>
-          <span>${c.durasi} jam &middot; ${c.peserta} peserta</span>
-        </div>
-        <div class="course-progress-track"><div class="course-progress-fill" style="width:${c.completion}%"></div></div>
-        <div class="cc-meta"><span>${c.completion}% completion rate</span></div>
+        <div class="eki-val">${c.val}</div>
+        <div class="eki-sub">${c.sub}</div>
       </div>
     `).join('');
   }
 
-  // ===== LEARNING PATH PER DIREKTORAT =====
-  function renderLearningPaths(){
-    document.getElementById('path-container').innerHTML = DIREKTORAT.map(d => {
-      const inti = COURSES.filter(c => c.kategori === 'inti').slice(0, 1);
-      const manajerial = COURSES.filter(c => c.kategori === 'manajerial' && c.direktorat === d);
-      const fungsional = COURSES.filter(c => c.kategori === 'fungsional' && c.direktorat === d);
-      const steps = [...inti, ...manajerial, ...fungsional];
+  // ===== MONITORING KOMPETENSI PER JOB TITLE & GRADE (tabel penuh, rowspan per jenjang) =====
+  function jobRoleCell(c){
+    if(c.status === 'na') return `<span class="muted">– Tidak wajib</span>`;
+    const meta = STATUS_META[c.status];
+    return `<div class="jr-cat-status">
+      <div class="mx-status ${meta.cls}">${meta.label}</div>
+      <div class="jr-cat-count">${c.achieved}/${c.required} target &middot; ${c.completion}%</div>
+    </div>`;
+  }
+
+  function summarizeDirektoratRoles(direktorat){
+    const rows = JOB_ROLES.filter(r => r.direktorat === direktorat);
+    const divisiCount = new Set(rows.map(r => r.divisi)).size;
+    const departemenCount = new Set(rows.map(r => r.divisi + '|' + r.departemen)).size;
+
+    const catSummary = k => {
+      let lengkap = 0, total = 0;
+      rows.forEach(r => {
+        const required = GRADE_REQUIREMENT[r.grade][k];
+        if(required === 0) return;
+        total++;
+        const seed = r.direktorat + '|' + r.divisi + '|' + r.departemen + '|' + r.role;
+        if(simulateCategoryStatus(seed, k, required).status === 'lengkap') lengkap++;
+      });
+      return { lengkap, total };
+    };
+
+    return { rows, divisiCount, departemenCount, jobTitleCount: rows.length,
+      inti: catSummary('inti'), manajerial: catSummary('manajerial'), fungsional: catSummary('fungsional') };
+  }
+
+  // Nested rowspan table (Divisi → Departemen → Job Title) untuk isi detail 1 Direktorat
+  function renderDirektoratDetailTable(rows){
+    const body = rows.map((r, i) => {
+      const prev = rows[i - 1];
+      const isFirstDivisi = i === 0 || prev.divisi !== r.divisi;
+      const isFirstDepartemen = isFirstDivisi || prev.departemen !== r.departemen;
+
+      const spanCount = (fromIdx, keys) => {
+        let n = 0;
+        for(let j = fromIdx; j < rows.length; j++){
+          if(keys.every(k => rows[j][k] === rows[fromIdx][k])) n++; else break;
+        }
+        return n;
+      };
+
+      const divisiCell = isFirstDivisi
+        ? `<td class="org-divisi-cell" rowspan="${spanCount(i, ['divisi'])}">${r.divisi}</td>` : '';
+      const departemenCell = isFirstDepartemen
+        ? `<td rowspan="${spanCount(i, ['divisi','departemen'])}">${r.departemen}</td>` : '';
+
+      const gm = GRADE_META[r.grade];
+      const req = GRADE_REQUIREMENT[r.grade];
+      const seed = r.direktorat + '|' + r.divisi + '|' + r.departemen + '|' + r.role;
+      const cats = ['inti', 'manajerial', 'fungsional'].map(k => simulateCategoryStatus(seed, k, req[k]));
+
       return `
-        <div class="cd-dept-card">
-          <div class="cd-dept-head"><div class="cd-dept-name">${d}</div></div>
-          <div class="path-row">
-            ${steps.map((s, i) => `
-              <div class="path-step">
-                <div class="path-node ${s.completion >= 90 ? 'done' : ''}">${i + 1}</div>
-                <div class="path-title">${s.judul}</div>
-                <div class="path-meta">${s.completion}% selesai</div>
-              </div>
-            `).join('')}
-          </div>
-        </div>`;
+        <tr class="${isFirstDivisi ? 'org-divisi-start' : ''}">
+          ${divisiCell}${departemenCell}
+          <td>
+            <b>${r.role}</b>
+            <div class="grade-band-sub"><span class="grade-pill grade-${gm.band}">${r.grade}</span> ${gm.rankName}</div>
+          </td>
+          <td>${jobRoleCell(cats[0])}</td>
+          <td>${jobRoleCell(cats[1])}</td>
+          <td>${jobRoleCell(cats[2])}</td>
+        </tr>`;
     }).join('');
+
+    return `<table>
+      <thead>
+        <tr><th>Divisi</th><th>Departemen</th><th>Job Title</th><th>Kompetensi Inti</th><th>Kompetensi Manajerial</th><th>Kompetensi Fungsional &amp; Teknikal</th></tr>
+      </thead>
+      <tbody>${body}</tbody>
+    </table>`;
+  }
+
+  function renderJobRoleMonitoring(){
+    const direktoratList = [...new Set(JOB_ROLES.map(r => r.direktorat))];
+    document.getElementById('jobrole-body').innerHTML = direktoratList.map((direktorat, idx) => {
+      const s = summarizeDirektoratRoles(direktorat);
+      const summaryCell = cat => `<div class="jr-cat-status"><div class="jr-cat-big">${cat.lengkap}/${cat.total}</div><div class="jr-cat-count">Lengkap</div></div>`;
+
+      return `
+        <tr class="jr-summary-row" id="jr-summary-${idx}" onclick="toggleDirektoratDetail(${idx})">
+          <td colspan="4">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <svg class="jr-chev" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+              <div>
+                <b>${direktorat}</b>
+                <div class="jr-cat-count">${s.divisiCount} Divisi &middot; ${s.departemenCount} Departemen &middot; ${s.jobTitleCount} Job Title</div>
+              </div>
+            </div>
+          </td>
+          <td>${summaryCell(s.inti)}</td>
+          <td>${summaryCell(s.manajerial)}</td>
+          <td>${summaryCell(s.fungsional)}</td>
+        </tr>
+        <tr class="jr-detail-row" id="jr-detail-${idx}" style="display:none">
+          <td colspan="7">${renderDirektoratDetailTable(s.rows)}</td>
+        </tr>`;
+    }).join('');
+  }
+
+  function toggleDirektoratDetail(idx){
+    const row = document.getElementById('jr-detail-' + idx);
+    const trigger = document.getElementById('jr-summary-' + idx);
+    const open = row.style.display === 'table-row';
+    row.style.display = open ? 'none' : 'table-row';
+    trigger.classList.toggle('open', !open);
   }
 
   // ===== TALENT JOURNEY =====
@@ -832,7 +1139,7 @@
 
   // ===== TOP-LEVEL TABS =====
   const LC_TABS = [
-    { key:'katalog', label:'Katalog Course & Learning Path' },
+    { key:'katalog', label:'Monitoring Kompetensi & Job Role' },
     { key:'kamus', label:'Tata Kelola Kamus Kompetensi' },
     { key:'riwayat', label:'Riwayat Pembelajaran' }
   ];
@@ -848,12 +1155,11 @@
 
   renderGlobalKPI();
   renderLcTabs();
-  renderCourseCatalog();
-  renderLearningPaths();
+  renderOrgSummary();
+  renderJobRoleMonitoring();
   renderJourney();
   renderKamusKPI();
   renderMatrix();
-  renderTabsAndPanels();
   renderRiwayat();
 </script>
 </body>

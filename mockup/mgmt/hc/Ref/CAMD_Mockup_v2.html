@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compensation Architecture (CAMD) — Mockup v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1A3457; --orange:#F05A28; --blue:#A8CCDC; --peach:#F0C0A8;
+  --navy-50:#EEF2F7; --navy-100:#DCE4EE; --ink:#16233A; --muted:#5C6B84;
+  --border:#DFE5EE; --bg:#F6F8FB; --white:#FFFFFF;
+  --good:#1E8A5F; --warn:#B4790A; --bad:#C23B3B;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',system-ui,sans-serif; background:var(--bg); color:var(--ink); font-size:14px; line-height:1.45;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+
+.shell{display:flex; min-height:100vh;}
+.sidebar{width:238px; background:var(--navy); color:#fff; flex-shrink:0; padding:20px 14px; display:flex; flex-direction:column; gap:2px;}
+.brand{display:flex; align-items:center; gap:10px; padding:6px 8px 22px;}
+.brand .dot{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--orange),var(--peach));flex-shrink:0;}
+.brand span{font-weight:800; font-size:15px;}
+.nav-label{font-size:10px; text-transform:uppercase; letter-spacing:.08em; color:#8FA2C0; padding:14px 10px 6px;}
+.nav-item{padding:9px 10px; border-radius:8px; font-size:13.5px; color:#CBD7EA; display:flex; align-items:center; gap:9px; cursor:default;}
+.nav-item.active{background:rgba(255,255,255,.12); color:#fff; font-weight:600;}
+.nav-item.sub{margin-left:8px; font-size:12.8px;}
+.nav-item .ic{width:16px; text-align:center; opacity:.85;}
+.nav-item.new-tag{position:relative;}
+.tag-new{font-size:9px; background:var(--orange); color:#fff; padding:1px 6px; border-radius:8px; font-weight:800; margin-left:auto;}
+
+.main{flex:1; min-width:0; display:flex; flex-direction:column;}
+.topbar{background:#fff; border-bottom:1px solid var(--border); padding:14px 28px; display:flex; align-items:center; justify-content:space-between;}
+.crumb{font-size:12.5px; color:var(--muted);}
+.crumb b{color:var(--ink);}
+.title-row{display:flex; align-items:center; justify-content:space-between; padding:22px 28px 0;}
+h1{font-size:22px; font-weight:800; color:var(--navy);}
+.owned{font-size:12px; color:var(--muted); background:var(--navy-50); padding:5px 10px; border-radius:20px;}
+.user{display:flex; align-items:center; gap:8px; font-size:13px; font-weight:600;}
+.avatar{width:28px;height:28px;border-radius:50%;background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;}
+
+.foundation-banner{
+  margin:16px 28px 0; padding:12px 16px; border-radius:12px;
+  background:linear-gradient(90deg,var(--navy),#25406A); color:#fff;
+  display:flex; align-items:center; gap:12px; font-size:12.6px;
+}
+.foundation-banner .ic{font-size:16px;}
+.foundation-banner b{color:var(--peach);}
+.foundation-banner .flow{display:flex; align-items:center; gap:6px; margin-left:auto; font-size:11.5px; color:#B9C7DE; flex-wrap:wrap;}
+.foundation-banner .flow .node{background:rgba(255,255,255,.1); padding:3px 9px; border-radius:20px; color:#fff; font-weight:600;}
+.foundation-banner .flow .arrow{color:#8299BE;}
+
+.tabbar{display:flex; gap:4px; padding:16px 28px 0; border-bottom:1px solid var(--border); overflow-x:auto;}
+.tab-btn{background:none; border:none; padding:10px 16px; font-size:13.5px; font-weight:600; color:var(--muted); border-bottom:3px solid transparent; cursor:pointer; white-space:nowrap;}
+.tab-btn:hover{color:var(--navy);}
+.tab-btn.active{color:var(--orange); border-bottom-color:var(--orange);}
+
+.content{padding:22px 28px 60px;}
+.tab-panel{display:none; flex-direction:column; gap:18px;}
+.tab-panel.active{display:flex;}
+
+.panel{background:#fff; border:1px solid var(--border); border-radius:14px; padding:18px 20px;}
+.panel-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; flex-wrap:wrap; gap:10px;}
+.panel-title{font-size:15px; font-weight:700; color:var(--navy);}
+.panel-sub{font-size:12px; color:var(--muted); margin-top:2px;}
+.badge{font-size:10.5px; font-weight:700; padding:3px 9px; border-radius:20px;}
+.badge-gray{background:#EDF1F6; color:var(--muted);}
+
+.row-grid{display:grid; gap:18px;}
+.grid-2{grid-template-columns:1.1fr .9fr;}
+.grid-4{grid-template-columns:repeat(4,1fr);}
+@media(max-width:1100px){.grid-2{grid-template-columns:1fr;} .grid-4{grid-template-columns:repeat(2,1fr);}}
+
+.btn{font-size:12.5px; font-weight:600; padding:7px 13px; border-radius:8px; border:1px solid var(--border); background:#fff; color:var(--navy); cursor:pointer; display:inline-flex; align-items:center; gap:6px;}
+.btn:hover{border-color:var(--navy); background:var(--navy-50);}
+.btn-primary{background:var(--orange); border-color:var(--orange); color:#fff;}
+.btn-primary:hover{background:#D94E1E; border-color:#D94E1E;}
+.btn-sm{font-size:11.5px; padding:5px 10px;}
+.btn-danger{color:var(--bad); border-color:#F3D3D3;}
+.btn-danger:hover{background:#FDEDED; border-color:var(--bad);}
+.toolbar{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:14px;}
+.select, .input{font-size:12.5px; padding:7px 10px; border:1px solid var(--border); border-radius:8px; background:#fff; color:var(--ink);}
+.input{min-width:180px;}
+
+.kpi{border:1px solid var(--border); border-radius:12px; padding:14px 16px; background:linear-gradient(180deg,#fff,#FAFBFD);}
+.kpi .num{font-size:26px; font-weight:800; color:var(--navy);}
+.kpi .lbl{font-size:12px; color:var(--muted); margin-top:2px;}
+.kpi.accent{border-color:var(--peach); background:linear-gradient(180deg,#FFF7F3,#fff);}
+.kpi.accent .num{color:var(--orange);}
+
+.barchart{display:flex; align-items:flex-end; gap:14px; height:150px; padding:10px 4px 0;}
+.bar-col{flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; height:100%; justify-content:flex-end;}
+.bar{width:100%; border-radius:6px 6px 2px 2px; background:linear-gradient(180deg,var(--orange),#F7906B);}
+.bar-lbl{font-size:11px; color:var(--muted); font-weight:600;}
+
+.alert{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:11px 13px; border-radius:10px; border:1px solid #F3DCC7; background:#FFF8F1; font-size:12.5px;}
+.alert .txt{display:flex; gap:9px; align-items:flex-start;}
+.alert .txt .ic{color:var(--orange); font-weight:800;}
+
+table{width:100%; border-collapse:collapse; font-size:12.8px;}
+th{text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); padding:9px 12px; border-bottom:1px solid var(--border); background:#FBFCFE; font-weight:700;}
+td{padding:11px 12px; border-bottom:1px solid #EEF1F6; vertical-align:middle;}
+tr:hover td{background:#FAFBFD;}
+.badge-status{font-size:10.5px; font-weight:700; padding:3px 9px; border-radius:20px;}
+.st-approved{background:#E4F5EC; color:var(--good);}
+.st-draft{background:#FEF3E2; color:var(--warn);}
+.st-final{background:#E4F5EC; color:var(--good);}
+.st-belumfinal{background:#FDE9DE; color:var(--orange);}
+.grade-chip{background:var(--navy-50); color:var(--navy); font-weight:700; padding:2px 9px; border-radius:6px; font-size:11.5px;}
+.link{color:var(--orange); font-weight:600; cursor:pointer; text-decoration:none; font-size:12px;}
+.link:hover{text-decoration:underline;}
+.link-danger{color:var(--bad);}
+.note{font-size:11.8px; color:var(--muted); background:var(--navy-50); border-radius:8px; padding:9px 12px; margin-top:10px;}
+.note b{color:var(--navy);}
+.note.warn{background:#FFF6EC; color:#7A4A12;}
+.note.warn b{color:var(--warn);}
+
+/* ===== Org navigator (Tab 2) ===== */
+.org-nav{display:grid; grid-template-columns:1fr 1fr 1fr; gap:0; border:1px solid var(--border); border-radius:14px; overflow:hidden; background:#fff;}
+.org-col{border-right:1px solid var(--border);}
+.org-col:last-child{border-right:none;}
+.org-col-head{padding:12px 14px; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); background:#FBFCFE; border-bottom:1px solid var(--border);}
+.org-item{padding:11px 14px; border-bottom:1px solid #F0F3F8; cursor:pointer; font-size:12.8px; display:flex; flex-direction:column; gap:2px;}
+.org-item:hover{background:var(--navy-50);}
+.org-item.sel{background:#FFF1EA; border-left:3px solid var(--orange); padding-left:11px;}
+.org-item .meta{font-size:10.8px; color:var(--muted);}
+.org-empty{padding:30px 16px; text-align:center; color:var(--muted); font-size:12px;}
+
+.jv-field label{display:block; font-size:11px; font-weight:700; color:var(--navy); margin-bottom:5px; letter-spacing:.02em;}
+.jv-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
+@media(max-width:1100px){.jv-grid{grid-template-columns:repeat(2,1fr);}}
+.jv-result{margin-top:14px; padding:16px; border-radius:12px; background:var(--navy); color:#fff; display:flex; align-items:center; gap:22px; flex-wrap:wrap;}
+.jv-result .big{font-size:30px; font-weight:800;}
+.jv-result .lbl{font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:#B9C7DE;}
+.jv-result .chip{background:rgba(255,255,255,.14); padding:4px 11px; border-radius:20px; font-size:12px; font-weight:700;}
+
+/* ===== Tab 4: Salary Architecture ===== */
+.legend-row{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px;}
+.legend-chip{display:flex; align-items:center; gap:7px; font-size:11.8px; padding:6px 11px; border-radius:20px; background:var(--navy-50); color:var(--navy); font-weight:600;}
+.legend-dot{width:9px; height:9px; border-radius:50%;}
+
+.toggle-group{display:flex; border:1px solid var(--border); border-radius:8px; overflow:hidden;}
+.toggle-btn{padding:6px 12px; font-size:12px; font-weight:600; background:#fff; border:none; cursor:pointer; color:var(--muted);}
+.toggle-btn.on{background:var(--navy); color:#fff;}
+
+.ladder{border:1px solid var(--border); border-radius:14px; overflow:hidden;}
+.ladder-row{display:grid; grid-template-columns:150px repeat(5,1fr); border-bottom:1px solid var(--border);}
+.ladder-row:last-child{border-bottom:none;}
+.ladder-row.head{background:#FBFCFE;}
+.ladder-row.head .lc{font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); font-weight:800; padding:10px 12px;}
+.ladder-rankcell{padding:12px; display:flex; flex-direction:column; gap:4px; justify-content:center; border-right:1px solid var(--border); background:#FBFCFE;}
+.ladder-rankcell .rname{font-weight:800; color:var(--navy); font-size:13px;}
+.ladder-rankcell .rgrade{font-size:10.5px; color:var(--muted);}
+.ladder-rankcell .rstruct{font-size:9.5px; font-weight:700; padding:2px 8px; border-radius:10px; width:fit-content; margin-top:2px;}
+.struct-yes{background:#E7F0FB; color:#2A5A9C;}
+.struct-maybe{background:#FDF1DC; color:var(--warn);}
+.struct-no{background:#F1F2F5; color:var(--muted);}
+.ladder-cell{padding:11px 10px; border-right:1px solid #EFF2F7; display:flex; flex-direction:column; justify-content:center; align-items:flex-start; gap:1px; transition:background .15s;}
+.ladder-cell:last-child{border-right:none;}
+.ladder-cell .val-rp{font-weight:700; color:var(--ink); font-size:12.3px;}
+.ladder-cell .val-jv{font-weight:700; color:var(--orange); font-size:12.3px; display:none;}
+.ladder-cell .val-sub{font-size:9.8px; color:var(--muted);}
+.mode-jv .val-rp{display:none;}
+.mode-jv .val-jv{display:block;}
+.ladder-cell.overlap-cell{background:repeating-linear-gradient(45deg, rgba(194,59,59,.10), rgba(194,59,59,.10) 5px, transparent 5px, transparent 10px); box-shadow:inset 0 0 0 1px rgba(194,59,59,.35);}
+
+.axis-x2{display:grid; grid-template-columns:150px repeat(5,1fr); padding:8px 0 0;}
+.axis-x2 span{text-align:center; font-size:10.8px; color:var(--muted); font-weight:700;}
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand"><div class="dot"></div><span>Dasaria</span></div>
+    <div class="nav-item"><span class="ic">▦</span>Dashboard</div>
+    <div class="nav-item"><span class="ic">🏢</span>Struktur dan Organisasi</div>
+    <div class="nav-item"><span class="ic">🪪</span>Data Master Karyawan</div>
+    <div class="nav-item active"><span class="ic">💳</span>Penggajian</div>
+    <div class="nav-label">Penggajian</div>
+    <div class="nav-item sub active">Compensation Architecture (CAMD)</div>
+    <div class="nav-item sub new-tag" style="color:#CBD7EA;">Promotion & Progression <span class="tag-new">Menu Baru</span></div>
+    <div class="nav-item sub" style="color:#9AACC5;">Payroll Configuration</div>
+    <div class="nav-item sub" style="color:#9AACC5;">PPh21 & 26 Setting</div>
+    <div class="nav-item sub" style="color:#9AACC5;">Periode Gajian</div>
+    <div class="nav-item sub" style="color:#9AACC5;">Persetujuan Periode Gajian</div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div class="crumb">Home &nbsp;›&nbsp; Penggajian &nbsp;›&nbsp; <b>Compensation Architecture (CAMD)</b></div>
+      <div class="user"><div class="avatar">T</div>Tes Admin</div>
+    </div>
+
+    <div class="title-row">
+      <h1>Compensation Architecture (CAMD)</h1>
+      <div class="owned">Owned by HC Corporate</div>
+    </div>
+
+    <div class="foundation-banner">
+      <span class="ic">🧩</span>
+      <span>Modul ini adalah <b>dasar data</b> — seluruh perubahan di sini otomatis dikonsumsi modul turunan.</span>
+      <div class="flow">
+        <span class="node">CAMD</span><span class="arrow">→</span>
+        <span class="node">Payroll Configuration</span><span class="arrow">→</span>
+        <span class="node">PPh21 & 26</span><span class="arrow">→</span>
+        <span class="node">Periode Gajian</span>
+      </div>
+    </div>
+
+    <!-- TABS (4 — Promotion & Progression dipindah keluar) -->
+    <div class="tabbar" id="tabbar">
+      <button class="tab-btn active" data-tab="t1">Dashboard</button>
+      <button class="tab-btn" data-tab="t2">Job Evaluation & Grade Architecture</button>
+      <button class="tab-btn" data-tab="t3">Regional Compensation Policy</button>
+      <button class="tab-btn" data-tab="t4">Salary Architecture & Matrix</button>
+    </div>
+
+    <div class="content">
+
+      <!-- ============ TAB 1: DASHBOARD ============ -->
+      <section class="tab-panel active" id="t1">
+        <div class="toolbar">
+          <select class="select"><option>Periode: Mei 2026</option></select>
+          <select class="select"><option>Direktorat: Semua</option></select>
+          <span style="flex:1"></span>
+          <button class="btn">⟳ Refresh</button>
+        </div>
+
+        <div class="row-grid grid-4">
+          <div class="kpi"><div class="num">42</div><div class="lbl">Total Role Terdaftar</div></div>
+          <div class="kpi"><div class="num">38</div><div class="lbl">Role Approved</div></div>
+          <div class="kpi"><div class="num">4</div><div class="lbl">Role Draft</div></div>
+          <div class="kpi accent"><div class="num">2</div><div class="lbl">Parameter Belum Final (D4/D5 %UMK)</div></div>
+        </div>
+
+        <div class="row-grid grid-2">
+          <div class="panel">
+            <div class="panel-head"><div><div class="panel-title">Jumlah Posisi per Grade</div><div class="panel-sub">G1 (tertinggi) — G7 (dasar)</div></div></div>
+            <div class="barchart">
+              <div class="bar-col"><div class="bar" style="height:12%"></div><div class="bar-lbl">G1</div></div>
+              <div class="bar-col"><div class="bar" style="height:18%"></div><div class="bar-lbl">G2</div></div>
+              <div class="bar-col"><div class="bar" style="height:34%"></div><div class="bar-lbl">G3</div></div>
+              <div class="bar-col"><div class="bar" style="height:52%"></div><div class="bar-lbl">G4</div></div>
+              <div class="bar-col"><div class="bar" style="height:71%"></div><div class="bar-lbl">G5</div></div>
+              <div class="bar-col"><div class="bar" style="height:100%"></div><div class="bar-lbl">G6</div></div>
+              <div class="bar-col"><div class="bar" style="height:86%"></div><div class="bar-lbl">G7</div></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">Alert & Tindakan Diperlukan</div></div>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              <div class="alert"><div class="txt"><span class="ic">⚠</span><span>3 Role di Struktur Organisasi belum punya Job Evaluation</span></div><a class="link" onclick="goTab('t2')">Lihat Detail →</a></div>
+              <div class="alert"><div class="txt"><span class="ic">⚠</span><span>Band D2 / D3 overlap Rp1.200.000 — perlu tightening</span></div><a class="link" onclick="goTab('t4')">Buka Salary Architecture →</a></div>
+              <div class="alert"><div class="txt"><span class="ic">⚠</span><span>Parameter %UMK D4 & D5 belum dikonfirmasi Direksi</span></div><a class="link" onclick="goTab('t4')">Buka Salary Architecture →</a></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ TAB 2: JOB EVALUATION & GRADE ARCHITECTURE (berbasis Organisasi) ============ -->
+      <section class="tab-panel" id="t2">
+        <div class="panel">
+          <div class="panel-head">
+            <div><div class="panel-title">Navigasi Organisasi</div><div class="panel-sub">Evaluasi & Grade dilihat dari sudut pandang struktur: Direktorat → Divisi → Departemen → Job Role</div></div>
+            <span class="badge badge-gray">4 Direktorat · 11 Divisi · 42 Role</span>
+          </div>
+          <div class="org-nav">
+            <div class="org-col">
+              <div class="org-col-head">Direktorat</div>
+              <div id="colDirektorat"></div>
+            </div>
+            <div class="org-col">
+              <div class="org-col-head">Divisi</div>
+              <div id="colDivisi"><div class="org-empty">Pilih Direktorat terlebih dahulu</div></div>
+            </div>
+            <div class="org-col">
+              <div class="org-col-head">Departemen</div>
+              <div id="colDepartemen"><div class="org-empty">Pilih Divisi terlebih dahulu</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div><div class="panel-title" id="roleListTitle">Job Role — pilih Departemen di atas</div><div class="panel-sub">Satu baris = satu jabatan unik. Role baru & penghapusan role wajib melalui cek Job Value.</div></div>
+            <button class="btn btn-primary" onclick="openCalc()">+ Tambah Role Baru</button>
+          </div>
+          <div id="roleListBody">
+            <div class="org-empty">Belum ada Departemen dipilih — daftar Job Role akan tampil di sini.</div>
+          </div>
+        </div>
+
+        <div class="note warn">
+          <b>Business rule:</b> penambahan Role baru wajib melalui Kalkulator Job Evaluation di bawah sebelum status bisa "Approved". Penghapusan Role akan mengecek dulu apakah ada karyawan aktif memegang jabatan tersebut (via Data Master Karyawan) — jika ada, penghapusan diblokir sampai reassignment selesai.
+        </div>
+
+        <div class="panel" id="calcPanel" style="display:none;">
+          <div class="panel-head">
+            <div><div class="panel-title">Kalkulator Job Evaluation</div><div class="panel-sub" id="calcContext">Konteks: —</div></div>
+            <span class="badge badge-gray">Job Value — tidak terikat lokasi/UMK</span>
+          </div>
+          <div class="jv-field" style="margin-bottom:14px;"><label>Role Title</label><input class="input" style="width:100%" id="roleTitleInput" placeholder="Nama jabatan baru..."></div>
+          <div class="jv-grid">
+            <div class="jv-field"><label>K · Pendidikan & Pengetahuan</label><select class="select" style="width:100%"><option>L3 · Intermediate</option></select></div>
+            <div class="jv-field"><label>E · Pengalaman Kerja</label><select class="select" style="width:100%"><option>L4 · Senior</option></select></div>
+            <div class="jv-field"><label>S · Ruang Lingkup Kegiatan</label><select class="select" style="width:100%"><option>L3 · Intermediate</option></select></div>
+            <div class="jv-field"><label>D · Tanggung Jawab Keputusan</label><select class="select" style="width:100%"><option>L3 · Intermediate</option></select></div>
+            <div class="jv-field"><label>C · Konsekuensi Kesalahan</label><select class="select" style="width:100%"><option>L3 · Intermediate</option></select></div>
+            <div class="jv-field"><label>I · Kontak Bisnis Internal</label><select class="select" style="width:100%"><option>L3 · Intermediate</option></select></div>
+          </div>
+          <div class="jv-result">
+            <div><div class="lbl">JV Total</div><div class="big">288</div></div>
+            <div class="chip">Grade G4</div>
+            <div class="chip">D2 · Supervisor</div>
+            <div class="chip">Leadership</div>
+            <span style="flex:1"></span>
+            <button class="btn btn-sm" style="background:rgba(255,255,255,.12); border-color:transparent; color:#fff;" onclick="closeCalc()">Batal</button>
+            <button class="btn btn-primary btn-sm">Simpan sebagai Draft</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><div><div class="panel-title">Grade Architecture</div><div class="panel-sub">Referensi nasional — tidak punya kolom region, berlaku sama di semua Direktorat/Divisi</div></div><span class="badge badge-gray">Nasional · Fixed</span></div>
+          <table>
+            <thead><tr><th>Grade</th><th>JV Range</th><th>Career Rank</th><th>Band</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">G1</td><td class="mono">490–500</td><td>D0 Direktur</td><td><span class="badge-status st-approved">Executive</span></td></tr>
+              <tr><td class="mono">G3</td><td class="mono">355–424</td><td>D0/D1</td><td><span class="badge-status st-approved">Leadership</span></td></tr>
+              <tr><td class="mono">G4</td><td class="mono">280–354</td><td>D1/D2</td><td><span class="badge-status st-approved">Leadership</span></td></tr>
+              <tr><td class="mono">G5</td><td class="mono">215–279</td><td>D3 Principal</td><td><span class="badge-status st-belumfinal">Professional</span></td></tr>
+              <tr><td class="mono">G7</td><td class="mono">100–154</td><td>D5 Entry Level</td><td><span class="badge-status st-belumfinal">Foundation</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============ TAB 3: REGIONAL COMPENSATION POLICY (tanpa Tunjangan Struktural) ============ -->
+      <section class="tab-panel" id="t3">
+        <div class="panel">
+          <div class="panel-head">
+            <div><div class="panel-title">UMK per Kota/Kabupaten</div><div class="panel-sub">Wajib versioning per tahun — tidak boleh overwrite tahun sebelumnya</div></div>
+            <div style="display:flex; gap:8px;">
+              <button class="btn btn-sm">Riwayat Versi UMK</button>
+              <button class="btn btn-primary btn-sm">+ Tambah Kota / Update UMK</button>
+            </div>
+          </div>
+          <div class="toolbar"><select class="select"><option>Tahun: 2026</option></select></div>
+          <table>
+            <thead><tr><th>Kota / Kabupaten</th><th>UMK 2026</th><th>SK Referensi</th><th>Berlaku Sejak</th><th>Aksi</th></tr></thead>
+            <tbody>
+              <tr><td>Kota Malang</td><td class="mono">Rp3.700.000</td><td class="mono">SK 100.3.3.1/937/013/2025</td><td class="mono">01/01/2026</td><td><a class="link">Edit</a> · <a class="link link-danger">Hapus</a></td></tr>
+              <tr><td>Kota Surabaya</td><td class="mono">Rp4.900.000</td><td class="mono">SK 100.3.3.1/937/013/2025</td><td class="mono">01/01/2026</td><td><a class="link">Edit</a> · <a class="link link-danger">Hapus</a></td></tr>
+              <tr><td>Kabupaten Kediri</td><td class="mono">Rp2.500.000</td><td class="mono">SK 100.3.3.1/937/013/2025</td><td class="mono">01/01/2026</td><td><a class="link">Edit</a> · <a class="link link-danger">Hapus</a></td></tr>
+              <tr><td>Kota Blitar</td><td class="mono">Rp2.300.000</td><td class="mono">SK 100.3.3.1/937/013/2025</td><td class="mono">01/01/2026</td><td><a class="link">Edit</a> · <a class="link link-danger">Hapus</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title">Aturan Pengecualian Entry Level</div></div>
+          <div class="note"><b>Dasar hukum:</b> PP No. 36/2021 Pasal 36(2) — Entry Level boleh digaji di bawah UMK hanya dengan justifikasi pasal ini.</div>
+          <div style="margin-top:12px; display:flex; flex-direction:column; gap:8px; font-size:12.8px;">
+            <label style="display:flex; gap:8px; align-items:center;"><input type="checkbox" checked> Karyawan baru, masa kerja &lt; 1 tahun</label>
+            <label style="display:flex; gap:8px; align-items:center;"><input type="checkbox" checked> Posisi tercatat sebagai Entry Level / D5</label>
+            <label style="display:flex; gap:8px; align-items:center;"><input type="checkbox"> Sudah mendapat persetujuan tertulis Direksi</label>
+          </div>
+          <div style="margin-top:12px;"><button class="btn btn-primary btn-sm">Simpan</button></div>
+        </div>
+
+        <div class="note">
+          <b>Catatan:</b> Tunjangan Struktural per Level Jabatan tidak dikelola di tab ini — lihat <a class="link">Payroll Configuration → Tunjangan Tetap</a>. Tab ini fokus pada kebijakan regional (UMK) dan pengecualian legal, bukan komponen payroll.
+        </div>
+      </section>
+
+      <!-- ============ TAB 4: SALARY ARCHITECTURE & MATRIX (diperkaya) ============ -->
+      <section class="tab-panel" id="t4">
+        <div class="panel">
+          <div class="panel-head">
+            <div><div class="panel-title">Peta Jenjang Karir Nasional</div><div class="panel-sub">Menjelaskan bagaimana Kepangkatan, Sub-Kepangkatan, Job Value, Nominal THP, dan potensi Struktural saling berkorelasi dalam satu jenjang karir</div></div>
+          </div>
+          <div class="legend-row">
+            <div class="legend-chip"><span class="legend-dot" style="background:var(--navy);"></span> Career Rank (Kepangkatan) — baris</div>
+            <div class="legend-chip"><span class="legend-dot" style="background:var(--orange);"></span> Sub-Level (Sub-Kepangkatan) — kolom</div>
+            <div class="legend-chip"><span class="legend-dot" style="background:#2A5A9C;"></span> Berpotensi Struktural</div>
+            <div class="legend-chip"><span class="legend-dot" style="background:var(--warn);"></span> Campuran (tergantung penempatan)</div>
+            <div class="legend-chip"><span class="legend-dot" style="background:var(--muted);"></span> Non-Struktural / Individual Contributor</div>
+          </div>
+
+          <div class="panel-head" style="margin-bottom:10px;">
+            <div class="panel-sub">Toggle nilai yang ditampilkan di setiap sel matrix, dan bandingkan kondisi band sebelum/sesudah tightening.</div>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <div class="toggle-group">
+                <button class="toggle-btn on" id="btnRp" onclick="setAxis('rp')">Rupiah (THP)</button>
+                <button class="toggle-btn" id="btnJv" onclick="setAxis('jv')">Job Value</button>
+              </div>
+              <div class="toggle-group">
+                <button class="toggle-btn on" id="btnAfter" onclick="setOverlap('after')">Sesudah Tightening</button>
+                <button class="toggle-btn" id="btnBefore" onclick="setOverlap('before')">Sebelum</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="ladder" id="ladder">
+            <div class="ladder-row head">
+              <div class="lc">Career Rank</div>
+              <div class="lc" style="text-align:center;">Dasar</div>
+              <div class="lc" style="text-align:center;">Junior</div>
+              <div class="lc" style="text-align:center;">Intermediate</div>
+              <div class="lc" style="text-align:center;">Senior</div>
+              <div class="lc" style="text-align:center;">Expert</div>
+            </div>
+
+            <div class="ladder-row" data-rank="D0">
+              <div class="ladder-rankcell"><span class="rname">D0 · Direktur</span><span class="rgrade">JV 390–500 · G1–G3</span><span class="rstruct struct-yes">Selalu Struktural</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp11.500.000</span><span class="val-jv mono">JV 390</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp12.375.000</span><span class="val-jv mono">JV 415</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp13.250.000</span><span class="val-jv mono">JV 440</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp14.125.000</span><span class="val-jv mono">JV 465</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp15.000.000</span><span class="val-jv mono">JV 500</span></div>
+            </div>
+
+            <div class="ladder-row" data-rank="D1">
+              <div class="ladder-rankcell"><span class="rname">D1 · Manager</span><span class="rgrade">JV 330–389 · G3–G4</span><span class="rstruct struct-yes">Selalu Struktural</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp7.200.000</span><span class="val-jv mono">JV 330</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp7.650.000</span><span class="val-jv mono">JV 342</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp8.100.000</span><span class="val-jv mono">JV 354</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp8.550.000</span><span class="val-jv mono">JV 366</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp9.000.000</span><span class="val-jv mono">JV 389</span></div>
+            </div>
+
+            <div class="ladder-row" data-rank="D2">
+              <div class="ladder-rankcell"><span class="rname">D2 · Supervisor</span><span class="rgrade">JV 280–329 · G4</span><span class="rstruct struct-yes">Selalu Struktural</span></div>
+              <div class="ladder-cell" id="c-d2-dasar"><span class="val-rp mono">Rp5.600.000</span><span class="val-jv mono">JV 280</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp6.075.000</span><span class="val-jv mono">JV 292</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp6.550.000</span><span class="val-jv mono">JV 304</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp7.025.000</span><span class="val-jv mono">JV 316</span></div>
+              <div class="ladder-cell" id="c-d2-expert"><span class="val-rp mono">Rp7.500.000</span><span class="val-jv mono">JV 329</span></div>
+            </div>
+
+            <div class="ladder-row" data-rank="D3">
+              <div class="ladder-rankcell"><span class="rname">D3 · Principal</span><span class="rgrade">JV 215–279 · G5</span><span class="rstruct struct-maybe">Campuran</span></div>
+              <div class="ladder-cell" id="c-d3-dasar"><span class="val-rp mono">Rp4.200.000</span><span class="val-jv mono">JV 215</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp4.850.000</span><span class="val-jv mono">JV 228</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp5.500.000</span><span class="val-jv mono">JV 241</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp6.150.000</span><span class="val-jv mono">JV 254</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp6.800.000</span><span class="val-jv mono">JV 279</span></div>
+            </div>
+
+            <div class="ladder-row" data-rank="D4">
+              <div class="ladder-rankcell"><span class="rname">D4 · Officer</span><span class="rgrade">JV 155–214 · G6 · Belum Final</span><span class="rstruct struct-no">Non-Struktural</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp2.775.000</span><span class="val-jv mono">JV 155</span><span class="val-sub">75% UMK</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp3.145.000</span><span class="val-jv mono">JV 167</span><span class="val-sub">85% UMK</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp3.515.000</span><span class="val-jv mono">JV 179</span><span class="val-sub">95% UMK</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp3.885.000</span><span class="val-jv mono">JV 191</span><span class="val-sub">105% UMK</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp4.255.000</span><span class="val-jv mono">JV 214</span><span class="val-sub">115% UMK</span></div>
+            </div>
+
+            <div class="ladder-row" data-rank="D5">
+              <div class="ladder-rankcell"><span class="rname">D5 · Entry Level</span><span class="rgrade">JV 100–154 · G7 · Belum Final</span><span class="rstruct struct-no">Non-Struktural</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp1.850.000</span><span class="val-jv mono">JV 100</span><span class="val-sub">50% UMK</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp2.081.250</span><span class="val-jv mono">JV 110</span><span class="val-sub">56% UMK</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp2.312.500</span><span class="val-jv mono">JV 120</span><span class="val-sub">63% UMK</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp2.543.750</span><span class="val-jv mono">JV 130</span><span class="val-sub">69% UMK</span></div>
+              <div class="ladder-cell"><span class="val-rp mono">Rp2.775.000</span><span class="val-jv mono">JV 154</span><span class="val-sub">75% UMK</span></div>
+            </div>
+          </div>
+
+          <div class="note" id="matrixNote"><b>Sesudah tightening:</b> tidak ada overlap nominal antar Career Rank. Kolom "Berpotensi Struktural" bersifat informatif — nominal Tunjangan Struktural aktual dikonfigurasi di Payroll Configuration → Tunjangan Tetap, bukan di sini.</div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div><div class="panel-title">THP Band per Career Rank</div><div class="panel-sub">Satu-satunya sumber kebenaran nominal Rupiah (source of truth)</div></div>
+            <div style="display:flex; gap:8px;">
+              <select class="select"><option>Career Rank: Semua</option></select>
+              <button class="btn btn-sm">Simulasikan</button>
+              <button class="btn btn-primary btn-sm">Edit</button>
+            </div>
+          </div>
+          <table>
+            <thead><tr><th>Rank</th><th>Career Rank</th><th>JV Range</th><th>Dasar</th><th>Expert</th><th>Basis</th><th>Berpotensi Struktural</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">D0</td><td>Direktur</td><td class="mono">390–500</td><td class="mono">11.500.000</td><td class="mono">15.000.000</td><td><span class="badge-status st-final">Absolut Nasional</span></td><td><span class="badge-status st-approved">Ya</span></td></tr>
+              <tr><td class="mono">D1</td><td>Manager</td><td class="mono">330–389</td><td class="mono">7.200.000</td><td class="mono">9.000.000</td><td><span class="badge-status st-final">Absolut Nasional</span></td><td><span class="badge-status st-approved">Ya</span></td></tr>
+              <tr><td class="mono">D2</td><td>Supervisor</td><td class="mono">280–329</td><td class="mono">5.600.000</td><td class="mono">7.500.000</td><td><span class="badge-status st-final">Absolut Nasional</span></td><td><span class="badge-status st-approved">Ya</span></td></tr>
+              <tr><td class="mono">D3</td><td>Principal</td><td class="mono">215–279</td><td class="mono">4.200.000</td><td class="mono">6.800.000</td><td><span class="badge-status st-final">Absolut Nasional</span></td><td><span class="badge-status st-draft">Campuran</span></td></tr>
+              <tr><td class="mono">D4</td><td>Officer</td><td class="mono">155–214</td><td class="mono">2.775.000</td><td class="mono">4.255.000</td><td><span class="badge-status st-belumfinal">75–115% × UMK</span></td><td><span class="badge-gray badge">Tidak</span></td></tr>
+              <tr><td class="mono">D5</td><td>Entry Level</td><td class="mono">100–154</td><td class="mono">1.850.000</td><td class="mono">2.775.000</td><td><span class="badge-status st-belumfinal">50–75% × UMK</span></td><td><span class="badge-gray badge">Tidak</span></td></tr>
+            </tbody>
+          </table>
+          <div class="note warn"><b>Rp15.000.000</b> adalah ceiling company-wide untuk seluruh jabatan struktural (HO maupun cabang), bukan hanya D0. Persentase D4 (75–115%) dan D5 (50–75%) masih proposal — <b>belum dikonfirmasi</b> Direksi — wajib jadi field configurable (<span class="mono">pct_min_umk</span>, <span class="mono">pct_max_umk</span>), bukan hardcode.</div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function goTab(id){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelector('.tab-btn[data-tab="'+id+'"]').classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=> goTab(btn.dataset.tab));
+});
+
+/* ===== Tab 2: Org navigator (mock data, 2 jalur terpasang penuh) ===== */
+const orgData = {
+  "Direktorat Komersial": {
+    meta: "3 Divisi · 14 Role",
+    divisi: {
+      "Divisi Teknologi & Jaringan": {
+        meta: "3 Departemen · 6 Role",
+        departemen: {
+          "Departemen Infrastruktur Jaringan": [
+            {role:"Head of Division Teknologi & Jaringan", jv:347, grade:"G4", rank:"D1 Manager", status:"Approved"},
+            {role:"Kepala Departemen Infrastruktur", jv:302, grade:"G4", rank:"D2 Supervisor", status:"Approved"},
+            {role:"Teknisi Jaringan Cabang Blitar", jv:115, grade:"G7", rank:"D5 Entry Level", status:"Approved"}
+          ],
+          "Departemen Network Operation Center": [
+            {role:"Kepala NOC", jv:288, grade:"G4", rank:"D2 Supervisor", status:"Draft"}
+          ],
+          "Departemen IT Support": [
+            {role:"Officer IT Support", jv:160, grade:"G6", rank:"D4 Officer", status:"Draft"}
+          ]
+        }
+      },
+      "Divisi Sales & Marketing": {
+        meta: "2 Departemen · 5 Role",
+        departemen: {
+          "Departemen Sales Regional": [
+            {role:"General Regional Manager Jawa Timur", jv:371, grade:"G3", rank:"D1 Manager", status:"Approved"},
+            {role:"Branch Leader Kediri Raya", jv:224, grade:"G5", rank:"D3 Principal", status:"Approved"}
+          ]
+        }
+      },
+      "Divisi Layanan Pelanggan": { meta:"2 Departemen · 3 Role", departemen:{} }
+    }
+  },
+  "Direktorat Utama": {
+    meta:"2 Divisi · 5 Role",
+    divisi: {
+      "Sekretariat Direksi": { meta:"1 Departemen · 2 Role", departemen:{
+        "Departemen Sekretariat": [
+          {role:"Direktur Utama", jv:495, grade:"G1", rank:"D0 Direktur", status:"Approved"}
+        ]
+      }}
+    }
+  },
+  "Direktorat People Corp Compliance": {
+    meta:"2 Divisi · 8 Role",
+    divisi: {
+      "Divisi Human Capital": { meta:"2 Departemen · 5 Role", departemen:{
+        "Departemen Human Capital": [
+          {role:"Kepala Departemen Human Capital", jv:302, grade:"G4", rank:"D2 Supervisor", status:"Approved"},
+          {role:"Officer Payroll Kantor Pusat", jv:205, grade:"G6", rank:"D4 Officer", status:"Draft"}
+        ]
+      }}
+    }
+  },
+  "Direktorat Finance Accounting Tax": { meta:"2 Divisi · 9 Role", divisi:{} }
+};
+
+function renderDirektorat(){
+  const col = document.getElementById('colDirektorat');
+  col.innerHTML = '';
+  Object.keys(orgData).forEach(name=>{
+    const el = document.createElement('div');
+    el.className='org-item';
+    el.innerHTML = `<span>🏛 ${name}</span><span class="meta">${orgData[name].meta}</span>`;
+    el.onclick = ()=> selectDirektorat(name, el);
+    col.appendChild(el);
+  });
+}
+function clearSel(container){ container.querySelectorAll('.org-item').forEach(i=>i.classList.remove('sel')); }
+
+function selectDirektorat(name, el){
+  clearSel(document.getElementById('colDirektorat'));
+  el.classList.add('sel');
+  const divCol = document.getElementById('colDivisi');
+  const deptCol = document.getElementById('colDepartemen');
+  deptCol.innerHTML = '<div class="org-empty">Pilih Divisi terlebih dahulu</div>';
+  document.getElementById('roleListBody').innerHTML = '<div class="org-empty">Belum ada Departemen dipilih — daftar Job Role akan tampil di sini.</div>';
+  document.getElementById('roleListTitle').textContent = 'Job Role — pilih Departemen di atas';
+
+  const divisi = orgData[name].divisi || {};
+  if(Object.keys(divisi).length===0){
+    divCol.innerHTML = '<div class="org-empty">Belum ada Divisi terdaftar di Direktorat ini</div>';
+    return;
+  }
+  divCol.innerHTML='';
+  Object.keys(divisi).forEach(dname=>{
+    const el2 = document.createElement('div');
+    el2.className='org-item';
+    el2.innerHTML = `<span>📂 ${dname}</span><span class="meta">${divisi[dname].meta}</span>`;
+    el2.onclick = ()=> selectDivisi(divisi[dname], dname, el2);
+    divCol.appendChild(el2);
+  });
+}
+
+function selectDivisi(divObj, dname, el){
+  clearSel(document.getElementById('colDivisi'));
+  el.classList.add('sel');
+  const deptCol = document.getElementById('colDepartemen');
+  document.getElementById('roleListBody').innerHTML = '<div class="org-empty">Belum ada Departemen dipilih — daftar Job Role akan tampil di sini.</div>';
+  document.getElementById('roleListTitle').textContent = 'Job Role — pilih Departemen di atas';
+
+  const dept = divObj.departemen || {};
+  if(Object.keys(dept).length===0){
+    deptCol.innerHTML = '<div class="org-empty">Belum ada Departemen terdaftar di Divisi ini</div>';
+    return;
+  }
+  deptCol.innerHTML='';
+  Object.keys(dept).forEach(deptName=>{
+    const el2 = document.createElement('div');
+    el2.className='org-item';
+    const n = dept[deptName].length;
+    el2.innerHTML = `<span>📄 ${deptName}</span><span class="meta">${n} Role</span>`;
+    el2.onclick = ()=> selectDepartemen(dept[deptName], deptName, el2);
+    deptCol.appendChild(el2);
+  });
+}
+
+function selectDepartemen(roles, deptName, el){
+  clearSel(document.getElementById('colDepartemen'));
+  el.classList.add('sel');
+  document.getElementById('roleListTitle').textContent = 'Job Role — ' + deptName;
+  const body = document.getElementById('roleListBody');
+  if(roles.length===0){
+    body.innerHTML = '<div class="org-empty">Belum ada Role terdaftar di Departemen ini</div>';
+    return;
+  }
+  let html = '<table><thead><tr><th>Role Title</th><th>JV</th><th>Grade</th><th>Career Rank</th><th>Status</th><th>Aksi</th></tr></thead><tbody>';
+  roles.forEach(r=>{
+    const stBadge = r.status==='Approved' ? '<span class="badge-status st-approved">Approved</span>' : '<span class="badge-status st-draft">Draft</span>';
+    html += `<tr><td>${r.role}</td><td class="mono">${r.jv}</td><td><span class="grade-chip">${r.grade}</span></td><td>${r.rank}</td><td>${stBadge}</td>
+      <td><a class="link">Lihat</a> · <a class="link">Riwayat</a> · <a class="link link-danger">Hapus</a></td></tr>`;
+  });
+  html += '</tbody></table>';
+  body.innerHTML = html;
+}
+
+function openCalc(){ document.getElementById('calcPanel').style.display='block'; document.getElementById('calcPanel').scrollIntoView({behavior:'smooth', block:'center'}); }
+function closeCalc(){ document.getElementById('calcPanel').style.display='none'; }
+
+renderDirektorat();
+
+/* ===== Tab 4: toggles ===== */
+function setAxis(mode){
+  document.getElementById('btnRp').classList.toggle('on', mode==='rp');
+  document.getElementById('btnJv').classList.toggle('on', mode==='jv');
+  document.getElementById('ladder').classList.toggle('mode-jv', mode==='jv');
+}
+function setOverlap(mode){
+  document.getElementById('btnAfter').classList.toggle('on', mode==='after');
+  document.getElementById('btnBefore').classList.toggle('on', mode==='before');
+  const note = document.getElementById('matrixNote');
+  const cells = ['c-d2-dasar','c-d2-expert','c-d3-dasar'];
+  if(mode==='before'){
+    document.getElementById('c-d2-expert').classList.add('overlap-cell');
+    document.getElementById('c-d3-dasar').classList.add('overlap-cell');
+    note.innerHTML = '<b>Sebelum tightening:</b> sel bertanda garis-garis merah menunjukkan overlap nominal — D2-Expert (Rp7.500.000) melebihi D1-Dasar, dan D3-Dasar (Rp4.200.000) mendekati batas bawah D2. Kondisi data existing yang perlu dikoreksi.';
+  } else {
+    document.getElementById('c-d2-expert').classList.remove('overlap-cell');
+    document.getElementById('c-d3-dasar').classList.remove('overlap-cell');
+    note.innerHTML = '<b>Sesudah tightening:</b> tidak ada overlap nominal antar Career Rank. Kolom "Berpotensi Struktural" bersifat informatif — nominal Tunjangan Struktural aktual dikonfigurasi di Payroll Configuration → Tunjangan Tetap, bukan di sini.';
+  }
+}
+</script>
+</body>
+</html>

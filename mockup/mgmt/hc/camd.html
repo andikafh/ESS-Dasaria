@@ -75,8 +75,8 @@
   .card{background:#fff;border:1px solid var(--gray-border);border-radius:12px;padding:20px;margin-bottom:20px;}
   .card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
   .card-head h2{font-size:17px;margin:0;}
-  .toolbar{display:flex;gap:10px;align-items:center;}
-  .btn{border:none;border-radius:8px;padding:9px 16px;font-weight:600;cursor:pointer;font-size:13.5px;display:inline-flex;align-items:center;gap:6px;}
+  .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  .btn{border:none;border-radius:8px;padding:9px 16px;font-weight:600;cursor:pointer;font-size:13.5px;display:inline-flex;align-items:center;gap:6px;font-family:inherit;}
   .btn-green{background:var(--green);color:#fff;}
   .btn-blue{background:var(--blue);color:#fff;}
   .btn-outline{background:#fff;border:1px solid var(--gray-border);color:var(--text-dark);}
@@ -112,8 +112,17 @@
   .note-box svg{width:16px;height:16px;stroke:#c2622a;fill:none;stroke-width:2;flex-shrink:0;margin-top:1px;}
   .info-box{background:var(--blue-light);border:1px solid #bcd2ff;color:#1d3f8f;border-radius:10px;padding:12px 16px;font-size:12.5px;line-height:1.6;margin-top:14px;display:flex;gap:10px;align-items:flex-start;}
   .info-box svg{width:16px;height:16px;stroke:#2f5bd6;fill:none;stroke-width:2;flex-shrink:0;margin-top:1px;}
+  .mono{font-family:'Courier New',monospace;}
 
-  /* KPI (Ringkasan tab) */
+  /* FOUNDATION BANNER */
+  .foundation-banner{margin:0 0 18px;padding:12px 16px;border-radius:12px;background:linear-gradient(90deg,var(--navy),#1d4ed8);color:#fff;display:flex;align-items:center;gap:12px;font-size:12.6px;flex-wrap:wrap;}
+  .foundation-banner .ic{font-size:16px;}
+  .foundation-banner b{color:var(--peach);}
+  .foundation-banner .flow{display:flex;align-items:center;gap:6px;margin-left:auto;font-size:11.5px;color:#c7d7ff;flex-wrap:wrap;}
+  .foundation-banner .flow .node{background:rgba(255,255,255,.14);padding:3px 9px;border-radius:20px;color:#fff;font-weight:600;white-space:nowrap;}
+  .foundation-banner .flow .arrow{color:#8299be;}
+
+  /* KPI (Dashboard tab) */
   .kpi-row-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px;}
   .kpi-card-v2{background:#fff;border:1px solid var(--gray-border);border-radius:14px;padding:18px 20px;}
   .kpi-card-v2 .head{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
@@ -123,8 +132,35 @@
   .kpi-card-v2 .val{font-size:26px;font-weight:800;color:var(--text-dark);line-height:1;}
   .kpi-card-v2 .caption{font-size:12px;color:var(--text-mid);margin-top:6px;}
 
-  /* Job Evaluation */
-  .je-layout{display:grid;grid-template-columns:1.35fr 1fr;gap:20px;align-items:start;margin-bottom:20px;}
+  /* Dashboard: bar chart + alerts */
+  .dash-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
+  .dash-toolbar select{border:1px solid var(--gray-border);border-radius:8px;padding:8px 12px;font-size:12.5px;font-family:inherit;color:var(--text-dark);background:#fff;}
+  .dash-grid-2{display:grid;grid-template-columns:1.1fr .9fr;gap:20px;}
+  .barchart{display:flex;align-items:flex-end;gap:14px;height:150px;padding:10px 4px 0;}
+  .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;}
+  .bar{width:100%;border-radius:6px 6px 2px 2px;background:linear-gradient(180deg,var(--blue),#8fa4ff);min-height:3px;}
+  .bar-lbl{font-size:11px;color:var(--text-mid);font-weight:600;}
+  .bar-count{font-size:11px;color:var(--text-dark);font-weight:700;}
+  .alert-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 13px;border-radius:10px;border:1px solid #fdba74;background:#fff8f1;font-size:12.5px;}
+  .alert-row .txt{display:flex;gap:9px;align-items:flex-start;}
+  .alert-row .txt .ic{color:var(--peach-text);font-weight:800;}
+  .alert-link{color:var(--blue);font-weight:600;cursor:pointer;font-size:12px;white-space:nowrap;}
+  .alert-link:hover{text-decoration:underline;}
+
+  /* ORG NAVIGATOR (Job Evaluation & Grade Architecture) */
+  .org-nav{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:1px solid var(--gray-border);border-radius:12px;overflow:hidden;background:#fff;}
+  .org-col{border-right:1px solid var(--gray-border);}
+  .org-col:last-child{border-right:none;}
+  .org-col-head{padding:11px 14px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--text-mid);background:var(--gray-bg);border-bottom:1px solid var(--gray-border);}
+  .org-item{padding:11px 14px;border-bottom:1px solid #f0f3f8;cursor:pointer;font-size:12.8px;display:flex;flex-direction:column;gap:2px;}
+  .org-item:hover{background:var(--gray-bg);}
+  .org-item.sel{background:var(--blue-light);border-left:3px solid var(--blue);padding-left:11px;}
+  .org-item .meta{font-size:10.8px;color:var(--text-mid);}
+  .org-empty{padding:30px 16px;text-align:center;color:var(--text-mid);font-size:12px;}
+  .je-link{color:var(--blue);font-weight:600;cursor:pointer;text-decoration:none;font-size:12px;}
+  .je-link:hover{text-decoration:underline;}
+
+  /* Job Evaluation calculator */
   .je-form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-bottom:4px;}
   .je-form-grid .form-field label{display:block;font-size:11px;font-weight:700;color:var(--text-mid);margin-bottom:6px;text-transform:uppercase;letter-spacing:.3px;}
   .je-form-grid .form-field select, .je-form-grid .form-field input{width:100%;border:1px solid var(--gray-border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;color:var(--text-dark);background:#fff;}
@@ -139,9 +175,7 @@
   .je-result-badges{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
   .je-result-role{font-size:12.5px;color:var(--text-mid);flex:1;min-width:200px;}
 
-  .je-chips{font-family:'Courier New',monospace;font-size:11.5px;color:var(--text-mid);letter-spacing:.2px;white-space:nowrap;}
   .je-role-name{font-weight:700;color:var(--text-dark);}
-  .je-rankkey{font-family:'Courier New',monospace;font-size:11.5px;color:var(--navy);background:var(--blue-light);padding:2px 8px;border-radius:6px;white-space:nowrap;}
 
   details.je-descriptor{border:1px solid var(--gray-border);border-radius:10px;padding:0;margin-top:10px;overflow:hidden;}
   details.je-descriptor summary{cursor:pointer;padding:12px 16px;font-weight:700;font-size:12.5px;color:var(--blue);list-style:none;display:flex;align-items:center;gap:8px;}
@@ -154,7 +188,39 @@
 
   .grade-arch-table td{font-size:12.5px;}
   .grade-arch-table .g-code{font-weight:800;color:var(--navy);}
-  .grade-arch-table .g-threshold{font-size:11px;color:var(--text-mid);}
+
+  /* Regional Compensation Policy */
+  .checklist-field{display:flex;gap:8px;align-items:center;}
+
+  /* TOGGLE GROUP + LEGEND (Salary Architecture) */
+  .toggle-group{display:flex;border:1px solid var(--gray-border);border-radius:8px;overflow:hidden;}
+  .toggle-btn{padding:7px 13px;font-size:12px;font-weight:600;background:#fff;border:none;cursor:pointer;color:var(--text-mid);font-family:inherit;}
+  .toggle-btn.on{background:var(--navy);color:#fff;}
+  .legend-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .legend-chip{display:flex;align-items:center;gap:7px;font-size:11.8px;padding:6px 11px;border-radius:20px;background:var(--gray-bg);color:var(--text-dark);font-weight:600;}
+  .legend-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+
+  /* LADDER (Salary Architecture & Matrix) */
+  .ladder{border:1px solid var(--gray-border);border-radius:12px;overflow:hidden;}
+  .ladder-row{display:grid;grid-template-columns:170px repeat(5,1fr);border-bottom:1px solid var(--gray-border);}
+  .ladder-row:last-child{border-bottom:none;}
+  .ladder-row.head{background:var(--gray-bg);}
+  .ladder-row.head .lc{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-mid);font-weight:800;padding:10px 12px;}
+  .ladder-rankcell{padding:12px;display:flex;flex-direction:column;gap:4px;justify-content:center;border-right:1px solid var(--gray-border);background:var(--gray-bg);}
+  .ladder-rankcell .rname{font-weight:800;color:var(--navy);font-size:13px;}
+  .ladder-rankcell .rgrade{font-size:10.5px;color:var(--text-mid);}
+  .ladder-rankcell .rstruct{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:10px;width:fit-content;margin-top:2px;}
+  .struct-yes{background:var(--blue-light);color:var(--navy);}
+  .struct-maybe{background:var(--peach);color:var(--peach-text);}
+  .struct-no{background:var(--gray-border);color:var(--text-mid);}
+  .ladder-cell{padding:11px 10px;border-right:1px solid #eff2f7;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:1px;}
+  .ladder-cell:last-child{border-right:none;}
+  .ladder-cell .val-rp{font-weight:700;color:var(--text-dark);font-size:12.3px;}
+  .ladder-cell .val-jv{font-weight:700;color:var(--blue);font-size:12.3px;display:none;}
+  .ladder-cell .val-sub{font-size:9.8px;color:var(--text-mid);}
+  .mode-jv .val-rp{display:none;}
+  .mode-jv .val-jv{display:block;}
+  .ladder-cell.overlap-cell{background:repeating-linear-gradient(45deg,rgba(194,57,44,.10),rgba(194,57,44,.10) 5px,transparent 5px,transparent 10px);box-shadow:inset 0 0 0 1px rgba(194,57,44,.35);}
 
   .thp-band-table{overflow-x:auto;}
   .thp-band-table table{font-size:12px;}
@@ -162,26 +228,11 @@
   .thp-note{display:flex;gap:10px;background:#fff7ed;border:1px solid #fdba74;border-radius:10px;padding:12px 16px;font-size:12.5px;color:#9a3412;margin-top:14px;align-items:flex-start;}
   .thp-note svg{width:16px;height:16px;stroke:#c2622a;fill:none;stroke-width:2;flex-shrink:0;margin-top:1px;}
 
-  .sublevel-matrix{overflow-x:auto;}
-  .sublevel-matrix table{font-size:12px;}
-
-  .kartu-karyawan{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--gray-border);border-radius:12px;overflow:hidden;}
-  .kartu-karyawan .kk-row{display:contents;}
-  .kartu-karyawan .kk-label{padding:10px 16px;font-size:12px;color:var(--text-mid);background:var(--gray-bg);border-bottom:1px solid var(--gray-border);border-right:1px solid var(--gray-border);}
-  .kartu-karyawan .kk-val{padding:10px 16px;font-size:13px;font-weight:600;color:var(--text-dark);border-bottom:1px solid var(--gray-border);}
-  @media (max-width:700px){.kartu-karyawan{grid-template-columns:1fr;}}
-
-  .tunjangan-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
-  @media (max-width:1100px){.tunjangan-grid{grid-template-columns:1fr;}}
-
-  .formula-box{background:var(--gray-bg);border-radius:10px;padding:16px 18px;font-family:'Courier New',monospace;font-size:13px;color:var(--navy);font-weight:700;margin-bottom:12px;}
-
-  .brd-recap-table td{font-size:12.5px;}
-  .brd-recap-table .rc-no{font-weight:800;color:var(--navy);}
-
   @media (max-width:1300px){
     .kpi-row-4{grid-template-columns:repeat(2,1fr);}
-    .je-layout{grid-template-columns:1fr;}
+    .dash-grid-2{grid-template-columns:1fr;}
+    .org-nav{grid-template-columns:1fr;}
+    .ladder-row{grid-template-columns:150px repeat(5,1fr);}
   }
 </style>
 </head>
@@ -323,79 +374,243 @@
       <div class="page-header">
         <div>
           <h1>Arsitektur Kompensasi (CAMD)</h1>
-          <div class="breadcrumb">Home &gt; Penggajian &gt; <b id="camd-crumb">Ringkasan</b></div>
+          <div class="breadcrumb">Home &gt; Penggajian &gt; <b id="camd-crumb">Dashboard</b></div>
         </div>
         <span class="pill pill-blue">Dikelola oleh HC Corporate · Ref. BRD-PRD-CAMD-001</span>
+      </div>
+
+      <div class="foundation-banner">
+        <span class="ic">🧩</span>
+        <span>Modul ini adalah <b>dasar data</b> — seluruh perubahan di sini otomatis dikonsumsi modul turunan.</span>
+        <div class="flow">
+          <span class="node">CAMD</span><span class="arrow">→</span>
+          <span class="node">Payroll Configuration</span><span class="arrow">→</span>
+          <span class="node">PPh21 &amp; 26 Setting</span><span class="arrow">→</span>
+          <span class="node">Periode Gajian</span>
+        </div>
       </div>
     </div>
 
     <div class="sub-header-bar">
       <div class="tabbar" id="camd-tabbar">
-        <div class="tab active" data-tab="ringkasan">Ringkasan</div>
+        <div class="tab active" data-tab="dashboard">Dashboard</div>
+        <div class="tab" data-tab="jobeval">Job Evaluation &amp; Grade Architecture</div>
+        <div class="tab" data-tab="regional">Regional Compensation Policy</div>
+        <div class="tab" data-tab="salary">Salary Architecture &amp; Matrix</div>
         <div class="tab" data-tab="setup">Pengaturan Evaluasi Jabatan</div>
-        <div class="tab" data-tab="matriks">Matriks Evaluasi Jabatan</div>
-        <div class="tab" data-tab="grade">Arsitektur Grade &amp; Kepangkatan</div>
-        <div class="tab" data-tab="sublevel">Matriks Kepangkatan × Sub-Kepangkatan</div>
-        <div class="tab" data-tab="tunjangan">Kebijakan Tunjangan</div>
-        <div class="tab" data-tab="potongan">Kebijakan Potongan</div>
         <div class="tab" data-tab="mpp">Perencanaan &amp; Penganggaran SDM</div>
       </div>
     </div>
 
     <div class="content">
 
-      <!-- ============ TAB: RINGKASAN ============ -->
-      <div class="subtab-panel active" id="camd-ringkasan">
-        <div class="kpi-row-4">
-          <div class="kpi-card-v2">
-            <div class="head"><div class="kpi-circle" style="background:#FEF1E1;color:#D97706"><svg viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div><div class="title">Versi Kebijakan Menunggu Review</div></div>
-            <div class="val">1</div>
-            <div class="caption">Menunggu checklist ganda Direktur PCC &amp; Direktur FAT</div>
+      <!-- ============ TAB: DASHBOARD ============ -->
+      <div class="subtab-panel active" id="camd-dashboard">
+        <div class="dash-toolbar">
+          <select id="dash-periode"><option>Periode: Mei 2026</option></select>
+          <select id="dash-direktorat"><option>Direktorat: Semua</option></select>
+          <span style="flex:1"></span>
+          <button class="btn btn-outline" onclick="showToast('Data dashboard diperbarui.')">⟳ Refresh</button>
+        </div>
+
+        <div class="kpi-row-4" id="dash-kpi-row"></div>
+
+        <div class="dash-grid-2">
+          <div class="card">
+            <div class="card-head"><div><h2>Jumlah Posisi per Grade</h2><div class="section-sub" style="margin:2px 0 0;">G1 (tertinggi) — G7 (dasar)</div></div></div>
+            <div class="barchart" id="dash-barchart"></div>
           </div>
-          <div class="kpi-card-v2">
-            <div class="head"><div class="kpi-circle" style="background:#EBF3FF;color:#2563EB"><svg viewBox="0 0 24 24" stroke="currentColor"><path d="M20 6L9 17l-5-5"/></svg></div><div class="title">Versi Kebijakan Menunggu Persetujuan</div></div>
-            <div class="val">0</div>
-            <div class="caption">Menunggu persetujuan akhir Direktur Utama</div>
+          <div class="card">
+            <div class="card-head"><h2>Alert &amp; Tindakan Diperlukan</h2></div>
+            <div style="display:flex;flex-direction:column;gap:10px;" id="dash-alerts"></div>
           </div>
-          <div class="kpi-card-v2">
-            <div class="head"><div class="kpi-circle" style="background:#E6F7EC;color:#16A34A"><svg viewBox="0 0 24 24" stroke="currentColor"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div><div class="title">Role Sudah Dievaluasi (JE)</div></div>
-            <div class="val">8 <span style="font-size:14px;color:var(--text-mid);font-weight:600;">/ 77</span></div>
-            <div class="caption">Sisa 69 role di Role Master menunggu evaluasi bertahap</div>
+        </div>
+      </div>
+      <!-- ============ END DASHBOARD ============ -->
+
+      <!-- ============ TAB: JOB EVALUATION & GRADE ARCHITECTURE ============ -->
+      <div class="subtab-panel" id="camd-jobeval">
+        <div class="card">
+          <div class="card-head">
+            <div><h2>Navigasi Organisasi</h2><div class="section-sub" style="margin:2px 0 0;">Evaluasi &amp; Grade dilihat dari sudut pandang struktur: Direktorat → Divisi → Departemen → Job Role</div></div>
+            <span class="pill pill-gray" id="jobeval-org-badge">—</span>
           </div>
-          <div class="kpi-card-v2">
-            <div class="head"><div class="kpi-circle" style="background:#F3EAFB;color:#9333EA"><svg viewBox="0 0 24 24" stroke="currentColor"><path d="M3 3v18h18"/><path d="M18 8l-5 5-3-3-4 4"/></svg></div><div class="title">Grade Aktif (G1–G7)</div></div>
-            <div class="val">7</div>
-            <div class="caption">Kepangkatan D0–D5, Band Executive → Foundation</div>
+          <div class="org-nav">
+            <div class="org-col"><div class="org-col-head">Direktorat</div><div id="colDirektorat"></div></div>
+            <div class="org-col"><div class="org-col-head">Divisi</div><div id="colDivisi"><div class="org-empty">Pilih Direktorat terlebih dahulu</div></div></div>
+            <div class="org-col"><div class="org-col-head">Departemen</div><div id="colDepartemen"><div class="org-empty">Pilih Divisi terlebih dahulu</div></div></div>
           </div>
         </div>
 
         <div class="card">
-          <div class="card-head"><h2>Ringkasan Modul Arsitektur Kompensasi</h2><span class="pill pill-peach">DRAFT — Pending Sign-off Direksi</span></div>
-          <p class="muted" style="margin:0 0 10px;line-height:1.7;">Berdasarkan <b>BRD-PRD-CAMD-001 v1.0</b>, side menu HRIS Compensation &amp; Benefits dipecah menjadi 2 modul yang mencerminkan model 3 lapisan kompensasi: <b>Arsitektur Kompensasi</b> (Job Value + Person Value — kebijakan nasional, tidak berubah karena lokasi kerja, wajib approval Direksi) dan <b>Konfigurasi Penggajian</b> (Market Value + eksekusi teknis payroll — data operasional/regional, berubah rutin, dikelola tim HC/FAT).</p>
-          <p class="muted" style="margin:0 0 10px;line-height:1.7;">Perubahan pada Job Evaluation, Grade Architecture, dan Kebijakan Tunjangan/Potongan di modul ini wajib melalui alur governance <b>Draft → Reviewed (Direktur PCC + Direktur FAT) → Approved (Direktur Utama) → Published</b> sebelum menjadi acuan resmi yang dikonsumsi Konfigurasi Penggajian.</p>
-          <p class="muted" style="margin:0;line-height:1.7;">Data pada modul ini bersumber dari <span class="je-rankkey" style="font-size:11px;">Dasaria_HC_System_v1.4.xlsx</span> (21 sheet aktif) — media simulasi &amp; dokumentasi awal, bukan sistem produksi.</p>
+          <div class="card-head">
+            <div><h2 id="roleListTitle">Job Role — pilih Departemen di atas</h2><div class="section-sub" style="margin:2px 0 0;">Satu baris = satu jabatan unik. Role baru &amp; penghapusan role wajib melalui cek Job Value.</div></div>
+            <button class="btn btn-blue" onclick="openCalc()">+ Tambah Role Baru</button>
+          </div>
+          <div id="roleListBody"><div class="org-empty">Belum ada Departemen dipilih — daftar Job Role akan tampil di sini.</div></div>
+        </div>
+
+        <div class="note-box">
+          <svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>
+          <div><b>Business rule:</b> penambahan Role baru wajib melalui Kalkulator Job Evaluation di bawah sebelum status bisa "Approved". Penghapusan Role akan mengecek dulu apakah ada karyawan aktif memegang jabatan tersebut (via Data Master Karyawan) — jika ada, penghapusan diblokir sampai reassignment selesai.</div>
+        </div>
+
+        <div class="card" id="calcPanel" style="display:none;">
+          <div class="card-head">
+            <div><h2>Kalkulator Evaluasi Jabatan</h2><div class="section-sub" id="calcContext" style="margin:2px 0 0;">Konteks: —</div></div>
+            <span class="pill pill-gray">Job Value — tidak terikat lokasi/UMK</span>
+          </div>
+          <div class="je-form-grid">
+            <div class="form-field je-role-field">
+              <label>Nama Role / Jabatan</label>
+              <input type="text" id="je-role" value="Branch Leader / Kepala Cabang">
+            </div>
+          </div>
+          <div class="je-form-grid" id="je-factor-grid"></div>
+
+          <div class="je-result">
+            <div class="je-result-jv"><span class="lbl">JV Total</span><span class="val" id="je-jv-val">0</span></div>
+            <div class="je-result-badges">
+              <span class="pill pill-blue" id="je-grade-badge">Grade —</span>
+              <span class="pill pill-purple" id="je-rank-badge">Rank —</span>
+              <span class="pill pill-teal" id="je-band-badge">Band —</span>
+            </div>
+            <div class="je-result-role muted" id="je-contoh-role">—</div>
+          </div>
+
+          <details class="je-descriptor">
+            <summary><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg> Referensi Cepat Skala Penilaian (lihat versi lengkap di tab Pengaturan Evaluasi Jabatan)</summary>
+            <div class="je-descriptor-body">
+              <table>
+                <thead><tr><th>Faktor</th><th>Level</th><th>Nama</th><th>Deskriptor</th></tr></thead>
+                <tbody id="je-descriptor-body"></tbody>
+              </table>
+            </div>
+          </details>
+
+          <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:14px;">
+            <button class="btn btn-outline" onclick="closeCalc()">Batal</button>
+            <button class="btn btn-blue" onclick="saveDraftRole()">Simpan sebagai Draft</button>
+          </div>
         </div>
 
         <div class="card">
-          <div class="card-head"><h2>7 Sub-Menu Arsitektur Kompensasi</h2><span class="muted">Sesuai BRD-PRD Bagian 8.1</span></div>
-          <div class="section-sub" style="margin-top:-6px;">Ringkasan cakupan tiap tab pada modul ini beserta hak akses, sebelum masuk ke detail masing-masing.</div>
-          <div style="overflow-x:auto;">
-            <table class="brd-recap-table">
-              <thead><tr><th>#</th><th>Sub-Menu</th><th>Cakupan</th><th>Hak Akses</th></tr></thead>
-              <tbody>
-                <tr><td class="rc-no">1</td><td><b>Pengaturan Evaluasi Jabatan</b></td><td class="muted">10 faktor Watson Wyatt &amp; bobot, skala penilaian L1–L5 (50 deskriptor), Role Master (77 role)</td><td>HC Lead (edit), Direksi (approve)</td></tr>
-                <tr><td class="rc-no">2</td><td><b>Matriks Evaluasi Jabatan</b></td><td class="muted">Scoring per role (10 faktor × skor 1–5) → kalkulasi otomatis Job Value (JV) → Grade → Career Rank</td><td>HC Lead (edit), Direksi (approve)</td></tr>
-                <tr><td class="rc-no">3</td><td><b>Arsitektur Grade &amp; Kepangkatan</b></td><td class="muted">Tabel Grade (G1–G7) → rentang JV → Career Rank (D0–D5), band THP nasional per rank (cap Rp15jt)</td><td>HC Lead (edit), Direksi (approve wajib)</td></tr>
-                <tr><td class="rc-no">4</td><td><b>Matriks Kepangkatan × Sub-Kepangkatan</b></td><td class="muted">30 kombinasi rank × sub-level, rank_key sebagai primary key, THP expected per kombinasi</td><td>HC Lead (edit), Direksi (approve wajib)</td></tr>
-                <tr><td class="rc-no">5</td><td><b>Kebijakan Tunjangan</b></td><td class="muted">Tunjangan tetap (kepangkatan, struktural, lama kerja, keluarga) + katalog tunjangan tidak tetap (10 jenis)</td><td>HC Lead (edit), Direksi (approve wajib untuk tetap)</td></tr>
-                <tr><td class="rc-no">6</td><td><b>Kebijakan Potongan</b></td><td class="muted">Acuan potongan BPJS (karyawan &amp; perusahaan), Kasbon, Prorate — kolom pihak &amp; kategori</td><td>HC Lead (edit), FAT (review)</td></tr>
-                <tr><td class="rc-no">7</td><td><b>Perencanaan &amp; Penganggaran SDM</b></td><td class="muted">Proyeksi headcount &amp; plafon Gapok/THP per role (HO) dan per cabang/regional</td><td>HC Lead (edit), Direksi (approve pengajuan budget)</td></tr>
-              </tbody>
+          <div class="card-head"><div><h2>Grade Architecture</h2><div class="section-sub" style="margin:2px 0 0;">Referensi nasional — tidak punya kolom region, berlaku sama di semua Direktorat/Divisi</div></div><span class="pill pill-gray">Nasional · Fixed</span></div>
+          <div class="grade-arch-table" style="overflow-x:auto;">
+            <table>
+              <thead><tr><th>Grade</th><th>Rentang JV</th><th>Career Rank</th><th>Band</th></tr></thead>
+              <tbody id="jobeval-grade-mini-body"></tbody>
             </table>
           </div>
         </div>
       </div>
-      <!-- ============ END RINGKASAN ============ -->
+      <!-- ============ END JOB EVALUATION & GRADE ARCHITECTURE ============ -->
+
+      <!-- ============ TAB: REGIONAL COMPENSATION POLICY ============ -->
+      <div class="subtab-panel" id="camd-regional">
+        <div class="card">
+          <div class="card-head">
+            <div><h2>UMK per Kota/Kabupaten</h2><div class="section-sub" style="margin:2px 0 0;">Wajib versioning per tahun — tidak boleh overwrite tahun sebelumnya</div></div>
+            <div class="toolbar">
+              <button class="btn btn-outline" onclick="showToast('Menampilkan riwayat versi UMK…')">Riwayat Versi UMK</button>
+              <button class="btn btn-blue" onclick="showToast('Form tambah Kota / update UMK dibuka…')">+ Tambah Kota / Update UMK</button>
+            </div>
+          </div>
+          <div class="toolbar" style="margin-bottom:14px;"><select><option>Tahun: 2026</option></select></div>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead><tr><th>Kota / Kabupaten</th><th>UMK 2026</th><th>SK Referensi</th><th>Berlaku Sejak</th><th>Aksi</th></tr></thead>
+              <tbody id="umk-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h2>Aturan Pengecualian Entry Level</h2></div>
+          <div class="info-box">
+            <svg viewBox="0 0 24 24"><path d="M12 8v5M12 16h.01"/><circle cx="12" cy="12" r="9"/></svg>
+            <div><b>Dasar hukum:</b> PP No. 36/2021 Pasal 36(2) — Entry Level boleh digaji di bawah UMK hanya dengan justifikasi pasal ini.</div>
+          </div>
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:10px;font-size:13px;">
+            <label class="checklist-field"><input type="checkbox" checked> Karyawan baru, masa kerja &lt; 1 tahun</label>
+            <label class="checklist-field"><input type="checkbox" checked> Posisi tercatat sebagai Entry Level / D5</label>
+            <label class="checklist-field"><input type="checkbox"> Sudah mendapat persetujuan tertulis Direksi</label>
+          </div>
+          <div style="margin-top:14px;"><button class="btn btn-blue" onclick="showToast('Aturan pengecualian Entry Level disimpan.')">Simpan</button></div>
+        </div>
+
+        <div class="info-box" style="margin-top:0;">
+          <svg viewBox="0 0 24 24"><path d="M12 8v5M12 16h.01"/><circle cx="12" cy="12" r="9"/></svg>
+          <div><b>Catatan:</b> Tunjangan Struktural per Level Jabatan tidak dikelola di tab ini — lihat <a href="konfigurasi-penggajian.html" style="color:#1d3f8f;font-weight:700;">Payroll Configuration → Tunjangan Tetap</a>. Tab ini fokus pada kebijakan regional (UMK) dan pengecualian legal, bukan komponen payroll.</div>
+        </div>
+      </div>
+      <!-- ============ END REGIONAL COMPENSATION POLICY ============ -->
+
+      <!-- ============ TAB: SALARY ARCHITECTURE & MATRIX ============ -->
+      <div class="subtab-panel" id="camd-salary">
+        <div class="card">
+          <div class="card-head"><div><h2>Peta Jenjang Karir Nasional</h2><div class="section-sub" style="margin:2px 0 0;">Menjelaskan bagaimana Kepangkatan, Sub-Kepangkatan, Job Value, Nominal THP, dan potensi Struktural saling berkorelasi dalam satu jenjang karir</div></div></div>
+
+          <div class="legend-row">
+            <div class="legend-chip"><span class="legend-dot" style="background:var(--navy);"></span> Career Rank (Kepangkatan) — baris</div>
+            <div class="legend-chip"><span class="legend-dot" style="background:var(--blue);"></span> Sub-Level (Sub-Kepangkatan) — kolom</div>
+            <div class="legend-chip"><span class="legend-dot" style="background:var(--navy);"></span> Berpotensi Struktural</div>
+            <div class="legend-chip"><span class="legend-dot" style="background:var(--peach-text);"></span> Campuran (tergantung penempatan)</div>
+            <div class="legend-chip"><span class="legend-dot" style="background:var(--text-mid);"></span> Non-Struktural / Individual Contributor</div>
+          </div>
+
+          <div class="card-head" style="margin-bottom:10px;">
+            <div class="section-sub" style="margin:0;">Toggle nilai yang ditampilkan di setiap sel matrix, dan bandingkan kondisi band sebelum/sesudah tightening.</div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+              <div class="toggle-group">
+                <button class="toggle-btn on" id="btnRp" onclick="setAxis('rp')">Rupiah (THP)</button>
+                <button class="toggle-btn" id="btnJv" onclick="setAxis('jv')">Job Value</button>
+              </div>
+              <div class="toggle-group">
+                <button class="toggle-btn on" id="btnAfter" onclick="setOverlap('after')">Sesudah Tightening</button>
+                <button class="toggle-btn" id="btnBefore" onclick="setOverlap('before')">Sebelum</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="ladder" id="ladder">
+            <div class="ladder-row head">
+              <div class="lc">Career Rank</div>
+              <div class="lc" style="text-align:center;">Dasar</div>
+              <div class="lc" style="text-align:center;">Junior</div>
+              <div class="lc" style="text-align:center;">Intermediate</div>
+              <div class="lc" style="text-align:center;">Senior</div>
+              <div class="lc" style="text-align:center;">Expert</div>
+            </div>
+            <div id="ladder-body"></div>
+          </div>
+          <div class="note-box" id="matrixNote"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div><h2>THP Band per Career Rank</h2><div class="section-sub" style="margin:2px 0 0;">Satu-satunya sumber kebenaran nominal Rupiah (source of truth)</div></div>
+            <div class="toolbar">
+              <button class="btn btn-outline" onclick="showToast('Simulasi band dibuka…')">Simulasikan</button>
+              <button class="btn btn-blue" onclick="showToast('Mode edit Band THP dibuka — wajib approval Direksi sebelum publish.')">Edit</button>
+            </div>
+          </div>
+          <div class="thp-band-table">
+            <table>
+              <thead><tr><th>Rank</th><th>Career Rank</th><th>JV Range</th><th>Dasar</th><th>Expert</th><th>Basis</th><th>Berpotensi Struktural</th></tr></thead>
+              <tbody id="salary-thp-body"></tbody>
+            </table>
+          </div>
+          <div class="thp-note">
+            <svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>
+            <div>
+              <b>Rp 15.000.000</b> adalah hard cap company-wide untuk seluruh rank, bukan hanya D0.
+              Persentase D4 (75–115% × UMK) dan D5 (50–75% × UMK) masih berupa proposal — <b>belum dikonfirmasi</b> — wajib jadi field configurable (<code>pct_min_umk</code>, <code>pct_max_umk</code>) saat backend dibangun, bukan hardcoded. Contoh nominal di atas memakai UMK Kota Malang (Rp 3.700.000) sebagai ilustrasi; nilai aktual mengikuti UMK kota penempatan karyawan masing-masing.
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ============ END SALARY ARCHITECTURE & MATRIX ============ -->
 
       <!-- ============ TAB: PENGATURAN EVALUASI JABATAN ============ -->
       <div class="subtab-panel" id="camd-setup">
@@ -410,7 +625,7 @@
         </div>
 
         <div class="card">
-          <div class="card-head"><h2>Skala Penilaian L1–L5 (50 Deskriptor)</h2><span class="muted">Library skoring — acuan saat mengisi Matriks Evaluasi Jabatan</span></div>
+          <div class="card-head"><h2>Skala Penilaian L1–L5 (50 Deskriptor)</h2><span class="muted">Library skoring — acuan saat mengisi Kalkulator Evaluasi Jabatan</span></div>
           <div style="overflow-x:auto;">
             <table>
               <thead><tr><th>Faktor</th><th>Level</th><th>Nama</th><th>Deskriptor</th></tr></thead>
@@ -421,7 +636,7 @@
 
         <div class="card">
           <div class="card-head"><h2>Role Master</h2><span class="muted">Menampilkan 15 dari 77 role</span></div>
-          <div class="section-sub" style="margin-top:-6px;">Sumber: JA_ROLE_MASTER. Role baru dapat ditambahkan lalu dievaluasi melalui tab <b>Matriks Evaluasi Jabatan</b> — Grade &amp; Career Rank akan terisi otomatis setelah scoring selesai.</div>
+          <div class="section-sub" style="margin-top:-6px;">Sumber: JA_ROLE_MASTER. Role baru dapat ditambahkan lalu dievaluasi melalui tab <b>Job Evaluation &amp; Grade Architecture</b> — Grade &amp; Career Rank akan terisi otomatis setelah scoring selesai.</div>
           <table>
             <thead><tr><th>Role Title</th><th>Direktorat / Unit</th><th>Status Evaluasi</th><th>Grade</th></tr></thead>
             <tbody id="setup-role-body"></tbody>
@@ -429,267 +644,6 @@
         </div>
       </div>
       <!-- ============ END PENGATURAN EVALUASI JABATAN ============ -->
-
-      <!-- ============ TAB: MATRIKS EVALUASI JABATAN ============ -->
-      <div class="subtab-panel" id="camd-matriks">
-        <div class="je-layout">
-
-          <!-- PANEL KIRI: KALKULATOR -->
-          <div>
-            <div class="card">
-              <div class="card-head"><h2>Kalkulator Evaluasi Jabatan</h2><span class="pill pill-gray">Job Value — tidak terikat lokasi/UMK</span></div>
-              <div class="section-sub" style="margin-top:-6px;">Skor setiap faktor 1 (Dasar) – 5 (Expert). JV Total dihitung otomatis dan langsung mencari Grade &amp; Career Rank yang sesuai.</div>
-
-              <div class="je-form-grid">
-                <div class="form-field je-role-field">
-                  <label>Nama Role / Jabatan</label>
-                  <input type="text" id="je-role" value="Branch Leader / Kepala Cabang">
-                </div>
-              </div>
-              <div class="je-form-grid" id="je-factor-grid"></div>
-
-              <div class="je-result">
-                <div class="je-result-jv"><span class="lbl">JV Total</span><span class="val" id="je-jv-val">0</span></div>
-                <div class="je-result-badges">
-                  <span class="pill pill-blue" id="je-grade-badge">Grade —</span>
-                  <span class="pill pill-purple" id="je-rank-badge">Rank —</span>
-                  <span class="pill pill-teal" id="je-band-badge">Band —</span>
-                </div>
-                <div class="je-result-role muted" id="je-contoh-role">—</div>
-              </div>
-
-              <details class="je-descriptor">
-                <summary><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg> Referensi Cepat Skala Penilaian (lihat versi lengkap di tab Pengaturan Evaluasi Jabatan)</summary>
-                <div class="je-descriptor-body">
-                  <table>
-                    <thead><tr><th>Faktor</th><th>Level</th><th>Nama</th><th>Deskriptor</th></tr></thead>
-                    <tbody id="je-descriptor-body"></tbody>
-                  </table>
-                </div>
-              </details>
-            </div>
-
-            <div class="card">
-              <div class="card-head"><h2>Riwayat Evaluasi Jabatan</h2><span class="muted" id="je-history-count">8 role</span></div>
-              <div class="section-sub" style="margin-top:-6px;">Skor faktor ditampilkan sebagai kode singkat (K E S D C I X V N R). Sub-Kepangkatan adalah Person Value dari asesmen IDP terpisah — bukan hasil kalkulasi JV.</div>
-              <div style="overflow-x:auto;">
-                <table>
-                  <thead><tr><th>Role Title</th><th>Skor Faktor</th><th>JV</th><th>Grade</th><th>Career Rank</th><th>Band</th><th>Sub-Kepangkatan</th><th>Rank Key</th></tr></thead>
-                  <tbody id="je-history-body"></tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-          <!-- PANEL KANAN: GRADE ARCHITECTURE RINGKAS -->
-          <div class="card">
-            <div class="card-head"><h2>Referensi Grade Architecture</h2><span class="pill pill-gray">Nasional · Fixed</span></div>
-            <div class="section-sub" style="margin-top:-6px;">Referensi cepat saat scoring — versi lengkap di tab Arsitektur Grade &amp; Kepangkatan.</div>
-            <div class="grade-arch-table" style="overflow-x:auto;">
-              <table>
-                <thead><tr><th>Grade</th><th>Rentang JV</th><th>Career Rank</th><th>Band</th></tr></thead>
-                <tbody id="matriks-grade-mini-body"></tbody>
-              </table>
-            </div>
-          </div>
-
-        </div>
-      </div>
-      <!-- ============ END MATRIKS EVALUASI JABATAN ============ -->
-
-      <!-- ============ TAB: ARSITEKTUR GRADE & KEPANGKATAN ============ -->
-      <div class="subtab-panel" id="camd-grade">
-        <div class="module-intro">Tabel referensi tunggal seluruh perusahaan — nasional, tidak punya kolom region. G3 &amp; G4 punya threshold sekunder di dalam grade yang sama karena rentang JV-nya bersinggungan dengan dua Career Rank.</div>
-
-        <div class="card">
-          <div class="card-head"><h2>Tabel Grade &amp; Career Rank</h2><span class="pill pill-gray">JA_GRADE_ARCH</span></div>
-          <div class="grade-arch-table" style="overflow-x:auto;">
-            <table>
-              <thead><tr><th>Grade</th><th>Rentang JV</th><th>Career Rank</th><th>Threshold</th><th>Band</th><th>Contoh Role</th></tr></thead>
-              <tbody id="grade-arch-body"></tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-head"><h2>Band THP per Career Rank (Nasional)</h2></div>
-          <div class="section-sub" style="margin-top:-6px;">Interpolasi linear 5 Sub-Kepangkatan (Dasar → Expert) dari THP Min–Max per Career Rank. D0–D3 memakai band nasional absolut; D4–D5 mengikuti persentase UMK kota penempatan karyawan (lihat Konfigurasi Penggajian → Regional UMK).</div>
-          <div class="thp-band-table">
-            <table>
-              <thead><tr><th>Rank</th><th>Career Rank</th><th>Rentang JV</th><th>Dasar</th><th>Junior</th><th>Intermediate</th><th>Senior</th><th>Expert</th><th>Basis</th></tr></thead>
-              <tbody id="thp-band-body"></tbody>
-            </table>
-          </div>
-          <div class="thp-note">
-            <svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>
-            <div>
-              <b>Rp 15.000.000</b> adalah hard cap company-wide untuk seluruh rank, bukan hanya D0.
-              Persentase D4 (75–115% × UMK) dan D5 (50–75% × UMK) masih berupa proposal — <b>belum dikonfirmasi</b> — dan wajib jadi field configurable (<code>pct_min_umk</code>, <code>pct_max_umk</code>) saat backend dibangun, bukan hardcoded. Contoh nominal di atas memakai UMK Kota Malang (Rp 3.700.000) sebagai ilustrasi; nilai aktual mengikuti UMK kota penempatan karyawan masing-masing.
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- ============ END ARSITEKTUR GRADE & KEPANGKATAN ============ -->
-
-      <!-- ============ TAB: MATRIKS KEPANGKATAN × SUB-KEPANGKATAN ============ -->
-      <div class="subtab-panel" id="camd-sublevel">
-        <div class="module-intro">30 kombinasi Career Rank (D0–D5) × Sub-Kepangkatan (Dasar → Expert), dengan <code>rank_key</code> sebagai primary key berformat "RankName-SubLevel" (contoh: <code>Direktur-Expert</code>). Kenaikan Sub-Kepangkatan (misal Senior → Expert) TIDAK mengubah jabatan struktural maupun Career Rank karyawan — sebaliknya, promosi struktural tidak otomatis menaikkan Career Rank; Career Rank hanya naik lewat re-evaluasi Job Value formal.</div>
-
-        <div class="card">
-          <div class="card-head"><h2>Ilustrasi — Kartu Karyawan</h2><span class="pill pill-gray">Contoh nyata dari data simulasi v1.4 · BRD-PRD Bagian 5.2</span></div>
-          <div class="section-sub" style="margin-top:-6px;">Zulfikar Abdullah, menjabat "Head of Regional Pasuruan" — menunjukkan bagaimana 3 sumbu independen (Jabatan Struktural, Career Rank, Sub-Kepangkatan) dan lokasi kerja (UMK) bertemu menjadi satu rank_key dan satu angka THP.</div>
-          <div class="kartu-karyawan">
-            <div class="kk-label">Jabatan Struktural</div><div class="kk-val">Head of Department (Kepala Regional)</div>
-            <div class="kk-label">Kepangkatan (Career Rank)</div><div class="kk-val">D2 — Supervisor</div>
-            <div class="kk-label">Sub-Kepangkatan</div><div class="kk-val">Senior</div>
-            <div class="kk-label">rank_key (kunci sistem)</div><div class="kk-val"><span class="je-rankkey">Supervisor-Senior</span></div>
-            <div class="kk-label">Gapok (Standar Nasional)</div><div class="kk-val">Rp 4.500.000</div>
-            <div class="kk-label">Tunjangan Struktural</div><div class="kk-val">Rp 350.000 (Layer 3 — Head of Department)</div>
-            <div class="kk-label">Kota Kerja</div><div class="kk-val">Pasuruan (UMK Rp 3.555.301)</div>
-            <div class="kk-label">THP Existing (transisi)</div><div class="kk-val">Rp 13.000.000 <span class="muted" style="font-weight:400;">(termasuk insentif regional di luar struktur dasar)</span></div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-head"><h2>Matriks Kepangkatan × Sub-Kepangkatan (30 Kombinasi)</h2><span class="pill pill-gray">CP_KEPANGKATAN</span></div>
-          <div class="sublevel-matrix">
-            <table>
-              <thead><tr><th>rank_key</th><th>Career Rank</th><th>Sub-Kepangkatan</th><th>Rentang JV</th><th>THP Expected</th><th>Basis</th></tr></thead>
-              <tbody id="sublevel-matrix-body"></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      <!-- ============ END MATRIKS KEPANGKATAN × SUB-KEPANGKATAN ============ -->
-
-      <!-- ============ TAB: KEBIJAKAN TUNJANGAN ============ -->
-      <div class="subtab-panel" id="camd-tunjangan">
-        <div class="module-intro">Sumber: CP_TUNJANGAN_TETAP (tunjangan tetap) &amp; CP_TUNJANGAN_TIDAK_TETAP (katalog deklaratif tunjangan tidak tetap). Perubahan tunjangan tetap wajib approval Direksi karena berdampak ke seluruh karyawan terkait sekaligus.</div>
-
-        <div class="section-label"><span>Tunjangan Tetap</span><div class="line"></div></div>
-
-        <div class="card">
-          <div class="card-head"><h2>1. Tunjangan Kepangkatan</h2><span class="pill pill-teal">Sudah terrepresentasi di Band THP</span></div>
-          <p class="muted" style="margin:0;line-height:1.7;">Tunjangan Kepangkatan tidak berdiri sebagai baris terpisah yang dijumlahkan manual — nilainya sudah menyatu di dalam <b>Band THP Nasional per Career Rank</b> (tab Arsitektur Grade &amp; Kepangkatan) dan <b>Matriks Kepangkatan × Sub-Kepangkatan</b>. Gapok + seluruh tunjangan tetap lain dijumlahkan hingga mencapai THP target pada band tersebut.</p>
-        </div>
-
-        <div class="card">
-          <div class="card-head"><h2>2. Tunjangan Struktural</h2><span class="pill pill-gray">4 Layer · Rp350rb–750rb</span></div>
-          <table>
-            <thead><tr><th>Layer</th><th>Jabatan Struktural</th><th style="text-align:right">Nominal</th><th>Keterangan</th></tr></thead>
-            <tbody>
-              <tr><td class="g-code">Layer 1</td><td>Head of Direktorat</td><td style="text-align:right">Rp 750.000</td><td class="muted">Estimasi batas atas rentang</td></tr>
-              <tr><td class="g-code">Layer 2</td><td>Head of Division</td><td style="text-align:right">Rp 550.000</td><td class="muted">Estimasi</td></tr>
-              <tr><td class="g-code">Layer 3</td><td>Head of Department</td><td style="text-align:right">Rp 350.000</td><td class="muted">Sesuai contoh eksplisit BRD-PRD Bagian 5.2</td></tr>
-              <tr><td class="g-code">Layer 4</td><td>Branch Leader</td><td style="text-align:right">Rp 350.000</td><td class="muted">Estimasi — disetarakan dengan Layer 3 (tanggung jawab operasional lapangan setara)</td></tr>
-              <tr><td class="g-code">—</td><td>Non-Structural</td><td style="text-align:right">Rp 0</td><td class="muted">Tidak menerima Tunjangan Struktural</td></tr>
-            </tbody>
-          </table>
-          <div class="note-box">
-            <svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>
-            <div>Hanya nominal <b>Layer 3 (Rp350.000)</b> yang eksplisit tercantum di BRD-PRD (Bagian 5.2, contoh Kartu Karyawan Zulfikar Abdullah). Nominal Layer 1, 2, dan 4 adalah estimasi ilustratif mengikuti rentang yang disebutkan dokumen (Rp350rb–750rb) dan <b>wajib dikonfirmasi Direktur Utama</b> sebelum menjadi acuan resmi.</div>
-          </div>
-        </div>
-
-        <div class="tunjangan-grid">
-          <div class="card" style="margin-bottom:0;">
-            <div class="card-head"><h2>3. Tunjangan Lama Kerja</h2><span class="pill pill-peach">Ilustratif</span></div>
-            <table>
-              <thead><tr><th>Masa Kerja</th><th style="text-align:right">Nominal</th></tr></thead>
-              <tbody>
-                <tr><td>0–2 tahun</td><td style="text-align:right">Rp 0</td></tr>
-                <tr><td>3–5 tahun</td><td style="text-align:right">Rp 100.000</td></tr>
-                <tr><td>6–10 tahun</td><td style="text-align:right">Rp 200.000</td></tr>
-                <tr><td>&gt; 10 tahun</td><td style="text-align:right">Rp 300.000</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="card" style="margin-bottom:0;">
-            <div class="card-head"><h2>4. Tunjangan Keluarga</h2><span class="pill pill-peach">Ilustratif</span></div>
-            <table>
-              <thead><tr><th>Status</th><th style="text-align:right">Nominal</th></tr></thead>
-              <tbody>
-                <tr><td>Menikah</td><td style="text-align:right">Rp 100.000</td></tr>
-                <tr><td>Per anak (maks. 3 anak)</td><td style="text-align:right">Rp 50.000 / anak</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="note-box" style="margin-bottom:20px;">
-          <svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>
-          <div>Skema &amp; nominal Tunjangan Lama Kerja dan Tunjangan Keluarga <b>belum tercantum</b> di BRD-PRD — struktur di atas adalah placeholder mengikuti pola umum tunjangan tetap, menunggu keputusan HC Lead &amp; Direksi sebelum masuk CP_TUNJANGAN_TETAP resmi.</div>
-        </div>
-
-        <div class="section-label"><span>Tunjangan Tidak Tetap</span><div class="line"></div></div>
-        <div class="card">
-          <div class="card-head"><h2>Katalog Tunjangan Tidak Tetap</h2><span class="pill pill-gray">10 Jenis · CP_TUNJANGAN_TIDAK_TETAP</span></div>
-          <div class="section-sub" style="margin-top:-6px;">Katalog deklaratif — bukan sumber angka payroll langsung. Kategori <b>Umum</b> berlaku ke semua karyawan sesuai kondisi terpenuhi; <b>Diskresi</b> memerlukan approval atasan/HC Lead per kasus.</div>
-          <table>
-            <thead><tr><th>No.</th><th>Jenis Tunjangan</th><th>Kategori</th><th>Keterangan</th></tr></thead>
-            <tbody>
-              <tr><td>1</td><td>Uang Lembur</td><td><span class="pill pill-blue">Umum</span></td><td class="muted">Dihitung per jam sesuai regulasi ketenagakerjaan</td></tr>
-              <tr><td>2</td><td>Uang Makan Lembur</td><td><span class="pill pill-blue">Umum</span></td><td class="muted">Diberikan saat lembur melewati ambang jam tertentu</td></tr>
-              <tr><td>3</td><td>Insentif Pencapaian Target (KPI)</td><td><span class="pill pill-purple">Diskresi</span></td><td class="muted">Berdasarkan pencapaian individu/tim, approval atasan</td></tr>
-              <tr><td>4</td><td>Komisi Penjualan</td><td><span class="pill pill-purple">Diskresi</span></td><td class="muted">Khusus role dengan target penjualan</td></tr>
-              <tr><td>5</td><td>Bonus Kinerja Tahunan</td><td><span class="pill pill-purple">Diskresi</span></td><td class="muted">Berdasarkan evaluasi kinerja tahunan &amp; performa perusahaan</td></tr>
-              <tr><td>6</td><td>Uang Saku Perjalanan Dinas</td><td><span class="pill pill-blue">Umum</span></td><td class="muted">Sesuai kebijakan perjalanan dinas per grade</td></tr>
-              <tr><td>7</td><td>Tunjangan Shift Malam</td><td><span class="pill pill-blue">Umum</span></td><td class="muted">Untuk karyawan shift malam operasional</td></tr>
-              <tr><td>8</td><td>Tunjangan Kehadiran Sempurna</td><td><span class="pill pill-blue">Umum</span></td><td class="muted">Diberikan bila tidak ada absen/telat dalam 1 periode</td></tr>
-              <tr><td>9</td><td>Bantuan Duka Cita</td><td><span class="pill pill-purple">Diskresi</span></td><td class="muted">Insidental, disetujui HC Lead</td></tr>
-              <tr><td>10</td><td>Insentif Regional / Remote Area</td><td><span class="pill pill-purple">Diskresi</span></td><td class="muted">Untuk penempatan di area terpencil / cabang ekspansi baru</td></tr>
-            </tbody>
-          </table>
-          <div class="note-box">
-            <svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>
-            <div>10 jenis &amp; kategori di atas adalah usulan awal mengisi struktur sheet <b>CP_TUNJANGAN_TIDAK_TETAP</b> — wajib direview HC Lead sebelum menjadi acuan resmi.</div>
-          </div>
-        </div>
-      </div>
-      <!-- ============ END KEBIJAKAN TUNJANGAN ============ -->
-
-      <!-- ============ TAB: KEBIJAKAN POTONGAN ============ -->
-      <div class="subtab-panel" id="camd-potongan">
-        <div class="module-intro">Sumber: CP_POTONGAN — acuan kebijakan potongan (BPJS, Kasbon, Prorate) dengan kolom pihak &amp; kategori. Ini adalah lapisan kebijakan (policy); eksekusi kalkulasi aktual per karyawan (termasuk GL Account mapping &amp; simulator) dilakukan di <b>Konfigurasi Penggajian → Asuransi Sosial / Acuan Pemotongan</b>.</div>
-
-        <div class="card">
-          <div class="card-head"><h2>Acuan Potongan BPJS</h2><span class="pill pill-gray">Kebijakan Nasional</span></div>
-          <table>
-            <thead><tr><th>Jenis BPJS</th><th>Pihak Karyawan</th><th>Pihak Perusahaan</th><th>Kategori</th><th>Keterangan</th></tr></thead>
-            <tbody>
-              <tr><td>BPJS Kesehatan</td><td style="text-align:right">1%</td><td style="text-align:right">4%</td><td><span class="pill pill-gray">Wajib</span></td><td class="muted">Basis: Gapok + Tunjangan Tetap, dibatasi cap sesuai regulasi</td></tr>
-              <tr><td>Jaminan Hari Tua (JHT)</td><td style="text-align:right">2%</td><td style="text-align:right">3.7%</td><td><span class="pill pill-gray">Wajib</span></td><td class="muted">Basis sama, tanpa batas atas</td></tr>
-              <tr><td>Jaminan Pensiun (JP)</td><td style="text-align:right">1%</td><td style="text-align:right">2%</td><td><span class="pill pill-gray">Wajib</span></td><td class="muted">Basis sama, dibatasi cap sesuai ketentuan berjalan</td></tr>
-              <tr><td>Jaminan Kecelakaan Kerja (JKK)</td><td style="text-align:right">—</td><td style="text-align:right">0.24%–1.74%</td><td><span class="pill pill-gray">Wajib</span></td><td class="muted">Ditanggung penuh Perusahaan, sesuai kelas risiko kerja</td></tr>
-              <tr><td>Jaminan Kematian (JKM)</td><td style="text-align:right">—</td><td style="text-align:right">0.3%</td><td><span class="pill pill-gray">Wajib</span></td><td class="muted">Ditanggung penuh Perusahaan</td></tr>
-            </tbody>
-          </table>
-          <div class="info-box">
-            <svg viewBox="0 0 24 24"><path d="M12 8v5M12 16h.01"/><circle cx="12" cy="12" r="9"/></svg>
-            <div>Rate ini adalah kebijakan acuan nasional. Simulasi kalkulasi per karyawan, cap/floor mengikuti UMK regional, dan GL Account mapping tersedia di <b>Konfigurasi Penggajian → Asuransi Sosial</b>.</div>
-          </div>
-        </div>
-
-        <div class="tunjangan-grid">
-          <div class="card" style="margin-bottom:0;">
-            <div class="card-head"><h2>Kasbon</h2><span class="pill pill-purple">Sukarela</span></div>
-            <table>
-              <thead><tr><th>Ketentuan</th><th>Nilai</th></tr></thead>
-              <tbody>
-                <tr><td class="muted">Plafon Maksimum</td><td><b>3× Gapok</b> bulanan</td></tr>
-                <tr><td class="muted">Tenor Cicilan Maksimum</td><td><b>6 bulan</b></td></tr>
-                <tr><td class="muted">Potongan Maksimum per Bulan</td><td><b>30%</b> dari THP berjalan</td></tr>
-                <tr><td class="muted">Approval</td><td>HC Lead (pengajuan), FAT (review pencairan)</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="card" style="margin-bottom:0;">
-            <div class="card-head"><h2>Prorate</h2><span class="pill pill-gray">Wajib</span></div>
-            <div class="formula-box">Gapok Prorate = (Hari Kerja Aktif ÷ Hari Kerja Efektif Bulan Berjalan) × Gapok Penuh</div>
-            <p class="muted" style="margin:0;line-height:1.7;font-size:12.5px;">Berlaku untuk: karyawan baru mulai kerja di tengah bulan, resign/PHK di tengah bulan, dan unpaid leave. Formula final &amp; Potongan Absensi masih ditandai sebagai open item — menunggu sesi pembahasan terpisah (lihat catatan di Konfigurasi Penggajian → Acuan Pemotongan).</p>
-          </div>
-        </div>
-      </div>
-      <!-- ============ END KEBIJAKAN POTONGAN ============ -->
 
       <!-- ============ TAB: PERENCANAAN & PENGANGGARAN SDM ============ -->
       <div class="subtab-panel" id="camd-mpp">
@@ -823,18 +777,15 @@
 
   // ===== CAMD tab switching =====
   const camdTabs = document.querySelectorAll('#camd-tabbar .tab');
-  const camdPanels = { ringkasan:'camd-ringkasan', setup:'camd-setup', matriks:'camd-matriks', grade:'camd-grade', sublevel:'camd-sublevel', tunjangan:'camd-tunjangan', potongan:'camd-potongan', mpp:'camd-mpp' };
-  const camdLabels = { ringkasan:'Ringkasan', setup:'Pengaturan Evaluasi Jabatan', matriks:'Matriks Evaluasi Jabatan', grade:'Arsitektur Grade & Kepangkatan', sublevel:'Matriks Kepangkatan × Sub-Kepangkatan', tunjangan:'Kebijakan Tunjangan', potongan:'Kebijakan Potongan', mpp:'Perencanaan & Penganggaran SDM' };
-  camdTabs.forEach(tab=>{
-    tab.addEventListener('click', ()=>{
-      camdTabs.forEach(t=>t.classList.remove('active'));
-      tab.classList.add('active');
-      Object.values(camdPanels).forEach(id=>document.getElementById(id).classList.remove('active'));
-      const key = tab.getAttribute('data-tab');
-      document.getElementById(camdPanels[key]).classList.add('active');
-      document.getElementById('camd-crumb').textContent = camdLabels[key];
-    });
-  });
+  const camdPanels = { dashboard:'camd-dashboard', jobeval:'camd-jobeval', regional:'camd-regional', salary:'camd-salary', setup:'camd-setup', mpp:'camd-mpp' };
+  const camdLabels = { dashboard:'Dashboard', jobeval:'Job Evaluation & Grade Architecture', regional:'Regional Compensation Policy', salary:'Salary Architecture & Matrix', setup:'Pengaturan Evaluasi Jabatan', mpp:'Perencanaan & Penganggaran SDM' };
+  function goCamdTab(key){
+    camdTabs.forEach(t => t.classList.toggle('active', t.getAttribute('data-tab') === key));
+    Object.values(camdPanels).forEach(id => document.getElementById(id).classList.remove('active'));
+    document.getElementById(camdPanels[key]).classList.add('active');
+    document.getElementById('camd-crumb').textContent = camdLabels[key];
+  }
+  camdTabs.forEach(tab => { tab.addEventListener('click', () => goCamdTab(tab.getAttribute('data-tab'))); });
 
   // =========================================================
   // ARSITEKTUR KOMPENSASI — data dari
@@ -891,7 +842,7 @@
     {rank:'D4', name:'Officer', jvRange:'155–214', pctMin:0.75, pctMax:1.15, umk:true},
     {rank:'D5', name:'Entry Level', jvRange:'100–154', pctMin:0.50, pctMax:0.75, umk:true}
   ];
-  const CONTOH_UMK = 3700000; // UMK Kota Malang, sama seperti referensi Konfigurasi Penggajian
+  const CONTOH_UMK = 3700000; // UMK Kota Malang, sama seperti referensi Regional Compensation Policy
 
   const subLevelNames = ['Dasar','Junior','Intermediate','Senior','Expert'];
 
@@ -1010,76 +961,356 @@
   }
 
   function renderGradeArch(){
-    document.getElementById('grade-arch-body').innerHTML = gradeArch.map(g => `
-      <tr>
-        <td class="g-code">${g.grade}</td>
-        <td>${g.jvMin}–${g.jvMax}</td>
-        <td>${g.rankCode} <span class="muted">${g.rankName}</span></td>
-        <td class="g-threshold">${g.threshold}</td>
-        <td><span class="pill pill-teal">${g.band}</span></td>
-        <td class="muted">${g.contoh}</td>
-      </tr>
-    `).join('');
-    document.getElementById('matriks-grade-mini-body').innerHTML = gradeArch.map(g => `
+    document.getElementById('jobeval-grade-mini-body').innerHTML = gradeArch.map(g => `
       <tr><td class="g-code">${g.grade}</td><td>${g.jvMin}–${g.jvMax}</td><td>${g.rankCode}</td><td><span class="pill pill-teal">${g.band}</span></td></tr>
     `).join('');
-  }
-
-  function renderJEHistory(){
-    document.getElementById('je-history-body').innerHTML = jeHistory.map(h => {
-      const jv = computeJV(h.scores);
-      const g = lookupGrade(jv);
-      const chips = jeFactors.map((f,i) => f.code + h.scores[i]).join(' ');
-      const rankKey = g.rankNameResolved + '-' + h.subLevel;
-      return `
-        <tr>
-          <td class="je-role-name">${h.role}</td>
-          <td class="je-chips">${chips}</td>
-          <td><b>${jv}</b></td>
-          <td>${g.grade}</td>
-          <td>${g.rankCodeResolved} ${g.rankNameResolved}</td>
-          <td><span class="pill pill-teal">${g.band}</span></td>
-          <td>${h.subLevel}</td>
-          <td><span class="je-rankkey">${rankKey}</span></td>
-        </tr>
-      `;
-    }).join('');
   }
 
   function interpolate(min, max, idx){
     return min + (idx/4) * (max-min);
   }
 
-  function renderThpBand(){
-    document.getElementById('thp-band-body').innerHTML = thpBandRaw.map(r => {
-      let min, max;
-      if(r.umk){
-        min = CONTOH_UMK * r.pctMin;
-        max = CONTOH_UMK * r.pctMax;
-      } else {
-        min = r.min; max = r.max;
+  // =========================================================
+  // TAB: JOB EVALUATION & GRADE ARCHITECTURE — Org Navigator
+  // Direktorat resmi mengikuti "Struktur Organisasi untuk Generate ID Doc"
+  // (sama dengan yang dipakai modul Manajemen Talenta). 2 Direktorat
+  // (People Corporate Compliance & Comercial) sudah dilengkapi contoh
+  // Job Evaluation penuh; sisanya masih menunggu input bertahap.
+  // =========================================================
+  const orgData = {
+    'Direktorat Utama': {
+      meta: '1 Divisi · 1 Role',
+      divisi: {
+        'Sekretariat Direksi': { meta:'1 Departemen · 1 Role', departemen:{
+          'Departemen Sekretariat': [
+            {role:'Direktur Utama', jv:495, grade:'G1', rank:'D0 Direktur', status:'Approved'}
+          ]
+        }}
       }
-      const cells = subLevelNames.map((_,i) => `<td>${fmtRp(interpolate(min,max,i))}</td>`).join('');
-      const basis = r.umk
-        ? `${(r.pctMin*100).toFixed(0)}–${(r.pctMax*100).toFixed(0)}% × UMK <span class="pill pill-peach" style="margin-left:4px;">Belum final</span>`
-        : 'Absolut Nasional';
-      return `<tr><td class="g-code">${r.rank}</td><td>${r.name}</td><td class="muted">${r.jvRange}</td>${cells}<td>${basis}</td></tr>`;
+    },
+    'People Corporate Compliance': {
+      meta: '2 Divisi · 10 Role',
+      divisi: {
+        'Human Capital': {
+          meta: '4 Departemen · 8 Role',
+          departemen: {
+            'Talent Acquisition': [
+              {role:'Head of Human Capital', jv:302, grade:'G4', rank:'D2 Supervisor', status:'Approved'},
+              {role:'Corporate Acquisition', jv:118, grade:'G7', rank:'D5 Entry Level', status:'Approved'},
+              {role:'Field Talent Recruiter', jv:122, grade:'G7', rank:'D5 Entry Level', status:'Approved'}
+            ],
+            'People Culture Operation': [
+              {role:'Learning Culture Specialist/Organization Development', jv:235, grade:'G5', rank:'D3 Principal', status:'Draft'},
+              {role:'Customer Acquisition Enablement', jv:150, grade:'G7', rank:'D5 Entry Level', status:'Draft'}
+            ],
+            'Compensation & Benefits': [
+              {role:'Benefit & Rewards Analyst', jv:180, grade:'G6', rank:'D4 Officer', status:'Approved'},
+              {role:'Payroll Specialist', jv:175, grade:'G6', rank:'D4 Officer', status:'Approved'}
+            ],
+            'Business Partner Department': [
+              {role:'Business Partner', jv:245, grade:'G5', rank:'D3 Principal', status:'Approved'}
+            ]
+          }
+        },
+        'Corporate Regulatory Compliance': {
+          meta: '2 Departemen · 2 Role',
+          departemen: {
+            'Industrial Relations Regulatory': [
+              {role:'IR Specialist', jv:198, grade:'G6', rank:'D4 Officer', status:'Draft'}
+            ],
+            'Corporate & Legal Strategic': [
+              {role:'Corporate & Legal Strategic', jv:228, grade:'G5', rank:'D3 Principal', status:'Approved'}
+            ]
+          }
+        }
+      }
+    },
+    'Comercial': {
+      meta: '5 Divisi · 12 Role',
+      divisi: {
+        'Commercial Strategic & Partner': { meta:'1 Departemen · 1 Role', departemen:{
+          'Commercial Strategic & Partner': [
+            {role:'Strategic & Partner', jv:212, grade:'G6', rank:'D4 Officer', status:'Draft'}
+          ]
+        }},
+        'Network Infrastructure Division': { meta:'2 Departemen · 3 Role', departemen:{
+          'Customer Quality & Network Infrastructure': [
+            {role:'Network Quality & Assurance Engineer', jv:165, grade:'G6', rank:'D4 Officer', status:'Approved'},
+            {role:'Technical Control & Escalation Engineer', jv:172, grade:'G6', rank:'D4 Officer', status:'Draft'}
+          ],
+          'Core Network Infrastructure': [
+            {role:'Network Infrastructure Engineer', jv:160, grade:'G6', rank:'D4 Officer', status:'Approved'}
+          ]
+        }},
+        'Customer Experience': { meta:'2 Departemen · 2 Role', departemen:{
+          'Customer Care Department': [
+            {role:'Customer Care Services', jv:128, grade:'G7', rank:'D5 Entry Level', status:'Approved'}
+          ],
+          'Retention Department': [
+            {role:'Retention Officer', jv:158, grade:'G6', rank:'D4 Officer', status:'Draft'}
+          ]
+        }},
+        'Sales Marketing': { meta:'2 Departemen · 3 Role', departemen:{
+          'Campaign & Development': [
+            {role:'Branding Marketing', jv:145, grade:'G7', rank:'D5 Entry Level', status:'Approved'},
+            {role:'Product Development', jv:168, grade:'G6', rank:'D4 Officer', status:'Draft'}
+          ],
+          'Banner Installer Department': [
+            {role:'Banner Installer Team', jv:112, grade:'G7', rank:'D5 Entry Level', status:'Approved'}
+          ]
+        }},
+        'Operasional Regional Division (General Regional Manager)': { meta:'1 Departemen · 3 Role', departemen:{
+          'Regional Department (Supervisor Regional)': [
+            {role:'General Regional Manager Jawa Timur', jv:371, grade:'G3', rank:'D1 Manajer', status:'Approved'},
+            {role:'Branch (Branch Leader)', jv:224, grade:'G5', rank:'D3 Principal', status:'Approved'},
+            {role:'Account Executive', jv:118, grade:'G7', rank:'D5 Entry Level', status:'Approved'}
+          ]
+        }}
+      }
+    },
+    'Information Technology': { meta:'1 Divisi · 14 Role', divisi:{} },
+    'Business Development': { meta:'1 Divisi · 5 Role', divisi:{} },
+    'Finance, Tax And Accounting (FAT)': { meta:'1 Divisi · 3 Role', divisi:{} },
+    'General Services & Supply Chain': { meta:'1 Divisi · 6 Role', divisi:{} },
+    'Network Operation Center': { meta:'1 Divisi · 3 Role', divisi:{} }
+  };
+
+  function flattenOrgRoles(){
+    const out = [];
+    Object.entries(orgData).forEach(([direktorat, d]) => {
+      Object.values(d.divisi || {}).forEach(div => {
+        Object.values(div.departemen || {}).forEach(roles => {
+          roles.forEach(r => out.push({...r, direktorat}));
+        });
+      });
+    });
+    return out;
+  }
+
+  function renderDirektoratCol(){
+    const col = document.getElementById('colDirektorat');
+    const totalDivisi = Object.values(orgData).reduce((s,d) => s + Object.keys(d.divisi || {}).length, 0);
+    const totalRole = flattenOrgRoles().length;
+    document.getElementById('jobeval-org-badge').textContent = `${Object.keys(orgData).length} Direktorat · ${totalDivisi} Divisi · ${totalRole} Role Dievaluasi`;
+    col.innerHTML = '';
+    Object.keys(orgData).forEach(name => {
+      const el = document.createElement('div');
+      el.className = 'org-item';
+      el.innerHTML = `<span>🏛 ${name}</span><span class="meta">${orgData[name].meta}</span>`;
+      el.onclick = () => selectDirektorat(name, el);
+      col.appendChild(el);
+    });
+  }
+  function clearSel(container){ container.querySelectorAll('.org-item').forEach(i => i.classList.remove('sel')); }
+
+  function selectDirektorat(name, el){
+    clearSel(document.getElementById('colDirektorat'));
+    el.classList.add('sel');
+    const divCol = document.getElementById('colDivisi');
+    document.getElementById('colDepartemen').innerHTML = '<div class="org-empty">Pilih Divisi terlebih dahulu</div>';
+    document.getElementById('roleListBody').innerHTML = '<div class="org-empty">Belum ada Departemen dipilih — daftar Job Role akan tampil di sini.</div>';
+    document.getElementById('roleListTitle').textContent = 'Job Role — pilih Departemen di atas';
+    currentCalcContext = name;
+
+    const divisi = orgData[name].divisi || {};
+    divCol.innerHTML = '';
+    if(Object.keys(divisi).length === 0){
+      divCol.innerHTML = '<div class="org-empty">Belum ada Divisi terinput — menunggu giliran evaluasi bertahap</div>';
+      return;
+    }
+    Object.keys(divisi).forEach(dname => {
+      const el2 = document.createElement('div');
+      el2.className = 'org-item';
+      el2.innerHTML = `<span>📂 ${dname}</span><span class="meta">${divisi[dname].meta}</span>`;
+      el2.onclick = () => selectDivisi(divisi[dname], dname, name, el2);
+      divCol.appendChild(el2);
+    });
+  }
+
+  function selectDivisi(divObj, dname, direktoratName, el){
+    clearSel(document.getElementById('colDivisi'));
+    el.classList.add('sel');
+    const deptCol = document.getElementById('colDepartemen');
+    document.getElementById('roleListBody').innerHTML = '<div class="org-empty">Belum ada Departemen dipilih — daftar Job Role akan tampil di sini.</div>';
+    document.getElementById('roleListTitle').textContent = 'Job Role — pilih Departemen di atas';
+    currentCalcContext = direktoratName + ' — ' + dname;
+
+    const dept = divObj.departemen || {};
+    deptCol.innerHTML = '';
+    if(Object.keys(dept).length === 0){
+      deptCol.innerHTML = '<div class="org-empty">Belum ada Departemen terdaftar di Divisi ini</div>';
+      return;
+    }
+    Object.keys(dept).forEach(deptName => {
+      const el2 = document.createElement('div');
+      el2.className = 'org-item';
+      el2.innerHTML = `<span>📄 ${deptName}</span><span class="meta">${dept[deptName].length} Role</span>`;
+      el2.onclick = () => selectDepartemen(dept[deptName], deptName, direktoratName, el2);
+      deptCol.appendChild(el2);
+    });
+  }
+
+  function selectDepartemen(roles, deptName, direktoratName, el){
+    clearSel(document.getElementById('colDepartemen'));
+    el.classList.add('sel');
+    document.getElementById('roleListTitle').textContent = 'Job Role — ' + deptName;
+    currentCalcContext = direktoratName + ' — ' + deptName;
+    const body = document.getElementById('roleListBody');
+    if(roles.length === 0){
+      body.innerHTML = '<div class="org-empty">Belum ada Role terdaftar di Departemen ini</div>';
+      return;
+    }
+    let html = '<table><thead><tr><th>Role Title</th><th>JV</th><th>Grade</th><th>Career Rank</th><th>Status</th><th>Aksi</th></tr></thead><tbody>';
+    roles.forEach(r => {
+      const stPill = r.status === 'Approved' ? 'pill-green' : 'pill-peach';
+      const roleEsc = r.role.replace(/'/g, "\\'");
+      html += `<tr><td>${r.role}</td><td class="mono">${r.jv}</td><td><span class="pill pill-blue">${r.grade}</span></td><td>${r.rank}</td><td><span class="pill ${stPill}">${r.status}</span></td>
+        <td><a class="je-link" onclick="showToast('Menampilkan detail evaluasi ${roleEsc}…')">Lihat</a> · <a class="je-link" onclick="showToast('Menampilkan riwayat evaluasi ${roleEsc}…')">Riwayat</a> · <a class="je-link" style="color:var(--red-text)" onclick="showToast('Mengecek karyawan aktif untuk ${roleEsc} sebelum penghapusan…')">Hapus</a></td></tr>`;
+    });
+    html += '</tbody></table>';
+    body.innerHTML = html;
+  }
+
+  let currentCalcContext = '—';
+  function openCalc(){
+    document.getElementById('calcContext').textContent = 'Konteks: ' + currentCalcContext;
+    document.getElementById('calcPanel').style.display = 'block';
+    document.getElementById('calcPanel').scrollIntoView({behavior:'smooth', block:'center'});
+  }
+  function closeCalc(){ document.getElementById('calcPanel').style.display = 'none'; }
+  function saveDraftRole(){
+    const roleName = document.getElementById('je-role').value || 'Role baru';
+    showToast(`"${roleName}" disimpan sebagai Draft — menunggu review HC Lead sebelum Approved.`);
+    closeCalc();
+  }
+
+  // =========================================================
+  // TAB: DASHBOARD
+  // =========================================================
+  function renderDashboardDirektoratOptions(){
+    const sel = document.getElementById('dash-direktorat');
+    sel.innerHTML = '<option>Direktorat: Semua</option>' + Object.keys(orgData).map(d => `<option>${d}</option>`).join('');
+  }
+
+  function renderDashboard(){
+    const roles = flattenOrgRoles();
+    const approved = roles.filter(r => r.status === 'Approved').length;
+    const draft = roles.filter(r => r.status === 'Draft').length;
+    const stubDirektorat = Object.entries(orgData).filter(([,d]) => Object.keys(d.divisi || {}).length === 0);
+    const belumJE = stubDirektorat.reduce((s,[,d]) => { const m = d.meta.match(/(\d+)\s*Role/); return s + (m ? Number(m[1]) : 0); }, 0);
+
+    const cards = [
+      { lbl:'Total Role Terdaftar', val: roles.length, caption:'Sudah masuk Job Evaluation Matrix', bg:'#EBF3FF', color:'#2563EB',
+        icon:'<path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/>' },
+      { lbl:'Role Approved', val: approved, caption:'Sudah melalui approval Direksi', bg:'#E6F7EC', color:'#16A34A',
+        icon:'<path d="M20 6L9 17l-5-5"/>' },
+      { lbl:'Role Draft', val: draft, caption:'Menunggu review &amp; approval', bg:'#FEF1E1', color:'#D97706',
+        icon:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>' },
+      { lbl:'Parameter Belum Final', val: 2, caption:'%UMK D4/D5 — belum dikonfirmasi Direksi', bg:'#F3EAFB', color:'#9333EA',
+        icon:'<path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/>' }
+    ];
+    document.getElementById('dash-kpi-row').innerHTML = cards.map(c => `
+      <div class="kpi-card-v2">
+        <div class="head"><div class="kpi-circle" style="background:${c.bg};color:${c.color}"><svg viewBox="0 0 24 24" stroke="currentColor">${c.icon}</svg></div><div class="title">${c.lbl}</div></div>
+        <div class="val">${c.val}</div>
+        <div class="caption">${c.caption}</div>
+      </div>
+    `).join('');
+
+    const perGrade = {};
+    gradeArch.forEach(g => perGrade[g.grade] = 0);
+    roles.forEach(r => { if(perGrade[r.grade] !== undefined) perGrade[r.grade]++; });
+    const maxCount = Math.max(1, ...Object.values(perGrade));
+    document.getElementById('dash-barchart').innerHTML = gradeArch.map(g => `
+      <div class="bar-col">
+        <div class="bar-count">${perGrade[g.grade]}</div>
+        <div class="bar" style="height:${Math.max(6, (perGrade[g.grade]/maxCount)*100)}%"></div>
+        <div class="bar-lbl">${g.grade}</div>
+      </div>
+    `).join('');
+
+    document.getElementById('dash-alerts').innerHTML = `
+      <div class="alert-row"><div class="txt"><span class="ic">⚠</span><span>${belumJE} Role di ${stubDirektorat.length} Direktorat belum diinput ke Job Evaluation</span></div><a class="alert-link" onclick="goCamdTab('jobeval')">Lihat Detail →</a></div>
+      <div class="alert-row"><div class="txt"><span class="ic">⚠</span><span>Band D2/D3 berpotensi overlap — perlu tightening</span></div><a class="alert-link" onclick="goCamdTab('salary')">Buka Salary Architecture →</a></div>
+      <div class="alert-row"><div class="txt"><span class="ic">⚠</span><span>Parameter %UMK D4 &amp; D5 belum dikonfirmasi Direksi</span></div><a class="alert-link" onclick="goCamdTab('salary')">Buka Salary Architecture →</a></div>
+    `;
+  }
+
+  // =========================================================
+  // TAB: REGIONAL COMPENSATION POLICY
+  // =========================================================
+  const umkData = [
+    { kota:'Kota Malang', umk:3700000, sk:'SK 100.3.3.1/937/013/2025', berlaku:'01/01/2026' },
+    { kota:'Kota Surabaya', umk:4900000, sk:'SK 100.3.3.1/937/013/2025', berlaku:'01/01/2026' },
+    { kota:'Kabupaten Kediri', umk:2500000, sk:'SK 100.3.3.1/937/013/2025', berlaku:'01/01/2026' },
+    { kota:'Kota Blitar', umk:2300000, sk:'SK 100.3.3.1/937/013/2025', berlaku:'01/01/2026' }
+  ];
+  function renderUmkTable(){
+    document.getElementById('umk-body').innerHTML = umkData.map(u => `
+      <tr><td>${u.kota}</td><td class="mono">${fmtRp(u.umk)}</td><td class="mono">${u.sk}</td><td class="mono">${u.berlaku}</td>
+      <td><a class="je-link" onclick="showToast('Form edit UMK ${u.kota.replace(/'/g,"\\'")} dibuka…')">Edit</a> · <a class="je-link" style="color:var(--red-text)" onclick="showToast('Hapus baris UMK ${u.kota.replace(/'/g,"\\'")}…')">Hapus</a></td></tr>
+    `).join('');
+  }
+
+  // =========================================================
+  // TAB: SALARY ARCHITECTURE & MATRIX
+  // =========================================================
+  const structClass = { D0:'struct-yes', D1:'struct-yes', D2:'struct-yes', D3:'struct-maybe', D4:'struct-no', D5:'struct-no' };
+  const structLabel = { D0:'Selalu Struktural', D1:'Selalu Struktural', D2:'Selalu Struktural', D3:'Campuran', D4:'Non-Struktural', D5:'Non-Struktural' };
+  const structPill = { D0:'pill-blue', D1:'pill-blue', D2:'pill-blue', D3:'pill-peach', D4:'pill-gray', D5:'pill-gray' };
+  const structYaTidak = { D0:'Ya', D1:'Ya', D2:'Ya', D3:'Campuran', D4:'Tidak', D5:'Tidak' };
+
+  function bandMinMax(r){
+    return r.umk ? { min: CONTOH_UMK*r.pctMin, max: CONTOH_UMK*r.pctMax } : { min: r.min, max: r.max };
+  }
+
+  function renderLadder(){
+    document.getElementById('ladder-body').innerHTML = thpBandRaw.map(r => {
+      const { min, max } = bandMinMax(r);
+      const [jvMinStr, jvMaxStr] = r.jvRange.split('–');
+      const jvMin = Number(jvMinStr), jvMax = Number(jvMaxStr);
+      const cells = subLevelNames.map((sl, i) => {
+        const rp = interpolate(min, max, i);
+        const jv = Math.round(interpolate(jvMin, jvMax, i));
+        const sub = r.umk ? `<span class="val-sub">${Math.round((r.pctMin + (i/4)*(r.pctMax-r.pctMin))*100)}% UMK</span>` : '';
+        const cellId = (r.rank === 'D2' && i === 4) ? ' id="c-d2-expert"' : (r.rank === 'D3' && i === 0) ? ' id="c-d3-dasar"' : '';
+        return `<div class="ladder-cell"${cellId}><span class="val-rp mono">${fmtRp(rp)}</span><span class="val-jv mono">JV ${jv}</span>${sub}</div>`;
+      }).join('');
+      return `<div class="ladder-row" data-rank="${r.rank}">
+        <div class="ladder-rankcell"><span class="rname">${r.rank} · ${r.name}</span><span class="rgrade">JV ${r.jvRange}</span><span class="rstruct ${structClass[r.rank]}">${structLabel[r.rank]}</span></div>
+        ${cells}
+      </div>`;
     }).join('');
   }
 
-  function renderSubLevelMatrix(){
-    let rows = '';
-    thpBandRaw.forEach(r => {
-      let min, max;
-      if(r.umk){ min = CONTOH_UMK * r.pctMin; max = CONTOH_UMK * r.pctMax; }
-      else { min = r.min; max = r.max; }
-      const basis = r.umk ? `${(r.pctMin*100).toFixed(0)}–${(r.pctMax*100).toFixed(0)}% × UMK` : 'Nasional Absolut';
-      subLevelNames.forEach((sl, i) => {
-        const rankKey = r.name + '-' + sl;
-        rows += `<tr><td><span class="je-rankkey">${rankKey}</span></td><td>${r.rank} ${r.name}</td><td>${sl}</td><td class="muted">${r.jvRange}</td><td><b>${fmtRp(interpolate(min,max,i))}</b></td><td class="muted">${basis}</td></tr>`;
-      });
-    });
-    document.getElementById('sublevel-matrix-body').innerHTML = rows;
+  function renderSalaryThpTable(){
+    document.getElementById('salary-thp-body').innerHTML = thpBandRaw.map(r => {
+      const { min, max } = bandMinMax(r);
+      const basis = r.umk ? `${(r.pctMin*100).toFixed(0)}–${(r.pctMax*100).toFixed(0)}% × UMK` : 'Absolut Nasional';
+      return `<tr><td class="g-code mono">${r.rank}</td><td>${r.name}</td><td class="mono">${r.jvRange}</td><td class="mono">${fmtRp(min)}</td><td class="mono">${fmtRp(max)}</td><td>${basis}</td><td><span class="pill ${structPill[r.rank]}">${structYaTidak[r.rank]}</span></td></tr>`;
+    }).join('');
+  }
+
+  function setAxis(mode){
+    document.getElementById('btnRp').classList.toggle('on', mode === 'rp');
+    document.getElementById('btnJv').classList.toggle('on', mode === 'jv');
+    document.getElementById('ladder').classList.toggle('mode-jv', mode === 'jv');
+  }
+  function setOverlap(mode){
+    document.getElementById('btnAfter').classList.toggle('on', mode === 'after');
+    document.getElementById('btnBefore').classList.toggle('on', mode === 'before');
+    const note = document.getElementById('matrixNote');
+    const d2e = document.getElementById('c-d2-expert');
+    const d3d = document.getElementById('c-d3-dasar');
+    if(mode === 'before'){
+      d2e.classList.add('overlap-cell');
+      d3d.classList.add('overlap-cell');
+      note.innerHTML = '<b>Sebelum tightening:</b> sel bertanda garis-garis merah menunjukkan overlap nominal — D2-Expert (Rp7.500.000) melebihi ambang D1-Dasar, dan D3-Dasar (Rp4.200.000) mendekati batas bawah D2. Kondisi data existing yang perlu dikoreksi.';
+    } else {
+      d2e.classList.remove('overlap-cell');
+      d3d.classList.remove('overlap-cell');
+      note.innerHTML = '<b>Sesudah tightening:</b> tidak ada overlap nominal antar Career Rank. Kolom "Berpotensi Struktural" bersifat informatif — nominal Tunjangan Struktural aktual dikonfigurasi di Payroll Configuration → Tunjangan Tetap, bukan di sini.';
+    }
   }
 
   // ===== Init =====
@@ -1091,9 +1322,14 @@
   renderSetupFactorTable();
   renderRoleMaster();
   renderGradeArch();
-  renderJEHistory();
-  renderThpBand();
-  renderSubLevelMatrix();
+
+  renderDirektoratCol();
+  renderDashboardDirektoratOptions();
+  renderDashboard();
+  renderUmkTable();
+  renderLadder();
+  renderSalaryThpTable();
+  setOverlap('after');
 </script>
 </body>
 </html>
